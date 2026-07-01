@@ -383,15 +383,21 @@
                         }
 
                         if (response.ok && result.ok) {
-                            // GA4 conversion — primary lead event
+                            // GA4 conversion. Fire the standard `generate_lead` event AND
+                            // `qualify_lead`, which is already configured as a Key Event in
+                            // this GA4 property — so a form submission counts as a conversion
+                            // immediately, aligned with the existing funnel taxonomy.
+                            var leadParams = {
+                                method: 'contact_form',
+                                project_type: projectType || undefined,
+                                budget_range: budgetRange || undefined
+                            };
                             if (typeof window.wevolv3Track === 'function') {
-                                window.wevolv3Track('generate_lead', {
-                                    method: 'contact_form',
-                                    project_type: projectType || undefined,
-                                    budget_range: budgetRange || undefined
-                                });
+                                window.wevolv3Track('generate_lead', leadParams);
+                                window.wevolv3Track('qualify_lead', leadParams);
                             } else if (typeof gtag === 'function') {
                                 gtag('event', 'generate_lead', { method: 'contact_form' });
+                                gtag('event', 'qualify_lead', { method: 'contact_form' });
                             }
                             alert('Thanks! Someone from our team will reach out soon.');
                             form.reset();
