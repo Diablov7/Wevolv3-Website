@@ -383,6 +383,16 @@
                         }
 
                         if (response.ok && result.ok) {
+                            // GA4 conversion — primary lead event
+                            if (typeof window.wevolv3Track === 'function') {
+                                window.wevolv3Track('generate_lead', {
+                                    method: 'contact_form',
+                                    project_type: projectType || undefined,
+                                    budget_range: budgetRange || undefined
+                                });
+                            } else if (typeof gtag === 'function') {
+                                gtag('event', 'generate_lead', { method: 'contact_form' });
+                            }
                             alert('Thanks! Someone from our team will reach out soon.');
                             form.reset();
                         } else {
@@ -409,7 +419,8 @@
             })();
         </script>
         <script>document.querySelectorAll('.copyright-year').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
-    </body>
+        <script src="js/track-events.js" defer></script>
+</body>
 
 </html>
 
