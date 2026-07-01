@@ -189,47 +189,10 @@
         ]
         </script>
 
-        <!-- Schema.org Reviews (Testimonials) -->
-        <script type="application/ld+json">
-        [
-          {
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": { "@type": "Service", "name": "Web3 Marketing Services by Wevolv3" },
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-            "reviewBody": "With Wevolv3 we have the smoothest and most consistent marketing we've ever had.",
-            "author": { "@type": "Person", "name": "Mira", "jobTitle": "CEO, Utility Project" },
-            "publisher": { "@type": "Organization", "name": "Wevolv3" }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": { "@type": "Service", "name": "Web3 Marketing Services by Wevolv3" },
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-            "reviewBody": "The team's ability to pivot strategies based on real-time market data saved our launch. We saw a 300% increase in qualified users and 85% retention rate in the first month. True strategic partners.",
-            "author": { "@type": "Person", "name": "Alex Luther", "jobTitle": "CMO, L1 Blockchain" },
-            "publisher": { "@type": "Organization", "name": "Wevolv3" }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": { "@type": "Service", "name": "Web3 Marketing Services by Wevolv3" },
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-            "reviewBody": "Amazing work, you are the best. LETS GOOO",
-            "author": { "@type": "Person", "name": "MAC", "jobTitle": "Global KOL and Advisor" },
-            "publisher": { "@type": "Organization", "name": "Wevolv3" }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "Review",
-            "itemReviewed": { "@type": "Service", "name": "Web3 Marketing Services by Wevolv3" },
-            "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-            "reviewBody": "Their local presence in LATAM opened doors we didn't even know existed. We expanded our user base by 450% in the region and achieved 2.5M+ impressions in the first quarter. Essential for our global expansion.",
-            "author": { "@type": "Person", "name": "Jax", "jobTitle": "Head of Growth, DeFi Aggregator" },
-            "publisher": { "@type": "Organization", "name": "Wevolv3" }
-          }
-        ]
-        </script>
+        <!-- Testimonials: os depoimentos aparecem no HTML da pagina. O markup Review/Rating
+             de "self-serving reviews" (a agencia avaliando o proprio Service) foi removido
+             porque viola a politica do Google (nao gera rich result e causava 4 erros de
+             "snippets de avaliacao invalidos" no Search Console). -->
 
         <!-- Schema.org FAQPage -->
         <script type="application/ld+json">
@@ -1212,7 +1175,7 @@
                                 <a
                                     data-w-id="darkyn08"
                                     style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-                                    href="singlework.html?slug=${encodeURIComponent(slug)}"
+                                    href="/works/${encodeURIComponent(slug)}"
                                     class="work-item w-inline-block"
                                 >
                                     <div class="work-img-wrapp">

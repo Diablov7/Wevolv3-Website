@@ -13,12 +13,18 @@
         <meta name="google-site-verification" content="3efa773444cc309a" />
         <link rel="canonical" id="canonical-url" href="https://wevolv3.com/singlework.html">
         <script>
-            // Set canonical URL immediately (before page load) for SEO
+            // Read the case slug from the clean path (/works/<slug>) or the legacy ?slug= param
+            window.getWorkSlug = function() {
+                var p = new URLSearchParams(window.location.search).get('slug');
+                if (p) return p;
+                var m = window.location.pathname.match(/^\/works\/([^\/?#]+)\/?$/);
+                return m ? decodeURIComponent(m[1]) : null;
+            };
+            // Set the clean canonical URL immediately (before page load) for SEO
             (function() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const slug = urlParams.get('slug');
+                const slug = window.getWorkSlug();
                 if (slug) {
-                    const canonicalUrl = `https://wevolv3.com/singlework.html?slug=${encodeURIComponent(slug)}`;
+                    const canonicalUrl = `https://wevolv3.com/works/${encodeURIComponent(slug)}`;
                     const canonicalEl = document.getElementById('canonical-url');
                     if (canonicalEl) {
                         canonicalEl.href = canonicalUrl;
@@ -732,10 +738,11 @@
                 const contentEl = document.getElementById('work-content');
                 
                 try {
-                    // Get slug from URL
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const slug = urlParams.get('slug');
-                    
+                    // Get slug from clean path (/works/<slug>) or legacy ?slug= param
+                    const slug = window.getWorkSlug
+                        ? window.getWorkSlug()
+                        : new URLSearchParams(window.location.search).get('slug');
+
                     if (!slug) {
                         throw new Error('No slug provided');
                     }
@@ -778,7 +785,7 @@
                     // Update canonical URL with slug
                     const canonicalEl = document.getElementById('canonical-url');
                     if (canonicalEl && slug) {
-                        canonicalEl.href = `https://wevolv3.com/singlework.html?slug=${encodeURIComponent(slug)}`;
+                        canonicalEl.href = `https://wevolv3.com/works/${encodeURIComponent(slug)}`;
                     }
                     
                     // Update content

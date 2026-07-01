@@ -134,7 +134,7 @@ Promise.all([
     const slug = work.slug;
     const updatedAt = work.updatedAt || work.publishedAt || new Date().toISOString();
     const lastmod = updatedAt.split('T')[0];
-    const workUrl = `${BASE_URL}/singlework.html?slug=${slug}`;
+    const workUrl = `${BASE_URL}/works/${slug}`;
 
     xml += `  <url>
     <loc>${workUrl}</loc>

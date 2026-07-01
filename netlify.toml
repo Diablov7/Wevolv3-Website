@@ -54,6 +54,19 @@
   to = "/singleblog.html"
   status = 200
 
+# Clean work URLs: /works/<slug> serve o shell da case (fallback; a edge function
+# clean-work-urls serve e faz o 301 das URLs antigas ?slug=)
+[[redirects]]
+  from = "/works/*"
+  to = "/singlework.html"
+  status = 200
+
+# /singlework sem slug -> shell da case
+[[redirects]]
+  from = "/singlework"
+  to = "/singlework.html"
+  status = 200
+
 # Sanity Studio - Servir localmente como SPA
 # Arquivos estáticos têm prioridade (force = true)
 [[redirects]]
@@ -73,6 +86,19 @@
   to = "/studio/index.html"
   status = 200
   force = true
+
+# Edge Function: URLs limpas para as cases (/works/<slug>)
+[[edge_functions]]
+  function = "clean-work-urls"
+  path = "/works/*"
+
+[[edge_functions]]
+  function = "clean-work-urls"
+  path = "/singlework"
+
+[[edge_functions]]
+  function = "clean-work-urls"
+  path = "/singlework.html"
 
 # Edge Function para injetar meta tags Open Graph dinamicamente
 [[edge_functions]]

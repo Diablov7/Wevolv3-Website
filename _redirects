@@ -11,6 +11,13 @@
 # /singleblog sem slug -> shell do artigo
 /singleblog   /singleblog.html    200
 
+# Clean work URLs: /works/<slug> serve o shell da case (a edge function clean-work-urls
+# serve e faz o 301 das URLs antigas ?slug=)
+/works/*   /singlework.html   200
+
+# /singlework sem slug -> shell da case
+/singlework   /singlework.html    200
+
 # Legacy redirects (if any old URLs exist)
 /blog-post    /blog.html    301
 /blog-post.html    /blog.html    301
