@@ -28,6 +28,7 @@
 /studio/*         /studio/index.html     200!
 /studio           /studio/index.html     200!
 
-# SPA fallback (deve ser o último)
-# Exclui arquivos estáticos automaticamente
-/*    /index.html   200
+# Catch-all: URLs desconhecidas -> 404 real (evita soft-404).
+# Blog/works limpos e /studio sao tratados nas regras acima, entao so caem aqui
+# paths que realmente nao existem.
+/*    /404.html   404
