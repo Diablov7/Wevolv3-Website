@@ -46,6 +46,24 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://wevolv3.com/defi-marketing</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://wevolv3.com/crypto-pr</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://wevolv3.com/crypto-kol-marketing</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://wevolv3.com/privacy.html</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
