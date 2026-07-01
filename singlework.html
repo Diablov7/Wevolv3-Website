@@ -6,6 +6,10 @@
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
 
+        <!-- Served at clean URLs like /works/<slug>; base ensures relative asset paths
+             (css/, js/, images/) resolve from the site root instead of /works/... -->
+        <base href="/">
+
         <title>Work Portfolio - Wevolv3 | Web3 Marketing Case Study</title>
         <meta name="description" content="View detailed case study of Wevolv3's Web3 marketing work. See how we help crypto and blockchain projects achieve growth.">
         <meta name="keywords" content="Web3 marketing case study, crypto marketing portfolio, blockchain campaign example">
@@ -574,7 +578,7 @@
                         <span class="copyright-year">2026</span> Wevolv3. All rights reserved.
                     </div>
                     <div data-w-id="darkyn06" class="right-copyright">
-                        <a href="#home" class="backtotop w-inline-block"><img  src="images/back-top_1back-top.png" alt="Back to top" /></a>
+                        <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="backtotop w-inline-block"><img  src="images/back-top_1back-top.png" alt="Back to top" /></a>
                     </div>
                 </div>
             </div>

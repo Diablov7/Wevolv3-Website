@@ -6,6 +6,10 @@
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
 
+        <!-- Served at clean URLs like /blog/<slug>; base ensures relative asset paths
+             (css/, js/, images/) resolve from the site root instead of /blog/... -->
+        <base href="/">
+
         <!-- Dynamic meta tags will be updated by JavaScript -->
         <title>Blog - Wevolv3 | Web3 Marketing & Modular Advertising Agency</title>
         <meta name="description" content="Read this article about Web3 marketing and growth strategies for blockchain projects.">
@@ -448,7 +452,7 @@
                     <span class="copyright-year">2026</span> Wevolv3. All rights reserved.
                 </div>
                     <div data-w-id="darkyn06" class="right-copyright">
-                        <a href="#home" class="backtotop w-inline-block"><img src="images/back-top_1back-top.png" alt="Back to top" /></a>
+                        <a href="#home" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="backtotop w-inline-block"><img src="images/back-top_1back-top.png" alt="Back to top" /></a>
                     </div>
                 </div>
             </div>
