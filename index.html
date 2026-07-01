@@ -787,7 +787,7 @@
                             <a
                                 data-w-id="darkyn01"
                                 style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d; background-color: rgba(25, 25, 25, 0);"
-                                href="singleblog.html"
+                                href="blog.html"
                                 class="blog-item w-inline-block"
                             >
                                 <div class="blog-left">
@@ -815,7 +815,7 @@
                             <a
                                 data-w-id="darkyn01"
                                 style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-                                href="singleblog.html"
+                                href="blog.html"
                                 class="blog-item w-inline-block"
                             >
                                 <div class="blog-left">
@@ -838,7 +838,7 @@
                         </div>
 
                         <div role="listitem" class="w-dyn-item">
-                            <a data-w-id="darkyn01" style="opacity: 0;" href="singleblog.html" class="blog-item w-inline-block">
+                            <a data-w-id="darkyn01" style="opacity: 0;" href="blog.html" class="blog-item w-inline-block">
                                 <div class="blog-left">
                                     <div class="blog-category">crypto</div>
                                     <h2 class="blog-heading">DeFi Marketing Excellence</h2>
@@ -859,7 +859,7 @@
                         </div>
 
                         <div role="listitem" class="w-dyn-item">
-                            <a data-w-id="darkyn01" style="opacity: 0;" href="singleblog.html" class="blog-item w-inline-block">
+                            <a data-w-id="darkyn01" style="opacity: 0;" href="blog.html" class="blog-item w-inline-block">
                                 <div class="blog-left">
                                     <div class="blog-category">blockchain</div>
                                     <h2 class="blog-heading">Modular Advertising Solutions</h2>
@@ -1023,7 +1023,7 @@
                                 publishedAt: post.publishedAt,
                                 readTimeInMinutes: post.readTime || 5,
                                 coverImage: imageUrl ? { url: imageUrl } : null,
-                                url: `singleblog.html?slug=${post.slug?.current || post.slug || ''}`,
+                                url: `/blog/${post.slug?.current || post.slug || ''}`,
                                 tags: []
                             };
                         });
@@ -1058,7 +1058,7 @@
                         const randomAuthorImage = authorImages[Math.floor(Math.random() * authorImages.length)];
                         
                         blogItem.innerHTML = `
-                            <a href="${post.url || 'singleblog.html'}" class="blog-item w-inline-block">
+                            <a href="${post.url || '/blog.html'}" class="blog-item w-inline-block">
                                 <div class="blog-left">
                                     <div class="blog-category">${category.toLowerCase()}</div>
                                     <h2 class="blog-heading">${post.title}</h2>

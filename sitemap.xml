@@ -5,204 +5,204 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://wevolv3.com/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/about.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/works.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/blog.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/contact.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/privacy.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/terms.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/disclaimer.html</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=crypto-flow-etf-outflows</loc>
+    <loc>https://wevolv3.com/blog/crypto-flow-etf-outflows</loc>
     <lastmod>2026-06-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=crypto-pr-builds-leadership-faster</loc>
+    <loc>https://wevolv3.com/blog/crypto-pr-builds-leadership-faster</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web3-failure-data-reality</loc>
+    <loc>https://wevolv3.com/blog/web3-failure-data-reality</loc>
     <lastmod>2026-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web3-kol-attribution-2026</loc>
+    <loc>https://wevolv3.com/blog/web3-kol-attribution-2026</loc>
     <lastmod>2026-04-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web3-marketing-2026</loc>
+    <loc>https://wevolv3.com/blog/web3-marketing-2026</loc>
     <lastmod>2026-04-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=post-quantum-crypto-projects-2026</loc>
+    <loc>https://wevolv3.com/blog/post-quantum-crypto-projects-2026</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web3-marketing-trends</loc>
+    <loc>https://wevolv3.com/blog/web3-marketing-trends</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=ai-blockchain-decentralized-computing</loc>
+    <loc>https://wevolv3.com/blog/ai-blockchain-decentralized-computing</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=retrofit-projects-quantum-threat</loc>
+    <loc>https://wevolv3.com/blog/retrofit-projects-quantum-threat</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=why-cellframe-post-quantum</loc>
+    <loc>https://wevolv3.com/blog/why-cellframe-post-quantum</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=why-discord-support-works-better</loc>
+    <loc>https://wevolv3.com/blog/why-discord-support-works-better</loc>
     <lastmod>2026-04-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=crypto-kol-marketing-evolution</loc>
+    <loc>https://wevolv3.com/blog/crypto-kol-marketing-evolution</loc>
     <lastmod>2026-03-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=sovereign-communities-web-three</loc>
+    <loc>https://wevolv3.com/blog/sovereign-communities-web-three</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-quest-platforms-roi</loc>
+    <loc>https://wevolv3.com/blog/web-three-quest-platforms-roi</loc>
     <lastmod>2026-02-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=building-crypto-communities</loc>
+    <loc>https://wevolv3.com/blog/building-crypto-communities</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-attribution-tool</loc>
+    <loc>https://wevolv3.com/blog/web-three-attribution-tool</loc>
     <lastmod>2026-01-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-gtm-framework</loc>
+    <loc>https://wevolv3.com/blog/web-three-gtm-framework</loc>
     <lastmod>2026-01-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-crm</loc>
+    <loc>https://wevolv3.com/blog/web-three-crm</loc>
     <lastmod>2026-01-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=galxe-vs-zealy-roi-platforms</loc>
+    <loc>https://wevolv3.com/blog/galxe-vs-zealy-roi-platforms</loc>
     <lastmod>2026-01-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-marketing-mistakes</loc>
+    <loc>https://wevolv3.com/blog/web-three-marketing-mistakes</loc>
     <lastmod>2025-12-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web-three-marketing-tools</loc>
+    <loc>https://wevolv3.com/blog/web-three-marketing-tools</loc>
     <lastmod>2025-12-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=web3-community-playbook-for-builders</loc>
+    <loc>https://wevolv3.com/blog/web3-community-playbook-for-builders</loc>
     <lastmod>2025-12-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=guide-mitigating-post-airdrop-fud</loc>
+    <loc>https://wevolv3.com/blog/guide-mitigating-post-airdrop-fud</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=why-exchanges-need-marketing-to-win-in-2026</loc>
+    <loc>https://wevolv3.com/blog/why-exchanges-need-marketing-to-win-in-2026</loc>
     <lastmod>2025-12-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos</loc>
+    <loc>https://wevolv3.com/blog/when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos</loc>
     <lastmod>2025-12-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://wevolv3.com/singleblog.html?slug=the-silent-collapse-of-web3-communities</loc>
+    <loc>https://wevolv3.com/blog/the-silent-collapse-of-web3-communities</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

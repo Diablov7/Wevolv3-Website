@@ -118,7 +118,7 @@ Promise.all([
     const slug = post.slug;
     const updatedAt = post.updatedAt || post.publishedAt || new Date().toISOString();
     const lastmod = updatedAt.split('T')[0];
-    const postUrl = `${BASE_URL}/singleblog.html?slug=${slug}`;
+    const postUrl = `${BASE_URL}/blog/${slug}`;
 
     xml += `  <url>
     <loc>${postUrl}</loc>

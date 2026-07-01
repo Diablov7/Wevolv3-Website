@@ -40,7 +40,28 @@
   [headers.values]
     Content-Type = "text/css"
 
-# Redirects para o blog
+# Clean blog URLs: /blog/<slug> serve o shell do artigo (rewrite, mantem a URL limpa na barra)
+[[redirects]]
+  from = "/blog/*"
+  to = "/singleblog.html"
+  status = 200
+
+# 301 das URLs antigas com parametro -> URL limpa (preserva SEO / autoridade)
+[[redirects]]
+  from = "/singleblog.html"
+  query = {slug = ":slug"}
+  to = "/blog/:slug"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/singleblog"
+  query = {slug = ":slug"}
+  to = "/blog/:slug"
+  status = 301
+  force = true
+
+# Fallback: /singleblog sem slug -> listagem do blog
 [[redirects]]
   from = "/singleblog"
   to = "/singleblog.html"
@@ -67,6 +88,10 @@
   force = true
 
 # Edge Function para injetar meta tags Open Graph dinamicamente
+[[edge_functions]]
+  function = "inject-og-tags"
+  path = "/blog/*"
+
 [[edge_functions]]
   function = "inject-og-tags"
   path = "/singleblog"

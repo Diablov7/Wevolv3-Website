@@ -206,28 +206,28 @@
                      Hidden from normal users (JS removes it on load). Ensures every post has a crawlable internal link. -->
                 <noscript>
                     <ul class="blog-static-fallback" style="list-style:none;padding:0;margin:40px 0;">
-                        <li><a href="singleblog.html?slug=web3-marketing-2026">Web3 Marketing 2026</a></li>
-                        <li><a href="singleblog.html?slug=post-quantum-crypto-projects-2026">Post-Quantum Crypto Projects 2026</a></li>
-                        <li><a href="singleblog.html?slug=web3-marketing-trends">Web3 Marketing Trends</a></li>
-                        <li><a href="singleblog.html?slug=ai-blockchain-decentralized-computing">AI, Blockchain &amp; Decentralized Computing</a></li>
-                        <li><a href="singleblog.html?slug=retrofit-projects-quantum-threat">Retrofitting Projects for the Quantum Threat</a></li>
-                        <li><a href="singleblog.html?slug=why-cellframe-post-quantum">Why Cellframe Leads Post-Quantum</a></li>
-                        <li><a href="singleblog.html?slug=why-discord-support-works-better">Why Discord Support Works Better</a></li>
-                        <li><a href="singleblog.html?slug=crypto-kol-marketing-evolution">Crypto KOL Marketing Evolution</a></li>
-                        <li><a href="singleblog.html?slug=sovereign-communities-web-three">Sovereign Communities in Web3</a></li>
-                        <li><a href="singleblog.html?slug=web-three-quest-platforms-roi">Web3 Quest Platforms &amp; ROI</a></li>
-                        <li><a href="singleblog.html?slug=building-crypto-communities">Building Crypto Communities</a></li>
-                        <li><a href="singleblog.html?slug=web-three-attribution-tool">Web3 Attribution Tools</a></li>
-                        <li><a href="singleblog.html?slug=web-three-gtm-framework">Web3 GTM Framework</a></li>
-                        <li><a href="singleblog.html?slug=web-three-crm">Web3 CRM</a></li>
-                        <li><a href="singleblog.html?slug=galxe-vs-zealy-roi-platforms">Galxe vs Zealy — ROI Platforms Compared</a></li>
-                        <li><a href="singleblog.html?slug=web-three-marketing-mistakes">Web3 Marketing Mistakes to Avoid</a></li>
-                        <li><a href="singleblog.html?slug=web-three-marketing-tools">Web3 Marketing Tools</a></li>
-                        <li><a href="singleblog.html?slug=web3-community-playbook-for-builders">Web3 Community Playbook for Builders</a></li>
-                        <li><a href="singleblog.html?slug=guide-mitigating-post-airdrop-fud">Guide: Mitigating Post-Airdrop FUD</a></li>
-                        <li><a href="singleblog.html?slug=why-exchanges-need-marketing-to-win-in-2026">Why Exchanges Need Marketing to Win in 2026</a></li>
-                        <li><a href="singleblog.html?slug=when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos">When AI Becomes the Marketer: ai16z &amp; ElizaOS</a></li>
-                        <li><a href="singleblog.html?slug=the-silent-collapse-of-web3-communities">The Silent Collapse of Web3 Communities</a></li>
+                        <li><a href="/blog/web3-marketing-2026">Web3 Marketing 2026</a></li>
+                        <li><a href="/blog/post-quantum-crypto-projects-2026">Post-Quantum Crypto Projects 2026</a></li>
+                        <li><a href="/blog/web3-marketing-trends">Web3 Marketing Trends</a></li>
+                        <li><a href="/blog/ai-blockchain-decentralized-computing">AI, Blockchain &amp; Decentralized Computing</a></li>
+                        <li><a href="/blog/retrofit-projects-quantum-threat">Retrofitting Projects for the Quantum Threat</a></li>
+                        <li><a href="/blog/why-cellframe-post-quantum">Why Cellframe Leads Post-Quantum</a></li>
+                        <li><a href="/blog/why-discord-support-works-better">Why Discord Support Works Better</a></li>
+                        <li><a href="/blog/crypto-kol-marketing-evolution">Crypto KOL Marketing Evolution</a></li>
+                        <li><a href="/blog/sovereign-communities-web-three">Sovereign Communities in Web3</a></li>
+                        <li><a href="/blog/web-three-quest-platforms-roi">Web3 Quest Platforms &amp; ROI</a></li>
+                        <li><a href="/blog/building-crypto-communities">Building Crypto Communities</a></li>
+                        <li><a href="/blog/web-three-attribution-tool">Web3 Attribution Tools</a></li>
+                        <li><a href="/blog/web-three-gtm-framework">Web3 GTM Framework</a></li>
+                        <li><a href="/blog/web-three-crm">Web3 CRM</a></li>
+                        <li><a href="/blog/galxe-vs-zealy-roi-platforms">Galxe vs Zealy — ROI Platforms Compared</a></li>
+                        <li><a href="/blog/web-three-marketing-mistakes">Web3 Marketing Mistakes to Avoid</a></li>
+                        <li><a href="/blog/web-three-marketing-tools">Web3 Marketing Tools</a></li>
+                        <li><a href="/blog/web3-community-playbook-for-builders">Web3 Community Playbook for Builders</a></li>
+                        <li><a href="/blog/guide-mitigating-post-airdrop-fud">Guide: Mitigating Post-Airdrop FUD</a></li>
+                        <li><a href="/blog/why-exchanges-need-marketing-to-win-in-2026">Why Exchanges Need Marketing to Win in 2026</a></li>
+                        <li><a href="/blog/when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos">When AI Becomes the Marketer: ai16z &amp; ElizaOS</a></li>
+                        <li><a href="/blog/the-silent-collapse-of-web3-communities">The Silent Collapse of Web3 Communities</a></li>
                     </ul>
                 </noscript>
 
@@ -357,7 +357,7 @@
                 const category = post.categories?.[0]?.title || 'Web3';
                 const imageUrl = sanityImageUrl(post.mainImage);
                 const isDraft = previewMode && (!post.published || post.published === false);
-                const previewParam = previewMode ? '&preview=true' : '';
+                const previewParam = previewMode ? '?preview=true' : '';
                 
                 // Seleciona aleatoriamente uma das 3 imagens de autor
                 const authorImages = ['images/author1.jpeg', 'images/author2.png', 'images/author3.jpeg'];
@@ -368,7 +368,7 @@
                         <a
                             data-w-id="darkyn01"
                             style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"
-                            href="singleblog.html?slug=${encodeURIComponent(slug)}${previewParam}"
+                            href="/blog/${encodeURIComponent(slug)}${previewParam}"
                             class="blog-item w-inline-block"
                         >
                             <div class="blog-left">

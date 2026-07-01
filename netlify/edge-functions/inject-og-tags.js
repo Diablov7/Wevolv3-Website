@@ -6,16 +6,24 @@ export default async (request, context) => {
   
   console.log('Edge Function called for:', url.pathname, url.search);
   
-  // Only process singleblog pages
-  if (!url.pathname.includes('singleblog') && !url.pathname.includes('singleblog.html')) {
-    console.log('Not a singleblog page, skipping');
+  // Process both clean blog URLs (/blog/<slug>) and legacy singleblog URLs
+  const isBlogPath = url.pathname.startsWith('/blog/');
+  const isSingleblog = url.pathname.includes('singleblog');
+  if (!isBlogPath && !isSingleblog) {
+    console.log('Not a blog article page, skipping');
     return context.next();
   }
 
-  // Get slug from query params
-  const slug = url.searchParams.get('slug');
+  // Get slug from clean path (/blog/<slug>) first, then fall back to ?slug=
+  let slug = null;
+  if (isBlogPath) {
+    slug = decodeURIComponent(url.pathname.replace(/^\/blog\//, '').replace(/\/+$/, ''));
+  }
   if (!slug) {
-    console.log('No slug parameter found');
+    slug = url.searchParams.get('slug');
+  }
+  if (!slug) {
+    console.log('No slug found');
     return context.next();
   }
   
@@ -94,7 +102,8 @@ export default async (request, context) => {
     const imageUrl = sanityImageUrl(post.mainImage);
     const title = post.title;
     const description = post.excerpt || 'Read this article about Web3 marketing and growth strategies.';
-    const pageUrl = `https://wevolv3.com${url.pathname}${url.search}`;
+    // Always use the clean canonical URL for OG/canonical/JSON-LD, regardless of how the page was reached
+    const pageUrl = `https://wevolv3.com/blog/${encodeURIComponent(slug)}`;
     const datePublished = post.publishedAt || post._updatedAt || null;
     const dateModified = post._updatedAt || post.publishedAt || null;
     const authorName = post.authorName || 'Wevolv3';
