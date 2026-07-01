@@ -7,7 +7,7 @@ export default async (request, context) => {
   console.log('Edge Function called for:', url.pathname, url.search);
   
   // Process both clean blog URLs (/blog/<slug>) and legacy singleblog URLs
-  const isBlogPath = url.pathname.startsWith('/blog/');
+  const isBlogPath = url.pathname.startsWith('/blog/') && url.pathname !== '/blog/';
   const isSingleblog = url.pathname.includes('singleblog');
   if (!isBlogPath && !isSingleblog) {
     console.log('Not a blog article page, skipping');
@@ -22,12 +22,30 @@ export default async (request, context) => {
   if (!slug) {
     slug = url.searchParams.get('slug');
   }
+
+  // 301 legacy singleblog URLs (?slug=) to the clean /blog/<slug> URL
+  if (isSingleblog && slug) {
+    return Response.redirect(new URL('/blog/' + encodeURIComponent(slug), url.origin).toString(), 301);
+  }
+
   if (!slug) {
     console.log('No slug found');
     return context.next();
   }
-  
+
   console.log('Processing slug:', slug);
+
+  // Fetch the article shell (singleblog.html). Clean /blog/<slug> URLs have no static
+  // file at that path, so we fetch the shell explicitly rather than using context.next()
+  // (which, when an edge function owns the path, hits the SPA fallback and returns index.html).
+  let html;
+  try {
+    const shellResp = await fetch(new URL('/singleblog.html?__shell=1', url.origin).toString());
+    html = await shellResp.text();
+  } catch (e) {
+    console.error('Failed to fetch article shell:', e);
+    return context.next();
+  }
 
   // Fetch post data from Sanity
   const projectId = 'sszuldy6';
@@ -67,7 +85,8 @@ export default async (request, context) => {
 
     if (!post || !post.title) {
       console.log('Post not found or missing title, slug:', slug);
-      return context.next(); // Post not found, serve page as-is
+      // Serve the shell unmodified so the client-side JS can render / show its error state
+      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
     }
 
     // Generate image URL from Sanity reference

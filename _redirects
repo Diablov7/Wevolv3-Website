@@ -4,11 +4,8 @@
 # Blog redirects
 /blog.html    /blog.html    200
 
-# Clean blog URLs: 301 das URLs antigas com ?slug= -> /blog/<slug> (preserva SEO)
-/singleblog.html   slug=:slug   /blog/:slug   301!
-/singleblog        slug=:slug   /blog/:slug   301!
-
-# Clean blog URLs: /blog/<slug> serve o shell do artigo (rewrite, a URL fica limpa)
+# Clean blog URLs: /blog/<slug> serve o shell do artigo (fallback; a edge function
+# inject-og-tags injeta as meta tags e faz o 301 das URLs antigas ?slug=)
 /blog/*   /singleblog.html   200
 
 # /singleblog sem slug -> shell do artigo

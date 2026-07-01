@@ -40,28 +40,15 @@
   [headers.values]
     Content-Type = "text/css"
 
-# Clean blog URLs: /blog/<slug> serve o shell do artigo (rewrite, mantem a URL limpa na barra)
+# Clean blog URLs: /blog/<slug> serve o shell do artigo (fallback caso a edge function nao rode).
+# O 301 das URLs antigas (?slug=) e feito pela edge function inject-og-tags (mais confiavel
+# que redirect por query, que a edge intercepta antes).
 [[redirects]]
   from = "/blog/*"
   to = "/singleblog.html"
   status = 200
 
-# 301 das URLs antigas com parametro -> URL limpa (preserva SEO / autoridade)
-[[redirects]]
-  from = "/singleblog.html"
-  query = {slug = ":slug"}
-  to = "/blog/:slug"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/singleblog"
-  query = {slug = ":slug"}
-  to = "/blog/:slug"
-  status = 301
-  force = true
-
-# Fallback: /singleblog sem slug -> listagem do blog
+# /singleblog sem slug -> shell do artigo
 [[redirects]]
   from = "/singleblog"
   to = "/singleblog.html"
