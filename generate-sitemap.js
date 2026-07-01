@@ -28,6 +28,7 @@ const staticPages = [
   { url: '/defi-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/crypto-pr', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/crypto-kol-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/web3-development', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/privacy.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/terms.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/disclaimer.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
