@@ -153,7 +153,7 @@ export default async (request, context) => {
 
     // Convert Portable Text to a *minimal* HTML version (headings, paragraphs,
     // basic lists). This is rendered ONLY inside <noscript> so users with JS
-    // never see it — but crawlers that don't execute JS (GPTBot, ClaudeBot,
+    // never see it, but crawlers that don't execute JS (GPTBot, ClaudeBot,
     // PerplexityBot, archive bots) get a clean HTML article. The client-side
     // JS still owns the visible rendering, so there is zero divergence risk.
     function htmlEscape(s) {
@@ -280,7 +280,7 @@ export default async (request, context) => {
     `;
 
     // <noscript> fallback for crawlers that don't execute JavaScript.
-    // Browsers with JS ignore this entirely — zero impact on visible UI.
+    // Browsers with JS ignore this entirely, zero impact on visible UI.
     const noscriptArticle = articleBodyHtml ? `
 <noscript>
   <article>

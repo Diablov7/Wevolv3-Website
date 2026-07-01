@@ -1,7 +1,7 @@
 {
   "name": "wevolv3-website",
   "version": "1.0.0",
-  "description": "Wevolv3 Website - Web3 Marketing & Modular Advertising Agency",
+  "description": "Wevolv3 Website - Web3 growth partner Agency",
   "scripts": {
     "generate-sitemap": "node generate-sitemap.js",
     "build": "node generate-sitemap.js",

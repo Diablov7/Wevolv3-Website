@@ -1,8 +1,8 @@
 # Wevolv3
 
-> Web3 Marketing & Modular Advertising Agency. We help crypto, DeFi, and blockchain projects turn attention into adoption through community building, KOL campaigns, PR, growth hacking, and exchange listings.
+> The Web3 growth partner behind crypto, DeFi and blockchain projects that scale. We turn attention into adoption through community, KOL campaigns, PR, growth and exchange listings.
 
-Wevolv3 is a Web3-native marketing agency operating worldwide, with strong LATAM presence. Services are modular and combinable: clients can engage individual capabilities (e.g. only KOL campaigns) or combine them into integrated growth programs. The agency works with token launches, L1/L2 chains, DeFi protocols, meme tokens, and AI-infrastructure projects.
+Wevolv3 is a Web3-native growth partner operating worldwide, with strong LATAM presence. Engagements are tailored: bring us in for a focused sprint (e.g. only KOL campaigns) or as a full growth partner. We work with token launches, L1/L2 chains, DeFi protocols, meme tokens, and AI-infrastructure projects.
 
 ## Core Pages
 
@@ -15,14 +15,14 @@ Wevolv3 is a Web3-native marketing agency operating worldwide, with strong LATAM
 
 ## Services
 
-- Web3 Community Management — Telegram, Discord, X community building and moderation.
-- Crypto Ad Placement — Targeted advertising on crypto-native ad networks and platforms.
-- Web3 Growth Hacking — User acquisition and retention strategies for tokens and dApps.
-- Influencer Marketing (KOL) — Key Opinion Leader campaigns across X, YouTube, Telegram.
-- Design & Motion — Branding, social creatives, and motion graphics for crypto projects.
-- Guerrilla Marketing — Unconventional, high-impact campaigns for token launches.
-- Token & Exchange Listing — Support for CEX/DEX listings.
-- Crypto PR & Media — Coverage on Forbes, Cointelegraph, CoinDesk, Bitcoin.com, Binance, CoinMarketCap.
+- Web3 Community Management: Telegram, Discord, X community building and moderation.
+- Crypto Ad Placement: Targeted advertising on crypto-native ad networks and platforms.
+- Web3 Growth Hacking: User acquisition and retention strategies for tokens and dApps.
+- Influencer Marketing (KOL): Key Opinion Leader campaigns across X, YouTube, Telegram.
+- Design & Motion: Branding, social creatives, and motion graphics for crypto projects.
+- Guerrilla Marketing: Unconventional, high-impact campaigns for token launches.
+- Token & Exchange Listing: Support for CEX/DEX listings.
+- Crypto PR & Media: Coverage on Forbes, Cointelegraph, CoinDesk, Bitcoin.com, Binance, CoinMarketCap.
 
 ## Key Articles
 

@@ -1,4 +1,4 @@
-/* Wevolv3 landing pages — scoped styles (lp-). Dark brand look + emerald accent, native to wevolv3. */
+/* Wevolv3 landing pages, scoped styles (lp-). Dark brand look + emerald accent, native to wevolv3. */
 :root { --lp-accent:#10b981; --lp-accent-soft:rgba(16,185,129,.12); --lp-bg:#000; --lp-panel:#0c0c0c; --lp-line:rgba(255,255,255,.09); --lp-text:#e9e9e9; --lp-muted:#9a9a9a; }
 body { background:var(--lp-bg) !important; color:var(--lp-text); }
 .lp-wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
