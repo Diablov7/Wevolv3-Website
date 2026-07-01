@@ -1334,7 +1334,7 @@ blockquote {
 
 /* Botão LET'S TALK */
 .lets-talk-btn {
-  background-color: #14d9a3; /* Verde esmeralda mais vibrante */
+  background-color: #10b981; /* Verde esmeralda mais vibrante */
   color: var(--white);
   text-transform: uppercase;
   font-size: 17px; /* Mesmo tamanho dos menu-items */
@@ -1349,18 +1349,18 @@ blockquote {
   transition: all 0.3s ease;
   margin-right: 5px; /* Quase colado ao Home */
   margin-left: auto; /* Empurrar para direita após logo */
-  border: 1px solid #14d9a3; /* Verde esmeralda */
+  border: 1px solid #10b981; /* Verde esmeralda */
   white-space: nowrap;
   font-family: Clashdisplay, sans-serif;
-  border-bottom: 2px solid #14d9a3; /* Verde esmeralda */
+  border-bottom: 2px solid #10b981; /* Verde esmeralda */
   order: 2;
   flex: 0 0 auto;
 }
 
 .lets-talk-btn:hover {
-  background-color: #12c994; /* Esmeralda um pouco mais escura no hover */
+  background-color: #059669; /* Esmeralda um pouco mais escura no hover */
   color: var(--white);
-  border-color: #12c994;
+  border-color: #059669;
   transform: none; /* Remover elevação para manter estilo do projeto */
   box-shadow: none; /* Remover sombra para manter estilo minimalista */
 }
