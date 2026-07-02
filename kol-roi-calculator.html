@@ -486,6 +486,7 @@
             const p = new URLSearchParams();
             for (const f of fields) p.set(f, $(f).value);
             const url = location.origin + location.pathname + '?' + p.toString();
+            if (typeof window.wevolv3Track === 'function') window.wevolv3Track('calculator_share', { tool: 'kol_roi_calculator' });
             navigator.clipboard.writeText(url).then(() => {
                 $('copyNote').textContent = 'Copied!';
                 setTimeout(() => $('copyNote').textContent = '', 2000);
@@ -500,7 +501,15 @@
             history.replaceState(null, '', location.pathname);
         }
 
-        fields.forEach(f => $(f).addEventListener('input', render));
+        // Fire the GA4 `calculator_used` conversion once, on the first real user input.
+        var calcTracked = false;
+        function trackCalcOnce(){
+            if (calcTracked) return;
+            calcTracked = true;
+            if (typeof window.wevolv3Track === 'function') window.wevolv3Track('calculator_used', { tool: 'kol_roi_calculator' });
+            else if (typeof gtag === 'function') gtag('event', 'calculator_used', { tool: 'kol_roi_calculator' });
+        }
+        fields.forEach(f => $(f).addEventListener('input', function(){ trackCalcOnce(); render(); }));
         loadFromQuery();
         render();
         $('yr').textContent = new Date().getFullYear();
