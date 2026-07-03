@@ -20,14 +20,12 @@ export const handler = async (event) => {
 
   try {
     const payload = JSON.parse(event.body || "{}");
-    const { name, email, telegram, message, text, chat_id, phone, projectType, budgetRange, timeline, mainChallenge, additionalMessage } = payload;
+    const { name, email, telegram, message, text, chat_id, phone, projectType, mainChallenge, additionalMessage } = payload;
 
-    console.log('[sendTelegram] Payload received', { 
-      hasName: !!name, 
-      hasEmail: !!email, 
+    console.log('[sendTelegram] Payload received', {
+      hasName: !!name,
+      hasEmail: !!email,
       hasProjectType: !!projectType,
-      hasBudgetRange: !!budgetRange,
-      hasTimeline: !!timeline,
       hasMainChallenge: !!mainChallenge
     });
 
@@ -90,12 +88,12 @@ export const handler = async (event) => {
     // Suporta três formatos:
     // 1) { text, chat_id? } (proxy direto do front/bundle)
     // 2) { name, email, telegram, message } (formulário antigo)
-    // 3) { name, email, phone, telegram, projectType, budgetRange, timeline, mainChallenge, additionalMessage } (formulário novo)
+    // 3) { name, email, phone, telegram, projectType, mainChallenge, additionalMessage } (formulário novo)
     const finalText = typeof text === "string" && text.trim().length > 0
       ? escapeHtml(text)
       : (() => {
           // Novo formato com campos de auditoria
-          if (projectType || budgetRange || timeline || mainChallenge) {
+          if (projectType || mainChallenge) {
             const lines = [
               "🚀 <b>NEW CONTACT FORM SUBMISSION</b>",
               "",
@@ -107,8 +105,6 @@ export const handler = async (event) => {
               "",
               "📊 <b>PROJECT DETAILS</b>",
               `<b>Type:</b> ${escapeHtml(projectType) || "N/A"}`,
-              `<b>Budget:</b> ${escapeHtml(budgetRange) || "N/A"}`,
-              `<b>Timeline:</b> ${escapeHtml(timeline) || "N/A"}`,
               "",
               "🎯 <b>MAIN CHALLENGE/GOAL</b>",
               escapeHtml(mainChallenge) || "N/A",
