@@ -178,25 +178,20 @@
                         <div class="contact-form-block w-form">
                             <form id="email-form2" method="post" action="#">
                                 <div id="darkyn30" class="w-layout-layout form-stack wf-layout-layout">
-                                    <!-- Row 1: Name e Last Name -->
+                                    <!-- Row 1: Name e Email -->
                                     <div id="darkyn31" class="w-layout-cell form-cell">
                                         <input class="input-style w-input" maxlength="256" name="name" data-name="Name" placeholder="Name *" type="text" id="name" required="" />
                                     </div>
-                                    <div id="darkyn32" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="Last-Name" data-name="Last Name" placeholder="Last Name *" type="text" id="Last-Name" required="" />
-                                    </div>
-                                    
-                                    <!-- Row 2: Email e Phone -->
                                     <div id="darkyn33" class="w-layout-cell form-cell">
                                         <input class="input-style w-input" maxlength="256" name="email" data-name="Email" placeholder="Email Address *" type="email" id="email" required="" />
                                     </div>
+
+                                    <!-- Row 2: Phone e Telegram (ambos opcionais) -->
                                     <div id="darkyn34" class="w-layout-cell form-cell">
                                         <input class="input-style w-input" maxlength="256" name="Phone-Number" data-name="Phone Number" placeholder="Phone Number" type="tel" id="Phone-Number" />
                                     </div>
-                                    
-                                    <!-- Row 3: Telegram e Project Type -->
                                     <div id="darkyn34-telegram" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="telegram" data-name="Telegram" placeholder="Telegram @handle *" type="text" id="telegram" required="" />
+                                        <input class="input-style w-input" maxlength="256" name="telegram" data-name="Telegram" placeholder="Telegram @handle" type="text" id="telegram" />
                                     </div>
                                     <div id="project-type-cell" class="w-layout-cell form-cell">
                                         <select class="input-style w-input" name="project-type" id="project-type" required="" style="color: #fff; background-color: rgba(255, 255, 255, 0.05);">
@@ -321,7 +316,6 @@
 
                     // Get form values
                     const name = document.getElementById('name')?.value?.trim() || '';
-                    const lastName = document.getElementById('Last-Name')?.value?.trim() || '';
                     const email = document.getElementById('email')?.value?.trim() || '';
                     const phone = document.getElementById('Phone-Number')?.value?.trim() || '';
                     const telegram = document.getElementById('telegram')?.value?.trim() || '';
@@ -332,7 +326,7 @@
                     const message = document.getElementById('Message')?.value?.trim() || '';
 
                     // Validate required fields
-                    if (!name || !email || !telegram || !projectType || !budgetRange || !timeline || !mainChallenge) {
+                    if (!name || !email || !projectType || !budgetRange || !timeline || !mainChallenge) {
                         alert('Please fill in all required fields (marked with *).');
                         return;
                     }
@@ -350,10 +344,8 @@
 
                     try {
                         // Prepare payload
-                        const fullName = lastName ? `${name} ${lastName}` : name;
-
                         const payload = {
-                            name: fullName,
+                            name: name,
                             email: email,
                             phone: phone || null,
                             telegram: telegram || null,
