@@ -77,54 +77,64 @@ export const handler = async (event) => {
       chatIds: chatIds // Log dos IDs parseados para debug
     });
 
+    // Telegram HTML parse_mode only requires escaping &, < and > in user-supplied
+    // text. This is far more robust than legacy Markdown, which breaks the whole
+    // message if a user types an unescaped _, *, [, ], `, etc. (this was the root
+    // cause of contact form submissions silently failing).
+    const escapeHtml = (str) =>
+      String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
     // Suporta três formatos:
     // 1) { text, chat_id? } (proxy direto do front/bundle)
     // 2) { name, email, telegram, message } (formulário antigo)
     // 3) { name, email, phone, telegram, projectType, budgetRange, timeline, mainChallenge, additionalMessage } (formulário novo)
     const finalText = typeof text === "string" && text.trim().length > 0
-      ? text
+      ? escapeHtml(text)
       : (() => {
           // Novo formato com campos de auditoria
           if (projectType || budgetRange || timeline || mainChallenge) {
             const lines = [
-              "🚀 *NEW CONTACT FORM SUBMISSION*",
+              "🚀 <b>NEW CONTACT FORM SUBMISSION</b>",
               "",
-              "👤 *CONTACT INFO*",
-              `*Name:* ${name || "N/A"}`,
-              `*Email:* ${email || "N/A"}`,
-              ...(phone ? [`*Phone:* ${phone}`] : []),
-              ...(telegram ? [`*Telegram:* ${telegram}`] : []),
+              "👤 <b>CONTACT INFO</b>",
+              `<b>Name:</b> ${escapeHtml(name) || "N/A"}`,
+              `<b>Email:</b> ${escapeHtml(email) || "N/A"}`,
+              ...(phone ? [`<b>Phone:</b> ${escapeHtml(phone)}`] : []),
+              ...(telegram ? [`<b>Telegram:</b> ${escapeHtml(telegram)}`] : []),
               "",
-              "📊 *PROJECT DETAILS*",
-              `*Type:* ${projectType || "N/A"}`,
-              `*Budget:* ${budgetRange || "N/A"}`,
-              `*Timeline:* ${timeline || "N/A"}`,
+              "📊 <b>PROJECT DETAILS</b>",
+              `<b>Type:</b> ${escapeHtml(projectType) || "N/A"}`,
+              `<b>Budget:</b> ${escapeHtml(budgetRange) || "N/A"}`,
+              `<b>Timeline:</b> ${escapeHtml(timeline) || "N/A"}`,
               "",
-              "🎯 *MAIN CHALLENGE/GOAL*",
-              mainChallenge || "N/A",
+              "🎯 <b>MAIN CHALLENGE/GOAL</b>",
+              escapeHtml(mainChallenge) || "N/A",
               "",
             ];
-            
+
             if (additionalMessage) {
-              lines.push("📝 *ADDITIONAL DETAILS*", additionalMessage, "");
+              lines.push("📝 <b>ADDITIONAL DETAILS</b>", escapeHtml(additionalMessage), "");
             }
-            
+
             lines.push("─".repeat(30), `Sent from: wevolv3.com/contact.html`);
-            
+
             return lines.join("\n");
           }
-          
+
           // Formato antigo (fallback)
           return [
-            "🚀 *New message from Wevolv3!*",
+            "🚀 <b>New message from Wevolv3!</b>",
             "",
-            `*Name:* ${name || "N/A"}`,
-            `*Email:* ${email || "N/A"}`,
-            ...(phone ? [`*Phone:* ${phone}`] : []),
-            ...(telegram ? [`*Telegram:* ${telegram}`] : []),
+            `<b>Name:</b> ${escapeHtml(name) || "N/A"}`,
+            `<b>Email:</b> ${escapeHtml(email) || "N/A"}`,
+            ...(phone ? [`<b>Phone:</b> ${escapeHtml(phone)}`] : []),
+            ...(telegram ? [`<b>Telegram:</b> ${escapeHtml(telegram)}`] : []),
             "",
-            `*Message:*`,
-            message || "",
+            `<b>Message:</b>`,
+            escapeHtml(message) || "",
           ].join("\n");
         })();
 
@@ -152,7 +162,7 @@ export const handler = async (event) => {
           body: JSON.stringify({ 
             chat_id: chatIdNum, // Usar como string para suportar IDs negativos
             text: finalText,
-            parse_mode: "Markdown" // Habilita formatação markdown (negritos, etc)
+            parse_mode: "HTML" // HTML e mais robusto que Markdown: nao quebra com _ * [ ] ` digitados pelo usuario
           }),
         });
 
