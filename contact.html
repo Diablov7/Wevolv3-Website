@@ -186,10 +186,7 @@
                                         <input class="input-style w-input" maxlength="256" name="email" data-name="Email" placeholder="Email Address *" type="email" id="email" required="" />
                                     </div>
 
-                                    <!-- Row 2: Phone e Telegram (ambos opcionais) -->
-                                    <div id="darkyn34" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="Phone-Number" data-name="Phone Number" placeholder="Phone Number" type="tel" id="Phone-Number" />
-                                    </div>
+                                    <!-- Row 2: Telegram (opcional) -->
                                     <div id="darkyn34-telegram" class="w-layout-cell form-cell">
                                         <input class="input-style w-input" maxlength="256" name="telegram" data-name="Telegram" placeholder="Telegram @handle" type="text" id="telegram" />
                                     </div>
@@ -208,11 +205,6 @@
                                         </select>
                                     </div>
 
-                                    <!-- Row 5: Main Challenge/Goal (full width) -->
-                                    <div id="main-challenge-cell" class="w-layout-cell form-cell form-cell-full">
-                                        <textarea class="input-style textarea w-input" maxlength="500" name="main-challenge" data-name="Main Challenge" placeholder="Main Challenge/Goal * (What's blocking your growth? What's your main objective?)" id="main-challenge" required="" rows="3"></textarea>
-                                    </div>
-                                    
                                     <!-- Row 6: Additional Message (full width) -->
                                     <div id="darkyn35" class="w-layout-cell form-cell form-cell-full">
                                         <textarea class="input-style textarea w-input" maxlength="1000" name="Message" data-name="Message" placeholder="Additional Details (optional)" id="Message" rows="4"></textarea>
@@ -294,14 +286,12 @@
                     // Get form values
                     const name = document.getElementById('name')?.value?.trim() || '';
                     const email = document.getElementById('email')?.value?.trim() || '';
-                    const phone = document.getElementById('Phone-Number')?.value?.trim() || '';
                     const telegram = document.getElementById('telegram')?.value?.trim() || '';
                     const projectType = document.getElementById('project-type')?.value || '';
-                    const mainChallenge = document.getElementById('main-challenge')?.value?.trim() || '';
                     const message = document.getElementById('Message')?.value?.trim() || '';
 
                     // Validate required fields
-                    if (!name || !email || !projectType || !mainChallenge) {
+                    if (!name || !email || !projectType) {
                         alert('Please fill in all required fields (marked with *).');
                         return;
                     }
@@ -322,10 +312,8 @@
                         const payload = {
                             name: name,
                             email: email,
-                            phone: phone || null,
                             telegram: telegram || null,
                             projectType: projectType,
-                            mainChallenge: mainChallenge,
                             additionalMessage: message || null
                         };
 
