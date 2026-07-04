@@ -772,17 +772,19 @@ export const handler = async (event) => {
       const token = await resolveToken(query);
       if (!token) return json(404, { error: "We couldn't find that token. Try a different name, symbol, or paste the contract address." });
 
-      const attention = await fromTwitter(token.twitter); // null if no key / no handle
+      // the three lookups are independent — run them in parallel to stay well
+      // under Netlify's 10s synchronous function limit on cold queries
+      const [attention, mentions, peerTurnover] = await Promise.all([
+        fromTwitter(token.twitter), // null if no key / no handle
+        fetchMentions(token),
+        peerMedianTurnover(),
+      ]);
       const attScore = attentionScore(attention);
       const adoScore = adoptionScore(token);
       if (attScore == null && adoScore == null) return json(404, { error: "We found the token but there isn't enough public data to score it yet." });
 
       // sentiment: real mentions -> classified breakdown (teaser) + samples/themes (full)
-      const mentions = await fetchMentions(token);
-      const [sentiment, peerTurnover] = await Promise.all([
-        analyzeSentiment(mentions, token),
-        peerMedianTurnover(),
-      ]);
+      const sentiment = await analyzeSentiment(mentions, token);
 
       const gap = attScore != null && adoScore != null ? attScore - adoScore : null;
       base = {
