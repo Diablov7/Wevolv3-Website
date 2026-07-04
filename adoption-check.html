@@ -112,7 +112,7 @@
       .ac-status.err .ac-spin { display: none; }
       @keyframes ac-rot { to { transform: rotate(360deg); } }
 
-      .ac-result { margin: 40px auto 0; max-width: 920px; display: none; }
+      .ac-result { margin: 40px auto 0; max-width: 1120px; display: none; }
       .ac-result.show { display: block; }
 
       .ac-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
@@ -177,11 +177,32 @@
 
       /* apex chart blocks */
       .ac-radial { margin: 2px 0 0; min-height: 190px; }
-      .ac-duochart { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
-      @media (max-width: 720px) { .ac-duochart { grid-template-columns: 1fr; } }
-      .ac-sent-viz { display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center; }
-      @media (max-width: 620px) { .ac-sent-viz { grid-template-columns: 1fr; } }
-      .ac-sent-side { min-width: 0; }
+
+      /* bento dashboard (landscape) */
+      .ac-bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-top: 22px; }
+      .ac-card { background: #0c0c0c; border: 1px solid #292929; border-radius: 12px; padding: 22px 24px; min-width: 0; }
+      .b-gap { grid-column: span 7; }
+      .b-price { grid-column: span 5; }
+      .b-verdict { grid-column: span 7; background: linear-gradient(180deg, rgba(16,185,129,.08), rgba(16,185,129,0)); border-color: #1f3a30; }
+      .b-sent { grid-column: span 5; }
+      .b-inbox { grid-column: span 12; background: linear-gradient(135deg, rgba(16,185,129,.10), rgba(107,140,255,.05)); border-color: #1f3a30; }
+      @media (max-width: 860px) { .b-gap, .b-price, .b-verdict, .b-sent { grid-column: span 12; } }
+      .b-verdict .ac-vk { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #10b981; }
+      .b-verdict h4 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 26px; color: #fff; margin: 10px 0 10px; text-transform: uppercase; letter-spacing: -.01em; }
+      .b-verdict p { color: #c8c8c8; font-size: 15.5px; line-height: 1.6; margin: 0; }
+      .ac-hook { margin-top: 14px !important; padding-top: 14px; border-top: 1px solid #1f3a30; color: #e6e6e6 !important; font-size: 16px !important; }
+
+      /* inbox / funnel card */
+      .b-inbox h5 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 21px; color: #fff; margin: 0 0 8px; }
+      .ac-inbox-sub { color: #a8a8a8; font-size: 14.5px; margin: 0 0 14px; }
+      .ac-inbox-list { margin: 0 0 16px; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; }
+      @media (max-width: 720px) { .ac-inbox-list { grid-template-columns: 1fr; } }
+      .ac-inbox-list li { color: #d8d8d8; font-size: 14.5px; line-height: 1.5; padding-left: 24px; position: relative; }
+      .ac-inbox-list li::before { content: '✓'; position: absolute; left: 0; color: #10b981; font-weight: 700; }
+      .ac-inbox-svc { margin: 4px 0 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+      .ac-inbox-svc .lbl { font-family: 'Orbitron', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #8a8a8a; }
+      .ac-inbox-ctas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+      .ac-inbox-cta { text-decoration: none; display: inline-block; }
 
       /* our read (natural-language analysis) */
       .ac-analysis { margin-top: 22px; background: linear-gradient(180deg, rgba(16,185,129,.07), rgba(16,185,129,.015)); border: 1px solid #1f3a30; border-radius: 10px; padding: 26px 28px; }
@@ -211,34 +232,6 @@
       .ac-gradebadge.low { border-color: #ef4444; background: rgba(239,68,68,.07); }
       .ac-gradebadge.low b { color: #ef4444; }
       @media (max-width: 620px) { .ac-headright { margin-left: 0; width: 100%; justify-content: space-between; } }
-
-      /* compare */
-      .ac-cmp { margin-top: 22px; background: #0c0c0c; border: 1px solid #292929; border-radius: 10px; padding: 24px; }
-      .ac-cmp h5 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #10b981; margin: 0 0 6px; }
-      .ac-cmp-sub { color: #8a8a8a; font-size: 13.5px; margin: 0 0 16px; }
-      .ac-cmp-form { display: flex; gap: 10px; flex-wrap: wrap; }
-      .ac-cmp-form .ac-input { flex: 1 1 240px; padding: 13px 15px; font-size: 15px; }
-      .ac-cmp-form .ac-submit { padding: 13px 24px; font-size: 15px; }
-      .ac-cmp-result { margin-top: 8px; }
-      .ac-cmp-head { display: flex; justify-content: space-between; gap: 12px; margin: 16px 0 14px; }
-      .ac-cmp-tok { display: flex; align-items: center; gap: 10px; }
-      .ac-cmp-tok img { width: 26px; height: 26px; border-radius: 50%; }
-      .ac-cmp-tok .nm { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 16px; color: #fff; }
-      .ac-cmp-tok .gr { font-family: 'Orbitron', monospace; font-size: 12px; padding: 3px 8px; border-radius: 4px; border: 1px solid #2a2a2a; }
-      .ac-cmp-tok .gr.g { color: #10b981; border-color: #1f3a30; }
-      .ac-cmp-tok .gr.m { color: #d9a441; border-color: #4a3a1c; }
-      .ac-cmp-tok .gr.l { color: #ef4444; border-color: #43201f; }
-      .ac-cmp-row { margin-bottom: 14px; }
-      .ac-cmp-row .lbl { font-family: 'Orbitron', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #8a8a8a; margin-bottom: 7px; }
-      .ac-cmp-track { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-      .ac-cmp-track .bar { flex: 1; height: 12px; background: #1a1a1a; border-radius: 6px; overflow: hidden; }
-      .ac-cmp-track .bar > span { display: block; height: 100%; border-radius: 6px; transition: width .6s cubic-bezier(.22,1,.36,1); }
-      .ac-cmp-track .who { flex: 0 0 84px; font-size: 12px; color: #c8c8c8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .ac-cmp-track .val { flex: 0 0 34px; text-align: right; font-family: 'Orbitron', monospace; font-size: 12px; color: #fff; }
-      .ac-cmp-track.a .bar > span { background: #10b981; }
-      .ac-cmp-track.b .bar > span { background: #6b8cff; }
-      .ac-cmp-note { color: #8a8a8a; font-size: 13.5px; margin-top: 12px; line-height: 1.5; }
-      .ac-cmp-note b { color: #fff; }
 
       /* share */
       .ac-share { margin-top: 20px; text-align: center; }
@@ -378,7 +371,7 @@
                         <div class="ac-gate-head">
                             <div class="ac-vk" id="ac-t-vk">Preview</div>
                             <h4 id="ac-t-vh">—</h4>
-                            <p>Unlock the full report: the attention/adoption gap chart, the metric breakdown, and 3 specific moves to close it — sent straight to your inbox.</p>
+                            <p>There's more to this than two scores. Unlock the full report and we'll send you the complete numbers, what X is really saying about your project, our strategist's honest read — and a 3-move plan built from your data.</p>
                         </div>
                         <form class="ac-gate-form" id="ac-gate-form" autocomplete="off">
                             <input class="ac-input" id="ac-email" type="email" name="ac-email" placeholder="Work email *" autocomplete="off" required />
@@ -391,100 +384,53 @@
 
                     <!-- FULL REPORT: revealed after unlock -->
                     <div class="ac-full" id="ac-full">
-                        <div class="ac-duochart">
-                            <div class="ac-chartwrap">
+                        <!-- landscape bento dashboard: charts + verdict on-site,
+                             the substance ships in the emailed report -->
+                        <div class="ac-bento">
+                            <div class="ac-card b-gap">
                                 <div class="ac-chart-title">The gap</div>
                                 <div id="ac-chart"></div>
                             </div>
-                            <div class="ac-chartwrap" id="ac-pricewrap" style="display:none">
+                            <div class="ac-card b-price" id="ac-pricewrap" style="display:none">
                                 <div class="ac-chart-title">7-day price</div>
                                 <div id="ac-price-chart"></div>
                             </div>
-                        </div>
-
-                        <div class="ac-verdict">
-                            <div class="ac-vk" id="ac-r-vk">Verdict</div>
-                            <h4 id="ac-r-vh">—</h4>
-                            <p id="ac-r-vb">—</p>
-                        </div>
-
-                        <div class="ac-metrics">
-                            <div class="ac-mcol attention">
-                                <h5>Attention signals</h5>
-                                <div class="ac-mrow"><span>X / Twitter followers</span><b id="ac-m-fol">—</b></div>
-                                <div class="ac-mrow"><span>Verified account</span><b id="ac-m-ver">—</b></div>
-                                <div class="ac-mrow"><span>Market-cap rank</span><b id="ac-m-rank">—</b></div>
+                            <div class="ac-card b-verdict">
+                                <div class="ac-vk" id="ac-r-vk">Verdict</div>
+                                <h4 id="ac-r-vh">—</h4>
+                                <p id="ac-r-vb">—</p>
+                                <p class="ac-hook" id="ac-hook" style="display:none"></p>
                             </div>
-                            <div class="ac-mcol adoption">
-                                <h5>Adoption signals</h5>
-                                <div class="ac-mrow"><span>Market cap</span><b id="ac-m-mcap">—</b></div>
-                                <div class="ac-mrow"><span>24h volume (total)</span><b id="ac-m-vol">—</b></div>
-                                <div class="ac-mrow"><span>On-chain DEX volume</span><b id="ac-m-dexvol">—</b></div>
-                                <div class="ac-mrow"><span>Volume / market cap</span><b id="ac-m-turn">—</b></div>
-                                <div class="ac-mrow"><span>Top-100 median turnover</span><b id="ac-m-peer">—</b></div>
-                                <div class="ac-mrow"><span>24h transactions</span><b id="ac-m-txns">—</b></div>
-                                <div class="ac-mrow"><span>Liquidity</span><b id="ac-m-liq">—</b></div>
-                            </div>
-                        </div>
-
-                        <!-- SENTIMENT: full breakdown + themes + top mentions -->
-                        <div class="ac-sent ac-sent-report" id="ac-sent-full" style="display:none">
-                            <div class="ac-sent-head">
-                                <span class="ac-sent-title">Community sentiment on X</span>
-                                <span class="ac-sent-note" id="ac-sent-f-note"></span>
-                            </div>
-                            <div class="ac-sent-viz">
+                            <div class="ac-card b-sent" id="ac-sent-full" style="display:none">
+                                <div class="ac-sent-head">
+                                    <span class="ac-sent-title">Sentiment on X</span>
+                                    <span class="ac-sent-note" id="ac-sent-f-note"></span>
+                                </div>
                                 <div id="ac-sent-donut"></div>
-                                <div class="ac-sent-side">
-                                    <div class="ac-sentbar" id="ac-sent-f-bar"></div>
-                                    <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
-                                </div>
+                                <div class="ac-sentbar" id="ac-sent-f-bar"></div>
+                                <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
                             </div>
-                            <div class="ac-themes" id="ac-themes"></div>
-                            <div class="ac-mentions">
-                                <div class="ac-mcolm">
-                                    <h6 class="pos">Top positive mentions</h6>
-                                    <div id="ac-ment-pos"></div>
+                            <div class="ac-card b-inbox">
+                                <h5>📬 The full report just landed in your inbox</h5>
+                                <p class="ac-inbox-sub">This dashboard is the surface. The email has the substance:</p>
+                                <ul class="ac-inbox-list">
+                                    <li>The complete numbers — followers, real volume, turnover vs the top-100, transactions, liquidity</li>
+                                    <li>What people are actually saying about you on X: top mentions and the themes behind them</li>
+                                    <li>Our strategist's honest read of your data, in plain English</li>
+                                    <li>A 3-move action plan built from your numbers — not a template</li>
+                                </ul>
+                                <div class="ac-inbox-svc" id="ac-inbox-svc" style="display:none">
+                                    <span class="lbl">Your plan touches</span>
+                                    <span id="ac-svc-pills"></span>
                                 </div>
-                                <div class="ac-mcolm">
-                                    <h6 class="neg">Top negative mentions</h6>
-                                    <div id="ac-ment-neg"></div>
+                                <div class="ac-inbox-ctas">
+                                    <a href="contact.html" class="ac-submit ac-inbox-cta">Book a free growth session</a>
+                                    <a class="ac-share-btn" id="ac-share-x" href="#" target="_blank" rel="noopener">Share your score on X</a>
                                 </div>
+                                <div class="ac-emailed" id="ac-emailed"></div>
                             </div>
                         </div>
-
-                        <!-- OUR READ: natural-language analysis of the data -->
-                        <div class="ac-analysis" id="ac-analysis" style="display:none">
-                            <h5>Our read</h5>
-                            <div id="ac-analysis-body"></div>
-                        </div>
-
-                        <div class="ac-recs">
-                            <h5>What we'd do first</h5>
-                            <ol id="ac-rec-list"></ol>
-                        </div>
-
-                        <!-- COMPARE: run a second token through the same pipeline, side by side -->
-                        <div class="ac-cmp">
-                            <h5>How do you stack up?</h5>
-                            <p class="ac-cmp-sub">Run a competitor through the same check and see both side by side.</p>
-                            <form class="ac-cmp-form" id="ac-cmp-form" autocomplete="off">
-                                <input class="ac-input" id="ac-cmp-input" type="text" name="ac-cmp-query" placeholder="Competitor token name, symbol or contract" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                                <button class="ac-submit" id="ac-cmp-btn" type="submit">Compare</button>
-                            </form>
-                            <div class="ac-status" id="ac-cmp-status"></div>
-                            <div class="ac-cmp-result" id="ac-cmp-result"></div>
-                        </div>
-
-                        <div class="ac-emailed" id="ac-emailed"></div>
-                        <div class="ac-share">
-                            <a class="ac-share-btn" id="ac-share-x" href="#" target="_blank" rel="noopener">Share your score on X</a>
-                        </div>
-
-                        <div class="ac-cta">
-                            <a href="contact.html" class="lp-cta">Close this gap with Wevolv3</a>
-                        </div>
-                        <p class="ac-disclaimer">Directional heuristic on public data (GeckoTerminal, DexScreener, X). Not financial or investment advice.</p>
+                        <p class="ac-disclaimer">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial or investment advice.</p>
                     </div>
                 </div>
             </div>
@@ -770,161 +716,45 @@
           if (noteId) document.getElementById(noteId).textContent = sen.total ? sen.total + ' recent mentions' : '';
         }
 
-        function tweetCard(t) {
-          var eng = (t.likes || 0) + (t.rts || 0);
-          var meta = '<span class="meta"><b>@' + escHtml(t.author || 'user') + '</b> · ' + fmtNum(t.likes) + ' likes · ' + fmtNum(t.rts) + ' RTs</span>';
-          var inner = '<p>' + escHtml(t.text) + '</p>' + meta;
-          return t.url ? '<a class="ac-tweet" href="' + escHtml(t.url) + '" target="_blank" rel="noopener nofollow">' + inner + '</a>'
-                       : '<div class="ac-tweet">' + inner + '</div>';
-        }
-
-        function renderSentimentFull(detail, sen) {
+        // sentiment card: donut + bar only — mentions and themes ship in the email
+        function renderSentimentFull(sen) {
           var box = document.getElementById('ac-sent-full');
           if (!sen || !sen.total) { box.style.display = 'none'; return; }
           box.style.display = '';
           renderSentBar('ac-sent-f-bar', 'ac-sent-f-legend', 'ac-sent-f-note', sen);
           renderSentDonut(sen);
-          var d = detail || {};
-          var themes = '';
-          if ((d.themesUp || []).length) themes += '<div class="ac-theme up"><h6>What drives positive</h6>' + d.themesUp.map(function (t) { return '<span class="tag">' + escHtml(t) + '</span>'; }).join('') + '</div>';
-          if ((d.themesDown || []).length) themes += '<div class="ac-theme down"><h6>What drives negative</h6>' + d.themesDown.map(function (t) { return '<span class="tag">' + escHtml(t) + '</span>'; }).join('') + '</div>';
-          document.getElementById('ac-themes').innerHTML = themes;
-          var top = d.top || {};
-          var pos = (top.positive || []), neg = (top.negative || []);
-          document.getElementById('ac-ment-pos').innerHTML = pos.length ? pos.map(tweetCard).join('') : '<div class="empty">No standout positive mentions in the window.</div>';
-          document.getElementById('ac-ment-neg').innerHTML = neg.length ? neg.map(tweetCard).join('') : '<div class="empty">No standout negative mentions — a healthy sign.</div>';
-        }
-
-        // ---- compare with another token (reuses the teaser endpoint) ----
-        var lastReport = null; // the unlocked token's data, side A of the comparison
-
-        function gradeChip(grade) {
-          if (!grade || !grade.letter) return '';
-          var L = grade.letter;
-          var cls = (L === 'C' || L === 'D') ? 'l' : (L === 'B' || L === 'C+') ? 'm' : 'g';
-          return '<span class="gr ' + cls + '">' + escHtml(L) + '</span>';
-        }
-
-        function cmpTrack(cls, who, val) {
-          var v = val == null ? 0 : val;
-          return '<div class="ac-cmp-track ' + cls + '"><span class="who">' + escHtml(who) + '</span>' +
-            '<span class="bar"><span style="width:' + v + '%"></span></span>' +
-            '<span class="val">' + (val == null ? '—' : val) + '</span></div>';
-        }
-
-        function renderCompare(a, b) {
-          var an = a.token.symbol || a.token.name, bn = b.token.symbol || b.token.name;
-          var out = [];
-          out.push('<div class="ac-cmp-head">');
-          out.push('<div class="ac-cmp-tok">' + (a.token.image ? '<img src="' + escHtml(a.token.image) + '" alt=""/>' : '') + '<span class="nm">' + escHtml(an) + '</span>' + gradeChip(a.grade) + '</div>');
-          out.push('<div class="ac-cmp-tok">' + gradeChip(b.grade) + '<span class="nm">' + escHtml(bn) + '</span>' + (b.token.image ? '<img src="' + escHtml(b.token.image) + '" alt=""/>' : '') + '</div>');
-          out.push('</div>');
-          out.push('<div id="ac-cmp-chart"></div>');
-          var note = '';
-          var dAtt = (a.scores.attention != null && b.scores.attention != null) ? a.scores.attention - b.scores.attention : null;
-          var dAdo = (a.scores.adoption != null && b.scores.adoption != null) ? a.scores.adoption - b.scores.adoption : null;
-          if (dAtt != null && dAdo != null) {
-            if (dAtt >= 0 && dAdo >= 0) note = '<b>' + escHtml(an) + '</b> leads on both fronts. The next battle is keeping it that way as ' + escHtml(bn) + ' spends to catch up.';
-            else if (dAtt < 0 && dAdo < 0) note = '<b>' + escHtml(bn) + '</b> leads on both fronts right now — closing that gap is exactly the kind of work a growth partner exists for.';
-            else if (dAtt >= 0) note = '<b>' + escHtml(an) + '</b> wins attention but <b>' + escHtml(bn) + '</b> wins real usage. Convert your bigger audience before they out-build you.';
-            else note = '<b>' + escHtml(an) + '</b> has stronger real usage, but <b>' + escHtml(bn) + '</b> owns the narrative. Visibility is the lever here.';
-          }
-          if (note) out.push('<div class="ac-cmp-note">' + note + '</div>');
-          document.getElementById('ac-cmp-result').innerHTML = out.join('');
-          if (window.ApexCharts) {
-            mountChart('#ac-cmp-chart', {
-              chart: { type: 'bar', height: 230, fontFamily: CHART_FONT, toolbar: { show: false }, background: 'transparent', animations: { speed: 900, easing: 'easeoutcubic' } },
-              series: [
-                { name: an, data: [a.scores.attention || 0, a.scores.adoption || 0] },
-                { name: bn, data: [b.scores.attention || 0, b.scores.adoption || 0] }
-              ],
-              colors: ['#10b981', '#6b8cff'],
-              plotOptions: { bar: { horizontal: true, borderRadius: 6, barHeight: '62%', dataLabels: { position: 'bottom' } } },
-              fill: { opacity: 0.95 },
-              dataLabels: { enabled: true, textAnchor: 'start', offsetX: 8, style: { fontSize: '12px', fontWeight: 700, colors: ['#fff'] } },
-              xaxis: { categories: ['Attention', 'Adoption'], max: 100, labels: { style: { colors: '#666', fontSize: '11px' } }, axisBorder: { show: false }, axisTicks: { show: false } },
-              yaxis: { labels: { style: { colors: '#c8c8c8', fontSize: '12px', fontFamily: "'Orbitron', monospace" } } },
-              grid: { borderColor: '#222' },
-              legend: { position: 'top', horizontalAlign: 'left', labels: { colors: '#c8c8c8' }, markers: { size: 6 } },
-              tooltip: { theme: 'dark', y: { formatter: function (v) { return v + ' / 100'; } } }
-            });
-          } else {
-            // no-chart fallback: plain paired tracks
-            var el = document.getElementById('ac-cmp-chart');
-            el.innerHTML = '<div class="ac-cmp-row"><div class="lbl">Attention</div>' + cmpTrack('a', an, a.scores.attention) + cmpTrack('b', bn, b.scores.attention) + '</div>' +
-              '<div class="ac-cmp-row"><div class="lbl">Adoption</div>' + cmpTrack('a', an, a.scores.adoption) + cmpTrack('b', bn, b.scores.adoption) + '</div>';
-          }
-        }
-
-        function runCompare(query) {
-          if (!query || !lastReport) return;
-          var st = document.getElementById('ac-cmp-status');
-          var btn = document.getElementById('ac-cmp-btn');
-          setStatusOn(st, 'Running "' + query + '" through the same check…', false);
-          btn.disabled = true;
-          document.getElementById('ac-cmp-result').innerHTML = '';
-          fetch('/.netlify/functions/adoptionDiagnostic', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query: query })
-          })
-            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-            .then(function (res) {
-              btn.disabled = false;
-              if (!res.ok || !res.j.ok) { setStatusOn(st, res.j && res.j.error ? res.j.error : 'Could not check that token. Try another.', true); return; }
-              setStatusOn(st, '', false);
-              renderCompare(lastReport, res.j);
-              if (typeof window.wevolv3Track === 'function') window.wevolv3Track('adoption_check_compare', { token: currentQuery, vs: (res.j.token || {}).symbol });
-            })
-            .catch(function () { btn.disabled = false; setStatusOn(st, 'Network error. Please try again.', true); });
         }
 
         function renderFull(data) {
-          var s = data.scores, v = data.verdict, m = data.metrics, hasAtt = data.attentionAvailable && s.attention != null;
-          lastReport = data;
+          var s = data.scores, v = data.verdict, hasAtt = data.attentionAvailable && s.attention != null;
           // reveal BEFORE mounting charts (ApexCharts needs a measurable container)
           gate.style.display = 'none';
           full.classList.add('show');
           renderChart(s, hasAtt);
+          renderPriceChart(data.token);
+          renderSentimentFull(data.sentiment);
+
           document.getElementById('ac-r-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
           document.getElementById('ac-r-vh').textContent = v.headline;
           document.getElementById('ac-r-vb').textContent = v.body;
-          document.getElementById('ac-m-fol').textContent = fmtNum(m.followers);
-          document.getElementById('ac-m-ver').textContent = m.xVerified == null ? '—' : (m.xVerified ? 'Yes' : 'No');
-          document.getElementById('ac-m-rank').textContent = m.marketCapRank != null ? '#' + m.marketCapRank : '—';
-          document.getElementById('ac-m-mcap').textContent = fmtUsd(m.marketCap);
-          document.getElementById('ac-m-vol').textContent = fmtUsd(m.volume24h);
-          document.getElementById('ac-m-dexvol').textContent = fmtUsd(m.dexVolume24h);
-          document.getElementById('ac-m-turn').textContent = m.turnover != null ? (m.turnover * 100).toFixed(1) + '%' : '—';
-          var peerEl = document.getElementById('ac-m-peer');
-          if (m.peerTurnover != null) {
-            var ratio = m.turnover != null && m.peerTurnover > 0 ? m.turnover / m.peerTurnover : null;
-            peerEl.textContent = (m.peerTurnover * 100).toFixed(1) + '%' + (ratio != null ? ' (yours ' + (ratio >= 1 ? ratio.toFixed(1) : ratio.toFixed(2)) + '×)' : '');
-          } else { peerEl.textContent = '—'; }
-          document.getElementById('ac-m-txns').textContent = fmtNum(m.txns24h);
-          document.getElementById('ac-m-liq').textContent = fmtUsd(m.liquidity);
 
-          // natural-language analysis ("Our read")
-          var an = document.getElementById('ac-analysis');
-          var anBody = document.getElementById('ac-analysis-body');
-          if (data.analysis) {
-            anBody.innerHTML = String(data.analysis).split(/\n\n+/).map(function (p) { return '<p>' + escHtml(p) + '</p>'; }).join('');
-            an.style.display = '';
-          } else { an.style.display = 'none'; }
+          // the curiosity hook: one data-specific line from the strategist
+          var hook = document.getElementById('ac-hook');
+          if (data.hook) { hook.textContent = '“' + data.hook + '”'; hook.style.display = ''; }
+          else { hook.style.display = 'none'; }
 
-          // actions, each tagged with the Wevolv3 service that executes it
-          var ol = document.getElementById('ac-rec-list');
-          ol.innerHTML = (data.recommendations || []).map(function (r) {
-            var text = typeof r === 'string' ? r : (r.text || '');
-            var pill = (r && r.service && r.service.url)
-              ? '<br/><a class="ac-svc" href="' + escHtml(r.service.url) + '" target="_blank" rel="noopener">' + escHtml(r.service.name) + ' →</a>'
-              : '';
-            return '<li>' + escHtml(text) + pill + '</li>';
-          }).join('');
+          // which Wevolv3 services the emailed plan touches (names only — the plays are in the email)
+          var svcWrap = document.getElementById('ac-inbox-svc');
+          var pills = document.getElementById('ac-svc-pills');
+          if ((data.services || []).length) {
+            pills.innerHTML = data.services.map(function (sv) {
+              return '<a class="ac-svc" href="' + escHtml(sv.url) + '" target="_blank" rel="noopener">' + escHtml(sv.name) + ' →</a>';
+            }).join(' ');
+            svcWrap.style.display = '';
+          } else { svcWrap.style.display = 'none'; }
 
-          renderPriceChart(data.token);
-          renderSentimentFull(data.sentimentDetail, data.sentiment);
           setShareLink(data.token, data.scores, data.grade, hasAtt);
-          document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Full report sent to your inbox' : '';
+          document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Sent — give it a minute and check spam if it\'s shy' : '';
           full.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -985,10 +815,6 @@
         gateForm.addEventListener('submit', function (e) {
           e.preventDefault();
           unlock(document.getElementById('ac-email').value.trim(), document.getElementById('ac-tg').value.trim());
-        });
-        document.getElementById('ac-cmp-form').addEventListener('submit', function (e) {
-          e.preventDefault();
-          runCompare(document.getElementById('ac-cmp-input').value.trim());
         });
         document.getElementById('ac-share-x').addEventListener('click', function () {
           if (typeof window.wevolv3Track === 'function') window.wevolv3Track('adoption_check_share', { token: currentQuery });

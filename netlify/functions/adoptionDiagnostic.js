@@ -467,17 +467,19 @@ async function buildAnalysis(ctx) {
     (ctx.sentiment ? "SENTIMENT (of people talking about it on X): " + ctx.sentiment.positivePct + "% positive, " + ctx.sentiment.neutralPct + "% neutral, " + ctx.sentiment.negativePct + "% negative" + (ctx.themesDown && ctx.themesDown.length ? "; negative themes: " + ctx.themesDown.join(", ") : "") + ".\n" : "") +
     "\nWEVOLV3 SERVICES (use these exact keys): " + catalog + ".\n\n" +
     "Return ONLY JSON with this shape:\n" +
-    '{"analysis":"...", "actions":[{"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}]}\n' +
-    "analysis: 2 short paragraphs (separated by \\n\\n, 120 words total max) written in plain, direct second person to the team. Paragraph 1: what the data actually says about them — cite 2-3 specific numbers and what they mean together. Paragraph 2: the single most important thing to fix first and why now. Sound like a sharp human strategist, not a report generator. No headings, no bullets, no hype words.\n" +
+    '{"hook":"...", "analysis":"...", "actions":[{"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}]}\n' +
+    "hook: 1-2 sentences (max 40 words) shown on the website. Name the single most interesting tension in their numbers, in plain conversational English, so they want to open the full report. No sales pitch, just the itch.\n" +
+    "analysis: 3 short paragraphs (separated by \\n\\n, 180 words total max) for the emailed report, written like a sharp, friendly strategist talking to a founder over coffee — contractions welcome, zero jargon, zero hype words. Paragraph 1: here's what we see — cite 2-3 numbers and translate them into what's actually happening. Paragraph 2: here's what it's costing you (or what you're sitting on) and why the timing matters. Paragraph 3: here's how we'd attack it and what having a growth partner on this specifically unlocks — confident, not salesy.\n" +
     "actions: exactly 3, each max 22 words, imperative, each grounded in a cited number, each mapped to the ONE service key that would execute it. Use 3 different services.";
 
   try {
-    const txt = await llmText(prompt, 900, 0.6);
+    const txt = await llmText(prompt, 1100, 0.65);
     if (txt) {
       const obj = JSON.parse((txt.match(/\{[\s\S]*\}/) || [txt])[0]);
       const actions = Array.isArray(obj.actions) ? obj.actions.slice(0, 3) : [];
       if (obj.analysis && actions.length) {
         return {
+          hook: String(obj.hook || "").trim() || null,
           analysis: String(obj.analysis).trim(),
           items: actions.map((a) => ({ text: String(a.text || a).trim(), service: svc(String(a.service || "").toLowerCase()) })),
           source: "ai",
@@ -490,30 +492,33 @@ async function buildAnalysis(ctx) {
   const gap = ctx.gap;
   const fols = ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") + " X followers" : "your social reach";
   const turn = ctx.turnover != null ? (ctx.turnover * 100).toFixed(1) + "% daily turnover" : "your trading activity";
-  let analysis, items;
+  let hook, analysis, items;
   if (gap != null && gap >= 25) {
-    analysis = "The market is watching you — " + fols + " and an attention score of " + ctx.attention + " prove that — but " + turn + " says far fewer people actually transact. That mismatch is the classic vanity-metrics trap: reach that never converts into usage.\n\nThe first thing to fix is the funnel between social interest and the first on-chain action. Until that path converts, more visibility just makes the leak bigger.";
+    hook = "You've built a real audience — " + fols + " — but the on-chain numbers say most of them are watching, not using. That gap is the whole story here.";
+    analysis = "Here's what we see: " + fols + " and an attention score of " + ctx.attention + ", against " + turn + " on-chain. In plain terms, you've done the hard part — people know you — but only a sliver of that audience ever transacts.\n\nThat's expensive to leave alone. Every week this gap stays open, you're paying (in content, community time and ad spend) to entertain people who never become users. And audiences cool off fast in this market.\n\nIf we were working on this together, we'd start at the exact point where interest dies: the first on-chain action. Tighten that path, give the audience a reason to act this week, and the same attention you already own starts compounding instead of leaking.";
     items = [
       { text: "Run KOL campaigns tied to one trackable first transaction, not impressions.", service: svc("kol") },
       { text: "Give your " + fols + " a recurring on-chain reason to act: quests, incentives, utility drops.", service: svc("community") },
       { text: "Retarget engaged social audiences with on-chain placements that deep-link to the swap.", service: svc("ads") },
     ];
   } else if (gap != null && gap <= -15) {
-    analysis = "Your on-chain numbers (" + turn + ", adoption " + ctx.adoption + "/100) are stronger than your visibility (attention " + (ctx.attention ?? "n/a") + "/100). People who find you, use you — the market just hasn't found you at scale yet.\n\nThat is the cheapest growth problem to have. Amplifying proof that already exists converts far better than manufacturing hype, and it should happen before a louder competitor claims your narrative.";
+    hook = "Your on-chain usage is stronger than your visibility — people who find you, use you. The market just hasn't found you at scale yet.";
+    analysis = "Here's what we see: adoption at " + ctx.adoption + "/100 with " + turn + ", against attention at " + (ctx.attention ?? "n/a") + "/100. People who discover you actually stick and transact — that's the hard part, and you've already done it.\n\nWhat you're sitting on is the cheapest growth problem in crypto: proof without an audience. Amplifying something that already works converts far better than manufacturing hype — but the window matters, because narratives get claimed by whoever tells them first.\n\nWorking together, we'd package the usage you already have into public proof — media, creators, the channels where researchers actually look — so the market's picture of you catches up with reality.";
     items = [
       { text: "Turn real usage into public proof: case studies and on-chain stats pushed through crypto media.", service: svc("pr") },
       { text: "Put working product in front of new audiences with KOLs who demo, not shill.", service: svc("kol") },
       { text: "Seed organic conversation on Reddit and trending channels where researchers actually look.", service: svc("growth") },
     ];
   } else {
-    analysis = "Attention (" + (ctx.attention ?? "n/a") + "/100) and adoption (" + ctx.adoption + "/100) are moving together, which is the healthy pattern — interest is converting into " + turn + ". Nothing is broken; the question is which side compounds faster from here.\n\nThe risk at this stage is plateau: growth that stays proportional instead of accelerating. Pick one primary metric and force every campaign to answer to it.";
+    hook = "Attention and adoption are moving together — the healthy pattern. The real question now is which one you can make compound faster.";
+    analysis = "Here's what we see: attention at " + (ctx.attention ?? "n/a") + "/100 and adoption at " + ctx.adoption + "/100, with interest converting into " + turn + ". Nothing is broken — interest and usage are feeding each other, which is exactly what you want.\n\nThe risk at this stage isn't failure, it's plateau: growth that stays proportional instead of accelerating. Balanced projects tend to spread effort evenly and end up compounding nothing.\n\nTogether we'd pick the one metric that matters most for you right now — holders, volume or active wallets — and stack campaigns so every push lands on a warm audience instead of starting cold each time.";
     items = [
       { text: "Set one primary growth metric (holders, volume or active wallets) and align every campaign to it.", service: svc("launch") },
       { text: "Layer KOL and PR in the same window so attention spikes land on a warm audience.", service: svc("kol") },
       { text: "Strengthen community programs so each new wave of attention has somewhere to stay.", service: svc("community") },
     ];
   }
-  return { analysis, items, source: "rules" };
+  return { hook, analysis, items, source: "rules" };
 }
 
 // ---- lead capture + email --------------------------------------------------
@@ -569,8 +574,16 @@ function sentimentEmailBlock(sentiment) {
   </div>`;
 }
 
-function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
+// full emailed report: the site shows the dashboard, THIS carries the substance
+function reportEmailHtml(base, recs) {
+  const token = base.token, scores = base.scores, verdictObj = base.verdict;
+  const sentiment = base.sentiment, grade = base.grade, m = base.metrics || {};
+  const detail = base.sentimentDetail || {};
   const chartUrl = quickChartUrl(scores);
+  const fmtN = (v) => (v == null ? "—" : Number(v).toLocaleString("en-US"));
+  const fmtU = (v) => (v == null || !v ? "—" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
+  const fmtPct = (v) => (v == null ? "—" : (v * 100).toFixed(1) + "%");
+
   const rec = recs.items
     .map((r) => {
       const text = typeof r === "string" ? r : r.text;
@@ -578,10 +591,48 @@ function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
       return `<li style="margin:0 0 12px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(text)}${service}</li>`;
     })
     .join("");
+
   const analysisBlock = recs.analysis
     ? `<div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
         <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Our read</div>
         ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#d8d8d8;font-size:15px;line-height:1.65;margin:0 0 12px">${esc(p)}</p>`).join("")}
+      </div></div>`
+    : "";
+
+  const row = (label, value) => `<tr>
+    <td style="padding:9px 0;border-bottom:1px solid #1e1e1e;color:#8a8a8a;font-size:13px">${label}</td>
+    <td align="right" style="padding:9px 0;border-bottom:1px solid #1e1e1e;color:#ffffff;font-size:13px;font-weight:bold">${value}</td>
+  </tr>`;
+  const peerRatio = m.turnover != null && m.peerTurnover ? " (" + (m.turnover / m.peerTurnover).toFixed(1) + "&times; the top-100 median)" : "";
+  const metricsBlock = `
+  <div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
+    <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">The full numbers</div>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      ${row("X / Twitter followers", fmtN(m.followers) + (m.xVerified ? " &#10004; verified" : ""))}
+      ${row("Market cap", fmtU(m.marketCap) + (m.marketCapRank ? " &middot; rank #" + m.marketCapRank : ""))}
+      ${row("24h volume (total)", fmtU(m.volume24h))}
+      ${row("On-chain DEX volume", fmtU(m.dexVolume24h))}
+      ${row("Volume / market cap", fmtPct(m.turnover) + peerRatio)}
+      ${row("Top-100 median turnover", fmtPct(m.peerTurnover))}
+      ${row("24h on-chain transactions", fmtN(m.txns24h))}
+      ${row("Pooled liquidity", fmtU(m.liquidity))}
+    </table>
+  </div></div>`;
+
+  const themeChips = (arr, color) => (arr || []).map((t) =>
+    `<span style="display:inline-block;border:1px solid ${color};color:${color};border-radius:20px;padding:3px 10px;font-size:12px;margin:0 6px 6px 0">${esc(t)}</span>`).join("");
+  const quote = (t, color) => `
+    <div style="border-left:3px solid ${color};padding:8px 12px;margin:0 0 10px;background:#101010;border-radius:0 6px 6px 0">
+      <div style="color:#dcdcdc;font-size:13px;line-height:1.5">${esc(t.text)}</div>
+      <div style="color:#7a7a7a;font-size:11px;margin-top:5px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
+    </div>`;
+  const mentionsBlock = (detail.top && ((detail.top.positive || []).length || (detail.top.negative || []).length))
+    ? `<div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
+        <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">What people are saying on X</div>
+        ${(detail.themesUp || []).length ? `<div style="margin-bottom:4px">${themeChips(detail.themesUp, "#10b981")}</div>` : ""}
+        ${(detail.themesDown || []).length ? `<div style="margin-bottom:10px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
+        ${(detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981")).join("")}
+        ${(detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444")).join("")}
       </div></div>`
     : "";
   const gapLabel = scores.gap != null ? `Gap: ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
@@ -624,13 +675,16 @@ function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
     </div>
   </div>
   ${analysisBlock}
+  ${metricsBlock}
   ${sentimentEmailBlock(sentiment)}
+  ${mentionsBlock}
   <div style="padding:8px 28px 20px">
-    <h3 style="font-size:16px;color:#10b981">What we would do first</h3>
+    <h3 style="font-size:16px;color:#10b981">Your 3-move plan</h3>
     <ol style="margin:12px 0 0;background:#ffffff;border-radius:8px;padding:18px 18px 18px 38px">${rec}</ol>
   </div>
   <div style="padding:8px 28px 32px;text-align:center">
-    <a href="https://wevolv3.com/contact.html" style="display:inline-block;background:#10b981;color:#04120c;font-weight:bold;text-decoration:none;padding:14px 28px;border-radius:8px">Book a growth session</a>
+    <p style="color:#c8c8c8;font-size:14px;line-height:1.6;margin:0 0 16px">Every move above is something our team runs end-to-end for projects like ${esc(token.name)}.<br/>30 minutes with a strategist and you'll know exactly what closing this gap is worth.</p>
+    <a href="https://wevolv3.com/contact.html" style="display:inline-block;background:#10b981;color:#04120c;font-weight:bold;text-decoration:none;padding:14px 28px;border-radius:8px">Book a free growth session</a>
     <p style="color:#666666;font-size:11px;margin-top:16px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
   </div>
 </div>`;
@@ -655,7 +709,7 @@ function quickChartUrl(scores) {
   return "https://quickchart.io/chart?bkg=%230a0a0a&w=544&h=300&c=" + encodeURIComponent(JSON.stringify(cfg));
 }
 
-async function sendResend(lead, token, scores, verdictObj, recs, sentiment, grade) {
+async function sendResend(lead, base, recs) {
   if (!RESEND_KEY) return { sent: false, reason: "no-key" };
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -664,8 +718,8 @@ async function sendResend(lead, token, scores, verdictObj, recs, sentiment, grad
       body: JSON.stringify({
         from: EMAIL_FROM,
         to: [lead.email],
-        subject: "Your Adoption Report: " + token.name + " (" + token.symbol + ")",
-        html: reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade),
+        subject: "Your Adoption Report: " + base.token.name + " (" + base.token.symbol + ")",
+        html: reportEmailHtml(base, recs),
       }),
     });
     return { sent: res.ok };
@@ -835,11 +889,20 @@ export const handler = async (event) => {
       });
     }
 
-    // FULL REPORT (gate passed): recommendations + capture + email
+    // FULL REPORT (gate passed): analysis + capture + email.
+    // The site gets the dashboard essentials + a curiosity hook; the FULL
+    // breakdown (metrics table, mentions, themes, narrative, action plan)
+    // ships only in the emailed report — that's the funnel.
     const lead = { email: String(unlock.email).trim(), telegram: String(unlock.telegram).trim() };
     const recs = await buildAnalysis(base.rawForRecs);
     await notifyTelegram(lead, base.token, base.scores, base.verdict);
-    const email = await sendResend(lead, base.token, base.scores, base.verdict, recs, base.sentiment, base.grade);
+    const email = await sendResend(lead, base, recs);
+
+    // unique services touched by the plan (names only — the plays are in the email)
+    const seen = new Set();
+    const services = recs.items
+      .map((r) => r.service)
+      .filter((s) => s && !seen.has(s.key) && seen.add(s.key));
 
     return json(200, {
       ok: true, gated: false,
@@ -848,13 +911,10 @@ export const handler = async (event) => {
       attentionAvailable: base.attentionAvailable,
       verdict: base.verdict,
       grade: base.grade,
-      metrics: base.metrics,
       sentiment: base.sentiment,
-      sentimentDetail: base.sentimentDetail,
-      analysis: recs.analysis,
-      recommendations: recs.items,
+      hook: recs.hook || null,
+      services,
       emailed: email.sent === true,
-      chartUrl: quickChartUrl(base.scores),
     });
   } catch (err) {
     const stale = cacheStale(cacheKey);
