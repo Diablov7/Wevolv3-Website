@@ -1,0 +1,48 @@
+name: Sync Crypto News Today
+
+on:
+  workflow_dispatch:        # run manually anytime
+  schedule:
+    - cron: '30 12 * * *'   # ~30min after the daily ~12 UTC publish
+    - cron: '30 15 * * *'   # safety re-sync (late/retried publishes)
+
+# Let the built-in GITHUB_TOKEN push commits (no PAT / no external secret needed).
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-news
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Pull published days from ContentStudio + regenerate
+        run: |
+          node sync-news.js
+          node generate-news.js
+          node generate-sitemap.js || echo "sitemap generation skipped"
+
+      - name: Commit & push if anything changed
+        run: |
+          git config user.name "wevolv3-bot"
+          git config user.email "bot@wevolv3.com"
+          git add data/crypto-news-today crypto-news-today sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(news): sync Crypto News Today ($(date -u +%Y-%m-%d))"
+            git push
+          fi
