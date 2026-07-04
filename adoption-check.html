@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <title>Free Adoption Check: Is Your Crypto Getting Used or Just Watched? | Wevolv3</title>
+    <meta name="description" content="Free tool. Paste a token name or contract and see the gap between attention (people watching) and adoption (people actually transacting), scored on public on-chain data.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="google-site-verification" content="3efa773444cc309a" />
+    <link rel="canonical" href="https://wevolv3.com/adoption-check">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wevolv3.com/adoption-check">
+    <meta property="og:title" content="Free Adoption Check for Crypto Projects | Wevolv3">
+    <meta property="og:description" content="See the gap between attention and real adoption for any token, scored on free public on-chain data.">
+    <meta property="og:image" content="https://wevolv3.com/images/og-image.png">
+    <meta property="og:site_name" content="Wevolv3">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Adoption Check for Crypto Projects | Wevolv3">
+    <meta name="twitter:description" content="Attention is easy. Adoption is what keeps a project alive. Check the gap for any token, free.">
+    <meta name="twitter:image" content="https://wevolv3.com/images/og-image.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Wevolv3 Adoption Check",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://wevolv3.com/adoption-check",
+      "provider": { "@type": "Organization", "name": "Wevolv3", "url": "https://wevolv3.com" },
+      "description": "A free tool that scores the gap between attention and adoption for any crypto token, using public on-chain and market data."
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is the difference between attention and adoption?", "acceptedAnswer": { "@type": "Answer", "text": "Attention is how many people are watching a project: watchlist users, sentiment and market visibility. Adoption is how many people actually use or trade it: real 24h volume relative to market cap, on-chain transaction count and liquidity depth. A project can have huge attention and almost no adoption, which is the trap this tool surfaces." } },
+        { "@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": { "@type": "Answer", "text": "Public, free sources: CoinGecko for market and community data, and DexScreener for on-chain liquidity and transaction counts. No private data and no paid APIs. The scores are a transparent, directional heuristic, not financial advice." } },
+        { "@type": "Question", "name": "Is this financial or investment advice?", "acceptedAnswer": { "@type": "Answer", "text": "No. The Adoption Check is a marketing diagnostic for founders and teams. It does not tell you whether to buy, sell or hold anything. It only shows where a project sits on the attention-versus-adoption axis." } },
+        { "@type": "Question", "name": "Can I check a brand-new token that isn't on CoinGecko?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Paste the contract address and the tool reads on-chain activity from DexScreener across most EVM chains and Solana. Attention signals may be limited for very new tokens, which the report makes clear." } },
+        { "@type": "Question", "name": "How is the gap score calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Attention combines watchlist users, sentiment and market-cap rank. Adoption combines volume-to-market-cap turnover, 24h transaction count and liquidity depth. The gap is attention minus adoption: a high positive gap means lots of interest but weak real usage." } }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wevolv3.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Adoption Check", "item": "https://wevolv3.com/adoption-check" }
+      ]
+    }
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E7E4GJ0QP9');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="images/favicon.png" rel="shortcut icon" type="image/png" />
+    <link href="images/favicon.png" rel="apple-touch-icon" />
+    <link href="css/landing.css?v=2" rel="stylesheet" type="text/css" />
+
+    <style>
+      .ac-tool { max-width: 760px; margin: 34px auto 0; }
+      .ac-form { display: flex; gap: 12px; flex-wrap: wrap; }
+      .ac-input {
+        flex: 1 1 320px; min-width: 0;
+        background: #0c0c0c; border: 1px solid #292929; border-radius: 6px;
+        color: #fff; font-family: 'Clashdisplay', sans-serif; font-size: 17px; font-weight: 300;
+        padding: 16px 18px; outline: none; transition: border-color .15s ease;
+      }
+      .ac-input::placeholder { color: #6b6b6b; }
+      .ac-input:focus { border-color: #10b981; }
+      .ac-submit {
+        flex: 0 0 auto; border: 0; cursor: pointer;
+        background: #10b981; color: #04120c; font-family: 'Clashdisplay', sans-serif; font-weight: 700;
+        font-size: 16px; padding: 16px 30px; border-radius: 6px; transition: transform .15s ease, opacity .15s ease;
+      }
+      .ac-submit:hover { transform: translateY(-1px); }
+      .ac-submit:disabled { opacity: .55; cursor: default; transform: none; }
+      .ac-hint { margin-top: 12px; color: #8a8a8a; font-size: 13px; }
+      .ac-chips { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+      .ac-chip {
+        background: #191919; border: 1px solid #292929; color: #c8c8c8; cursor: pointer;
+        font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+        padding: 7px 12px; border-radius: 4px; transition: border-color .15s ease, color .15s ease;
+      }
+      .ac-chip:hover { border-color: #10b981; color: #fff; }
+
+      .ac-status { margin-top: 26px; color: #c8c8c8; font-size: 15px; display: none; align-items: center; gap: 10px; }
+      .ac-status.show { display: flex; }
+      .ac-status.err { color: #ff6b6b; }
+      .ac-spin { width: 15px; height: 15px; border: 2px solid rgba(16,185,129,.25); border-top-color: #10b981; border-radius: 50%; animation: ac-rot .7s linear infinite; flex: 0 0 auto; }
+      .ac-status.err .ac-spin { display: none; }
+      @keyframes ac-rot { to { transform: rotate(360deg); } }
+
+      .ac-result { margin: 40px auto 0; max-width: 920px; display: none; }
+      .ac-result.show { display: block; }
+
+      .ac-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+      .ac-logo { width: 46px; height: 46px; border-radius: 50%; background: #191919; border: 1px solid #292929; object-fit: cover; }
+      .ac-head h3 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 26px; color: #fff; margin: 0; }
+      .ac-head .ac-meta { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #10b981; margin-top: 4px; }
+
+      .ac-gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      @media (max-width: 620px) { .ac-gauges { grid-template-columns: 1fr; } }
+      .ac-gauge { background: #0c0c0c; border: 1px solid #292929; border-radius: 8px; padding: 24px; }
+      .ac-gauge .ac-label { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #c8c8c8; }
+      .ac-gauge .ac-val { font-family: 'Clashdisplay', sans-serif; font-weight: 700; font-size: 54px; line-height: 1; margin: 10px 0 4px; color: #fff; }
+      .ac-gauge .ac-val b { font-size: 22px; font-weight: 300; color: #6b6b6b; }
+      .ac-gauge .ac-sub { color: #8a8a8a; font-size: 13px; }
+      .ac-bar { height: 8px; border-radius: 5px; background: #1e1e1e; margin-top: 16px; overflow: hidden; }
+      .ac-bar > span { display: block; height: 100%; width: 0; border-radius: 5px; transition: width .9s cubic-bezier(.2,.8,.2,1); }
+      .ac-gauge.attention .ac-bar > span { background: #6b8cff; }
+      .ac-gauge.adoption .ac-bar > span { background: #10b981; }
+
+      .ac-verdict { margin-top: 22px; background: linear-gradient(180deg, rgba(16,185,129,.08), rgba(16,185,129,0)); border: 1px solid #1f3a30; border-radius: 8px; padding: 28px; }
+      .ac-verdict .ac-vk { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #10b981; }
+      .ac-verdict h4 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 28px; color: #fff; margin: 10px 0 12px; text-transform: uppercase; letter-spacing: -.01em; }
+      .ac-verdict p { color: #c8c8c8; font-size: 16px; line-height: 1.6; margin: 0; }
+
+      .ac-metrics { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      @media (max-width: 620px) { .ac-metrics { grid-template-columns: 1fr; } }
+      .ac-mcol { background: #0c0c0c; border: 1px solid #292929; border-radius: 8px; padding: 22px; }
+      .ac-mcol h5 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 14px; }
+      .ac-mcol.attention h5 { color: #6b8cff; }
+      .ac-mcol.adoption h5 { color: #10b981; }
+      .ac-mrow { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid #171717; font-size: 14px; }
+      .ac-mrow:last-child { border-bottom: 0; }
+      .ac-mrow span { color: #8a8a8a; }
+      .ac-mrow b { color: #fff; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+      .ac-cta { margin-top: 26px; text-align: center; }
+      .ac-disclaimer { margin-top: 20px; color: #6b6b6b; font-size: 12px; line-height: 1.6; text-align: center; }
+
+      /* gate */
+      .ac-gate { margin-top: 22px; background: linear-gradient(180deg, rgba(16,185,129,.06), rgba(16,185,129,0)); border: 1px solid #1f3a30; border-radius: 10px; padding: 28px; }
+      .ac-gate-head h4 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 24px; color: #fff; margin: 8px 0 10px; text-transform: uppercase; letter-spacing: -.01em; }
+      .ac-gate-head p { color: #c8c8c8; font-size: 15px; line-height: 1.6; margin: 0 0 20px; max-width: 640px; }
+      .ac-gate-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; }
+      @media (max-width: 640px) { .ac-gate-form { grid-template-columns: 1fr; } }
+      .ac-gate-fine { color: #6b6b6b; font-size: 12px; margin: 14px 0 0; }
+
+      /* full report */
+      .ac-full { display: none; margin-top: 22px; }
+      .ac-full.show { display: block; }
+      .ac-chartwrap { background: #0c0c0c; border: 1px solid #292929; border-radius: 10px; padding: 26px 24px 20px; }
+      .ac-chart-title { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #c8c8c8; margin-bottom: 18px; }
+      #ac-chart svg { width: 100%; height: auto; display: block; }
+
+      .ac-recs { margin-top: 22px; background: #0c0c0c; border: 1px solid #292929; border-radius: 10px; padding: 24px; }
+      .ac-recs h5 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #10b981; margin: 0 0 16px; }
+      .ac-recs ol { margin: 0; padding-left: 22px; }
+      .ac-recs li { color: #e6e6e6; font-size: 15.5px; line-height: 1.55; margin: 0 0 14px; padding-left: 6px; }
+      .ac-recs li::marker { color: #10b981; font-weight: 700; }
+
+      .ac-emailed { margin-top: 18px; text-align: center; color: #10b981; font-size: 14px; }
+      .ac-emailed:empty { display: none; }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="header-inner w-nav">
+                <div class="logo-wrapper">
+                    <a href="index.html" class="logo w-inline-block">
+                        <img src="images/LOGO.PNG?v=4" alt="Wevolv3" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Orbitron', monospace; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
+                    </a>
+                </div>
+                <a href="contact.html" class="lets-talk-btn">LET'S TALK</a>
+                <nav role="navigation" class="main-menu w-nav-menu">
+                    <a href="index.html" class="menu-item w-nav-link">HOME</a>
+                    <a href="about.html" class="menu-item w-nav-link">ABOUT</a>
+                    <a href="works.html" class="menu-item w-nav-link">WORK</a>
+                    <a href="blog.html" class="menu-item w-nav-link">BLOG</a>
+                    <a href="adoption-check" class="menu-item w-nav-link">TOOLS</a>
+                    <a href="contact.html" class="menu-item w-nav-link">CONTACT</a>
+                </nav>
+                <div class="menu-button w-nav-button">
+                    <div class="icon w-icon-nav-menu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="lp-hero">
+            <div class="lp-wrap">
+                <span class="lp-eyebrow">Free tool</span>
+                <h1>Is your project getting <em>used</em>, or just watched?</h1>
+                <p class="lp-sub">Attention is easy to rent. Adoption is what keeps a project alive. Paste a token name, symbol or contract address and see the gap between the two, scored on free public on-chain data.</p>
+
+                <div class="ac-tool">
+                    <form class="ac-form" id="ac-form" autocomplete="off">
+                        <input class="ac-input" id="ac-input" type="text" name="ac-token-query" placeholder="Token name, symbol or contract (e.g. Uniswap, UNI, 0x...)" aria-label="Token name, symbol or contract address" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" required />
+                        <button class="ac-submit" id="ac-submit" type="submit">Run check</button>
+                    </form>
+                    <div class="ac-chips" id="ac-chips">
+                        <span style="font-family:'Orbitron',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#6b6b6b; align-self:center; margin-right:2px;">Try</span>
+                        <button class="ac-chip" type="button" data-q="Uniswap">Uniswap</button>
+                        <button class="ac-chip" type="button" data-q="Chainlink">Chainlink</button>
+                        <button class="ac-chip" type="button" data-q="Pepe">Pepe</button>
+                        <button class="ac-chip" type="button" data-q="Arbitrum">Arbitrum</button>
+                    </div>
+                    <p class="ac-hint">Works with any listed token, or paste a contract address for brand-new tokens on most EVM chains and Solana.</p>
+                    <div class="ac-status" id="ac-status"></div>
+                </div>
+
+                <div class="ac-result" id="ac-result">
+                    <div class="ac-head">
+                        <img class="ac-logo" id="ac-r-logo" alt="" />
+                        <div>
+                            <h3 id="ac-r-name">—</h3>
+                            <div class="ac-meta" id="ac-r-meta">—</div>
+                        </div>
+                    </div>
+
+                    <div class="ac-gauges">
+                        <div class="ac-gauge attention">
+                            <div class="ac-label">Attention</div>
+                            <div class="ac-val"><span id="ac-r-att">0</span><b> / 100</b></div>
+                            <div class="ac-sub">Real X / Twitter reach</div>
+                            <div class="ac-bar"><span id="ac-r-att-bar"></span></div>
+                        </div>
+                        <div class="ac-gauge adoption">
+                            <div class="ac-label">Adoption</div>
+                            <div class="ac-val"><span id="ac-r-ado">0</span><b> / 100</b></div>
+                            <div class="ac-sub">Real on-chain usage</div>
+                            <div class="ac-bar"><span id="ac-r-ado-bar"></span></div>
+                        </div>
+                    </div>
+
+                    <!-- GATE: teaser verdict + capture form (shown after Run check) -->
+                    <div class="ac-gate" id="ac-gate">
+                        <div class="ac-gate-head">
+                            <div class="ac-vk" id="ac-t-vk">Preview</div>
+                            <h4 id="ac-t-vh">—</h4>
+                            <p>Unlock the full report: the attention/adoption gap chart, the metric breakdown, and 3 specific moves to close it — sent straight to your inbox.</p>
+                        </div>
+                        <form class="ac-gate-form" id="ac-gate-form" autocomplete="off">
+                            <input class="ac-input" id="ac-email" type="email" name="ac-email" placeholder="Work email *" autocomplete="off" required />
+                            <input class="ac-input" id="ac-tg" type="text" name="ac-tg" placeholder="Telegram @handle *" autocomplete="off" required />
+                            <button class="ac-submit" id="ac-unlock" type="submit">Unlock full report</button>
+                        </form>
+                        <div class="ac-status" id="ac-gate-status"></div>
+                        <p class="ac-gate-fine">We'll email your report and may reach out about your project. No spam.</p>
+                    </div>
+
+                    <!-- FULL REPORT: revealed after unlock -->
+                    <div class="ac-full" id="ac-full">
+                        <div class="ac-chartwrap">
+                            <div class="ac-chart-title">The gap</div>
+                            <div id="ac-chart"></div>
+                        </div>
+
+                        <div class="ac-verdict">
+                            <div class="ac-vk" id="ac-r-vk">Verdict</div>
+                            <h4 id="ac-r-vh">—</h4>
+                            <p id="ac-r-vb">—</p>
+                        </div>
+
+                        <div class="ac-metrics">
+                            <div class="ac-mcol attention">
+                                <h5>Attention signals</h5>
+                                <div class="ac-mrow"><span>X / Twitter followers</span><b id="ac-m-fol">—</b></div>
+                                <div class="ac-mrow"><span>Verified account</span><b id="ac-m-ver">—</b></div>
+                            </div>
+                            <div class="ac-mcol adoption">
+                                <h5>Adoption signals</h5>
+                                <div class="ac-mrow"><span>24h volume</span><b id="ac-m-vol">—</b></div>
+                                <div class="ac-mrow"><span>Volume / market cap</span><b id="ac-m-turn">—</b></div>
+                                <div class="ac-mrow"><span>24h transactions</span><b id="ac-m-txns">—</b></div>
+                                <div class="ac-mrow"><span>Liquidity</span><b id="ac-m-liq">—</b></div>
+                            </div>
+                        </div>
+
+                        <div class="ac-recs">
+                            <h5>What we'd do first</h5>
+                            <ol id="ac-rec-list"></ol>
+                        </div>
+
+                        <div class="ac-emailed" id="ac-emailed"></div>
+
+                        <div class="ac-cta">
+                            <a href="contact.html" class="lp-cta">Close this gap with Wevolv3</a>
+                        </div>
+                        <p class="ac-disclaimer">Directional heuristic on public data (GeckoTerminal, DexScreener, X). Not financial or investment advice.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>Why attention without adoption kills projects</h2>
+                <p class="lp-lead">A trending cashtag and a full Telegram feel like winning. But if the volume, transactions and holders underneath aren't moving, that attention is rented, not owned. When the campaign stops, so does everything else. This tool separates the two so you can see which one you actually have, and where the work needs to go.</p>
+                <div class="lp-stats">
+                    <div class="lp-stat"><b>Attention</b><span>Watchlist users, sentiment and market visibility. Who is looking.</span></div>
+                    <div class="lp-stat"><b>Adoption</b><span>Volume-to-market-cap turnover, transaction count and liquidity. Who is doing.</span></div>
+                    <div class="lp-stat"><b>The gap</b><span>The distance between the two. The bigger it is, the more fragile the growth.</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>How the score works</h2>
+                <p class="lp-lead">No black box. The score is a transparent, directional read on public data, built the way we look at a project before a growth engagement.</p>
+                <div class="lp-grid">
+                    <div class="lp-card"><span class="lp-num">01</span><h3>Attention</h3><p>Watchlist users (weighted heaviest), positive sentiment and market-cap rank. It measures how many eyeballs and how much interest a project has right now.</p></div>
+                    <div class="lp-card"><span class="lp-num">02</span><h3>Adoption</h3><p>24h volume relative to market cap (turnover), on-chain transaction count and liquidity depth. It measures real economic usage, not hype.</p></div>
+                    <div class="lp-card"><span class="lp-num">03</span><h3>The gap</h3><p>Attention minus adoption. A large positive gap flags the vanity-metrics trap: lots of interest, little real usage. A negative gap means real usage the market hasn't noticed yet.</p></div>
+                    <div class="lp-card"><span class="lp-num">04</span><h3>The data</h3><p>CoinGecko for market and community signals, DexScreener for on-chain liquidity and transactions. All public, all free, no private data.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>Adoption Check FAQ</h2>
+                <div class="lp-faq" style="margin-top:32px">
+                    <details open><summary>What is the difference between attention and adoption?</summary><p>Attention is how many people are watching a project: watchlist users, sentiment and market visibility. Adoption is how many people actually use or trade it: real 24h volume relative to market cap, on-chain transaction count and liquidity depth. A project can have huge attention and almost no adoption, which is the trap this tool surfaces.</p></details>
+                    <details><summary>Where does the data come from?</summary><p>Public, free sources: CoinGecko for market and community data, and DexScreener for on-chain liquidity and transaction counts. No private data and no paid APIs. The scores are a transparent, directional heuristic, not financial advice.</p></details>
+                    <details><summary>Is this financial or investment advice?</summary><p>No. The Adoption Check is a marketing diagnostic for founders and teams. It does not tell you whether to buy, sell or hold anything. It only shows where a project sits on the attention-versus-adoption axis.</p></details>
+                    <details><summary>Can I check a brand-new token that isn't on CoinGecko?</summary><p>Yes. Paste the contract address and the tool reads on-chain activity from DexScreener across most EVM chains and Solana. Attention signals may be limited for very new tokens, which the report makes clear.</p></details>
+                    <details><summary>How is the gap score calculated?</summary><p>Attention combines watchlist users, sentiment and market-cap rank. Adoption combines volume-to-market-cap turnover, 24h transaction count and liquidity depth. The gap is attention minus adoption: a high positive gap means lots of interest but weak real usage.</p></details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <section class="lp-final">
+        <div class="lp-wrap">
+            <h2>Attention is the easy part.</h2>
+            <p>We turn it into adoption that sticks. Show us your numbers and we'll show you the plan.</p>
+            <a href="contact.html" class="lp-cta">Book a growth session</a>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div class="inner-footer">
+                <a href="mailto:contact@wevolv3.com" class="mail-link">contact@wevolv3.com</a>
+                <a href="https://t.me/wevolv3" target="_blank" class="phone-link">@wevolv3</a>
+                <div class="socials">
+                    <a href="https://x.com/wevolv3_media" target="_blank" class="social-link w-inline-block"><div class="social-text">X</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="https://www.linkedin.com/company/wevol3-web3-marketing" target="_blank" class="social-link w-inline-block"><div class="social-text">linkedin</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="https://t.me/wevolv3" target="_blank" class="social-link w-inline-block"><div class="social-text">telegram</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="blog.html" class="social-link last-social w-inline-block"><div class="social-text">blog</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                </div>
+            </div>
+            <div class="footer-legal-links">
+                <a href="privacy.html" class="legal-link">Privacy Policy</a>
+                <span class="legal-separator">|</span>
+                <a href="terms.html" class="legal-link">Terms &amp; Conditions</a>
+                <span class="legal-separator">|</span>
+                <a href="disclaimer.html" class="legal-link">Legal Disclaimer</a>
+            </div>
+            <div class="copyright">
+                <div class="copyright-text"><span class="copyright-year">2026</span> Wevolv3. All rights reserved.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/plugins.js" type="text/javascript"></script>
+    <script>document.querySelectorAll('.copyright-year').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script src="js/track-events.js" defer></script>
+
+    <script>
+      (function () {
+        var form = document.getElementById('ac-form');
+        var input = document.getElementById('ac-input');
+        var submit = document.getElementById('ac-submit');
+        var status = document.getElementById('ac-status');
+        var result = document.getElementById('ac-result');
+        var gate = document.getElementById('ac-gate');
+        var gateForm = document.getElementById('ac-gate-form');
+        var gateStatus = document.getElementById('ac-gate-status');
+        var full = document.getElementById('ac-full');
+        var currentQuery = '';
+
+        function fmtUsd(n) {
+          if (n == null || isNaN(n)) return '—';
+          if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+          if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+          if (n >= 1e3) return '$' + (n / 1e3).toFixed(1) + 'K';
+          return '$' + Math.round(n);
+        }
+        function fmtNum(n) { return n == null || isNaN(n) ? '—' : Number(n).toLocaleString('en-US'); }
+
+        function setStatusOn(el, msg, isErr) {
+          if (!msg) { el.className = 'ac-status'; el.innerHTML = ''; return; }
+          el.className = 'ac-status show' + (isErr ? ' err' : '');
+          el.innerHTML = (isErr ? '' : '<span class="ac-spin"></span>') + '<span></span>';
+          el.querySelector('span:last-child').textContent = msg;
+        }
+        var setStatus = function (m, e) { setStatusOn(status, m, e); };
+
+        function countUp(el, to) {
+          if (to == null || isNaN(to)) { el.textContent = to == null ? 'N/A' : to; return; }
+          var start = null, done = false;
+          function finish() { if (!done) { done = true; el.textContent = to; } }
+          function step(ts) {
+            if (start == null) start = ts;
+            var p = Math.min(1, (ts - start) / 700);
+            el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(step); else finish();
+          }
+          requestAnimationFrame(step);
+          // safety net: rAF is throttled on hidden tabs / reduced-motion / headless,
+          // so guarantee the final value lands regardless of animation.
+          setTimeout(finish, 800);
+        }
+
+        // token header + gauges (shared by teaser and full)
+        function renderHead(t, s, hasAtt) {
+          var logo = document.getElementById('ac-r-logo');
+          if (t.image) { logo.src = t.image; logo.style.display = ''; } else { logo.style.display = 'none'; }
+          document.getElementById('ac-r-name').textContent = t.name + (t.symbol ? ' (' + t.symbol + ')' : '');
+          document.getElementById('ac-r-meta').textContent = (t.chain || 'Live public data');
+          countUp(document.getElementById('ac-r-att'), hasAtt ? s.attention : null);
+          countUp(document.getElementById('ac-r-ado'), s.adoption);
+          // set widths directly; the CSS width transition animates them (works even
+          // when rAF is throttled, so bars are never left blank).
+          document.getElementById('ac-r-att-bar').style.width = (hasAtt ? s.attention : 0) + '%';
+          document.getElementById('ac-r-ado-bar').style.width = s.adoption + '%';
+        }
+
+        // beautiful animated SVG: the gap on a 0-100 axis
+        function renderChart(s, hasAtt) {
+          var W = 800, padX = 40, axisY = 150, trackW = W - padX * 2;
+          var xa = padX + (hasAtt ? s.attention : 0) / 100 * trackW;
+          var xo = padX + s.adoption / 100 * trackW;
+          var lo = Math.min(xa, xo), hi = Math.max(xa, xo), gapMid = (lo + hi) / 2;
+          var gapTxt = (hasAtt && s.gap != null) ? (s.gap > 0 ? '+' : '') + s.gap + ' pts' : '';
+          var SP = 'dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"';
+          var parts = [];
+          parts.push('<svg viewBox="0 0 ' + W + ' 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Attention vs adoption gap">');
+          parts.push('<line x1="' + padX + '" y1="' + axisY + '" x2="' + (W - padX) + '" y2="' + axisY + '" stroke="#2a2a2a" stroke-width="2"/>');
+          [0, 25, 50, 75, 100].forEach(function (v) {
+            var x = padX + v / 100 * trackW;
+            parts.push('<line x1="' + x + '" y1="' + (axisY - 5) + '" x2="' + x + '" y2="' + (axisY + 5) + '" stroke="#333"/>');
+            parts.push('<text x="' + x + '" y="' + (axisY + 24) + '" fill="#666" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">' + v + '</text>');
+          });
+          if (hasAtt) {
+            parts.push('<rect x="' + lo + '" y="' + (axisY - 34) + '" width="0" height="68" rx="6" fill="rgba(16,185,129,.10)" stroke="rgba(16,185,129,.35)"><animate attributeName="width" from="0" to="' + (hi - lo) + '" dur="0.8s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>');
+            if (gapTxt) parts.push('<text x="' + gapMid + '" y="' + (axisY - 44) + '" fill="#10b981" font-size="13" text-anchor="middle" font-family="Orbitron,monospace" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/>' + gapTxt + '</text>');
+          }
+          // adoption marker (green)
+          parts.push('<circle cx="' + padX + '" cy="' + axisY + '" r="11" fill="#10b981"><animate attributeName="cx" from="' + padX + '" to="' + xo + '" ' + SP + '/></circle>');
+          parts.push('<text y="' + (axisY - 22) + '" fill="#10b981" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">ADOPTION<animate attributeName="x" from="' + padX + '" to="' + xo + '" ' + SP + '/></text>');
+          // attention marker (blue)
+          if (hasAtt) {
+            parts.push('<circle cx="' + padX + '" cy="' + axisY + '" r="11" fill="#6b8cff"><animate attributeName="cx" from="' + padX + '" to="' + xa + '" ' + SP + '/></circle>');
+            parts.push('<text y="' + (axisY + 46) + '" fill="#6b8cff" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">ATTENTION<animate attributeName="x" from="' + padX + '" to="' + xa + '" ' + SP + '/></text>');
+          }
+          parts.push('</svg>');
+          document.getElementById('ac-chart').innerHTML = parts.join('');
+        }
+
+        function renderFull(data) {
+          var s = data.scores, v = data.verdict, m = data.metrics, hasAtt = data.attentionAvailable && s.attention != null;
+          renderChart(s, hasAtt);
+          document.getElementById('ac-r-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
+          document.getElementById('ac-r-vh').textContent = v.headline;
+          document.getElementById('ac-r-vb').textContent = v.body;
+          document.getElementById('ac-m-fol').textContent = fmtNum(m.followers);
+          document.getElementById('ac-m-ver').textContent = m.xVerified == null ? '—' : (m.xVerified ? 'Yes' : 'No');
+          document.getElementById('ac-m-vol').textContent = fmtUsd(m.volume24h);
+          document.getElementById('ac-m-turn').textContent = m.turnover != null ? (m.turnover * 100).toFixed(1) + '%' : '—';
+          document.getElementById('ac-m-txns').textContent = fmtNum(m.txns24h);
+          document.getElementById('ac-m-liq').textContent = fmtUsd(m.liquidity);
+          var ol = document.getElementById('ac-rec-list');
+          ol.innerHTML = (data.recommendations || []).map(function (r) { return '<li></li>'; }).join('');
+          (data.recommendations || []).forEach(function (r, i) { ol.children[i].textContent = r; });
+          document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Full report sent to your inbox' : '';
+          gate.style.display = 'none';
+          full.classList.add('show');
+          full.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function run(query, attempt) {
+          if (!query) return;
+          currentQuery = query; attempt = attempt || 0;
+          setStatus(attempt === 0 ? 'Reading on-chain and market data for "' + query + '"…' : 'Provider is busy, retrying…', false);
+          result.classList.remove('show'); full.classList.remove('show'); gate.style.display = 'none';
+          submit.disabled = true;
+
+          fetch('/.netlify/functions/adoptionDiagnostic', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: query })
+          })
+            .then(function (r) { return r.json().then(function (j) { return { status: r.status, ok: r.ok, j: j }; }); })
+            .then(function (res) {
+              if (res.status === 503 && attempt < 1) { setTimeout(function () { run(query, attempt + 1); }, 2500); return; }
+              submit.disabled = false;
+              if (!res.ok || !res.j.ok) { setStatus(res.j && res.j.error ? res.j.error : 'Something went wrong. Please try again.', true); return; }
+              setStatus('', false);
+              var s = res.j.scores, hasAtt = res.j.attentionAvailable && s.attention != null;
+              renderHead(res.j.token, s, hasAtt);
+              document.getElementById('ac-t-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
+              document.getElementById('ac-t-vh').textContent = res.j.teaserVerdict || '';
+              gate.style.display = '';
+              result.classList.add('show');
+              result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              if (typeof window.wevolv3Track === 'function') window.wevolv3Track('adoption_check_run', { token: res.j.token.symbol || res.j.token.name, gap: s.gap });
+            })
+            .catch(function () { submit.disabled = false; setStatus('Network error. Please try again.', true); });
+        }
+
+        function unlock(email, telegram) {
+          setStatusOn(gateStatus, 'Building your full report and sending it over…', false);
+          var btn = document.getElementById('ac-unlock'); btn.disabled = true;
+          fetch('/.netlify/functions/adoptionDiagnostic', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: currentQuery, unlock: { email: email, telegram: telegram } })
+          })
+            .then(function (r) { return r.json().then(function (j) { return { status: r.status, ok: r.ok, j: j }; }); })
+            .then(function (res) {
+              btn.disabled = false;
+              if (!res.ok || !res.j.ok) { setStatusOn(gateStatus, res.j && res.j.error ? res.j.error : 'Something went wrong. Please try again.', true); return; }
+              setStatusOn(gateStatus, '', false);
+              renderFull(res.j);
+              if (typeof window.wevolv3Track === 'function') window.wevolv3Track('adoption_check_unlock', { token: (res.j.token || {}).symbol });
+            })
+            .catch(function () { btn.disabled = false; setStatusOn(gateStatus, 'Network error. Please try again.', true); });
+        }
+
+        form.addEventListener('submit', function (e) { e.preventDefault(); run(input.value.trim()); });
+        gateForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          unlock(document.getElementById('ac-email').value.trim(), document.getElementById('ac-tg').value.trim());
+        });
+        document.getElementById('ac-chips').addEventListener('click', function (e) {
+          var chip = e.target.closest('.ac-chip');
+          if (!chip) return;
+          input.value = chip.getAttribute('data-q');
+          run(input.value);
+        });
+      })();
+    </script>
+</body>
+
+</html>
