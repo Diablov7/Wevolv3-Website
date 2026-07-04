@@ -269,6 +269,25 @@ function downsample(arr, n) {
   return out;
 }
 
+// median 24h turnover (volume/mcap) of the top-100 coins — the honest baseline
+// the report compares a token's turnover against. One markets call, cached like
+// everything else; null on failure (the comparison line is simply omitted).
+async function peerMedianTurnover() {
+  const hit = cacheGet("__peers");
+  if (hit != null) return hit;
+  try {
+    const rows = await getJson(CG_BASE + "/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false", { headers: cgHeaders() }, 1);
+    const ratios = (rows || [])
+      .map((r) => (r.total_volume && r.market_cap ? r.total_volume / r.market_cap : null))
+      .filter((v) => v != null && isFinite(v) && v > 0)
+      .sort((a, b) => a - b);
+    if (ratios.length < 20) return cacheStale("__peers");
+    const median = ratios[Math.floor(ratios.length / 2)];
+    cacheSet("__peers", median);
+    return median;
+  } catch (_) { return cacheStale("__peers"); }
+}
+
 const CG_COIN_QS = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true";
 async function cgCoinById(id) {
   if (!id) return null;
@@ -414,7 +433,9 @@ async function analyzeSentiment(mentions, token) {
 // AI recommendations (OpenRouter preferred, then OpenAI). Falls back to rules.
 async function recommendations(ctx) {
   const fmtUsd = (v) => (v == null || !v ? "unknown" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
-  const turnoverPct = ctx.turnover != null ? (ctx.turnover * 100).toFixed(1) + "% of market cap trades daily" : "unknown turnover";
+  const turnoverPct = ctx.turnover != null
+    ? (ctx.turnover * 100).toFixed(1) + "% of market cap trades daily" + (ctx.peerTurnover ? " vs " + (ctx.peerTurnover * 100).toFixed(1) + "% top-100 median" : "")
+    : "unknown turnover";
   const prompt =
     "You are a senior Web3 growth strategist at Wevolv3 briefing this specific project. Use ONLY the numbers below — never invent metrics, prices, partnerships or events.\n\n" +
     "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
@@ -711,7 +732,10 @@ export const handler = async (event) => {
 
       // sentiment: real mentions -> classified breakdown (teaser) + samples/themes (full)
       const mentions = await fetchMentions(token);
-      const sentiment = await analyzeSentiment(mentions, token);
+      const [sentiment, peerTurnover] = await Promise.all([
+        analyzeSentiment(mentions, token),
+        peerMedianTurnover(),
+      ]);
 
       const gap = attScore != null && adoScore != null ? attScore - adoScore : null;
       base = {
@@ -728,6 +752,7 @@ export const handler = async (event) => {
           volume24h: token.volume, dexVolume24h: token.dexVolume,
           marketCap: token.mcap, marketCapRank: token.mcapRank,
           turnover: token.volume && token.mcap ? token.volume / token.mcap : null,
+          peerTurnover: peerTurnover || null,
           txns24h: token.txns24h, liquidity: token.liquidity,
           source: token.source,
         },
@@ -739,6 +764,7 @@ export const handler = async (event) => {
           volume: token.volume, dexVolume: token.dexVolume,
           mcap: token.mcap, mcapRank: token.mcapRank,
           turnover: token.volume && token.mcap ? token.volume / token.mcap : null,
+          peerTurnover: peerTurnover || null,
           txns24h: token.txns24h, liquidity: token.liquidity,
           sentiment: sentiment ? sentiment.breakdown : null,
           themesDown: sentiment ? sentiment.themesDown : null,
