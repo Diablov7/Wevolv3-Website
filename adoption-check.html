@@ -284,10 +284,13 @@
                                 <h5>Attention signals</h5>
                                 <div class="ac-mrow"><span>X / Twitter followers</span><b id="ac-m-fol">—</b></div>
                                 <div class="ac-mrow"><span>Verified account</span><b id="ac-m-ver">—</b></div>
+                                <div class="ac-mrow"><span>Market-cap rank</span><b id="ac-m-rank">—</b></div>
                             </div>
                             <div class="ac-mcol adoption">
                                 <h5>Adoption signals</h5>
-                                <div class="ac-mrow"><span>24h volume</span><b id="ac-m-vol">—</b></div>
+                                <div class="ac-mrow"><span>Market cap</span><b id="ac-m-mcap">—</b></div>
+                                <div class="ac-mrow"><span>24h volume (total)</span><b id="ac-m-vol">—</b></div>
+                                <div class="ac-mrow"><span>On-chain DEX volume</span><b id="ac-m-dexvol">—</b></div>
                                 <div class="ac-mrow"><span>Volume / market cap</span><b id="ac-m-turn">—</b></div>
                                 <div class="ac-mrow"><span>24h transactions</span><b id="ac-m-txns">—</b></div>
                                 <div class="ac-mrow"><span>Liquidity</span><b id="ac-m-liq">—</b></div>
@@ -487,7 +490,10 @@
           document.getElementById('ac-r-vb').textContent = v.body;
           document.getElementById('ac-m-fol').textContent = fmtNum(m.followers);
           document.getElementById('ac-m-ver').textContent = m.xVerified == null ? '—' : (m.xVerified ? 'Yes' : 'No');
+          document.getElementById('ac-m-rank').textContent = m.marketCapRank != null ? '#' + m.marketCapRank : '—';
+          document.getElementById('ac-m-mcap').textContent = fmtUsd(m.marketCap);
           document.getElementById('ac-m-vol').textContent = fmtUsd(m.volume24h);
+          document.getElementById('ac-m-dexvol').textContent = fmtUsd(m.dexVolume24h);
           document.getElementById('ac-m-turn').textContent = m.turnover != null ? (m.turnover * 100).toFixed(1) + '%' : '—';
           document.getElementById('ac-m-txns').textContent = fmtNum(m.txns24h);
           document.getElementById('ac-m-liq').textContent = fmtUsd(m.liquidity);

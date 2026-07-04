@@ -5,9 +5,11 @@
  * on-chain usage) for any token, then gates the full report behind an
  * email + Telegram capture and emails it via Resend.
  *
- * Data pipeline (CoinGecko-free — no more rate-limit hell):
- *   - GeckoTerminal (free, no key)  -> resolve token, on-chain volume/mcap/liquidity, project socials
- *   - DexScreener  (free, no key)   -> 24h transaction count, liquidity fallback
+ * Data pipeline (curated resolution + aggregate on-chain usage):
+ *   - CoinGecko    (free; optional key) -> CANONICAL token (kills fakes), real market cap,
+ *                                          real total 24h volume, X handle, contract
+ *   - DexScreener  (free, no key)   -> aggregate on-chain 24h txns/volume/liquidity across all pools
+ *   - GeckoTerminal (free, no key)  -> socials / last-resort fallback for un-indexed tokens
  *   - twitterapi.io (TWITTERAPI_IO_KEY) -> real followers / verified / activity = ATTENTION
  *   - OpenRouter or OpenAI (key)    -> 3 personalized recommendations
  *   - Resend (RESEND_API_KEY)       -> emails the report to the captured lead
@@ -138,26 +140,108 @@ async function resolveCandidates(query) {
   return parsed.slice(0, 3);
 }
 
-// DexScreener: contract -> chain + adoption (multi-chain, generous limits)
-async function fromDex(address) {
+// DexScreener AGGREGATE: contract -> summed on-chain usage across ALL pairs.
+// Reading a single pair badly undercounts a multi-pool token; real adoption is
+// the sum of every pool's 24h transactions, volume and liquidity.
+async function dexAggregate(address) {
   const d = await getJson("https://api.dexscreener.com/latest/dex/tokens/" + encodeURIComponent(address));
   const pairs = (d && d.pairs) || [];
   if (!pairs.length) return null;
-  pairs.sort((a, b) => (a.liquidity?.usd || 0) < (b.liquidity?.usd || 0) ? 1 : -1);
-  const p = pairs[0];
-  const tx = p.txns?.h24 || {};
+  let txns = 0, dexVol = 0, liq = 0, mcap = 0;
+  let bestLiq = -1, image = null, chain = null, name = null, symbol = null, price = null;
+  for (const p of pairs) {
+    const t = p.txns?.h24 || {};
+    txns += (t.buys || 0) + (t.sells || 0);
+    dexVol += num(p.volume?.h24) || 0;
+    const l = num(p.liquidity?.usd) || 0;
+    liq += l;
+    const pm = num(p.marketCap) || num(p.fdv) || 0;
+    if (pm && !mcap) mcap = pm;
+    if (l > bestLiq) { // deepest pool = canonical read for the display fields
+      bestLiq = l;
+      image = p.info?.imageUrl || image;
+      chain = p.chainId || chain;
+      name = p.baseToken?.name || name;
+      symbol = (p.baseToken?.symbol || "").toUpperCase() || symbol;
+      price = num(p.priceUsd);
+    }
+  }
+  return { txns24h: txns, dexVolume: dexVol, liquidity: liq, mcap, image, chain, name, symbol, priceUsd: price };
+}
+
+// ---- CoinGecko: the curated source of truth --------------------------------
+// CoinGecko's /search returns the CANONICAL coin (ranked by market cap), which
+// is what kills the "fake token with the same name/symbol" problem that pure-DEX
+// search suffers from. From the coin id we read real market cap, real total 24h
+// volume (the number that matches CMC/exchanges, not just one DEX pool), the
+// project's X handle and its contract. An optional key lifts the rate limits;
+// without one we still work via caching + retry + the DEX/GeckoTerminal fallbacks.
+const CG_KEY = process.env.COINGECKO_API_KEY || process.env.CG_API_KEY || "";
+const CG_PRO = CG_KEY.startsWith("CG-") && CG_KEY.includes("PRO");
+const CG_BASE = CG_PRO ? "https://pro-api.coingecko.com/api/v3" : "https://api.coingecko.com/api/v3";
+const cgHeaders = () => {
+  const h = { Accept: "application/json" };
+  if (CG_KEY) h[CG_PRO ? "x-cg-pro-api-key" : "x-cg-demo-api-key"] = CG_KEY;
+  return h;
+};
+
+// CoinGecko asset-platform id -> our display chain (matches DexScreener chainId)
+const CG_PLATFORM = {
+  ethereum: "ethereum", "binance-smart-chain": "bsc", "polygon-pos": "polygon",
+  "arbitrum-one": "arbitrum", base: "base", "optimistic-ethereum": "optimism",
+  "avalanche": "avalanche", solana: "solana", fantom: "fantom",
+};
+const CG_PLATFORM_FOR_CHAIN = Object.fromEntries(Object.entries(CG_PLATFORM).map(([k, v]) => [v, k]));
+
+// name / symbol -> canonical coin id (curated, no fakes)
+async function cgSearchId(query) {
+  try {
+    const q = query.replace(/^\$/, "");
+    const d = await getJson(CG_BASE + "/search?query=" + encodeURIComponent(q), { headers: cgHeaders() });
+    const coins = (d && d.coins) || [];
+    if (!coins.length) return null;
+    const sym = q.toUpperCase();
+    const exact = coins.find((c) => (c.symbol || "").toUpperCase() === sym);
+    return (exact || coins[0]).id; // search is market-cap ordered
+  } catch (_) { return null; }
+}
+
+function fromCgCoin(d) {
+  if (!d) return null;
+  const md = d.market_data || {};
+  const pl = d.platforms || {};
+  let contract = null, platform = null;
+  for (const [k, v] of Object.entries(pl)) {
+    if (v && String(v).length > 20) { contract = String(v); platform = k; break; }
+  }
+  const links = d.links || {};
   return {
-    name: p.baseToken?.name || p.baseToken?.symbol || "Token",
-    symbol: (p.baseToken?.symbol || "").toUpperCase(),
-    image: p.info?.imageUrl || null,
-    chain: p.chainId || null,
-    dexNetwork: null,
-    volume: num(p.volume?.h24) || 0,
-    mcap: num(p.marketCap) || num(p.fdv) || 0,
-    liquidity: num(p.liquidity?.usd) || 0,
-    txns24h: (tx.buys || 0) + (tx.sells || 0),
-    priceUsd: num(p.priceUsd),
+    name: d.name || "Token",
+    symbol: (d.symbol || "").toUpperCase(),
+    image: (d.image && (d.image.large || d.image.small)) || null,
+    chain: CG_PLATFORM[platform] || platform || null,
+    contract, platform,
+    mcap: num((md.market_cap || {}).usd) || num((md.fully_diluted_valuation || {}).usd) || 0,
+    volume: num((md.total_volume || {}).usd) || 0,
+    priceUsd: num((md.current_price || {}).usd),
+    mcapRank: num(d.market_cap_rank),
+    twitter: links.twitter_screen_name || null,
+    telegram: links.telegram_channel_identifier || null,
+    website: (links.homepage || []).filter(Boolean)[0] || null,
+    source: "coingecko",
   };
+}
+
+const CG_COIN_QS = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+async function cgCoinById(id) {
+  if (!id) return null;
+  try { return fromCgCoin(await getJson(CG_BASE + "/coins/" + encodeURIComponent(id) + CG_COIN_QS, { headers: cgHeaders() })); }
+  catch (_) { return null; }
+}
+async function cgCoinByContract(platform, address) {
+  if (!platform || !address) return null;
+  try { return fromCgCoin(await getJson(CG_BASE + "/coins/" + platform + "/contract/" + address.toLowerCase() + CG_COIN_QS, { headers: cgHeaders() })); }
+  catch (_) { return null; }
 }
 
 // GeckoTerminal token market data + info (socials)
@@ -204,13 +288,16 @@ async function fromTwitter(handle) {
 
 // AI recommendations (OpenRouter preferred, then OpenAI). Falls back to rules.
 async function recommendations(ctx) {
+  const fmtUsd = (v) => (v == null || !v ? "unknown" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
+  const turnoverPct = ctx.turnover != null ? (ctx.turnover * 100).toFixed(1) + "% of market cap trades daily" : "unknown turnover";
   const prompt =
-    "You are a senior Web3 growth strategist at Wevolv3. A project just ran an Adoption Check.\n" +
-    "Token: " + ctx.name + " (" + ctx.symbol + ") on " + (ctx.chain || "unknown chain") + ".\n" +
-    "Attention score: " + (ctx.attention ?? "n/a") + "/100. Adoption score: " + ctx.adoption + "/100. Gap: " + (ctx.gap ?? "n/a") + ".\n" +
-    "Real signals: X followers " + (ctx.followers ?? "n/a") + ", 24h volume $" + Math.round(ctx.volume || 0) + ", market cap $" + Math.round(ctx.mcap || 0) + ", 24h txns " + (ctx.txns24h ?? "n/a") + ".\n" +
-    "Give exactly 3 specific, concrete next actions this project should take to close its attention/adoption gap. " +
-    "Each action: max 22 words, imperative, no fluff, no markdown. Return a JSON array of 3 strings only.";
+    "You are a senior Web3 growth strategist at Wevolv3 briefing this specific project. Use ONLY the numbers below — never invent metrics, prices, partnerships or events.\n\n" +
+    "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
+    "SCORES: Attention " + (ctx.attention ?? "n/a") + "/100, Adoption " + ctx.adoption + "/100, Gap " + (ctx.gap ?? "n/a") + " (positive = more attention than real usage).\n" +
+    "ATTENTION DATA: X followers " + (ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") : "unknown") + (ctx.xVerified ? " (verified account)" : "") + ".\n" +
+    "ADOPTION DATA: market cap " + fmtUsd(ctx.mcap) + ", 24h volume " + fmtUsd(ctx.volume) + " (" + turnoverPct + "), on-chain DEX volume " + fmtUsd(ctx.dexVolume) + ", pooled liquidity " + fmtUsd(ctx.liquidity) + ", 24h on-chain transactions " + (ctx.txns24h != null ? Number(ctx.txns24h).toLocaleString("en-US") : "unknown") + ".\n\n" +
+    "Write exactly 3 next actions to close THIS project's specific gap. Each action must reference its real situation (e.g. cite the follower count, the turnover, or the gap direction) and be a concrete growth move Wevolv3 could run — not generic advice. " +
+    "Max 24 words each, imperative, plain text, no markdown, no hashtags. Return a JSON array of 3 strings only.";
 
   async function callOpenAILike(url, model, key) {
     const d = await getJson(url, {
@@ -330,7 +417,7 @@ function reportEmailHtml(token, scores, verdictObj, recs) {
   </div>
   <div style="padding:8px 28px 32px;text-align:center">
     <a href="https://wevolv3.com/contact.html" style="display:inline-block;background:#10b981;color:#04120c;font-weight:bold;text-decoration:none;padding:14px 28px;border-radius:8px">Book a growth session</a>
-    <p style="color:#666666;font-size:11px;margin-top:16px">Directional heuristic on public data (GeckoTerminal, DexScreener, X). Not financial advice.</p>
+    <p style="color:#666666;font-size:11px;margin-top:16px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
   </div>
 </div>`;
 }
@@ -372,45 +459,69 @@ async function sendResend(lead, token, scores, verdictObj, recs) {
 }
 
 // ---- resolve a token to a unified shape ------------------------------------
+// Merge the three sources into one shape. Priority: CoinGecko for the "reality"
+// numbers (market cap, total volume, X handle), DexScreener aggregate for the
+// on-chain usage numbers (transactions, pooled liquidity), GeckoTerminal only as
+// a socials/last-resort fallback for tokens CoinGecko has never indexed.
+function mergeToken({ cg, gt, agg, chain }) {
+  const base = cg || gt || {};
+  const cgVol = cg ? cg.volume : 0;
+  const dexVol = agg ? agg.dexVolume : 0;
+  return {
+    name: base.name || (agg && agg.name) || "Token",
+    symbol: base.symbol || (agg && agg.symbol) || "",
+    image: base.image || (agg && agg.image) || null,
+    chain: chain || base.chain || (agg && agg.chain) || null,
+    priceUsd: (base.priceUsd != null ? base.priceUsd : null) || (agg && agg.priceUsd) || null,
+    twitter: (cg && cg.twitter) || (gt && gt.twitter) || null,
+    telegram: (cg && cg.telegram) || (gt && gt.telegram) || null,
+    website: (cg && cg.website) || (gt && gt.website) || null,
+    // reality: CoinGecko total (CEX+DEX) is the number that matches exchanges;
+    // fall back to the on-chain DEX aggregate when CoinGecko has no record.
+    volume: cgVol || dexVol || 0,
+    dexVolume: dexVol || null,
+    mcap: (cg && cg.mcap) || (gt && gt.mcap) || (agg && agg.mcap) || 0,
+    mcapRank: cg ? cg.mcapRank : null,
+    // on-chain usage: prefer the DEX aggregate, fall back to GT reserves
+    liquidity: (agg && agg.liquidity) || (gt && gt.liquidity) || 0,
+    txns24h: agg ? agg.txns24h : null,
+    source: cg ? "coingecko" : (gt ? "geckoterminal" : "dexscreener"),
+  };
+}
+
 async function resolveToken(query) {
   const isContract = EVM_RE.test(query) || SOL_RE.test(query);
-  let token = null;
 
   if (isContract) {
-    const dex = await fromDex(query);
-    if (dex) {
-      token = { ...dex };
-      // enrich socials via GeckoTerminal using the dex chain mapped to a GT network
-      const gtNet = GT_NETWORK[dex.chain] || null;
-      if (gtNet) {
-        try {
-          const g = await fromGecko(gtNet, query);
-          token.twitter = g.twitter; token.telegram = g.telegram; token.website = g.website;
-          if (!token.image) token.image = g.image;
-          if (!token.mcap) token.mcap = g.mcap;
-          if (!token.liquidity) token.liquidity = g.liquidity;
-        } catch (_) {}
-      }
-    }
-  } else {
-    const candidates = await resolveCandidates(query);
-    let chosen = null;
-    // pick the first candidate that has a project Twitter handle (canonical token);
-    // fall back to the highest-liquidity one if none expose socials.
-    for (let i = 0; i < candidates.length; i++) {
-      const g = await fromGecko(candidates[i].network, candidates[i].address);
-      if (!chosen) chosen = { g, address: candidates[i].address };
-      if (g.twitter) { chosen = { g, address: candidates[i].address }; break; }
-    }
-    if (chosen) {
-      token = { ...chosen.g, txns24h: null };
-      try {
-        const dex = await fromDex(chosen.address);
-        if (dex) { token.txns24h = dex.txns24h; if (!token.liquidity) token.liquidity = dex.liquidity; if (!token.image) token.image = dex.image; }
-      } catch (_) {}
+    // on-chain truth first (works for brand-new tokens CoinGecko hasn't indexed)
+    const agg = await dexAggregate(query).catch(() => null);
+    const chain = agg ? agg.chain : null;
+    const platform = chain ? CG_PLATFORM_FOR_CHAIN[chain] : null;
+    const cg = platform ? await cgCoinByContract(platform, query) : null;
+    let gt = null;
+    if (!cg && chain && GT_NETWORK[chain]) gt = await fromGecko(GT_NETWORK[chain], query).catch(() => null);
+    if (!agg && !cg && !gt) return null;
+    return mergeToken({ cg, gt, agg, chain: chain || (cg && cg.chain) });
+  }
+
+  // name / symbol -> CoinGecko canonical (curated, kills fake tokens)
+  const id = await cgSearchId(query);
+  const cg = id ? await cgCoinById(id) : null;
+  if (cg) {
+    const agg = cg.contract ? await dexAggregate(cg.contract).catch(() => null) : null;
+    return mergeToken({ cg, agg, chain: cg.chain });
+  }
+
+  // last resort: the old GeckoTerminal path if CoinGecko whiffed entirely
+  const candidates = await resolveCandidates(query);
+  for (let i = 0; i < candidates.length; i++) {
+    const g = await fromGecko(candidates[i].network, candidates[i].address).catch(() => null);
+    if (g && g.twitter) {
+      const agg = await dexAggregate(candidates[i].address).catch(() => null);
+      return mergeToken({ gt: g, agg, chain: g.chain });
     }
   }
-  return token;
+  return null;
 }
 
 // DexScreener chainId -> GeckoTerminal network id (common ones)
@@ -459,11 +570,22 @@ export const handler = async (event) => {
         metrics: {
           followers: attention ? attention.followers : null,
           xVerified: attention ? attention.isVerified : null,
-          volume24h: token.volume, marketCap: token.mcap,
+          volume24h: token.volume, dexVolume24h: token.dexVolume,
+          marketCap: token.mcap, marketCapRank: token.mcapRank,
+          turnover: token.volume && token.mcap ? token.volume / token.mcap : null,
+          txns24h: token.txns24h, liquidity: token.liquidity,
+          source: token.source,
+        },
+        rawForRecs: {
+          name: token.name, symbol: token.symbol, chain: token.chain,
+          attention: attScore, adoption: adoScore, gap,
+          followers: attention ? attention.followers : null,
+          xVerified: attention ? attention.isVerified : null,
+          volume: token.volume, dexVolume: token.dexVolume,
+          mcap: token.mcap, mcapRank: token.mcapRank,
           turnover: token.volume && token.mcap ? token.volume / token.mcap : null,
           txns24h: token.txns24h, liquidity: token.liquidity,
         },
-        rawForRecs: { name: token.name, symbol: token.symbol, chain: token.chain, attention: attScore, adoption: adoScore, gap, followers: attention ? attention.followers : null, volume: token.volume, mcap: token.mcap, txns24h: token.txns24h },
       };
       cacheSet(cacheKey, base);
     }
