@@ -46,9 +46,11 @@
   opacity: 0.85;
 }
 
-/* ── Video ── */
+/* ── Video (constrained + centered so it doesn't dominate the fold) ── */
 .cnt-video {
-  margin: 0 0 56px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto 48px;
   border: 1px solid var(--border-color);
   border-radius: 5px;
   overflow: hidden;
