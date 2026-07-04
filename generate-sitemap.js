@@ -158,6 +158,42 @@ Promise.all([
 `;
   });
 
+  // Adicionar "Crypto News Today": hub + uma página por dia (data/crypto-news-today/*.json)
+  const newsDataDir = path.join(__dirname, 'data', 'crypto-news-today');
+  const newsDays = [];
+  try {
+    if (fs.existsSync(newsDataDir)) {
+      for (const f of fs.readdirSync(newsDataDir)) {
+        if (!f.endsWith('.json')) continue;
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(newsDataDir, f), 'utf8'));
+          if (d && d.date) newsDays.push(d.date);
+        } catch (e) { console.warn(`⚠️ sitemap: ignorando ${f}: ${e.message}`); }
+      }
+    }
+  } catch (e) { console.warn(`⚠️ sitemap: falha ao ler crypto-news-today: ${e.message}`); }
+  newsDays.sort((a, b) => (a < b ? 1 : -1));
+
+  // Hub
+  xml += `  <url>
+    <loc>${BASE_URL}/crypto-news-today</loc>
+    <lastmod>${newsDays[0] || new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+`;
+  // Uma URL por dia
+  newsDays.forEach(date => {
+    xml += `  <url>
+    <loc>${BASE_URL}/crypto-news-today/${date}</loc>
+    <lastmod>${date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+  });
+  console.log(`✅ Adicionadas ${newsDays.length} página(s) de Crypto News Today ao sitemap`);
+
   xml += `</urlset>`;
 
   // Salvar sitemap.xml

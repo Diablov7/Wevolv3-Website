@@ -76,6 +76,7 @@
     <link href="images/favicon.png" rel="shortcut icon" type="image/png" />
     <link href="images/favicon.png" rel="apple-touch-icon" />
     <link href="css/landing.css?v=2" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@4.7.0/dist/apexcharts.min.js"></script>
 
     <style>
       .ac-tool { max-width: 760px; margin: 34px auto 0; }
@@ -173,6 +174,24 @@
 
       .ac-emailed { margin-top: 18px; text-align: center; color: #10b981; font-size: 14px; }
       .ac-emailed:empty { display: none; }
+
+      /* apex chart blocks */
+      .ac-radial { margin: 2px 0 0; min-height: 190px; }
+      .ac-duochart { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+      @media (max-width: 720px) { .ac-duochart { grid-template-columns: 1fr; } }
+      .ac-sent-viz { display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: center; }
+      @media (max-width: 620px) { .ac-sent-viz { grid-template-columns: 1fr; } }
+      .ac-sent-side { min-width: 0; }
+
+      /* our read (natural-language analysis) */
+      .ac-analysis { margin-top: 22px; background: linear-gradient(180deg, rgba(16,185,129,.07), rgba(16,185,129,.015)); border: 1px solid #1f3a30; border-radius: 10px; padding: 26px 28px; }
+      .ac-analysis h5 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #10b981; margin: 0 0 14px; }
+      .ac-analysis p { color: #e2e2e2; font-size: 16px; line-height: 1.7; margin: 0 0 14px; }
+      .ac-analysis p:last-child { margin-bottom: 0; }
+
+      /* service pill on each recommended action */
+      .ac-svc { display: inline-block; margin-top: 6px; font-family: 'Orbitron', monospace; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #7ae0bf; text-decoration: none; border: 1px solid #1f3a30; border-radius: 20px; padding: 4px 11px; transition: border-color .15s, color .15s; }
+      .ac-svc:hover { border-color: #10b981; color: #fff; }
 
       /* header extras: price chips, sparkline, grade */
       .ac-headright { margin-left: auto; display: flex; align-items: center; gap: 16px; }
@@ -334,15 +353,13 @@
                     <div class="ac-gauges">
                         <div class="ac-gauge attention">
                             <div class="ac-label">Attention</div>
-                            <div class="ac-val"><span id="ac-r-att">0</span><b> / 100</b></div>
+                            <div class="ac-radial" id="ac-radial-att"></div>
                             <div class="ac-sub">Real X / Twitter reach</div>
-                            <div class="ac-bar"><span id="ac-r-att-bar"></span></div>
                         </div>
                         <div class="ac-gauge adoption">
                             <div class="ac-label">Adoption</div>
-                            <div class="ac-val"><span id="ac-r-ado">0</span><b> / 100</b></div>
+                            <div class="ac-radial" id="ac-radial-ado"></div>
                             <div class="ac-sub">Real on-chain usage</div>
-                            <div class="ac-bar"><span id="ac-r-ado-bar"></span></div>
                         </div>
                     </div>
 
@@ -374,9 +391,15 @@
 
                     <!-- FULL REPORT: revealed after unlock -->
                     <div class="ac-full" id="ac-full">
-                        <div class="ac-chartwrap">
-                            <div class="ac-chart-title">The gap</div>
-                            <div id="ac-chart"></div>
+                        <div class="ac-duochart">
+                            <div class="ac-chartwrap">
+                                <div class="ac-chart-title">The gap</div>
+                                <div id="ac-chart"></div>
+                            </div>
+                            <div class="ac-chartwrap" id="ac-pricewrap" style="display:none">
+                                <div class="ac-chart-title">7-day price</div>
+                                <div id="ac-price-chart"></div>
+                            </div>
                         </div>
 
                         <div class="ac-verdict">
@@ -410,8 +433,13 @@
                                 <span class="ac-sent-title">Community sentiment on X</span>
                                 <span class="ac-sent-note" id="ac-sent-f-note"></span>
                             </div>
-                            <div class="ac-sentbar" id="ac-sent-f-bar"></div>
-                            <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
+                            <div class="ac-sent-viz">
+                                <div id="ac-sent-donut"></div>
+                                <div class="ac-sent-side">
+                                    <div class="ac-sentbar" id="ac-sent-f-bar"></div>
+                                    <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
+                                </div>
+                            </div>
                             <div class="ac-themes" id="ac-themes"></div>
                             <div class="ac-mentions">
                                 <div class="ac-mcolm">
@@ -423,6 +451,12 @@
                                     <div id="ac-ment-neg"></div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- OUR READ: natural-language analysis of the data -->
+                        <div class="ac-analysis" id="ac-analysis" style="display:none">
+                            <h5>Our read</h5>
+                            <div id="ac-analysis-body"></div>
                         </div>
 
                         <div class="ac-recs">
@@ -563,20 +597,44 @@
         }
         var setStatus = function (m, e) { setStatusOn(status, m, e); };
 
-        function countUp(el, to) {
-          if (to == null || isNaN(to)) { el.textContent = to == null ? 'N/A' : to; return; }
-          var start = null, done = false;
-          function finish() { if (!done) { done = true; el.textContent = to; } }
-          function step(ts) {
-            if (start == null) start = ts;
-            var p = Math.min(1, (ts - start) / 700);
-            el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
-            if (p < 1) requestAnimationFrame(step); else finish();
-          }
-          requestAnimationFrame(step);
-          // safety net: rAF is throttled on hidden tabs / reduced-motion / headless,
-          // so guarantee the final value lands regardless of animation.
-          setTimeout(finish, 800);
+        // ---- ApexCharts helpers (dark theme, brand palette) ----
+        var CHARTS = {};
+        function mountChart(sel, options) {
+          if (!window.ApexCharts) return; // CDN failed -> metrics still readable
+          if (CHARTS[sel]) { try { CHARTS[sel].destroy(); } catch (e) {} }
+          var el = document.querySelector(sel);
+          if (!el) return;
+          el.innerHTML = '';
+          CHARTS[sel] = new ApexCharts(el, options);
+          CHARTS[sel].render();
+        }
+        var CHART_FONT = "'Clashdisplay', 'Arial', sans-serif";
+
+        function radialOpts(value, color, label) {
+          return {
+            chart: { type: 'radialBar', height: 210, fontFamily: CHART_FONT, sparkline: { enabled: true }, animations: { speed: 900, easing: 'easeoutcubic' } },
+            series: [value == null ? 0 : value],
+            colors: [color],
+            plotOptions: {
+              radialBar: {
+                hollow: { size: '58%' },
+                track: { background: '#1a1a1a', strokeWidth: '100%' },
+                dataLabels: {
+                  name: { show: false },
+                  value: {
+                    show: true, fontSize: '38px', fontWeight: 700, color: '#ffffff', offsetY: 12,
+                    formatter: function () { return value == null ? 'N/A' : value; }
+                  }
+                }
+              }
+            },
+            fill: {
+              type: 'gradient',
+              gradient: { shade: 'dark', type: 'diagonal1', gradientToColors: [color === '#10b981' ? '#7ae0bf' : '#a8bcff'], stops: [0, 100] }
+            },
+            stroke: { lineCap: 'round' },
+            labels: [label]
+          };
         }
 
         // token header + gauges (shared by teaser and full)
@@ -585,12 +643,8 @@
           if (t.image) { logo.src = t.image; logo.style.display = ''; } else { logo.style.display = 'none'; }
           document.getElementById('ac-r-name').textContent = t.name + (t.symbol ? ' (' + t.symbol + ')' : '');
           document.getElementById('ac-r-meta').textContent = (t.chain || 'Live public data');
-          countUp(document.getElementById('ac-r-att'), hasAtt ? s.attention : null);
-          countUp(document.getElementById('ac-r-ado'), s.adoption);
-          // set widths directly; the CSS width transition animates them (works even
-          // when rAF is throttled, so bars are never left blank).
-          document.getElementById('ac-r-att-bar').style.width = (hasAtt ? s.attention : 0) + '%';
-          document.getElementById('ac-r-ado-bar').style.width = s.adoption + '%';
+          mountChart('#ac-radial-att', radialOpts(hasAtt ? s.attention : null, '#6b8cff', 'Attention'));
+          mountChart('#ac-radial-ado', radialOpts(s.adoption, '#10b981', 'Adoption'));
         }
 
         // header extras: 7d sparkline + price-change chips + health grade badge
@@ -637,36 +691,67 @@
           a.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(txt) + '&url=' + encodeURIComponent('https://wevolv3.com/adoption-check');
         }
 
-        // beautiful animated SVG: the gap on a 0-100 axis
+        // the gap: horizontal gradient bars, attention vs adoption
         function renderChart(s, hasAtt) {
-          var W = 800, padX = 40, axisY = 150, trackW = W - padX * 2;
-          var xa = padX + (hasAtt ? s.attention : 0) / 100 * trackW;
-          var xo = padX + s.adoption / 100 * trackW;
-          var lo = Math.min(xa, xo), hi = Math.max(xa, xo), gapMid = (lo + hi) / 2;
-          var gapTxt = (hasAtt && s.gap != null) ? (s.gap > 0 ? '+' : '') + s.gap + ' pts' : '';
-          var SP = 'dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"';
-          var parts = [];
-          parts.push('<svg viewBox="0 0 ' + W + ' 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Attention vs adoption gap">');
-          parts.push('<line x1="' + padX + '" y1="' + axisY + '" x2="' + (W - padX) + '" y2="' + axisY + '" stroke="#2a2a2a" stroke-width="2"/>');
-          [0, 25, 50, 75, 100].forEach(function (v) {
-            var x = padX + v / 100 * trackW;
-            parts.push('<line x1="' + x + '" y1="' + (axisY - 5) + '" x2="' + x + '" y2="' + (axisY + 5) + '" stroke="#333"/>');
-            parts.push('<text x="' + x + '" y="' + (axisY + 24) + '" fill="#666" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">' + v + '</text>');
+          var series = [{ name: 'Score', data: [] }];
+          var labels = [], colors = [];
+          if (hasAtt) { series[0].data.push(s.attention); labels.push('Attention'); colors.push('#6b8cff'); }
+          series[0].data.push(s.adoption); labels.push('Adoption'); colors.push('#10b981');
+          var gapTxt = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' pts' : '';
+          mountChart('#ac-chart', {
+            chart: { type: 'bar', height: 200, fontFamily: CHART_FONT, toolbar: { show: false }, background: 'transparent', animations: { speed: 900, easing: 'easeoutcubic' } },
+            series: series,
+            plotOptions: { bar: { horizontal: true, borderRadius: 8, barHeight: '52%', distributed: true } },
+            colors: colors,
+            fill: { type: 'gradient', gradient: { shade: 'dark', type: 'horizontal', gradientToColors: ['#a8bcff', '#7ae0bf'].slice(hasAtt ? 0 : 1), opacityFrom: 1, opacityTo: 0.85 } },
+            dataLabels: { enabled: true, style: { fontSize: '16px', fontWeight: 700, colors: ['#fff'] }, formatter: function (v) { return v + ' / 100'; }, offsetX: -6 },
+            xaxis: { categories: labels, max: 100, labels: { style: { colors: '#666', fontSize: '12px' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+            yaxis: { labels: { style: { colors: '#c8c8c8', fontSize: '13px', fontFamily: "'Orbitron', monospace" } } },
+            grid: { borderColor: '#222', xaxis: { lines: { show: true } }, yaxis: { lines: { show: false } } },
+            legend: { show: false },
+            tooltip: { theme: 'dark', y: { formatter: function (v) { return v + ' / 100'; } } },
+            title: gapTxt ? { text: gapTxt, align: 'right', style: { color: '#10b981', fontSize: '13px', fontFamily: "'Orbitron', monospace" } } : undefined
           });
-          if (hasAtt) {
-            parts.push('<rect x="' + lo + '" y="' + (axisY - 34) + '" width="0" height="68" rx="6" fill="rgba(16,185,129,.10)" stroke="rgba(16,185,129,.35)"><animate attributeName="width" from="0" to="' + (hi - lo) + '" dur="0.8s" fill="freeze" calcMode="spline" keySplines="0.2 0.8 0.2 1" keyTimes="0;1"/></rect>');
-            if (gapTxt) parts.push('<text x="' + gapMid + '" y="' + (axisY - 44) + '" fill="#10b981" font-size="13" text-anchor="middle" font-family="Orbitron,monospace" opacity="0"><animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.7s" fill="freeze"/>' + gapTxt + '</text>');
-          }
-          // adoption marker (green)
-          parts.push('<circle cx="' + padX + '" cy="' + axisY + '" r="11" fill="#10b981"><animate attributeName="cx" from="' + padX + '" to="' + xo + '" ' + SP + '/></circle>');
-          parts.push('<text y="' + (axisY - 22) + '" fill="#10b981" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">ADOPTION<animate attributeName="x" from="' + padX + '" to="' + xo + '" ' + SP + '/></text>');
-          // attention marker (blue)
-          if (hasAtt) {
-            parts.push('<circle cx="' + padX + '" cy="' + axisY + '" r="11" fill="#6b8cff"><animate attributeName="cx" from="' + padX + '" to="' + xa + '" ' + SP + '/></circle>');
-            parts.push('<text y="' + (axisY + 46) + '" fill="#6b8cff" font-size="12" text-anchor="middle" font-family="Orbitron,monospace">ATTENTION<animate attributeName="x" from="' + padX + '" to="' + xa + '" ' + SP + '/></text>');
-          }
-          parts.push('</svg>');
-          document.getElementById('ac-chart').innerHTML = parts.join('');
+        }
+
+        // 7-day price: smooth gradient area (full report)
+        function renderPriceChart(t) {
+          var wrap = document.getElementById('ac-pricewrap');
+          var pts = t.sparkline || [];
+          if (!window.ApexCharts || pts.length < 2) { wrap.style.display = 'none'; return; }
+          wrap.style.display = '';
+          var d7 = t.priceChange && t.priceChange.d7;
+          var up = !(d7 != null && d7 < 0);
+          var color = up ? '#10b981' : '#ef4444';
+          mountChart('#ac-price-chart', {
+            chart: { type: 'area', height: 200, fontFamily: CHART_FONT, toolbar: { show: false }, background: 'transparent', sparkline: { enabled: false }, animations: { speed: 900, easing: 'easeoutcubic' } },
+            series: [{ name: (t.symbol || 'Price') + ' (USD)', data: pts }],
+            colors: [color],
+            stroke: { curve: 'smooth', width: 2.5 },
+            fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.02, stops: [0, 95] } },
+            dataLabels: { enabled: false },
+            xaxis: { labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false }, tooltip: { enabled: false } },
+            yaxis: { labels: { style: { colors: '#666', fontSize: '11px' }, formatter: function (v) { return v >= 1 ? '$' + v.toFixed(2) : '$' + v.toPrecision(3); } }, tickAmount: 4 },
+            grid: { borderColor: '#1e1e1e', strokeDashArray: 3 },
+            tooltip: { theme: 'dark', x: { show: false }, y: { formatter: function (v) { return v >= 1 ? '$' + v.toFixed(4) : '$' + v.toPrecision(4); } } },
+            title: d7 != null ? { text: (up ? '▲ ' : '▼ ') + Math.abs(d7).toFixed(1) + '% this week', align: 'right', style: { color: color, fontSize: '13px', fontFamily: "'Orbitron', monospace" } } : undefined
+          });
+        }
+
+        // sentiment donut (full report)
+        function renderSentDonut(sen) {
+          if (!window.ApexCharts || !sen || !sen.total) return;
+          mountChart('#ac-sent-donut', {
+            chart: { type: 'donut', height: 210, fontFamily: CHART_FONT, background: 'transparent', animations: { speed: 900, easing: 'easeoutcubic' } },
+            series: [sen.positivePct, sen.neutralPct, sen.negativePct],
+            labels: ['Positive', 'Neutral', 'Negative'],
+            colors: ['#10b981', '#4a4a4a', '#ef4444'],
+            stroke: { colors: ['#0c0c0c'], width: 3 },
+            dataLabels: { enabled: false },
+            legend: { show: false },
+            plotOptions: { pie: { donut: { size: '72%', labels: { show: true, name: { show: true, color: '#8a8a8a', fontSize: '11px', offsetY: 18 }, value: { show: true, color: '#fff', fontSize: '26px', fontWeight: 700, offsetY: -12, formatter: function (v) { return v + '%'; } }, total: { show: true, label: 'positive', color: '#8a8a8a', fontSize: '11px', formatter: function () { return sen.positivePct + '%'; } } } } } },
+            tooltip: { theme: 'dark', y: { formatter: function (v) { return v + '%'; } } }
+          });
         }
 
         function escHtml(s) {
@@ -698,6 +783,7 @@
           if (!sen || !sen.total) { box.style.display = 'none'; return; }
           box.style.display = '';
           renderSentBar('ac-sent-f-bar', 'ac-sent-f-legend', 'ac-sent-f-note', sen);
+          renderSentDonut(sen);
           var d = detail || {};
           var themes = '';
           if ((d.themesUp || []).length) themes += '<div class="ac-theme up"><h6>What drives positive</h6>' + d.themesUp.map(function (t) { return '<span class="tag">' + escHtml(t) + '</span>'; }).join('') + '</div>';
@@ -733,8 +819,7 @@
           out.push('<div class="ac-cmp-tok">' + (a.token.image ? '<img src="' + escHtml(a.token.image) + '" alt=""/>' : '') + '<span class="nm">' + escHtml(an) + '</span>' + gradeChip(a.grade) + '</div>');
           out.push('<div class="ac-cmp-tok">' + gradeChip(b.grade) + '<span class="nm">' + escHtml(bn) + '</span>' + (b.token.image ? '<img src="' + escHtml(b.token.image) + '" alt=""/>' : '') + '</div>');
           out.push('</div>');
-          out.push('<div class="ac-cmp-row"><div class="lbl">Attention</div>' + cmpTrack('a', an, a.scores.attention) + cmpTrack('b', bn, b.scores.attention) + '</div>');
-          out.push('<div class="ac-cmp-row"><div class="lbl">Adoption</div>' + cmpTrack('a', an, a.scores.adoption) + cmpTrack('b', bn, b.scores.adoption) + '</div>');
+          out.push('<div id="ac-cmp-chart"></div>');
           var note = '';
           var dAtt = (a.scores.attention != null && b.scores.attention != null) ? a.scores.attention - b.scores.attention : null;
           var dAdo = (a.scores.adoption != null && b.scores.adoption != null) ? a.scores.adoption - b.scores.adoption : null;
@@ -746,6 +831,29 @@
           }
           if (note) out.push('<div class="ac-cmp-note">' + note + '</div>');
           document.getElementById('ac-cmp-result').innerHTML = out.join('');
+          if (window.ApexCharts) {
+            mountChart('#ac-cmp-chart', {
+              chart: { type: 'bar', height: 230, fontFamily: CHART_FONT, toolbar: { show: false }, background: 'transparent', animations: { speed: 900, easing: 'easeoutcubic' } },
+              series: [
+                { name: an, data: [a.scores.attention || 0, a.scores.adoption || 0] },
+                { name: bn, data: [b.scores.attention || 0, b.scores.adoption || 0] }
+              ],
+              colors: ['#10b981', '#6b8cff'],
+              plotOptions: { bar: { horizontal: true, borderRadius: 6, barHeight: '62%', dataLabels: { position: 'bottom' } } },
+              fill: { opacity: 0.95 },
+              dataLabels: { enabled: true, textAnchor: 'start', offsetX: 8, style: { fontSize: '12px', fontWeight: 700, colors: ['#fff'] } },
+              xaxis: { categories: ['Attention', 'Adoption'], max: 100, labels: { style: { colors: '#666', fontSize: '11px' } }, axisBorder: { show: false }, axisTicks: { show: false } },
+              yaxis: { labels: { style: { colors: '#c8c8c8', fontSize: '12px', fontFamily: "'Orbitron', monospace" } } },
+              grid: { borderColor: '#222' },
+              legend: { position: 'top', horizontalAlign: 'left', labels: { colors: '#c8c8c8' }, markers: { size: 6 } },
+              tooltip: { theme: 'dark', y: { formatter: function (v) { return v + ' / 100'; } } }
+            });
+          } else {
+            // no-chart fallback: plain paired tracks
+            var el = document.getElementById('ac-cmp-chart');
+            el.innerHTML = '<div class="ac-cmp-row"><div class="lbl">Attention</div>' + cmpTrack('a', an, a.scores.attention) + cmpTrack('b', bn, b.scores.attention) + '</div>' +
+              '<div class="ac-cmp-row"><div class="lbl">Adoption</div>' + cmpTrack('a', an, a.scores.adoption) + cmpTrack('b', bn, b.scores.adoption) + '</div>';
+          }
         }
 
         function runCompare(query) {
@@ -773,6 +881,9 @@
         function renderFull(data) {
           var s = data.scores, v = data.verdict, m = data.metrics, hasAtt = data.attentionAvailable && s.attention != null;
           lastReport = data;
+          // reveal BEFORE mounting charts (ApexCharts needs a measurable container)
+          gate.style.display = 'none';
+          full.classList.add('show');
           renderChart(s, hasAtt);
           document.getElementById('ac-r-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
           document.getElementById('ac-r-vh').textContent = v.headline;
@@ -791,14 +902,29 @@
           } else { peerEl.textContent = '—'; }
           document.getElementById('ac-m-txns').textContent = fmtNum(m.txns24h);
           document.getElementById('ac-m-liq').textContent = fmtUsd(m.liquidity);
+
+          // natural-language analysis ("Our read")
+          var an = document.getElementById('ac-analysis');
+          var anBody = document.getElementById('ac-analysis-body');
+          if (data.analysis) {
+            anBody.innerHTML = String(data.analysis).split(/\n\n+/).map(function (p) { return '<p>' + escHtml(p) + '</p>'; }).join('');
+            an.style.display = '';
+          } else { an.style.display = 'none'; }
+
+          // actions, each tagged with the Wevolv3 service that executes it
           var ol = document.getElementById('ac-rec-list');
-          ol.innerHTML = (data.recommendations || []).map(function (r) { return '<li></li>'; }).join('');
-          (data.recommendations || []).forEach(function (r, i) { ol.children[i].textContent = r; });
+          ol.innerHTML = (data.recommendations || []).map(function (r) {
+            var text = typeof r === 'string' ? r : (r.text || '');
+            var pill = (r && r.service && r.service.url)
+              ? '<br/><a class="ac-svc" href="' + escHtml(r.service.url) + '" target="_blank" rel="noopener">' + escHtml(r.service.name) + ' →</a>'
+              : '';
+            return '<li>' + escHtml(text) + pill + '</li>';
+          }).join('');
+
+          renderPriceChart(data.token);
           renderSentimentFull(data.sentimentDetail, data.sentiment);
           setShareLink(data.token, data.scores, data.grade, hasAtt);
           document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Full report sent to your inbox' : '';
-          gate.style.display = 'none';
-          full.classList.add('show');
           full.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -820,6 +946,9 @@
               if (!res.ok || !res.j.ok) { setStatus(res.j && res.j.error ? res.j.error : 'Something went wrong. Please try again.', true); return; }
               setStatus('', false);
               var s = res.j.scores, hasAtt = res.j.attentionAvailable && s.attention != null;
+              // reveal BEFORE mounting charts: ApexCharts measures the container,
+              // and a display:none parent yields zero-width (blank) charts.
+              result.classList.add('show');
               renderHead(res.j.token, s, hasAtt);
               renderHeadExtras(res.j.token, res.j.grade);
               document.getElementById('ac-t-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
@@ -828,7 +957,6 @@
               if (res.j.sentiment && res.j.sentiment.total) { stz.style.display = ''; renderSentBar('ac-sent-t-bar', 'ac-sent-t-legend', 'ac-sent-t-note', res.j.sentiment); }
               else { stz.style.display = 'none'; }
               gate.style.display = '';
-              result.classList.add('show');
               result.scrollIntoView({ behavior: 'smooth', block: 'start' });
               if (typeof window.wevolv3Track === 'function') window.wevolv3Track('adoption_check_run', { token: res.j.token.symbol || res.j.token.name, gap: s.gap });
             })
