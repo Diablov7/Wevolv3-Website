@@ -361,10 +361,11 @@
         <!-- Crypto News Today ticker (home) — start -->
         <style>
           .cnt-bar{display:block;text-decoration:none;margin-top:3px;position:relative;z-index:2}
-          .cnt-bar-inner{display:flex;align-items:center;gap:14px;background:#242424;border:1px solid #333;border-radius:5px;padding:6px 16px;overflow:hidden}
+          .cnt-bar-inner{display:flex;align-items:center;gap:14px;background:rgba(18,18,18,.72);border:1px solid #3a3a3a;border-radius:5px;padding:6px 16px;overflow:hidden}
           .cnt-bar-tag{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;font-family:Clashdisplay,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--default)}
-          .cnt-bar-dot{width:7px;height:7px;border-radius:50%;background:var(--default);animation:cnt-pulse 2s infinite}
-          @keyframes cnt-pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}70%{box-shadow:0 0 0 6px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+          .cnt-bar-dot{width:7px;height:7px;border-radius:50%;background:var(--default);animation:cnt-pulse 2.4s ease-in-out infinite}
+          @keyframes cnt-pulse{0%,100%{opacity:1}50%{opacity:.3}}
+          .cnt-bar.cnt-off .cnt-bar-marquee,.cnt-bar.cnt-off .cnt-bar-dot{animation-play-state:paused}
           .cnt-bar-track{flex:1 1 auto;min-width:0;overflow:hidden}
           .cnt-bar-marquee{display:inline-flex;white-space:nowrap;will-change:transform;animation:cnt-marquee 32s linear infinite}
           .cnt-bar:hover .cnt-bar-marquee{animation-play-state:paused}
@@ -396,6 +397,11 @@
         (function(){
           var bar=document.getElementById('cnt-bar'),marquee=document.getElementById('cnt-bar-marquee');
           if(!bar||!marquee)return;
+          // Pause the animations when the tab is backgrounded or the bar is off-screen.
+          var offView=false,hidden=false;
+          function apply(){bar.classList.toggle('cnt-off',offView||hidden);}
+          if('IntersectionObserver' in window){new IntersectionObserver(function(e){offView=!e[0].isIntersecting;apply();},{threshold:0}).observe(bar);}
+          document.addEventListener('visibilitychange',function(){hidden=document.hidden;apply();});
           fetch('/crypto-news-today/latest.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
             if(!d||!d.headlines||!d.headlines.length)return;
             if(d.date)bar.setAttribute('href','/crypto-news-today/'+d.date);
