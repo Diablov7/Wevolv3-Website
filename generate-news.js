@@ -16,11 +16,23 @@
  */
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, 'data', 'crypto-news-today');
 const OUT_DIR = path.join(ROOT, 'crypto-news-today');
 const BASE_URL = 'https://wevolv3.com';
+
+/** Cache-busting version for /css/news.css — short hash of its content, so the
+ *  link changes only when the CSS changes (returning visitors never get stale CSS). */
+function cssVersion() {
+  try {
+    return crypto.createHash('sha1').update(fs.readFileSync(path.join(ROOT, 'css', 'news.css'))).digest('hex').slice(0, 8);
+  } catch {
+    return '1';
+  }
+}
+const CSS_VER = cssVersion();
 
 // ── helpers ────────────────────────────────────────────────────────────────
 function esc(s) {
@@ -92,7 +104,7 @@ ${opts.jsonLd ? opts.jsonLd.map(j => '    <script type="application/ld+json">\n'
     <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
     <link href="/css/layout.css" rel="stylesheet" type="text/css" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="/css/news.css" rel="stylesheet" type="text/css" />
+    <link href="/css/news.css?v=${CSS_VER}" rel="stylesheet" type="text/css" />
     <link href="/images/favicon.png" rel="shortcut icon" type="image/png" />
     <link href="/images/favicon.png" rel="apple-touch-icon" />
     <style>
