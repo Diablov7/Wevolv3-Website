@@ -311,7 +311,14 @@ function build() {
     fs.writeFileSync(path.join(OUT_DIR, `${day.date}.html`), renderDay(day, prevDay));
   });
 
-  console.log(`[news] generated hub + ${days.length} day page(s) → crypto-news-today/`);
+  // Tiny feed for the homepage ticker — newest day's date + headline chips.
+  const latest = days[0]
+    ? { date: days[0].date, dateLabel: days[0].dateLabel, hook: days[0].hook,
+        headlines: (days[0].stories || []).map((s) => ({ cat: String(s.cat || 'NEWS'), text: String(s.text || '') })) }
+    : { date: null, dateLabel: '', hook: '', headlines: [] };
+  fs.writeFileSync(path.join(OUT_DIR, 'latest.json'), JSON.stringify(latest) + '\n');
+
+  console.log(`[news] generated hub + ${days.length} day page(s) + latest.json → crypto-news-today/`);
   return days;
 }
 

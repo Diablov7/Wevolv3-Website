@@ -358,6 +358,64 @@
             </div>
         </div>
 
+        <!-- Crypto News Today ticker (home) — start -->
+        <style>
+          .cnt-bar{display:block;text-decoration:none;margin-top:8px}
+          .cnt-bar-inner{display:flex;align-items:center;gap:16px;background:var(--grey);border:1px solid var(--border-color);border-radius:5px;padding:9px 18px;overflow:hidden}
+          .cnt-bar-tag{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;font-family:Clashdisplay,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--default)}
+          .cnt-bar-dot{width:8px;height:8px;border-radius:50%;background:var(--default);animation:cnt-pulse 2s infinite}
+          @keyframes cnt-pulse{0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}70%{box-shadow:0 0 0 7px rgba(16,185,129,0)}100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}}
+          .cnt-bar-track{flex:1 1 auto;min-width:0;position:relative;height:20px}
+          .cnt-bar-item{position:absolute;inset:0;display:flex;align-items:center;font-family:Clashdisplay,sans-serif;font-weight:300;font-size:14px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .5s ease}
+          .cnt-bar-item.is-on{opacity:1}
+          .cnt-bar-item b{color:var(--default);font-weight:600;margin-right:8px}
+          .cnt-bar-more{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;font-family:Clashdisplay,sans-serif;font-weight:400;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--white);border-bottom:1px solid var(--white);padding-bottom:1px;transition:color .2s,border-color .2s}
+          .cnt-bar:hover .cnt-bar-more{color:var(--default);border-color:var(--default)}
+          .cnt-bar-more img{width:13px;height:auto}
+          @media (max-width:600px){.cnt-bar-more span{display:none}.cnt-bar-inner{gap:12px;padding:8px 14px}}
+          @media (prefers-reduced-motion:reduce){.cnt-bar-dot{animation:none}}
+        </style>
+        <div class="w-layout-blockcontainer main-container w-container">
+          <a href="/crypto-news-today" class="cnt-bar" id="cnt-bar" aria-label="Crypto News Today, read today's top stories">
+            <div class="cnt-bar-inner">
+              <span class="cnt-bar-tag"><span class="cnt-bar-dot"></span>Today</span>
+              <span class="cnt-bar-track" id="cnt-bar-track">
+                <span class="cnt-bar-item is-on">Crypto News Today, today's 5 stories that actually mattered</span>
+              </span>
+              <span class="cnt-bar-more"><span>See all</span> <img src="images/arrow-right.png" alt="" loading="lazy" /></span>
+            </div>
+          </a>
+        </div>
+        <script>
+        (function(){
+          var bar=document.getElementById('cnt-bar'),track=document.getElementById('cnt-bar-track');
+          if(!bar||!track)return;
+          fetch('/crypto-news-today/latest.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
+            if(!d||!d.headlines||!d.headlines.length)return;
+            if(d.date)bar.setAttribute('href','/crypto-news-today/'+d.date);
+            var items=d.headlines.map(function(h){
+              var el=document.createElement('span');el.className='cnt-bar-item';
+              var b=document.createElement('b');b.textContent=(h.cat||'NEWS');
+              el.appendChild(b);el.appendChild(document.createTextNode(h.text||''));return el;
+            });
+            track.innerHTML='';items.forEach(function(el){track.appendChild(el);});
+            items[0].classList.add('is-on');
+            var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+            if(reduce||items.length<2)return;
+            var i=0,paused=false;
+            bar.addEventListener('mouseenter',function(){paused=true;});
+            bar.addEventListener('mouseleave',function(){paused=false;});
+            setInterval(function(){
+              if(paused)return;
+              items[i].classList.remove('is-on');
+              i=(i+1)%items.length;
+              items[i].classList.add('is-on');
+            },4000);
+          }).catch(function(){});
+        })();
+        </script>
+        <!-- Crypto News Today ticker (home) — end -->
+
         <div class="hero-section">
             <!-- SEO: Hidden H1 for search engines (visually hidden but accessible) -->
             <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">Wevolv3, the Web3 growth partner turning attention into adoption</h1>
