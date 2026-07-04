@@ -430,54 +430,90 @@ async function analyzeSentiment(mentions, token) {
   };
 }
 
-// AI recommendations (OpenRouter preferred, then OpenAI). Falls back to rules.
-async function recommendations(ctx) {
+// Wevolv3's actual service roster — every recommended action maps to one of
+// these, so the report reads as a plan Wevolv3 can literally execute.
+const SERVICES = {
+  kol: { name: "Crypto KOL Marketing", url: "https://wevolv3.com/crypto-kol-marketing" },
+  pr: { name: "Crypto PR & Media Coverage", url: "https://wevolv3.com/crypto-pr" },
+  community: { name: "Community Building", url: "https://wevolv3.com/community-building" },
+  ads: { name: "Crypto Ads & On-Chain Placements", url: "https://wevolv3.com/ads-placement" },
+  growth: { name: "Growth Hacking (Reddit & Trending)", url: "https://wevolv3.com/growth-hacking" },
+  guerrilla: { name: "Guerrilla Marketing", url: "https://wevolv3.com/guerrilla-marketing" },
+  listings: { name: "Listings (CMC, CoinGecko & Exchanges)", url: "https://wevolv3.com/listings" },
+  design: { name: "Design & Motion", url: "https://wevolv3.com/design-motion" },
+  dev: { name: "Web3 Development", url: "https://wevolv3.com/web3-development" },
+  launch: { name: "Token Launch Marketing", url: "https://wevolv3.com/token-launch-marketing" },
+};
+const svc = (key) => {
+  const s = SERVICES[key] || SERVICES.kol;
+  return { key: SERVICES[key] ? key : "kol", name: s.name, url: s.url };
+};
+
+// AI analysis: a natural-language read of the data + 3 actions, each mapped to
+// a real Wevolv3 service. Falls back to a rule-based version so the report is
+// never empty.
+async function buildAnalysis(ctx) {
   const fmtUsd = (v) => (v == null || !v ? "unknown" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
   const turnoverPct = ctx.turnover != null
     ? (ctx.turnover * 100).toFixed(1) + "% of market cap trades daily" + (ctx.peerTurnover ? " vs " + (ctx.peerTurnover * 100).toFixed(1) + "% top-100 median" : "")
     : "unknown turnover";
+  const catalog = Object.entries(SERVICES).map(([k, s]) => k + " = " + s.name).join("; ");
   const prompt =
-    "You are a senior Web3 growth strategist at Wevolv3 briefing this specific project. Use ONLY the numbers below — never invent metrics, prices, partnerships or events.\n\n" +
+    "You are a senior growth strategist at Wevolv3 (a Web3 marketing agency) writing a short diagnostic for this project's team. Use ONLY the numbers below — never invent metrics, prices, partnerships or events.\n\n" +
     "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
     "SCORES: Attention " + (ctx.attention ?? "n/a") + "/100, Adoption " + ctx.adoption + "/100, Gap " + (ctx.gap ?? "n/a") + " (positive = more attention than real usage).\n" +
     "ATTENTION DATA: X followers " + (ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") : "unknown") + (ctx.xVerified ? " (verified account)" : "") + ".\n" +
     "ADOPTION DATA: market cap " + fmtUsd(ctx.mcap) + ", 24h volume " + fmtUsd(ctx.volume) + " (" + turnoverPct + "), on-chain DEX volume " + fmtUsd(ctx.dexVolume) + ", pooled liquidity " + fmtUsd(ctx.liquidity) + ", 24h on-chain transactions " + (ctx.txns24h != null ? Number(ctx.txns24h).toLocaleString("en-US") : "unknown") + ".\n" +
     (ctx.sentiment ? "SENTIMENT (of people talking about it on X): " + ctx.sentiment.positivePct + "% positive, " + ctx.sentiment.neutralPct + "% neutral, " + ctx.sentiment.negativePct + "% negative" + (ctx.themesDown && ctx.themesDown.length ? "; negative themes: " + ctx.themesDown.join(", ") : "") + ".\n" : "") +
-    "\n" +
-    "Write exactly 3 next actions to close THIS project's specific gap. Each action must reference its real situation (e.g. cite the follower count, the turnover, or the gap direction) and be a concrete growth move Wevolv3 could run — not generic advice. " +
-    "Max 24 words each, imperative, plain text, no markdown, no hashtags. Return a JSON array of 3 strings only.";
+    "\nWEVOLV3 SERVICES (use these exact keys): " + catalog + ".\n\n" +
+    "Return ONLY JSON with this shape:\n" +
+    '{"analysis":"...", "actions":[{"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}]}\n' +
+    "analysis: 2 short paragraphs (separated by \\n\\n, 120 words total max) written in plain, direct second person to the team. Paragraph 1: what the data actually says about them — cite 2-3 specific numbers and what they mean together. Paragraph 2: the single most important thing to fix first and why now. Sound like a sharp human strategist, not a report generator. No headings, no bullets, no hype words.\n" +
+    "actions: exactly 3, each max 22 words, imperative, each grounded in a cited number, each mapped to the ONE service key that would execute it. Use 3 different services.";
 
   try {
-    const txt = await llmText(prompt, 500, 0.6);
+    const txt = await llmText(prompt, 900, 0.6);
     if (txt) {
-      const match = txt.match(/\[[\s\S]*\]/);
-      const arr = JSON.parse(match ? match[0] : txt);
-      if (Array.isArray(arr) && arr.length) return { items: arr.slice(0, 3).map(String), source: "ai" };
+      const obj = JSON.parse((txt.match(/\{[\s\S]*\}/) || [txt])[0]);
+      const actions = Array.isArray(obj.actions) ? obj.actions.slice(0, 3) : [];
+      if (obj.analysis && actions.length) {
+        return {
+          analysis: String(obj.analysis).trim(),
+          items: actions.map((a) => ({ text: String(a.text || a).trim(), service: svc(String(a.service || "").toLowerCase()) })),
+          source: "ai",
+        };
+      }
     }
   } catch (_) { /* fall through to rules */ }
 
-  // rule-based fallback so the report always has recommendations
+  // rule-based fallback so the report always has an analysis
   const gap = ctx.gap;
-  let items;
-  if (gap != null && gap >= 25)
+  const fols = ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") + " X followers" : "your social reach";
+  const turn = ctx.turnover != null ? (ctx.turnover * 100).toFixed(1) + "% daily turnover" : "your trading activity";
+  let analysis, items;
+  if (gap != null && gap >= 25) {
+    analysis = "The market is watching you — " + fols + " and an attention score of " + ctx.attention + " prove that — but " + turn + " says far fewer people actually transact. That mismatch is the classic vanity-metrics trap: reach that never converts into usage.\n\nThe first thing to fix is the funnel between social interest and the first on-chain action. Until that path converts, more visibility just makes the leak bigger.";
     items = [
-      "Convert reach into on-chain action: run KOL campaigns tied to a clear, trackable first transaction.",
-      "Fix the funnel between social and wallet: audit where interested users drop before transacting.",
-      "Add recurring reasons to transact (quests, incentives, utility) so attention compounds into retention.",
+      { text: "Run KOL campaigns tied to one trackable first transaction, not impressions.", service: svc("kol") },
+      { text: "Give your " + fols + " a recurring on-chain reason to act: quests, incentives, utility drops.", service: svc("community") },
+      { text: "Retarget engaged social audiences with on-chain placements that deep-link to the swap.", service: svc("ads") },
     ];
-  else if (gap != null && gap <= -15)
+  } else if (gap != null && gap <= -15) {
+    analysis = "Your on-chain numbers (" + turn + ", adoption " + ctx.adoption + "/100) are stronger than your visibility (attention " + (ctx.attention ?? "n/a") + "/100). People who find you, use you — the market just hasn't found you at scale yet.\n\nThat is the cheapest growth problem to have. Amplifying proof that already exists converts far better than manufacturing hype, and it should happen before a louder competitor claims your narrative.";
     items = [
-      "Amplify proven usage: your product works, now put it in front of the right audiences at scale.",
-      "Turn real users into public proof with case studies, on-chain stats and creator content.",
-      "Expand awareness through targeted PR and KOLs before competitors claim your narrative.",
+      { text: "Turn real usage into public proof: case studies and on-chain stats pushed through crypto media.", service: svc("pr") },
+      { text: "Put working product in front of new audiences with KOLs who demo, not shill.", service: svc("kol") },
+      { text: "Seed organic conversation on Reddit and trending channels where researchers actually look.", service: svc("growth") },
     ];
-  else
+  } else {
+    analysis = "Attention (" + (ctx.attention ?? "n/a") + "/100) and adoption (" + ctx.adoption + "/100) are moving together, which is the healthy pattern — interest is converting into " + turn + ". Nothing is broken; the question is which side compounds faster from here.\n\nThe risk at this stage is plateau: growth that stays proportional instead of accelerating. Pick one primary metric and force every campaign to answer to it.";
     items = [
-      "Set one primary growth metric (holders, volume or active wallets) and align all campaigns to it.",
-      "Layer KOL, PR and community so attention and usage grow together, not in isolation.",
-      "Instrument attribution end-to-end so every campaign ties to a real on-chain outcome.",
+      { text: "Set one primary growth metric (holders, volume or active wallets) and align every campaign to it.", service: svc("launch") },
+      { text: "Layer KOL and PR in the same window so attention spikes land on a warm audience.", service: svc("kol") },
+      { text: "Strengthen community programs so each new wave of attention has somewhere to stay.", service: svc("community") },
     ];
-  return { items, source: "rules" };
+  }
+  return { analysis, items, source: "rules" };
 }
 
 // ---- lead capture + email --------------------------------------------------
@@ -536,8 +572,18 @@ function sentimentEmailBlock(sentiment) {
 function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
   const chartUrl = quickChartUrl(scores);
   const rec = recs.items
-    .map((r) => `<li style="margin:0 0 10px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(r)}</li>`)
+    .map((r) => {
+      const text = typeof r === "string" ? r : r.text;
+      const service = r && r.service ? `<br/><a href="${esc(r.service.url)}" style="color:#0a8a5f;font-size:12px;text-decoration:none">&rarr; ${esc(r.service.name)}</a>` : "";
+      return `<li style="margin:0 0 12px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(text)}${service}</li>`;
+    })
     .join("");
+  const analysisBlock = recs.analysis
+    ? `<div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
+        <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Our read</div>
+        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#d8d8d8;font-size:15px;line-height:1.65;margin:0 0 12px">${esc(p)}</p>`).join("")}
+      </div></div>`
+    : "";
   const gapLabel = scores.gap != null ? `Gap: ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
   const gradeBadge = grade
     ? `<td align="right" valign="top"><div style="display:inline-block;background:#0f1a15;border:2px solid #10b981;border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:30px;font-weight:bold;color:#10b981;line-height:1">${esc(grade.letter)}</div><div style="color:#8a8a8a;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:4px">Health grade</div></div></td>`
@@ -577,6 +623,7 @@ function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
       <p style="color:#c8c8c8;font-size:15px;line-height:1.6;margin:0">${esc(verdictObj.body)}</p>
     </div>
   </div>
+  ${analysisBlock}
   ${sentimentEmailBlock(sentiment)}
   <div style="padding:8px 28px 20px">
     <h3 style="font-size:16px;color:#10b981">What we would do first</h3>
@@ -788,7 +835,7 @@ export const handler = async (event) => {
 
     // FULL REPORT (gate passed): recommendations + capture + email
     const lead = { email: String(unlock.email).trim(), telegram: String(unlock.telegram).trim() };
-    const recs = await recommendations(base.rawForRecs);
+    const recs = await buildAnalysis(base.rawForRecs);
     await notifyTelegram(lead, base.token, base.scores, base.verdict);
     const email = await sendResend(lead, base.token, base.scores, base.verdict, recs, base.sentiment, base.grade);
 
@@ -802,6 +849,7 @@ export const handler = async (event) => {
       metrics: base.metrics,
       sentiment: base.sentiment,
       sentimentDetail: base.sentimentDetail,
+      analysis: recs.analysis,
       recommendations: recs.items,
       emailed: email.sent === true,
       chartUrl: quickChartUrl(base.scores),
