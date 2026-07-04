@@ -52,9 +52,7 @@ function sourceLabel(story) {
   catch { return 'source'; }
 }
 
-const ARROW =
-  '<svg class="arw" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-  '<path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ARROW = '<img src="/images/arrow-right.png" alt="" loading="lazy" />';
 
 // ── shared chrome (header/nav + footer), root-absolute links ────────────────
 function head(opts) {
@@ -196,37 +194,40 @@ function renderDay(day, prevDay) {
 
   const stories = (day.stories || []).map((s) => {
     const label = sourceLabel(s);
-    return `            <li class="cnt-story">
-                <div class="cnt-num"></div>
-                <div class="cnt-body">
-                    <span class="cnt-cat">${esc(s.cat || 'NEWS')}</span>
-                    <h2 class="cnt-headline">${highlight(s.text, s.em)}</h2>
-                    <a class="cnt-source" href="${esc(s.url)}" target="_blank" rel="noopener nofollow">Read at ${esc(label)} ${ARROW}</a>
-                </div>
-            </li>`;
+    return `                <li class="cnt-story">
+                    <div class="cnt-num"></div>
+                    <div class="cnt-body">
+                        <span class="cnt-cat">${esc(s.cat || 'NEWS')}</span>
+                        <h2 class="cnt-headline">${highlight(s.text, s.em)}</h2>
+                        <a class="cnt-source" href="${esc(s.url)}" target="_blank" rel="noopener nofollow"><span>Read at ${esc(label)}</span>${ARROW}</a>
+                    </div>
+                </li>`;
   }).join('\n');
 
   const prevBtn = prevDay
-    ? `<a class="cnt-btn cnt-ghost" href="/crypto-news-today/${prevDay.date}">← ${esc(prevDay.dateLabel)}</a>`
+    ? `<a class="cnt-btn cnt-ghost" href="/crypto-news-today/${prevDay.date}">&larr; ${esc(prevDay.dateLabel)}</a>`
     : '';
 
   const body = `
-    <main class="cnt-wrap">
-        <header class="cnt-hero">
-            <span class="cnt-eyebrow">Crypto News Today</span>
-            <h1 class="cnt-title">${esc(day.hook)}</h1>
-            <div class="cnt-date">${esc(day.dateLabel)}</div>
-        </header>
-${videoHtml}        <ol class="cnt-stories">
+    <div class="cnt-page">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div class="cnt-hero">
+                <div class="cnt-eyebrow">Crypto News Today</div>
+                <h1 class="cnt-heading">${esc(day.dateLabel)}</h1>
+                <p class="cnt-hook">${esc(day.hook)}</p>
+            </div>
+${videoHtml}            <div class="cnt-section-label">Today's stories</div>
+            <ol class="cnt-stories">
 ${stories}
-        </ol>
-        <div class="cnt-cta">
-            <p>The full stories, every day. Follow along and never miss the alpha.</p>
-            <a class="cnt-btn" href="https://t.me/wevolv3" target="_blank" rel="noopener">Follow @wevolv3</a>
-            <a class="cnt-btn cnt-ghost" href="/crypto-news-today">All days</a>
-            ${prevBtn}
+            </ol>
+            <div class="cnt-cta">
+                <p>The full stories, every day. Follow along and never miss the alpha.</p>
+                <a class="cnt-btn" href="https://t.me/wevolv3" target="_blank" rel="noopener">Follow @wevolv3</a>
+                <a class="cnt-btn cnt-ghost" href="/crypto-news-today">All days</a>
+                ${prevBtn}
+            </div>
         </div>
-    </main>
+    </div>
 `;
   return head({ title: `Crypto News Today — ${day.dateLabel} | Wevolv3`, description: desc, canonical: url, ogType: 'article', jsonLd }) + body + footer();
 }
@@ -243,24 +244,27 @@ function renderHub(days) {
 
   const cards = days.length ? days.map((d) => {
     const chips = (d.stories || []).slice(0, 5).map(s => `<span class="cnt-chip">${esc(s.cat || 'NEWS')}</span>`).join('');
-    return `        <a class="cnt-day" href="/crypto-news-today/${d.date}">
-            <div class="cnt-day-date">${esc(d.dateLabel)}</div>
-            <div class="cnt-day-hook">${esc(d.hook)}</div>
-            <div class="cnt-chips">${chips}</div>
-        </a>`;
+    return `                <a class="cnt-day" href="/crypto-news-today/${d.date}">
+                    <div class="cnt-day-date">${esc(d.dateLabel)}</div>
+                    <div class="cnt-day-hook">${esc(d.hook)}</div>
+                    <div class="cnt-chips">${chips}</div>
+                </a>`;
   }).join('\n') : '<p class="cnt-empty">The first daily recap lands soon. Check back shortly.</p>';
 
   const body = `
-    <main class="cnt-wrap cnt-hub">
-        <header class="cnt-hero">
-            <span class="cnt-eyebrow">Daily Recap</span>
-            <h1 class="cnt-title">Crypto News Today</h1>
-            <p class="cnt-hook">The 5 stories that actually mattered, every day, with links to every source.</p>
-        </header>
-        <div class="cnt-grid">
+    <div class="cnt-page">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div class="cnt-hero">
+                <div class="cnt-eyebrow">Daily Recap</div>
+                <h1 class="cnt-heading">Crypto News Today</h1>
+                <p class="cnt-hook">The 5 stories that actually mattered, every day, with links to every source.</p>
+            </div>
+            <div class="cnt-section-label">All days</div>
+            <div class="cnt-grid">
 ${cards}
+            </div>
         </div>
-    </main>
+    </div>
 `;
   return head({ title: 'Crypto News Today — Daily Crypto Recap | Wevolv3', description: desc, canonical: url, jsonLd }) + body + footer();
 }
