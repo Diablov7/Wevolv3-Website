@@ -114,6 +114,28 @@ function verdict(attention, adoption) {
   return { key: "balanced", headline: "Attention and adoption are roughly balanced", body: "Interest and real usage are moving together, which is healthy. The next step is compounding both at once so neither becomes the bottleneck as you scale." };
 }
 
+// composite health grade (A+ .. D). Adoption weighs most (it's the thing that
+// lasts), then attention, then how healthy the conversation is. A wide gap in
+// either direction costs a few points: imbalance is itself a risk.
+function healthGrade(attention, adoption, sentiment) {
+  const sentHealth = sentiment && sentiment.total
+    ? sentiment.positivePct + sentiment.neutralPct * 0.5
+    : null;
+  let score = weighted([
+    { score: adoption ?? 0, weight: 0.5, has: adoption != null },
+    { score: attention ?? 0, weight: 0.3, has: attention != null },
+    { score: sentHealth ?? 0, weight: 0.2, has: sentHealth != null },
+  ]);
+  if (score == null) return null;
+  const gap = attention != null && adoption != null ? Math.abs(attention - adoption) : 0;
+  if (gap >= 40) score -= 8; else if (gap >= 25) score -= 4;
+  score = clamp(score);
+  const letter =
+    score >= 90 ? "A+" : score >= 80 ? "A" : score >= 70 ? "B+" :
+    score >= 58 ? "B" : score >= 46 ? "C+" : score >= 34 ? "C" : "D";
+  return { letter, score };
+}
+
 // ---- data fetchers ---------------------------------------------------------
 // Canonical tokens usually live on a major EVM chain; bridged copies (often on
 // other chains) can have deeper liquidity but no project socials. Rank by
@@ -225,6 +247,12 @@ function fromCgCoin(d) {
     volume: num((md.total_volume || {}).usd) || 0,
     priceUsd: num((md.current_price || {}).usd),
     mcapRank: num(d.market_cap_rank),
+    priceChange: {
+      h24: num(md.price_change_percentage_24h),
+      d7: num(md.price_change_percentage_7d),
+      d30: num(md.price_change_percentage_30d),
+    },
+    sparkline: downsample(((md.sparkline_7d || {}).price) || [], 40),
     twitter: links.twitter_screen_name || null,
     telegram: links.telegram_channel_identifier || null,
     website: (links.homepage || []).filter(Boolean)[0] || null,
@@ -232,7 +260,16 @@ function fromCgCoin(d) {
   };
 }
 
-const CG_COIN_QS = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+// keep the 7d sparkline payload small: ~40 evenly spaced points is plenty
+function downsample(arr, n) {
+  const src = (arr || []).filter((v) => typeof v === "number" && isFinite(v));
+  if (src.length <= n) return src.length ? src : null;
+  const out = [];
+  for (let i = 0; i < n; i++) out.push(src[Math.round((i * (src.length - 1)) / (n - 1))]);
+  return out;
+}
+
+const CG_COIN_QS = "?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true";
 async function cgCoinById(id) {
   if (!id) return null;
   try { return fromCgCoin(await getJson(CG_BASE + "/coins/" + encodeURIComponent(id) + CG_COIN_QS, { headers: cgHeaders() })); }
@@ -451,38 +488,50 @@ async function notifyTelegram(lead, token, scores, verdictObj) {
   ));
 }
 
+function sentimentDonutUrl(b) {
+  const cfg = {
+    type: "doughnut",
+    data: {
+      labels: ["Positive", "Neutral", "Negative"],
+      datasets: [{ data: [b.positivePct, b.neutralPct, b.negativePct], backgroundColor: ["#10b981", "#4a4a4a", "#ef4444"], borderWidth: 0 }],
+    },
+    options: { plugins: { legend: { position: "right", labels: { color: "#ddd", font: { size: 13 } } }, doughnutlabel: null }, cutout: "65%" },
+  };
+  return "https://quickchart.io/chart?bkg=%230f0f0f&w=380&h=180&c=" + encodeURIComponent(JSON.stringify(cfg));
+}
+
 function sentimentEmailBlock(sentiment) {
   if (!sentiment || !sentiment.total) return "";
   const b = sentiment;
-  const bar = (pct, color) => pct > 0 ? `<td style="width:${pct}%;background:${color};height:10px"></td>` : "";
   return `
   <div style="padding:8px 28px">
     <div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:16px">
-      <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Community sentiment on X</div>
-      <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:5px;overflow:hidden"><tr>
-        ${bar(b.positivePct, "#10b981")}${bar(b.neutralPct, "#555555")}${bar(b.negativePct, "#ef4444")}
-      </tr></table>
-      <div style="margin-top:8px;font-size:12px;color:#c8c8c8">
-        <span style="color:#10b981">&#9679; ${b.positivePct}% positive</span>&nbsp;&nbsp;
-        <span style="color:#999999">&#9679; ${b.neutralPct}% neutral</span>&nbsp;&nbsp;
-        <span style="color:#ef4444">&#9679; ${b.negativePct}% negative</span>
-      </div>
+      <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Community sentiment on X &middot; ${b.total} recent mentions</div>
+      <img src="${sentimentDonutUrl(b)}" alt="Sentiment: ${b.positivePct}% positive, ${b.neutralPct}% neutral, ${b.negativePct}% negative" width="380" style="max-width:100%;border-radius:6px" />
     </div>
   </div>`;
 }
 
-function reportEmailHtml(token, scores, verdictObj, recs, sentiment) {
+function reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade) {
   const chartUrl = quickChartUrl(scores);
   const rec = recs.items
     .map((r) => `<li style="margin:0 0 10px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(r)}</li>`)
     .join("");
   const gapLabel = scores.gap != null ? `Gap: ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
+  const gradeBadge = grade
+    ? `<td align="right" valign="top"><div style="display:inline-block;background:#0f1a15;border:2px solid #10b981;border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:30px;font-weight:bold;color:#10b981;line-height:1">${esc(grade.letter)}</div><div style="color:#8a8a8a;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:4px">Health grade</div></div></td>`
+    : "";
   return `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#ffffff;border-radius:12px;overflow:hidden">
   <div style="padding:28px 28px 8px">
-    <div style="color:#10b981;font-size:12px;letter-spacing:2px;text-transform:uppercase">Wevolv3 &middot; Adoption Report</div>
-    <h1 style="font-size:24px;margin:10px 0 2px;color:#ffffff">${esc(token.name)} (${esc(token.symbol)})</h1>
-    <div style="color:#8a8a8a;font-size:13px">${esc(token.chain || "")}</div>
+    <table width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td>
+        <div style="color:#10b981;font-size:12px;letter-spacing:2px;text-transform:uppercase">Wevolv3 &middot; Adoption Report</div>
+        <h1 style="font-size:24px;margin:10px 0 2px;color:#ffffff">${esc(token.name)} (${esc(token.symbol)})</h1>
+        <div style="color:#8a8a8a;font-size:13px">${esc(token.chain || "")}</div>
+      </td>
+      ${gradeBadge}
+    </tr></table>
   </div>
   <div style="padding:12px 28px">
     <img src="${chartUrl}" alt="Attention vs Adoption" width="544" style="width:100%;border-radius:8px;border:1px solid #222222" />
@@ -538,7 +587,7 @@ function quickChartUrl(scores) {
   return "https://quickchart.io/chart?bkg=%230a0a0a&w=544&h=300&c=" + encodeURIComponent(JSON.stringify(cfg));
 }
 
-async function sendResend(lead, token, scores, verdictObj, recs, sentiment) {
+async function sendResend(lead, token, scores, verdictObj, recs, sentiment, grade) {
   if (!RESEND_KEY) return { sent: false, reason: "no-key" };
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -548,7 +597,7 @@ async function sendResend(lead, token, scores, verdictObj, recs, sentiment) {
         from: EMAIL_FROM,
         to: [lead.email],
         subject: "Your Adoption Report: " + token.name + " (" + token.symbol + ")",
-        html: reportEmailHtml(token, scores, verdictObj, recs, sentiment),
+        html: reportEmailHtml(token, scores, verdictObj, recs, sentiment, grade),
       }),
     });
     return { sent: res.ok };
@@ -579,6 +628,8 @@ function mergeToken({ cg, gt, agg, chain }) {
     dexVolume: dexVol || null,
     mcap: (cg && cg.mcap) || (gt && gt.mcap) || (agg && agg.mcap) || 0,
     mcapRank: cg ? cg.mcapRank : null,
+    priceChange: cg ? cg.priceChange : null,
+    sparkline: cg ? cg.sparkline : null,
     // on-chain usage: prefer the DEX aggregate, fall back to GT reserves
     liquidity: (agg && agg.liquidity) || (gt && gt.liquidity) || 0,
     txns24h: agg ? agg.txns24h : null,
@@ -664,10 +715,11 @@ export const handler = async (event) => {
 
       const gap = attScore != null && adoScore != null ? attScore - adoScore : null;
       base = {
-        token: { name: token.name, symbol: token.symbol, image: token.image, chain: token.chain, priceUsd: token.priceUsd, twitter: token.twitter, telegram: token.telegram },
+        token: { name: token.name, symbol: token.symbol, image: token.image, chain: token.chain, priceUsd: token.priceUsd, twitter: token.twitter, telegram: token.telegram, priceChange: token.priceChange, sparkline: token.sparkline },
         scores: { attention: attScore, adoption: adoScore, gap },
         attentionAvailable: attScore != null,
         verdict: verdict(attScore, adoScore),
+        grade: healthGrade(attScore, adoScore, sentiment ? sentiment.breakdown : null),
         sentiment: sentiment ? sentiment.breakdown : null, // teaser + full
         sentimentDetail: sentiment ? { top: sentiment.top, themesUp: sentiment.themesUp, themesDown: sentiment.themesDown, sampleSize: sentiment.sampleSize } : null, // full only
         metrics: {
@@ -699,9 +751,10 @@ export const handler = async (event) => {
     if (!unlock) {
       return json(200, {
         ok: true, gated: true,
-        token: { name: base.token.name, symbol: base.token.symbol, image: base.token.image, chain: base.token.chain },
+        token: { name: base.token.name, symbol: base.token.symbol, image: base.token.image, chain: base.token.chain, priceUsd: base.token.priceUsd, priceChange: base.token.priceChange, sparkline: base.token.sparkline },
         scores: base.scores,
         attentionAvailable: base.attentionAvailable,
+        grade: base.grade,
         sentiment: base.sentiment,
         teaserVerdict: base.verdict.headline,
       });
@@ -711,7 +764,7 @@ export const handler = async (event) => {
     const lead = { email: String(unlock.email).trim(), telegram: String(unlock.telegram).trim() };
     const recs = await recommendations(base.rawForRecs);
     await notifyTelegram(lead, base.token, base.scores, base.verdict);
-    const email = await sendResend(lead, base.token, base.scores, base.verdict, recs, base.sentiment);
+    const email = await sendResend(lead, base.token, base.scores, base.verdict, recs, base.sentiment, base.grade);
 
     return json(200, {
       ok: true, gated: false,
@@ -719,6 +772,7 @@ export const handler = async (event) => {
       scores: base.scores,
       attentionAvailable: base.attentionAvailable,
       verdict: base.verdict,
+      grade: base.grade,
       metrics: base.metrics,
       sentiment: base.sentiment,
       sentimentDetail: base.sentimentDetail,
