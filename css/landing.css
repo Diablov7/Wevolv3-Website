@@ -17,6 +17,8 @@ body { background:var(--lp-bg) !important; color:var(--lp-text); }
 .lp-section h2 { font-family:'Clashdisplay',sans-serif; font-weight:600; font-size:clamp(30px,4.2vw,54px); line-height:1.04; letter-spacing:-.02em; text-transform:uppercase; color:#fff; margin:0 0 16px; text-wrap:balance; }
 .lp-lead { color:var(--lp-muted); font-weight:300; font-size:18px; line-height:1.65; max-width:70ch; margin:0 0 40px; text-wrap:pretty; }
 .lp-lead a { color:var(--lp-accent); text-decoration:none; border-bottom:1px solid var(--lp-accent-soft); }
+.lp-body { color:var(--lp-muted); font-weight:300; font-size:17px; line-height:1.75; max-width:70ch; margin:0; text-wrap:pretty; }
+.lp-body a { color:var(--lp-accent); text-decoration:none; border-bottom:1px solid var(--lp-accent-soft); }
 .lp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; }
 .lp-card { background:var(--lp-panel); border:1px solid var(--lp-line); border-radius:8px; padding:28px; }
 .lp-card h3 { font-family:'Clashdisplay',sans-serif; font-weight:600; font-size:20px; color:#fff; margin:0 0 10px; }
