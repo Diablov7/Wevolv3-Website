@@ -13,8 +13,10 @@ body { background:var(--lp-bg) !important; color:var(--lp-text); }
 .lp-cta-ghost { background:transparent; color:#fff; border:1px solid var(--lp-line); }
 .lp-cta-ghost:hover { border-color:var(--lp-accent); box-shadow:none; }
 .lp-hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
-.lp-section { padding:64px 0; border-top:1px solid var(--lp-line); }
-.lp-section h2 { font-family:'Clashdisplay',sans-serif; font-weight:600; font-size:clamp(30px,4.2vw,54px); line-height:1.04; letter-spacing:-.02em; text-transform:uppercase; color:#fff; margin:0 0 16px; text-wrap:balance; }
+.lp-section { padding:74px 0 64px; }
+/* section titles mirror the home page's .main-title: big, tight, uppercase,
+   with an emerald rule underneath acting as the section divider. */
+.lp-section h2 { font-family:'Clashdisplay',sans-serif; font-weight:600; font-size:clamp(32px,5vw,66px); line-height:1.02; letter-spacing:-.02em; text-transform:uppercase; color:#fff; margin:0 0 30px; padding-bottom:18px; border-bottom:1px solid var(--lp-accent); text-wrap:balance; }
 .lp-lead { color:var(--lp-muted); font-weight:300; font-size:18px; line-height:1.65; max-width:70ch; margin:0 0 40px; text-wrap:pretty; }
 .lp-lead a { color:var(--lp-accent); text-decoration:none; border-bottom:1px solid var(--lp-accent-soft); }
 .lp-body { color:var(--lp-muted); font-weight:300; font-size:17px; line-height:1.75; max-width:70ch; margin:0; text-wrap:pretty; }
