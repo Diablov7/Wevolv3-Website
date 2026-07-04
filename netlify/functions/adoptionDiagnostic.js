@@ -29,7 +29,7 @@ const TWITTER_KEY = process.env.TWITTERAPI_IO_KEY || "";
 const RESEND_KEY = process.env.RESEND_API_KEY || "";
 const EMAIL_FROM = process.env.EMAIL_FROM || "Wevolv3 <onboarding@resend.dev>";
 const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY || "";
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "x-ai/grok-4.3";
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "deepseek/deepseek-v4-flash";
 const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
 // lead notifications reuse the same Telegram bot the contact form uses.
