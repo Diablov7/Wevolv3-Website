@@ -459,7 +459,7 @@ async function buildAnalysis(ctx) {
     : "unknown turnover";
   const catalog = Object.entries(SERVICES).map(([k, s]) => k + " = " + s.name).join("; ");
   const prompt =
-    "You are a senior growth strategist at Wevolv3 (a Web3 marketing agency) writing a short diagnostic for this project's team. Use ONLY the numbers below — never invent metrics, prices, partnerships or events.\n\n" +
+    "You are a senior growth strategist at Wevolv3 (a Web3 marketing agency) writing a short diagnostic for this project's team. Use ONLY the numbers below. Never invent metrics, prices, partnerships or events.\n\n" +
     "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
     "SCORES: Attention " + (ctx.attention ?? "n/a") + "/100, Adoption " + ctx.adoption + "/100, Gap " + (ctx.gap ?? "n/a") + " (positive = more attention than real usage).\n" +
     "ATTENTION DATA: X followers " + (ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") : "unknown") + (ctx.xVerified ? " (verified account)" : "") + ".\n" +
@@ -468,9 +468,10 @@ async function buildAnalysis(ctx) {
     "\nWEVOLV3 SERVICES (use these exact keys): " + catalog + ".\n\n" +
     "Return ONLY JSON with this shape:\n" +
     '{"hook":"...", "analysis":"...", "actions":[{"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}, {"text":"...","service":"<key>"}]}\n' +
-    "hook: 1-2 sentences (max 40 words) shown on the website. Name the single most interesting tension in their numbers, in plain conversational English, so they want to open the full report. No sales pitch, just the itch.\n" +
-    "analysis: 3 short paragraphs (separated by \\n\\n, 180 words total max) for the emailed report, written like a sharp, friendly strategist talking to a founder over coffee — contractions welcome, zero jargon, zero hype words. Paragraph 1: here's what we see — cite 2-3 numbers and translate them into what's actually happening. Paragraph 2: here's what it's costing you (or what you're sitting on) and why the timing matters. Paragraph 3: here's how we'd attack it and what having a growth partner on this specifically unlocks — confident, not salesy.\n" +
-    "actions: exactly 3, each max 22 words, imperative, each grounded in a cited number, each mapped to the ONE service key that would execute it. Use 3 different services.";
+    "hook: 1 to 2 sentences (max 40 words) shown on the website. Name the single most interesting tension in their numbers, in plain conversational English, so they want to open the full report. No sales pitch, just the itch.\n" +
+    "analysis: 3 short paragraphs (separated by \\n\\n, 180 words total max) for the emailed report, written like a sharp, friendly strategist talking to a founder over coffee. Contractions welcome, zero jargon, zero hype words. Paragraph 1: what we see, citing 2 to 3 numbers and translating them into what's actually happening. Paragraph 2: what it's costing them (or what they're sitting on) and why the timing matters. Paragraph 3: how we'd attack it and what having a growth partner on this specifically unlocks. Confident, not salesy.\n" +
+    "actions: exactly 3, each max 22 words, imperative, each grounded in a cited number, each mapped to the ONE service key that would execute it. Use 3 different services.\n" +
+    "STRICT STYLE RULE: never use em dashes or en dashes (the — or – characters) anywhere. Use commas, periods or the word 'to' instead. This is mandatory.";
 
   try {
     const txt = await llmText(prompt, 1100, 0.65);
@@ -479,9 +480,9 @@ async function buildAnalysis(ctx) {
       const actions = Array.isArray(obj.actions) ? obj.actions.slice(0, 3) : [];
       if (obj.analysis && actions.length) {
         return {
-          hook: String(obj.hook || "").trim() || null,
-          analysis: String(obj.analysis).trim(),
-          items: actions.map((a) => ({ text: String(a.text || a).trim(), service: svc(String(a.service || "").toLowerCase()) })),
+          hook: noDash(String(obj.hook || "").trim()) || null,
+          analysis: noDash(String(obj.analysis).trim()),
+          items: actions.map((a) => ({ text: noDash(String(a.text || a).trim()), service: svc(String(a.service || "").toLowerCase()) })),
           source: "ai",
         };
       }
@@ -494,35 +495,47 @@ async function buildAnalysis(ctx) {
   const turn = ctx.turnover != null ? (ctx.turnover * 100).toFixed(1) + "% daily turnover" : "your trading activity";
   let hook, analysis, items;
   if (gap != null && gap >= 25) {
-    hook = "You've built a real audience — " + fols + " — but the on-chain numbers say most of them are watching, not using. That gap is the whole story here.";
-    analysis = "Here's what we see: " + fols + " and an attention score of " + ctx.attention + ", against " + turn + " on-chain. In plain terms, you've done the hard part — people know you — but only a sliver of that audience ever transacts.\n\nThat's expensive to leave alone. Every week this gap stays open, you're paying (in content, community time and ad spend) to entertain people who never become users. And audiences cool off fast in this market.\n\nIf we were working on this together, we'd start at the exact point where interest dies: the first on-chain action. Tighten that path, give the audience a reason to act this week, and the same attention you already own starts compounding instead of leaking.";
+    hook = "You've built a real audience with " + fols + ", but the on-chain numbers say most of them are watching, not using. That gap is the whole story here.";
+    analysis = "Here's what we see. You've got " + fols + " and an attention score of " + ctx.attention + ", against " + turn + " on-chain. In plain terms, you've done the hard part. People know you. But only a sliver of that audience ever transacts.\n\nThat's expensive to leave alone. Every week this gap stays open, you're paying in content, community time and ad spend to entertain people who never become users, and audiences cool off fast in this market.\n\nIf we were working on this together, we'd start at the exact point where interest dies, which is the first on-chain action. Tighten that path, give the audience a reason to act this week, and the same attention you already own starts compounding instead of leaking.";
     items = [
       { text: "Run KOL campaigns tied to one trackable first transaction, not impressions.", service: svc("kol") },
       { text: "Give your " + fols + " a recurring on-chain reason to act: quests, incentives, utility drops.", service: svc("community") },
-      { text: "Retarget engaged social audiences with on-chain placements that deep-link to the swap.", service: svc("ads") },
+      { text: "Retarget engaged social audiences with on-chain placements that deep link to the swap.", service: svc("ads") },
     ];
   } else if (gap != null && gap <= -15) {
-    hook = "Your on-chain usage is stronger than your visibility — people who find you, use you. The market just hasn't found you at scale yet.";
-    analysis = "Here's what we see: adoption at " + ctx.adoption + "/100 with " + turn + ", against attention at " + (ctx.attention ?? "n/a") + "/100. People who discover you actually stick and transact — that's the hard part, and you've already done it.\n\nWhat you're sitting on is the cheapest growth problem in crypto: proof without an audience. Amplifying something that already works converts far better than manufacturing hype — but the window matters, because narratives get claimed by whoever tells them first.\n\nWorking together, we'd package the usage you already have into public proof — media, creators, the channels where researchers actually look — so the market's picture of you catches up with reality.";
+    hook = "Your on-chain usage is stronger than your visibility. People who find you, use you. The market just hasn't found you at scale yet.";
+    analysis = "Here's what we see. Adoption sits at " + ctx.adoption + "/100 with " + turn + ", against attention at " + (ctx.attention ?? "n/a") + "/100. People who discover you actually stick and transact, and that's the hard part you've already solved.\n\nWhat you're sitting on is the cheapest growth problem in crypto: proof without an audience. Amplifying something that already works converts far better than manufacturing hype. But the window matters, because narratives get claimed by whoever tells them first.\n\nWorking together, we'd package the usage you already have into public proof across media, creators and the channels where researchers actually look, so the market's picture of you finally catches up with reality.";
     items = [
       { text: "Turn real usage into public proof: case studies and on-chain stats pushed through crypto media.", service: svc("pr") },
       { text: "Put working product in front of new audiences with KOLs who demo, not shill.", service: svc("kol") },
       { text: "Seed organic conversation on Reddit and trending channels where researchers actually look.", service: svc("growth") },
     ];
   } else {
-    hook = "Attention and adoption are moving together — the healthy pattern. The real question now is which one you can make compound faster.";
-    analysis = "Here's what we see: attention at " + (ctx.attention ?? "n/a") + "/100 and adoption at " + ctx.adoption + "/100, with interest converting into " + turn + ". Nothing is broken — interest and usage are feeding each other, which is exactly what you want.\n\nThe risk at this stage isn't failure, it's plateau: growth that stays proportional instead of accelerating. Balanced projects tend to spread effort evenly and end up compounding nothing.\n\nTogether we'd pick the one metric that matters most for you right now — holders, volume or active wallets — and stack campaigns so every push lands on a warm audience instead of starting cold each time.";
+    hook = "Attention and adoption are moving together, which is the healthy pattern. The real question now is which one you can make compound faster.";
+    analysis = "Here's what we see. Attention is at " + (ctx.attention ?? "n/a") + "/100 and adoption at " + ctx.adoption + "/100, with interest converting into " + turn + ". Nothing is broken. Interest and usage are feeding each other, which is exactly what you want.\n\nThe risk at this stage isn't failure, it's plateau: growth that stays proportional instead of accelerating. Balanced projects tend to spread effort evenly and end up compounding nothing.\n\nTogether we'd pick the one metric that matters most for you right now, whether that's holders, volume or active wallets, and stack campaigns so every push lands on a warm audience instead of starting cold each time.";
     items = [
       { text: "Set one primary growth metric (holders, volume or active wallets) and align every campaign to it.", service: svc("launch") },
       { text: "Layer KOL and PR in the same window so attention spikes land on a warm audience.", service: svc("kol") },
       { text: "Strengthen community programs so each new wave of attention has somewhere to stay.", service: svc("community") },
     ];
   }
-  return { hook, analysis, items, source: "rules" };
+  return { hook: noDash(hook), analysis: noDash(analysis), items: items.map((i) => ({ text: noDash(i.text), service: i.service })), source: "rules" };
 }
 
 // ---- lead capture + email --------------------------------------------------
 function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+// Kill em/en dashes: the #1 tell of AI-written copy. Ranges become "X to Y",
+// everything else becomes a comma so the prose still reads like a person wrote it.
+function noDash(s) {
+  return String(s == null ? "" : s)
+    .replace(/(\d)\s*[—–]\s*(\d)/g, "$1 to $2")
+    .replace(/\s*[—–]\s*/g, ", ")
+    .replace(/\s+,/g, ",")
+    .replace(/,\s*,/g, ", ")
+    .replace(/,(\s*[.!?;:])/g, "$1")
+    .trim();
+}
 
 async function notifyTelegram(lead, token, scores, verdictObj) {
   if (!TG_TOKEN || !TG_CHATS.length) return; // no creds configured -> skip quietly
@@ -562,151 +575,200 @@ function sentimentDonutUrl(b) {
   return "https://quickchart.io/chart?bkg=%230f0f0f&w=380&h=180&c=" + encodeURIComponent(JSON.stringify(cfg));
 }
 
-function sentimentEmailBlock(sentiment) {
-  if (!sentiment || !sentiment.total) return "";
-  const b = sentiment;
-  return `
-  <div style="padding:8px 28px">
-    <div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:16px">
-      <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Community sentiment on X &middot; ${b.total} recent mentions</div>
-      <img src="${sentimentDonutUrl(b)}" alt="Sentiment: ${b.positivePct}% positive, ${b.neutralPct}% neutral, ${b.negativePct}% negative" width="380" style="max-width:100%;border-radius:6px" />
-    </div>
-  </div>`;
-}
-
-// full emailed report: the site shows the dashboard, THIS carries the substance
+// full emailed report: a landscape "bento" dashboard that mirrors the website,
+// carries the substance the site withholds, and reads like a person wrote it.
 function reportEmailHtml(base, recs) {
   const token = base.token, scores = base.scores, verdictObj = base.verdict;
   const sentiment = base.sentiment, grade = base.grade, m = base.metrics || {};
   const detail = base.sentimentDetail || {};
-  const chartUrl = quickChartUrl(scores);
-  const fmtN = (v) => (v == null ? "—" : Number(v).toLocaleString("en-US"));
-  const fmtU = (v) => (v == null || !v ? "—" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
-  const fmtPct = (v) => (v == null ? "—" : (v * 100).toFixed(1) + "%");
+  const na = "n/a";
+  const fmtN = (v) => (v == null ? na : Number(v).toLocaleString("en-US"));
+  const fmtU = (v) => (v == null || !v ? na : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
+  const fmtPct = (v) => (v == null ? na : (v * 100).toFixed(1) + "%");
 
-  const rec = recs.items
-    .map((r) => {
-      const text = typeof r === "string" ? r : r.text;
-      const service = r && r.service ? `<br/><a href="${esc(r.service.url)}" style="color:#0a8a5f;font-size:12px;text-decoration:none">&rarr; ${esc(r.service.name)}</a>` : "";
-      return `<li style="margin:0 0 12px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(text)}${service}</li>`;
-    })
-    .join("");
+  // ---- shared card chrome (email-safe: tables + inline styles only) ----
+  const CARD = "background:#0c0c0c;border:1px solid #262626;border-radius:14px;padding:22px 24px";
+  const KICKER = "color:#8a8a8a;font-size:11px;letter-spacing:1.5px;text-transform:uppercase";
+  const cell = (inner, w) => `<td valign="top"${w ? ` width="${w}"` : ""} style="padding:9px">${inner}</td>`;
 
+  // ---- hero: horizontal gap bars (landscape) ----
+  const gapLabel = scores.gap != null ? `Gap ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
+  const gradeColor = grade ? (/^C|^D/.test(grade.letter) ? "#ef4444" : (grade.letter === "B" || grade.letter === "C+") ? "#d9a441" : "#10b981") : "#10b981";
+  const gradeBadge = grade
+    ? `<div style="display:inline-block;background:rgba(16,185,129,.06);border:2px solid ${gradeColor};border-radius:12px;padding:10px 18px;text-align:center">
+        <div style="font-size:32px;font-weight:bold;color:${gradeColor};line-height:1">${esc(grade.letter)}</div>
+        <div style="${KICKER};font-size:9.5px;margin-top:4px">Health grade</div></div>`
+    : "";
+
+  // ---- narrative ("Our read") ----
   const analysisBlock = recs.analysis
-    ? `<div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
-        <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Our read</div>
-        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#d8d8d8;font-size:15px;line-height:1.65;margin:0 0 12px">${esc(p)}</p>`).join("")}
+    ? `<div style="padding:9px"><div style="background:linear-gradient(180deg,#0f1a15,#0c0c0c);border:1px solid #1f3a30;border-radius:14px;padding:24px">
+        <div style="${KICKER};color:#10b981;margin-bottom:12px">Our read</div>
+        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#e2e2e2;font-size:15.5px;line-height:1.7;margin:0 0 14px">${esc(p)}</p>`).join("")}
       </div></div>`
     : "";
 
-  const row = (label, value) => `<tr>
-    <td style="padding:9px 0;border-bottom:1px solid #1e1e1e;color:#8a8a8a;font-size:13px">${label}</td>
-    <td align="right" style="padding:9px 0;border-bottom:1px solid #1e1e1e;color:#ffffff;font-size:13px;font-weight:bold">${value}</td>
+  // ---- numbers card ----
+  const nrow = (label, value) => `<tr>
+    <td style="padding:8px 0;border-bottom:1px solid #1c1c1c;color:#9a9a9a;font-size:13px">${label}</td>
+    <td align="right" style="padding:8px 0;border-bottom:1px solid #1c1c1c;color:#ffffff;font-size:13px;font-weight:bold">${value}</td>
   </tr>`;
-  const peerRatio = m.turnover != null && m.peerTurnover ? " (" + (m.turnover / m.peerTurnover).toFixed(1) + "&times; the top-100 median)" : "";
-  const metricsBlock = `
-  <div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
-    <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">The full numbers</div>
+  const peerRatio = m.turnover != null && m.peerTurnover ? " <span style=\"color:#10b981\">(" + (m.turnover / m.peerTurnover).toFixed(1) + "&times; the top-100 median)</span>" : "";
+  const numbersCard = `<div style="${CARD}">
+    <div style="${KICKER};margin-bottom:8px">The full numbers</div>
     <table width="100%" cellpadding="0" cellspacing="0">
-      ${row("X / Twitter followers", fmtN(m.followers) + (m.xVerified ? " &#10004; verified" : ""))}
-      ${row("Market cap", fmtU(m.marketCap) + (m.marketCapRank ? " &middot; rank #" + m.marketCapRank : ""))}
-      ${row("24h volume (total)", fmtU(m.volume24h))}
-      ${row("On-chain DEX volume", fmtU(m.dexVolume24h))}
-      ${row("Volume / market cap", fmtPct(m.turnover) + peerRatio)}
-      ${row("Top-100 median turnover", fmtPct(m.peerTurnover))}
-      ${row("24h on-chain transactions", fmtN(m.txns24h))}
-      ${row("Pooled liquidity", fmtU(m.liquidity))}
+      ${nrow("X / Twitter followers", fmtN(m.followers) + (m.xVerified ? " &#10004;" : ""))}
+      ${nrow("Market cap", fmtU(m.marketCap) + (m.marketCapRank ? " &middot; #" + m.marketCapRank : ""))}
+      ${nrow("24h volume (total)", fmtU(m.volume24h))}
+      ${nrow("On-chain DEX volume", fmtU(m.dexVolume24h))}
+      ${nrow("Volume / market cap", fmtPct(m.turnover) + peerRatio)}
+      ${nrow("24h on-chain transactions", fmtN(m.txns24h))}
+      ${nrow("Pooled liquidity", fmtU(m.liquidity))}
     </table>
-  </div></div>`;
+  </div>`;
 
+  // ---- sentiment card (donut) ----
+  const sentCard = sentiment && sentiment.total
+    ? `<div style="${CARD}">
+        <div style="${KICKER};margin-bottom:10px">Sentiment on X</div>
+        <img src="${sentimentDonutUrl(sentiment)}" alt="${sentiment.positivePct}% positive, ${sentiment.neutralPct}% neutral, ${sentiment.negativePct}% negative" width="300" style="max-width:100%;border-radius:8px" />
+        <div style="margin-top:10px;font-size:12.5px">
+          <span style="color:#10b981">&#9679; ${sentiment.positivePct}% positive</span>&nbsp;&nbsp;
+          <span style="color:#9a9a9a">&#9679; ${sentiment.neutralPct}% neutral</span>&nbsp;&nbsp;
+          <span style="color:#ef4444">&#9679; ${sentiment.negativePct}% negative</span>
+        </div>
+        <div style="color:#666;font-size:11px;margin-top:6px">${sentiment.total} recent mentions</div>
+      </div>`
+    : "";
+
+  // numbers + sentiment sit side by side (the landscape bento centrepiece)
+  const bentoRow = sentCard
+    ? `<div style="padding:9px"><table width="100%" cellpadding="0" cellspacing="0"><tr>
+        ${cell(numbersCard, "56%")}${cell(sentCard)}
+      </tr></table></div>`
+    : `<div style="padding:9px">${numbersCard}</div>`;
+
+  // ---- what people are saying ----
   const themeChips = (arr, color) => (arr || []).map((t) =>
-    `<span style="display:inline-block;border:1px solid ${color};color:${color};border-radius:20px;padding:3px 10px;font-size:12px;margin:0 6px 6px 0">${esc(t)}</span>`).join("");
+    `<span style="display:inline-block;border:1px solid ${color};color:${color};border-radius:20px;padding:3px 11px;font-size:12px;margin:0 6px 6px 0">${esc(t)}</span>`).join("");
   const quote = (t, color) => `
-    <div style="border-left:3px solid ${color};padding:8px 12px;margin:0 0 10px;background:#101010;border-radius:0 6px 6px 0">
+    <div style="border-left:3px solid ${color};padding:9px 13px;margin:0 0 10px;background:#101010;border-radius:0 8px 8px 0">
       <div style="color:#dcdcdc;font-size:13px;line-height:1.5">${esc(t.text)}</div>
       <div style="color:#7a7a7a;font-size:11px;margin-top:5px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
     </div>`;
   const mentionsBlock = (detail.top && ((detail.top.positive || []).length || (detail.top.negative || []).length))
-    ? `<div style="padding:8px 28px"><div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:20px">
-        <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">What people are saying on X</div>
+    ? `<div style="padding:9px"><div style="${CARD}">
+        <div style="${KICKER};margin-bottom:12px">What people are saying on X</div>
         ${(detail.themesUp || []).length ? `<div style="margin-bottom:4px">${themeChips(detail.themesUp, "#10b981")}</div>` : ""}
-        ${(detail.themesDown || []).length ? `<div style="margin-bottom:10px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
+        ${(detail.themesDown || []).length ? `<div style="margin-bottom:12px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
         ${(detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981")).join("")}
         ${(detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444")).join("")}
       </div></div>`
     : "";
-  const gapLabel = scores.gap != null ? `Gap: ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
-  const gradeBadge = grade
-    ? `<td align="right" valign="top"><div style="display:inline-block;background:#0f1a15;border:2px solid #10b981;border-radius:10px;padding:10px 16px;text-align:center"><div style="font-size:30px;font-weight:bold;color:#10b981;line-height:1">${esc(grade.letter)}</div><div style="color:#8a8a8a;font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:4px">Health grade</div></div></td>`
+
+  // ---- 3-move plan (each move is a card, tied to the service that runs it) ----
+  const planCards = recs.items.map((r, i) => {
+    const s = r.service;
+    return `<div style="background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:16px 18px;margin-bottom:12px">
+      <table width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td valign="top" width="38"><div style="width:28px;height:28px;border-radius:50%;background:#10b981;color:#04120c;font-weight:bold;font-size:14px;text-align:center;line-height:28px">${i + 1}</div></td>
+        <td valign="top">
+          <div style="color:#e6e6e6;font-size:15px;line-height:1.5">${esc(r.text)}</div>
+          ${s ? `<a href="${esc(s.url)}" style="display:inline-block;margin-top:9px;padding:6px 12px;border:1px solid #1f3a30;border-radius:20px;color:#7ae0bf;font-size:11.5px;font-weight:bold;text-decoration:none">${esc(s.name)} &rsaquo;</a>` : ""}
+        </td>
+      </tr></table>
+    </div>`;
+  }).join("");
+
+  // ---- services strip: the catalog behind the plan ----
+  const seenSvc = new Set(); const uniqSvc = [];
+  recs.items.forEach((r) => { const s = r.service; if (s && !seenSvc.has(s.key)) { seenSvc.add(s.key); uniqSvc.push(s); } });
+  const svcStrip = uniqSvc.length
+    ? `<div style="padding:9px"><div style="${CARD}">
+        <div style="${KICKER};color:#10b981;margin-bottom:6px">The Wevolv3 plays behind this plan</div>
+        <p style="color:#9a9a9a;font-size:13.5px;line-height:1.55;margin:0 0 14px">Each move maps to a service we run end to end. Tap one to see how it works.</p>
+        ${uniqSvc.map((s) => `<a href="${esc(s.url)}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 16px;background:#0f1a15;border:1px solid #1f3a30;border-radius:10px;color:#7ae0bf;font-size:13px;font-weight:bold;text-decoration:none">${esc(s.name)}</a>`).join("")}
+      </div></div>`
     : "";
+
   return `
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#ffffff;border-radius:12px;overflow:hidden">
-  <div style="padding:28px 28px 8px">
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#0a0a0a;color:#ffffff;border-radius:16px;overflow:hidden">
+  <div style="padding:26px 24px 6px">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td>
-        <div style="color:#10b981;font-size:12px;letter-spacing:2px;text-transform:uppercase">Wevolv3 &middot; Adoption Report</div>
-        <h1 style="font-size:24px;margin:10px 0 2px;color:#ffffff">${esc(token.name)} (${esc(token.symbol)})</h1>
+      <td valign="middle">
+        <div style="${KICKER};color:#10b981">Wevolv3 &middot; Adoption Report</div>
+        <h1 style="font-size:25px;margin:9px 0 2px;color:#ffffff">${esc(token.name)} <span style="color:#8a8a8a;font-weight:normal">(${esc(token.symbol)})</span></h1>
         <div style="color:#8a8a8a;font-size:13px">${esc(token.chain || "")}</div>
       </td>
-      ${gradeBadge}
+      <td align="right" valign="middle">${gradeBadge}</td>
     </tr></table>
   </div>
-  <div style="padding:12px 28px">
-    <img src="${chartUrl}" alt="Attention vs Adoption" width="544" style="width:100%;border-radius:8px;border:1px solid #222222" />
-  </div>
-  <div style="padding:8px 28px">
-    <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td style="padding:14px;background:#0f0f0f;border:1px solid #222222;border-radius:8px">
+
+  <!-- hero bento: gap bars (left) + scores (right) -->
+  <div style="padding:9px 15px"><table width="100%" cellpadding="0" cellspacing="0"><tr>
+    ${cell(`<div style="${CARD}">
+      <div style="${KICKER};margin-bottom:12px">Attention vs adoption &middot; ${esc(gapLabel)}</div>
+      <img src="${gapChartUrl(scores)}" alt="Attention ${scores.attention == null ? na : scores.attention}, Adoption ${scores.adoption}" width="330" style="max-width:100%;border-radius:8px" />
+    </div>`, "60%")}
+    ${cell(`<div style="${CARD};margin-bottom:16px">
         <div style="color:#6b8cff;font-size:11px;letter-spacing:1px;text-transform:uppercase">Attention</div>
-        <div style="font-size:34px;font-weight:bold;color:#ffffff">${scores.attention == null ? "N/A" : scores.attention}<span style="font-size:14px;color:#666666"> /100</span></div>
-      </td>
-      <td width="12"></td>
-      <td style="padding:14px;background:#0f0f0f;border:1px solid #222222;border-radius:8px">
+        <div style="font-size:36px;font-weight:bold;color:#ffffff;line-height:1.1">${scores.attention == null ? na : scores.attention}<span style="font-size:14px;color:#666"> /100</span></div>
+        <div style="color:#7a7a7a;font-size:12px;margin-top:2px">Real X reach</div>
+      </div>
+      <div style="${CARD}">
         <div style="color:#10b981;font-size:11px;letter-spacing:1px;text-transform:uppercase">Adoption</div>
-        <div style="font-size:34px;font-weight:bold;color:#ffffff">${scores.adoption}<span style="font-size:14px;color:#666666"> /100</span></div>
-      </td>
-    </tr></table>
+        <div style="font-size:36px;font-weight:bold;color:#ffffff;line-height:1.1">${scores.adoption}<span style="font-size:14px;color:#666"> /100</span></div>
+        <div style="color:#7a7a7a;font-size:12px;margin-top:2px">Real on-chain usage</div>
+      </div>`)}
+  </tr></table></div>
+
+  <!-- verdict -->
+  <div style="padding:9px 15px"><div style="background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(16,185,129,0));border:1px solid #1f3a30;border-radius:14px;padding:24px">
+    <div style="color:#10b981;font-size:12px;text-transform:uppercase;letter-spacing:1px">${esc(gapLabel)}</div>
+    <h2 style="font-size:21px;margin:9px 0 8px;color:#ffffff">${esc(verdictObj.headline)}</h2>
+    <p style="color:#c8c8c8;font-size:15px;line-height:1.6;margin:0">${esc(noDash(verdictObj.body))}</p>
+  </div></div>
+
+  <div style="padding:0 6px">
+    ${analysisBlock}
+    ${bentoRow}
+    ${mentionsBlock}
   </div>
-  <div style="padding:16px 28px">
-    <div style="background:#0f1a15;border:1px solid #1f3a30;border-radius:8px;padding:20px">
-      <div style="color:#10b981;font-size:12px;text-transform:uppercase;letter-spacing:1px">${gapLabel}</div>
-      <h2 style="font-size:20px;margin:8px 0 8px;color:#ffffff">${esc(verdictObj.headline)}</h2>
-      <p style="color:#c8c8c8;font-size:15px;line-height:1.6;margin:0">${esc(verdictObj.body)}</p>
-    </div>
+
+  <!-- plan -->
+  <div style="padding:9px 24px">
+    <div style="${KICKER};color:#10b981;margin-bottom:14px">Your 3-move plan</div>
+    ${planCards}
   </div>
-  ${analysisBlock}
-  ${metricsBlock}
-  ${sentimentEmailBlock(sentiment)}
-  ${mentionsBlock}
-  <div style="padding:8px 28px 20px">
-    <h3 style="font-size:16px;color:#10b981">Your 3-move plan</h3>
-    <ol style="margin:12px 0 0;background:#ffffff;border-radius:8px;padding:18px 18px 18px 38px">${rec}</ol>
-  </div>
-  <div style="padding:8px 28px 32px;text-align:center">
-    <p style="color:#c8c8c8;font-size:14px;line-height:1.6;margin:0 0 16px">Every move above is something our team runs end-to-end for projects like ${esc(token.name)}.<br/>30 minutes with a strategist and you'll know exactly what closing this gap is worth.</p>
-    <a href="https://wevolv3.com/contact.html" style="display:inline-block;background:#10b981;color:#04120c;font-weight:bold;text-decoration:none;padding:14px 28px;border-radius:8px">Book a free growth session</a>
-    <p style="color:#666666;font-size:11px;margin-top:16px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
+  <div style="padding:0 6px">${svcStrip}</div>
+
+  <!-- CTA -->
+  <div style="padding:14px 24px 32px;text-align:center">
+    <p style="color:#c8c8c8;font-size:14.5px;line-height:1.6;margin:0 0 18px">This is what we'd do for ${esc(token.name)}, and it's what we run every day. Give us 30 minutes and we'll turn this into a plan with numbers attached.</p>
+    <a href="https://wevolv3.com/contact.html" style="display:inline-block;background:#10b981;color:#04120c;font-weight:bold;text-decoration:none;padding:15px 32px;border-radius:10px;font-size:15px">Book a free growth session</a>
+    <p style="color:#666666;font-size:11px;margin-top:18px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
   </div>
 </div>`;
 }
 
-// QuickChart renders a chart image for the email (emails can't run JS/SVG)
-function quickChartUrl(scores) {
+// horizontal attention/adoption bars for the email hero (emails can't run JS/SVG)
+function gapChartUrl(scores) {
   const cfg = {
     type: "bar",
     data: {
       labels: ["Attention", "Adoption"],
-      datasets: [{ data: [scores.attention ?? 0, scores.adoption], backgroundColor: ["#6b8cff", "#10b981"], borderRadius: 6, barThickness: 60 }],
+      datasets: [{ data: [scores.attention ?? 0, scores.adoption], backgroundColor: ["#6b8cff", "#10b981"], borderRadius: 8, barThickness: 40 }],
     },
     options: {
+      indexAxis: "y",
       plugins: { legend: { display: false } },
       scales: {
-        y: { min: 0, max: 100, ticks: { color: "#888" }, grid: { color: "#222" } },
-        x: { ticks: { color: "#ddd", font: { size: 14 } }, grid: { display: false } },
+        x: { min: 0, max: 100, ticks: { color: "#777" }, grid: { color: "#222" } },
+        y: { ticks: { color: "#e6e6e6", font: { size: 15 } }, grid: { display: false } },
       },
     },
   };
-  return "https://quickchart.io/chart?bkg=%230a0a0a&w=544&h=300&c=" + encodeURIComponent(JSON.stringify(cfg));
+  return "https://quickchart.io/chart?v=4&bkg=%230c0c0c&w=330&h=180&c=" + encodeURIComponent(JSON.stringify(cfg));
 }
 
 async function sendResend(lead, base, recs) {
@@ -924,4 +986,5 @@ export const handler = async (event) => {
     return json(503, { error: "The data provider is busy right now. Give it a few seconds and try again." });
   }
 };
+
 
