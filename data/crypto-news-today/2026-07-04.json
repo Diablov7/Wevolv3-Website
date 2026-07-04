@@ -2,12 +2,45 @@
   "date": "2026-07-04",
   "dateLabel": "JUL 04, 2026",
   "hook": "5 things you missed in crypto today",
-  "video": { "url": "crypto-news-today/assets/2026-07-04.mp4", "poster": "" },
+  "video": {
+    "url": "https://uploads.postiz.com/2J3V41TsFW.mp4",
+    "poster": ""
+  },
   "stories": [
-    { "cat": "ETF", "text": "Bitcoin spot ETFs pull in $221M in a day", "em": "$221M", "url": "https://www.analyticsinsight.net/cryptocurrency-analytics-insight/crypto-news-today-bitcoin-inflows-etoro-leads-125-million-round-and-ethereum-etf", "source": "Analytics Insight" },
-    { "cat": "MARKETS", "text": "A short squeeze lifts Bitcoin toward $62K", "em": "$62K", "url": "https://www.coindesk.com/", "source": "CoinDesk" },
-    { "cat": "STABLECOIN", "text": "US agencies propose stablecoin issuer ID rules", "em": "stablecoin", "url": "https://investingnews.com/cryptocurrency-market-recap-19062026-stablecoin-rules/", "source": "Investing News" },
-    { "cat": "SEC", "text": "SEC standards could flood the US with crypto ETFs", "em": "crypto ETFs", "url": "https://www.dgimlaw.com/media-coverage/crypto-etfs-set-to-flood-us-market-as-regulator-streamlines-approvals/", "source": "DGIM Law" },
-    { "cat": "DATA", "text": "Track live spot Bitcoin ETF net inflows and holdings", "em": "net inflows", "url": "https://www.coinglass.com/etf/bitcoin", "source": "CoinGlass" }
+    {
+      "cat": "BITCOIN",
+      "text": "Bitcoin down 40% as ETFs bleed and Strategy exits",
+      "em": "40%",
+      "url": "https://defirate.com/news/bitcoin-down-40-percent-h1-etfs-bleed/",
+      "source": "defirate.com"
+    },
+    {
+      "cat": "MARKETS",
+      "text": "Money flees Bitcoin ETFs for Hyperliquid record streak",
+      "em": "Hyperliquid",
+      "url": "https://247wallst.com/investing/cryptocurrency/2026/07/03/why-money-is-leaving-bitcoin-for-hyperliquid/",
+      "source": "24/7 Wall St."
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Trump opposes Bitcoin tax, SEC admits ETF mistakes",
+      "em": "Trump",
+      "url": "https://bitcoinfoundation.org/news/regulation/us-crypto-approach/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "LAYER 2",
+      "text": "Robinhood Chain launches with stock tokens and 7% yield",
+      "em": "Robinhood Chain",
+      "url": "https://memeburn.com/robinhood-chain-launches-with-stock-tokens-and-7-defi-yield/",
+      "source": "Memeburn"
+    },
+    {
+      "cat": "ETHEREUM",
+      "text": "ENS founder blocks renewal using 3.26M tokens",
+      "em": "3.26M",
+      "url": "https://cryptobriefing.com/ens-governance-founder-accountability-scrutiny/",
+      "source": "Crypto Briefing"
+    }
   ]
 }
