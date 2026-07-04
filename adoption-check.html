@@ -41,7 +41,7 @@
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "What is the difference between attention and adoption?", "acceptedAnswer": { "@type": "Answer", "text": "Attention is how many people are watching a project: watchlist users, sentiment and market visibility. Adoption is how many people actually use or trade it: real 24h volume relative to market cap, on-chain transaction count and liquidity depth. A project can have huge attention and almost no adoption, which is the trap this tool surfaces." } },
-        { "@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": { "@type": "Answer", "text": "Public, free sources: CoinGecko for market and community data, and DexScreener for on-chain liquidity and transaction counts. No private data and no paid APIs. The scores are a transparent, directional heuristic, not financial advice." } },
+        { "@type": "Question", "name": "Where does the data come from?", "acceptedAnswer": { "@type": "Answer", "text": "Public sources: CoinGecko for the canonical token, market cap and volume; DexScreener for on-chain liquidity and transaction counts; and recent X/Twitter mentions classified for sentiment. No private data. The scores are a transparent, directional heuristic, not financial advice." } },
         { "@type": "Question", "name": "Is this financial or investment advice?", "acceptedAnswer": { "@type": "Answer", "text": "No. The Adoption Check is a marketing diagnostic for founders and teams. It does not tell you whether to buy, sell or hold anything. It only shows where a project sits on the attention-versus-adoption axis." } },
         { "@type": "Question", "name": "Can I check a brand-new token that isn't on CoinGecko?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Paste the contract address and the tool reads on-chain activity from DexScreener across most EVM chains and Solana. Attention signals may be limited for very new tokens, which the report makes clear." } },
         { "@type": "Question", "name": "How is the gap score calculated?", "acceptedAnswer": { "@type": "Answer", "text": "Attention combines watchlist users, sentiment and market-cap rank. Adoption combines volume-to-market-cap turnover, 24h transaction count and liquidity depth. The gap is attention minus adoption: a high positive gap means lots of interest but weak real usage." } }
@@ -173,6 +173,36 @@
 
       .ac-emailed { margin-top: 18px; text-align: center; color: #10b981; font-size: 14px; }
       .ac-emailed:empty { display: none; }
+
+      /* sentiment */
+      .ac-sent { margin-top: 22px; background: #0c0c0c; border: 1px solid #292929; border-radius: 10px; padding: 22px 24px; }
+      .ac-sent-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+      .ac-sent-title { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #10b981; }
+      .ac-sent-note { color: #6b6b6b; font-size: 12px; }
+      .ac-sentbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: #1a1a1a; }
+      .ac-sentbar > span { display: block; height: 100%; transition: width .6s cubic-bezier(.22,1,.36,1); }
+      .ac-sentbar .pos { background: #10b981; }
+      .ac-sentbar .neu { background: #4a4a4a; }
+      .ac-sentbar .neg { background: #ef4444; }
+      .ac-sent-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; font-size: 13px; color: #c8c8c8; }
+      .ac-sent-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+      .ac-themes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+      @media (max-width: 620px) { .ac-themes { grid-template-columns: 1fr; } }
+      .ac-theme h6 { font-family: 'Orbitron', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 8px; color: #8a8a8a; }
+      .ac-theme .tag { display: inline-block; font-size: 12.5px; padding: 4px 10px; border-radius: 20px; margin: 0 6px 6px 0; border: 1px solid #2a2a2a; color: #d8d8d8; }
+      .ac-theme.up .tag { border-color: #1f3a30; color: #7ae0bf; }
+      .ac-theme.down .tag { border-color: #43201f; color: #f0a0a0; }
+      .ac-mentions { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+      @media (max-width: 620px) { .ac-mentions { grid-template-columns: 1fr; } }
+      .ac-mcolm h6 { font-family: 'Orbitron', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 10px; }
+      .ac-mcolm h6.pos { color: #10b981; }
+      .ac-mcolm h6.neg { color: #ef4444; }
+      .ac-tweet { display: block; text-decoration: none; background: #101010; border: 1px solid #262626; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; transition: border-color .2s; }
+      .ac-tweet:hover { border-color: #10b981; }
+      .ac-tweet p { color: #dcdcdc; font-size: 13.5px; line-height: 1.5; margin: 0 0 8px; }
+      .ac-tweet .meta { color: #7a7a7a; font-size: 11.5px; }
+      .ac-tweet .meta b { color: #a8a8a8; font-weight: 600; }
+      .ac-mcolm .empty { color: #5a5a5a; font-size: 13px; font-style: italic; }
     </style>
 </head>
 
@@ -250,6 +280,16 @@
                         </div>
                     </div>
 
+                    <!-- TEASER: sentiment gauge (mentions + themes stay behind the gate) -->
+                    <div class="ac-sent" id="ac-sent-teaser" style="display:none">
+                        <div class="ac-sent-head">
+                            <span class="ac-sent-title">Community sentiment on X</span>
+                            <span class="ac-sent-note" id="ac-sent-t-note"></span>
+                        </div>
+                        <div class="ac-sentbar" id="ac-sent-t-bar"></div>
+                        <div class="ac-sent-legend" id="ac-sent-t-legend"></div>
+                    </div>
+
                     <!-- GATE: teaser verdict + capture form (shown after Run check) -->
                     <div class="ac-gate" id="ac-gate">
                         <div class="ac-gate-head">
@@ -294,6 +334,27 @@
                                 <div class="ac-mrow"><span>Volume / market cap</span><b id="ac-m-turn">—</b></div>
                                 <div class="ac-mrow"><span>24h transactions</span><b id="ac-m-txns">—</b></div>
                                 <div class="ac-mrow"><span>Liquidity</span><b id="ac-m-liq">—</b></div>
+                            </div>
+                        </div>
+
+                        <!-- SENTIMENT: full breakdown + themes + top mentions -->
+                        <div class="ac-sent ac-sent-report" id="ac-sent-full" style="display:none">
+                            <div class="ac-sent-head">
+                                <span class="ac-sent-title">Community sentiment on X</span>
+                                <span class="ac-sent-note" id="ac-sent-f-note"></span>
+                            </div>
+                            <div class="ac-sentbar" id="ac-sent-f-bar"></div>
+                            <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
+                            <div class="ac-themes" id="ac-themes"></div>
+                            <div class="ac-mentions">
+                                <div class="ac-mcolm">
+                                    <h6 class="pos">Top positive mentions</h6>
+                                    <div id="ac-ment-pos"></div>
+                                </div>
+                                <div class="ac-mcolm">
+                                    <h6 class="neg">Top negative mentions</h6>
+                                    <div id="ac-ment-neg"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -343,7 +404,7 @@
                 <h2>Adoption Check FAQ</h2>
                 <div class="lp-faq" style="margin-top:32px">
                     <details open><summary>What is the difference between attention and adoption?</summary><p>Attention is how many people are watching a project: watchlist users, sentiment and market visibility. Adoption is how many people actually use or trade it: real 24h volume relative to market cap, on-chain transaction count and liquidity depth. A project can have huge attention and almost no adoption, which is the trap this tool surfaces.</p></details>
-                    <details><summary>Where does the data come from?</summary><p>Public, free sources: CoinGecko for market and community data, and DexScreener for on-chain liquidity and transaction counts. No private data and no paid APIs. The scores are a transparent, directional heuristic, not financial advice.</p></details>
+                    <details><summary>Where does the data come from?</summary><p>Public sources: CoinGecko for the canonical token, market cap and volume; DexScreener for on-chain liquidity and transaction counts; and recent X/Twitter mentions, classified for sentiment. No private data. The scores are a transparent, directional heuristic, not financial advice.</p></details>
                     <details><summary>Is this financial or investment advice?</summary><p>No. The Adoption Check is a marketing diagnostic for founders and teams. It does not tell you whether to buy, sell or hold anything. It only shows where a project sits on the attention-versus-adoption axis.</p></details>
                     <details><summary>Can I check a brand-new token that isn't on CoinGecko?</summary><p>Yes. Paste the contract address and the tool reads on-chain activity from DexScreener across most EVM chains and Solana. Attention signals may be limited for very new tokens, which the report makes clear.</p></details>
                     <details><summary>How is the gap score calculated?</summary><p>Attention combines watchlist users, sentiment and market-cap rank. Adoption combines volume-to-market-cap turnover, 24h transaction count and liquidity depth. The gap is attention minus adoption: a high positive gap means lots of interest but weak real usage.</p></details>
@@ -482,6 +543,46 @@
           document.getElementById('ac-chart').innerHTML = parts.join('');
         }
 
+        function escHtml(s) {
+          return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // shared sentiment bar + legend (teaser and full report)
+        function renderSentBar(barId, legendId, noteId, sen) {
+          var b = document.getElementById(barId), lg = document.getElementById(legendId);
+          var seg = function (pct, cls) { return pct > 0 ? '<span class="' + cls + '" style="width:' + pct + '%"></span>' : ''; };
+          b.innerHTML = seg(sen.positivePct, 'pos') + seg(sen.neutralPct, 'neu') + seg(sen.negativePct, 'neg');
+          lg.innerHTML =
+            '<span><i style="background:#10b981"></i>' + sen.positivePct + '% positive</span>' +
+            '<span><i style="background:#4a4a4a"></i>' + sen.neutralPct + '% neutral</span>' +
+            '<span><i style="background:#ef4444"></i>' + sen.negativePct + '% negative</span>';
+          if (noteId) document.getElementById(noteId).textContent = sen.total ? sen.total + ' recent mentions' : '';
+        }
+
+        function tweetCard(t) {
+          var eng = (t.likes || 0) + (t.rts || 0);
+          var meta = '<span class="meta"><b>@' + escHtml(t.author || 'user') + '</b> · ' + fmtNum(t.likes) + ' likes · ' + fmtNum(t.rts) + ' RTs</span>';
+          var inner = '<p>' + escHtml(t.text) + '</p>' + meta;
+          return t.url ? '<a class="ac-tweet" href="' + escHtml(t.url) + '" target="_blank" rel="noopener nofollow">' + inner + '</a>'
+                       : '<div class="ac-tweet">' + inner + '</div>';
+        }
+
+        function renderSentimentFull(detail, sen) {
+          var box = document.getElementById('ac-sent-full');
+          if (!sen || !sen.total) { box.style.display = 'none'; return; }
+          box.style.display = '';
+          renderSentBar('ac-sent-f-bar', 'ac-sent-f-legend', 'ac-sent-f-note', sen);
+          var d = detail || {};
+          var themes = '';
+          if ((d.themesUp || []).length) themes += '<div class="ac-theme up"><h6>What drives positive</h6>' + d.themesUp.map(function (t) { return '<span class="tag">' + escHtml(t) + '</span>'; }).join('') + '</div>';
+          if ((d.themesDown || []).length) themes += '<div class="ac-theme down"><h6>What drives negative</h6>' + d.themesDown.map(function (t) { return '<span class="tag">' + escHtml(t) + '</span>'; }).join('') + '</div>';
+          document.getElementById('ac-themes').innerHTML = themes;
+          var top = d.top || {};
+          var pos = (top.positive || []), neg = (top.negative || []);
+          document.getElementById('ac-ment-pos').innerHTML = pos.length ? pos.map(tweetCard).join('') : '<div class="empty">No standout positive mentions in the window.</div>';
+          document.getElementById('ac-ment-neg').innerHTML = neg.length ? neg.map(tweetCard).join('') : '<div class="empty">No standout negative mentions — a healthy sign.</div>';
+        }
+
         function renderFull(data) {
           var s = data.scores, v = data.verdict, m = data.metrics, hasAtt = data.attentionAvailable && s.attention != null;
           renderChart(s, hasAtt);
@@ -500,6 +601,7 @@
           var ol = document.getElementById('ac-rec-list');
           ol.innerHTML = (data.recommendations || []).map(function (r) { return '<li></li>'; }).join('');
           (data.recommendations || []).forEach(function (r, i) { ol.children[i].textContent = r; });
+          renderSentimentFull(data.sentimentDetail, data.sentiment);
           document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Full report sent to your inbox' : '';
           gate.style.display = 'none';
           full.classList.add('show');
@@ -527,6 +629,9 @@
               renderHead(res.j.token, s, hasAtt);
               document.getElementById('ac-t-vk').textContent = (hasAtt && s.gap != null) ? 'Gap: ' + (s.gap > 0 ? '+' : '') + s.gap + ' points' : 'Adoption read';
               document.getElementById('ac-t-vh').textContent = res.j.teaserVerdict || '';
+              var stz = document.getElementById('ac-sent-teaser');
+              if (res.j.sentiment && res.j.sentiment.total) { stz.style.display = ''; renderSentBar('ac-sent-t-bar', 'ac-sent-t-legend', 'ac-sent-t-note', res.j.sentiment); }
+              else { stz.style.display = 'none'; }
               gate.style.display = '';
               result.classList.add('show');
               result.scrollIntoView({ behavior: 'smooth', block: 'start' });

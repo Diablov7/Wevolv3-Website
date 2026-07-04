@@ -286,6 +286,94 @@ async function fromTwitter(handle) {
   } catch (_) { return null; }
 }
 
+// shared LLM caller (OpenRouter preferred, then OpenAI) -> raw text or null.
+// Reasoning is disabled on OpenRouter: deepseek-v4-flash otherwise burns the
+// token budget on hidden reasoning and returns empty content (intermittent nulls).
+async function llmText(prompt, maxTokens, temperature) {
+  const call = async (url, model, key, isOR) => {
+    const payload = { model, messages: [{ role: "user", content: prompt }], temperature: temperature == null ? 0.5 : temperature, max_tokens: maxTokens || 400 };
+    if (isOR) payload.reasoning = { enabled: false };
+    const d = await getJson(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + key },
+      body: JSON.stringify(payload),
+    }, 1);
+    return (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || "";
+  };
+  try {
+    if (OPENROUTER_KEY) { const t = await call("https://openrouter.ai/api/v1/chat/completions", OPENROUTER_MODEL, OPENROUTER_KEY, true); if (t) return t; }
+    if (OPENAI_KEY) { const t = await call("https://api.openai.com/v1/chat/completions", OPENAI_MODEL, OPENAI_KEY, false); if (t) return t; }
+  } catch (_) {}
+  return null;
+}
+
+// twitterapi.io advanced search -> top RECENT mentions of the token by reach.
+// The `since:` window is essential: without it, queryType=Top returns all-time
+// viral tweets (e.g. Uniswap's 2020 airdrop giveaways) instead of current mood.
+async function fetchMentions(token) {
+  if (!TWITTER_KEY) return [];
+  const sym = String(token.symbol || "").replace(/[^A-Za-z0-9]/g, "");
+  if (!sym) return [];
+  const since = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString().slice(0, 10);
+  const q = "$" + sym + " lang:en -is:retweet min_faves:3 since:" + since;
+  try {
+    const d = await getJson(
+      "https://api.twitterapi.io/twitter/tweet/advanced_search?query=" + encodeURIComponent(q) + "&queryType=Top",
+      { headers: { "x-api-key": TWITTER_KEY } }, 1);
+    const raw = (d && d.tweets) || [];
+    const mapped = raw.map((t) => {
+      const a = t.author || {};
+      return {
+        text: String(t.text || "").replace(/https?:\/\/\S+/g, "").replace(/\s+/g, " ").trim(),
+        author: a.userName || null,
+        followers: num(a.followers) || 0,
+        likes: num(t.likeCount) || 0,
+        rts: num(t.retweetCount) || 0,
+        url: t.url || t.twitterUrl || null,
+      };
+    }).filter((m) => m.text.length > 4);
+    mapped.sort((a, b) => (b.likes + 2 * b.rts) - (a.likes + 2 * a.rts)); // reach-weighted
+    return mapped.slice(0, 30);
+  } catch (_) { return []; }
+}
+
+// classify mention sentiment + extract themes; picks top pos/neg by reach
+async function analyzeSentiment(mentions, token) {
+  if (!mentions || !mentions.length) return null;
+  const numbered = mentions.map((m, i) => i + ". " + m.text.slice(0, 200)).join("\n");
+  const prompt =
+    "Classify each numbered tweet about the crypto token " + token.name + " ($" + token.symbol + ") as pos, neu, or neg from a token-holder perspective " +
+    "(price optimism or community praise = pos; FUD, scam, rug, dump, loss = neg; news or neutral = neu). " +
+    "Then give up to 3 short themesUp (what drives positive sentiment) and up to 3 short themesDown (what drives negative). Each theme is 2-5 words, plain text. " +
+    'Return ONLY JSON: {"sentiments":["pos"|"neu"|"neg", one per tweet in order],"themesUp":["..."],"themesDown":["..."]}\n\nTWEETS:\n' + numbered;
+  const txt = await llmText(prompt, 700, 0.2);
+  if (!txt) return null;
+  let obj;
+  try { obj = JSON.parse((txt.match(/\{[\s\S]*\}/) || [txt])[0]); } catch (_) { return null; }
+  const labels = Array.isArray(obj.sentiments) ? obj.sentiments : [];
+  let pos = 0, neu = 0, neg = 0;
+  mentions.forEach((m, i) => {
+    const l = String(labels[i] || "neu").toLowerCase();
+    m.sentiment = l.startsWith("pos") ? "pos" : l.startsWith("neg") ? "neg" : "neu";
+    if (m.sentiment === "pos") pos++; else if (m.sentiment === "neg") neg++; else neu++;
+  });
+  const total = pos + neu + neg || 1;
+  const pick = (s) => mentions.filter((m) => m.sentiment === s).slice(0, 3)
+    .map((m) => ({ text: m.text.slice(0, 180), author: m.author, likes: m.likes, rts: m.rts, url: m.url }));
+  return {
+    breakdown: {
+      positive: pos, neutral: neu, negative: neg, total,
+      positivePct: Math.round((pos / total) * 100),
+      neutralPct: Math.round((neu / total) * 100),
+      negativePct: Math.round((neg / total) * 100),
+    },
+    top: { positive: pick("pos"), negative: pick("neg") },
+    themesUp: (obj.themesUp || []).slice(0, 3).map(String),
+    themesDown: (obj.themesDown || []).slice(0, 3).map(String),
+    sampleSize: mentions.length,
+  };
+}
+
 // AI recommendations (OpenRouter preferred, then OpenAI). Falls back to rules.
 async function recommendations(ctx) {
   const fmtUsd = (v) => (v == null || !v ? "unknown" : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
@@ -295,30 +383,18 @@ async function recommendations(ctx) {
     "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
     "SCORES: Attention " + (ctx.attention ?? "n/a") + "/100, Adoption " + ctx.adoption + "/100, Gap " + (ctx.gap ?? "n/a") + " (positive = more attention than real usage).\n" +
     "ATTENTION DATA: X followers " + (ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") : "unknown") + (ctx.xVerified ? " (verified account)" : "") + ".\n" +
-    "ADOPTION DATA: market cap " + fmtUsd(ctx.mcap) + ", 24h volume " + fmtUsd(ctx.volume) + " (" + turnoverPct + "), on-chain DEX volume " + fmtUsd(ctx.dexVolume) + ", pooled liquidity " + fmtUsd(ctx.liquidity) + ", 24h on-chain transactions " + (ctx.txns24h != null ? Number(ctx.txns24h).toLocaleString("en-US") : "unknown") + ".\n\n" +
+    "ADOPTION DATA: market cap " + fmtUsd(ctx.mcap) + ", 24h volume " + fmtUsd(ctx.volume) + " (" + turnoverPct + "), on-chain DEX volume " + fmtUsd(ctx.dexVolume) + ", pooled liquidity " + fmtUsd(ctx.liquidity) + ", 24h on-chain transactions " + (ctx.txns24h != null ? Number(ctx.txns24h).toLocaleString("en-US") : "unknown") + ".\n" +
+    (ctx.sentiment ? "SENTIMENT (of people talking about it on X): " + ctx.sentiment.positivePct + "% positive, " + ctx.sentiment.neutralPct + "% neutral, " + ctx.sentiment.negativePct + "% negative" + (ctx.themesDown && ctx.themesDown.length ? "; negative themes: " + ctx.themesDown.join(", ") : "") + ".\n" : "") +
+    "\n" +
     "Write exactly 3 next actions to close THIS project's specific gap. Each action must reference its real situation (e.g. cite the follower count, the turnover, or the gap direction) and be a concrete growth move Wevolv3 could run — not generic advice. " +
     "Max 24 words each, imperative, plain text, no markdown, no hashtags. Return a JSON array of 3 strings only.";
 
-  async function callOpenAILike(url, model, key) {
-    const d = await getJson(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + key },
-      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], temperature: 0.6, max_tokens: 320 }),
-    }, 1);
-    const txt = d.choices?.[0]?.message?.content || "";
-    const match = txt.match(/\[[\s\S]*\]/);
-    const arr = JSON.parse(match ? match[0] : txt);
-    return Array.isArray(arr) ? arr.slice(0, 3).map(String) : null;
-  }
-
   try {
-    if (OPENROUTER_KEY) {
-      const r = await callOpenAILike("https://openrouter.ai/api/v1/chat/completions", OPENROUTER_MODEL, OPENROUTER_KEY);
-      if (r && r.length) return { items: r, source: "ai" };
-    }
-    if (OPENAI_KEY) {
-      const r = await callOpenAILike("https://api.openai.com/v1/chat/completions", OPENAI_MODEL, OPENAI_KEY);
-      if (r && r.length) return { items: r, source: "ai" };
+    const txt = await llmText(prompt, 500, 0.6);
+    if (txt) {
+      const match = txt.match(/\[[\s\S]*\]/);
+      const arr = JSON.parse(match ? match[0] : txt);
+      if (Array.isArray(arr) && arr.length) return { items: arr.slice(0, 3).map(String), source: "ai" };
     }
   } catch (_) { /* fall through to rules */ }
 
@@ -375,7 +451,27 @@ async function notifyTelegram(lead, token, scores, verdictObj) {
   ));
 }
 
-function reportEmailHtml(token, scores, verdictObj, recs) {
+function sentimentEmailBlock(sentiment) {
+  if (!sentiment || !sentiment.total) return "";
+  const b = sentiment;
+  const bar = (pct, color) => pct > 0 ? `<td style="width:${pct}%;background:${color};height:10px"></td>` : "";
+  return `
+  <div style="padding:8px 28px">
+    <div style="background:#0f0f0f;border:1px solid #222222;border-radius:8px;padding:16px">
+      <div style="color:#8a8a8a;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Community sentiment on X</div>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:5px;overflow:hidden"><tr>
+        ${bar(b.positivePct, "#10b981")}${bar(b.neutralPct, "#555555")}${bar(b.negativePct, "#ef4444")}
+      </tr></table>
+      <div style="margin-top:8px;font-size:12px;color:#c8c8c8">
+        <span style="color:#10b981">&#9679; ${b.positivePct}% positive</span>&nbsp;&nbsp;
+        <span style="color:#999999">&#9679; ${b.neutralPct}% neutral</span>&nbsp;&nbsp;
+        <span style="color:#ef4444">&#9679; ${b.negativePct}% negative</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function reportEmailHtml(token, scores, verdictObj, recs, sentiment) {
   const chartUrl = quickChartUrl(scores);
   const rec = recs.items
     .map((r) => `<li style="margin:0 0 10px;color:#1a1a1a;font-size:15px;line-height:1.5">${esc(r)}</li>`)
@@ -411,6 +507,7 @@ function reportEmailHtml(token, scores, verdictObj, recs) {
       <p style="color:#c8c8c8;font-size:15px;line-height:1.6;margin:0">${esc(verdictObj.body)}</p>
     </div>
   </div>
+  ${sentimentEmailBlock(sentiment)}
   <div style="padding:8px 28px 20px">
     <h3 style="font-size:16px;color:#10b981">What we would do first</h3>
     <ol style="margin:12px 0 0;background:#ffffff;border-radius:8px;padding:18px 18px 18px 38px">${rec}</ol>
@@ -441,7 +538,7 @@ function quickChartUrl(scores) {
   return "https://quickchart.io/chart?bkg=%230a0a0a&w=544&h=300&c=" + encodeURIComponent(JSON.stringify(cfg));
 }
 
-async function sendResend(lead, token, scores, verdictObj, recs) {
+async function sendResend(lead, token, scores, verdictObj, recs, sentiment) {
   if (!RESEND_KEY) return { sent: false, reason: "no-key" };
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -451,7 +548,7 @@ async function sendResend(lead, token, scores, verdictObj, recs) {
         from: EMAIL_FROM,
         to: [lead.email],
         subject: "Your Adoption Report: " + token.name + " (" + token.symbol + ")",
-        html: reportEmailHtml(token, scores, verdictObj, recs),
+        html: reportEmailHtml(token, scores, verdictObj, recs, sentiment),
       }),
     });
     return { sent: res.ok };
@@ -561,12 +658,18 @@ export const handler = async (event) => {
       const adoScore = adoptionScore(token);
       if (attScore == null && adoScore == null) return json(404, { error: "We found the token but there isn't enough public data to score it yet." });
 
+      // sentiment: real mentions -> classified breakdown (teaser) + samples/themes (full)
+      const mentions = await fetchMentions(token);
+      const sentiment = await analyzeSentiment(mentions, token);
+
       const gap = attScore != null && adoScore != null ? attScore - adoScore : null;
       base = {
         token: { name: token.name, symbol: token.symbol, image: token.image, chain: token.chain, priceUsd: token.priceUsd, twitter: token.twitter, telegram: token.telegram },
         scores: { attention: attScore, adoption: adoScore, gap },
         attentionAvailable: attScore != null,
         verdict: verdict(attScore, adoScore),
+        sentiment: sentiment ? sentiment.breakdown : null, // teaser + full
+        sentimentDetail: sentiment ? { top: sentiment.top, themesUp: sentiment.themesUp, themesDown: sentiment.themesDown, sampleSize: sentiment.sampleSize } : null, // full only
         metrics: {
           followers: attention ? attention.followers : null,
           xVerified: attention ? attention.isVerified : null,
@@ -585,6 +688,8 @@ export const handler = async (event) => {
           mcap: token.mcap, mcapRank: token.mcapRank,
           turnover: token.volume && token.mcap ? token.volume / token.mcap : null,
           txns24h: token.txns24h, liquidity: token.liquidity,
+          sentiment: sentiment ? sentiment.breakdown : null,
+          themesDown: sentiment ? sentiment.themesDown : null,
         },
       };
       cacheSet(cacheKey, base);
@@ -597,6 +702,7 @@ export const handler = async (event) => {
         token: { name: base.token.name, symbol: base.token.symbol, image: base.token.image, chain: base.token.chain },
         scores: base.scores,
         attentionAvailable: base.attentionAvailable,
+        sentiment: base.sentiment,
         teaserVerdict: base.verdict.headline,
       });
     }
@@ -605,7 +711,7 @@ export const handler = async (event) => {
     const lead = { email: String(unlock.email).trim(), telegram: String(unlock.telegram).trim() };
     const recs = await recommendations(base.rawForRecs);
     await notifyTelegram(lead, base.token, base.scores, base.verdict);
-    const email = await sendResend(lead, base.token, base.scores, base.verdict, recs);
+    const email = await sendResend(lead, base.token, base.scores, base.verdict, recs, base.sentiment);
 
     return json(200, {
       ok: true, gated: false,
@@ -614,6 +720,8 @@ export const handler = async (event) => {
       attentionAvailable: base.attentionAvailable,
       verdict: base.verdict,
       metrics: base.metrics,
+      sentiment: base.sentiment,
+      sentimentDetail: base.sentimentDetail,
       recommendations: recs.items,
       emailed: email.sent === true,
       chartUrl: quickChartUrl(base.scores),
@@ -626,3 +734,4 @@ export const handler = async (event) => {
     return json(503, { error: "The data provider is busy right now. Give it a few seconds and try again." });
   }
 };
+
