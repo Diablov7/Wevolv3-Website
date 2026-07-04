@@ -114,6 +114,16 @@
   color: var(--white);
 }
 .cnt-headline .em { color: var(--default); }
+.cnt-summary {
+  font-family: Clashdisplay, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--white);
+  opacity: 0.72;
+  margin: 0 0 16px;
+  max-width: 720px;
+}
 
 /* Source link — mirrors .hero-projects-link + .hero-projects-link-text */
 .cnt-source {

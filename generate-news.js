@@ -206,11 +206,13 @@ function renderDay(day, prevDay) {
 
   const stories = (day.stories || []).map((s) => {
     const label = sourceLabel(s);
+    const summary = (s.summary || '').trim();
+    const summaryHtml = summary ? `\n                        <p class="cnt-summary">${esc(summary)}</p>` : '';
     return `                <li class="cnt-story">
                     <div class="cnt-num"></div>
                     <div class="cnt-body">
                         <span class="cnt-cat">${esc(s.cat || 'NEWS')}</span>
-                        <h2 class="cnt-headline">${highlight(s.text, s.em)}</h2>
+                        <h2 class="cnt-headline">${highlight(s.text, s.em)}</h2>${summaryHtml}
                         <a class="cnt-source" href="${esc(s.url)}" target="_blank" rel="noopener nofollow"><span>Read at ${esc(label)}</span>${ARROW}</a>
                     </div>
                 </li>`;

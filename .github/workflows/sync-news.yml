@@ -46,3 +46,17 @@ jobs:
             git commit -m "chore(news): sync Crypto News Today ($(date -u +%Y-%m-%d))"
             git push
           fi
+
+      # Runs LAST (after the commit above), so the site is never blocked. If the
+      # ContentStudio feed is unreachable, this fails the run and GitHub emails the
+      # repo owner — turning silent breakage into a visible signal.
+      - name: Verify ContentStudio feed is reachable
+        run: |
+          URL="${CONTENTSTUDIO_NEWS_URL:-https://studio.wevolv3.com/public/crypto-news-today.json}"
+          code=$(curl -s -o /tmp/feed.json -w "%{http_code}" --max-time 25 "$URL" || echo 000)
+          echo "Feed $URL -> HTTP $code"
+          if [ "$code" != "200" ]; then
+            echo "::error::Crypto News Today feed unreachable (HTTP $code). Pages were left untouched; check the ContentStudio 'app' service."
+            exit 1
+          fi
+          node -e "const d=require('/tmp/feed.json');if(!d||!Array.isArray(d.days))throw new Error('feed JSON malformed');console.log('Feed OK:',d.days.length,'day(s)')"
