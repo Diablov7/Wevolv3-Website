@@ -4,10 +4,10 @@
   "hook": "5 things you missed in crypto today",
   "video": { "url": "crypto-news-today/assets/2026-07-04.mp4", "poster": "" },
   "stories": [
-    { "cat": "MARKETS", "text": "Bitcoin reclaims $90K as shorts get liquidated", "em": "$90K", "url": "https://www.coindesk.com/markets", "source": "CoinDesk" },
-    { "cat": "DEFI", "text": "Aave overtakes lending rivals with $40B TVL", "em": "$40B TVL", "url": "https://www.theblock.co/latest-defi", "source": "The Block" },
-    { "cat": "NFT", "text": "An AI art collection minted out in 90 seconds", "em": "90 seconds", "url": "https://decrypt.co/nft", "source": "Decrypt" },
-    { "cat": "L2", "text": "Base hits a new record in daily active wallets", "em": "record", "url": "https://cointelegraph.com/tags/layer-2", "source": "Cointelegraph" },
-    { "cat": "REGULATION", "text": "The SEC drops its case against a major exchange", "em": "drops its case", "url": "https://www.reuters.com/technology/", "source": "Reuters" }
+    { "cat": "ETF", "text": "Bitcoin spot ETFs pull in $221M in a day", "em": "$221M", "url": "https://www.analyticsinsight.net/cryptocurrency-analytics-insight/crypto-news-today-bitcoin-inflows-etoro-leads-125-million-round-and-ethereum-etf", "source": "Analytics Insight" },
+    { "cat": "MARKETS", "text": "A short squeeze lifts Bitcoin toward $62K", "em": "$62K", "url": "https://www.coindesk.com/", "source": "CoinDesk" },
+    { "cat": "STABLECOIN", "text": "US agencies propose stablecoin issuer ID rules", "em": "stablecoin", "url": "https://investingnews.com/cryptocurrency-market-recap-19062026-stablecoin-rules/", "source": "Investing News" },
+    { "cat": "SEC", "text": "SEC standards could flood the US with crypto ETFs", "em": "crypto ETFs", "url": "https://www.dgimlaw.com/media-coverage/crypto-etfs-set-to-flood-us-market-as-regulator-streamlines-approvals/", "source": "DGIM Law" },
+    { "cat": "DATA", "text": "Track live spot Bitcoin ETF net inflows and holdings", "em": "net inflows", "url": "https://www.coinglass.com/etf/bitcoin", "source": "CoinGlass" }
   ]
 }
