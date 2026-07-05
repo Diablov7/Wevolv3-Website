@@ -185,7 +185,7 @@
       .b-price { grid-column: span 5; }
       .b-verdict { grid-column: span 7; background: linear-gradient(180deg, rgba(16,185,129,.08), rgba(16,185,129,0)); border-color: #1f3a30; }
       .b-sent { grid-column: span 5; }
-      .b-inbox { grid-column: span 12; background: linear-gradient(135deg, rgba(16,185,129,.10), rgba(107,140,255,.05)); border-color: #1f3a30; }
+      .b-inbox { grid-column: span 12; background: linear-gradient(180deg, rgba(16,185,129,.08), rgba(16,185,129,0)); border-color: #1f3a30; }
       @media (max-width: 860px) { .b-gap, .b-price, .b-verdict, .b-sent { grid-column: span 12; } }
       .b-verdict .ac-vk { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #10b981; }
       .b-verdict h4 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 26px; color: #fff; margin: 10px 0 10px; text-transform: uppercase; letter-spacing: -.01em; }
@@ -330,14 +330,14 @@
                     <div class="ac-head">
                         <img class="ac-logo" id="ac-r-logo" alt="" />
                         <div>
-                            <h3 id="ac-r-name">—</h3>
-                            <div class="ac-meta" id="ac-r-meta">—</div>
+                            <h3 id="ac-r-name"></h3>
+                            <div class="ac-meta" id="ac-r-meta"></div>
                             <div class="ac-pricechips" id="ac-pricechips"></div>
                         </div>
                         <div class="ac-headright">
                             <div class="ac-spark" id="ac-spark" title="7-day price"></div>
                             <div class="ac-gradebadge" id="ac-grade" style="display:none">
-                                <b id="ac-grade-letter">—</b>
+                                <b id="ac-grade-letter"></b>
                                 <span>Health grade</span>
                             </div>
                         </div>
@@ -370,8 +370,8 @@
                     <div class="ac-gate" id="ac-gate">
                         <div class="ac-gate-head">
                             <div class="ac-vk" id="ac-t-vk">Preview</div>
-                            <h4 id="ac-t-vh">—</h4>
-                            <p>There's more to this than two scores. Unlock the full report and we'll send you the complete numbers, what X is really saying about your project, our strategist's honest read — and a 3-move plan built from your data.</p>
+                            <h4 id="ac-t-vh"></h4>
+                            <p>There's more to this than two scores. Unlock the full report and we'll send you the complete numbers, what X is really saying about your project, our strategist's honest read, and a 3-move plan built from your data.</p>
                         </div>
                         <form class="ac-gate-form" id="ac-gate-form" autocomplete="off">
                             <input class="ac-input" id="ac-email" type="email" name="ac-email" placeholder="Work email *" autocomplete="off" required />
@@ -397,8 +397,8 @@
                             </div>
                             <div class="ac-card b-verdict">
                                 <div class="ac-vk" id="ac-r-vk">Verdict</div>
-                                <h4 id="ac-r-vh">—</h4>
-                                <p id="ac-r-vb">—</p>
+                                <h4 id="ac-r-vh"></h4>
+                                <p id="ac-r-vb"></p>
                                 <p class="ac-hook" id="ac-hook" style="display:none"></p>
                             </div>
                             <div class="ac-card b-sent" id="ac-sent-full" style="display:none">
@@ -411,13 +411,13 @@
                                 <div class="ac-sent-legend" id="ac-sent-f-legend"></div>
                             </div>
                             <div class="ac-card b-inbox">
-                                <h5>📬 The full report just landed in your inbox</h5>
+                                <h5>The full report just landed in your inbox</h5>
                                 <p class="ac-inbox-sub">This dashboard is the surface. The email has the substance:</p>
                                 <ul class="ac-inbox-list">
-                                    <li>The complete numbers — followers, real volume, turnover vs the top-100, transactions, liquidity</li>
+                                    <li>The complete numbers: followers, real volume, turnover vs the top-100, transactions and liquidity</li>
                                     <li>What people are actually saying about you on X: top mentions and the themes behind them</li>
                                     <li>Our strategist's honest read of your data, in plain English</li>
-                                    <li>A 3-move action plan built from your numbers — not a template</li>
+                                    <li>A 3-move action plan built from your numbers, not a template</li>
                                 </ul>
                                 <div class="ac-inbox-svc" id="ac-inbox-svc" style="display:none">
                                     <span class="lbl">Your plan touches</span>
@@ -527,13 +527,13 @@
         var currentQuery = '';
 
         function fmtUsd(n) {
-          if (n == null || isNaN(n)) return '—';
+          if (n == null || isNaN(n)) return 'n/a';
           if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
           if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
           if (n >= 1e3) return '$' + (n / 1e3).toFixed(1) + 'K';
           return '$' + Math.round(n);
         }
-        function fmtNum(n) { return n == null || isNaN(n) ? '—' : Number(n).toLocaleString('en-US'); }
+        function fmtNum(n) { return n == null || isNaN(n) ? 'n/a' : Number(n).toLocaleString('en-US'); }
 
         function setStatusOn(el, msg, isErr) {
           if (!msg) { el.className = 'ac-status'; el.innerHTML = ''; return; }
@@ -754,7 +754,7 @@
           } else { svcWrap.style.display = 'none'; }
 
           setShareLink(data.token, data.scores, data.grade, hasAtt);
-          document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Sent — give it a minute and check spam if it\'s shy' : '';
+          document.getElementById('ac-emailed').textContent = data.emailed ? '✓ Sent to your inbox. Give it a minute, and check spam if you don\'t see it.' : '';
           full.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
