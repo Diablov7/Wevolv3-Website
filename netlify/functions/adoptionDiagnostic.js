@@ -595,36 +595,36 @@ function reportEmailHtml(base, recs) {
   const fmtU = (v) => (v == null || !v ? na : "$" + Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 }));
   const fmtPct = (v) => (v == null ? na : (v * 100).toFixed(1) + "%");
 
-  // ---- shared card chrome (email-safe: tables + inline styles only) ----
-  const CARD = "background:#0c0c0c;border:1px solid #262626;border-radius:14px;padding:22px 24px";
-  const KICKER = "color:#7ae0bf;font-size:11px;letter-spacing:.6px;font-weight:bold";
-  const cell = (inner, w) => `<td valign="top"${w ? ` width="${w}"` : ""} style="padding:9px">${inner}</td>`;
-
-  // ---- hero: horizontal gap bars (landscape) ----
-  const gapLabel = scores.gap != null ? `Gap ${scores.gap > 0 ? "+" : ""}${scores.gap} points` : "Adoption read";
+  // Editorial layout: no stacked card "windows". Sections flow on the dark
+  // canvas, separated by thin rules and space. Only the grade chip and the
+  // charts carry any frame. Everything email-safe (tables + inline styles).
+  const PADX = "0 32px";
   const gradeColor = grade ? (/^C|^D/.test(grade.letter) ? "#ef4444" : (grade.letter === "B" || grade.letter === "C+") ? "#d9a441" : "#10b981") : "#10b981";
   const gradeBadge = grade
-    ? `<div style="display:inline-block;background:rgba(16,185,129,.06);border:2px solid ${gradeColor};border-radius:12px;padding:10px 18px;text-align:center">
-        <div style="font-size:32px;font-weight:bold;color:${gradeColor};line-height:1">${esc(grade.letter)}</div>
-        <div style="${KICKER};font-size:9.5px;margin-top:4px">Health grade</div></div>`
+    ? `<div style="display:inline-block;border:2px solid ${gradeColor};border-radius:12px;padding:9px 16px;text-align:center">
+        <div style="font-size:30px;font-weight:bold;color:${gradeColor};line-height:1">${esc(grade.letter)}</div>
+        <div style="color:#8a8a8a;font-size:9.5px;letter-spacing:.4px;margin-top:3px">Health grade</div></div>`
     : "";
+  const label = (t, sub) => `<div style="color:#7ae0bf;font-size:12px;font-weight:bold;letter-spacing:.3px;margin-bottom:14px">${t}${sub ? ` <span style="color:#6b6b6b;font-weight:normal">${sub}</span>` : ""}</div>`;
+  const rule = `<div style="padding:${PADX}"><div style="height:1px;background:#1e1e1e;margin:8px 0"></div></div>`;
+  const gapText = scores.gap != null ? `Gap ${scores.gap > 0 ? "+" : ""}${scores.gap}` : "Adoption read";
 
-  // ---- narrative ("Our read") — plain editorial text, not a card ----
+  // narrative ("Our read")
   const analysisBlock = recs.analysis
-    ? `<div style="padding:20px 24px 6px">
-        <div style="${KICKER};margin-bottom:14px">Our read</div>
-        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#e2e2e2;font-size:15.5px;line-height:1.72;margin:0 0 16px">${esc(p)}</p>`).join("")}
-      </div>`
+    ? `<div style="padding:${PADX}">
+        ${label("Our read")}
+        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#e4e4e4;font-size:15.5px;line-height:1.75;margin:0 0 16px">${esc(p)}</p>`).join("")}
+      </div>` + rule
     : "";
 
-  // ---- numbers card ----
-  const nrow = (label, value) => `<tr>
-    <td style="padding:8px 0;border-bottom:1px solid #1c1c1c;color:#9a9a9a;font-size:13px">${label}</td>
-    <td align="right" style="padding:8px 0;border-bottom:1px solid #1c1c1c;color:#ffffff;font-size:13px;font-weight:bold">${value}</td>
+  // numbers as an open table (row dividers, not a box)
+  const nrow = (l, v) => `<tr>
+    <td style="padding:9px 0;border-bottom:1px solid #191919;color:#9a9a9a;font-size:13.5px">${l}</td>
+    <td align="right" style="padding:9px 0;border-bottom:1px solid #191919;color:#ffffff;font-size:13.5px;font-weight:bold">${v}</td>
   </tr>`;
   const peerRatio = m.turnover != null && m.peerTurnover ? " <span style=\"color:#10b981\">(" + (m.turnover / m.peerTurnover).toFixed(1) + "&times; the top-100 median)</span>" : "";
-  const numbersCard = `<div style="${CARD}">
-    <div style="${KICKER};margin-bottom:8px">The full numbers</div>
+  const numbersBlock = `<div style="padding:${PADX}">
+    ${label("The full numbers")}
     <table width="100%" cellpadding="0" cellspacing="0">
       ${nrow("X / Twitter followers", fmtN(m.followers) + (m.xVerified ? " &#10004;" : ""))}
       ${nrow("Market cap", fmtU(m.marketCap) + (m.marketCapRank ? " &middot; #" + m.marketCapRank : ""))}
@@ -636,107 +636,99 @@ function reportEmailHtml(base, recs) {
     </table>
   </div>`;
 
-  // ---- sentiment: one section — donut, themes and top quotes together ----
-  const themeChips = (arr, color) => (arr || []).map((t) =>
-    `<span style="display:inline-block;border:1px solid ${color};color:${color};border-radius:20px;padding:3px 11px;font-size:12px;margin:0 6px 6px 0">${esc(t)}</span>`).join("");
-  // Quote: no side-stripe. A leading dot carries the sentiment; the card is whole.
-  const quote = (t, color) => `
-    <div style="padding:12px 14px;margin:0 0 10px;background:#101010;border:1px solid #232323;border-radius:10px">
-      <div style="color:#dcdcdc;font-size:13.5px;line-height:1.55"><span style="color:${color}">&#9679;</span> ${esc(t.text)}</div>
-      <div style="color:#7a7a7a;font-size:11px;margin-top:7px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
+  // sentiment — donut, themes as a sentence, quotes as plain labelled text
+  const quote = (t, color, tag) => `
+    <div style="margin:0 0 15px">
+      <div style="color:${color};font-size:11px;font-weight:bold;letter-spacing:.3px;margin-bottom:4px">${tag}</div>
+      <div style="color:#dcdcdc;font-size:14px;line-height:1.55">${esc(t.text)}</div>
+      <div style="color:#7a7a7a;font-size:11.5px;margin-top:5px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
     </div>`;
   const hasMentions = detail.top && ((detail.top.positive || []).length || (detail.top.negative || []).length);
-  const sentimentSection = sentiment && sentiment.total
-    ? `<div style="padding:9px"><div style="${CARD}">
-        <div style="${KICKER};margin-bottom:16px">Sentiment on X <span style="color:#6b6b6b;font-weight:normal;letter-spacing:0">&middot; ${sentiment.total} recent mentions</span></div>
+  const themesUp = (detail.themesUp || []).map(esc).join(", ");
+  const themesDown = (detail.themesDown || []).map(esc).join(", ");
+  const sentimentBlock = sentiment && sentiment.total
+    ? `<div style="padding:${PADX}">
+        ${label("Sentiment on X", "&middot; " + sentiment.total + " recent mentions")}
         <div style="text-align:center">
-          <img src="${sentimentDonutUrl(sentiment)}" alt="${sentiment.positivePct}% positive, ${sentiment.neutralPct}% neutral, ${sentiment.negativePct}% negative" width="320" style="max-width:100%;border-radius:8px" />
-          <div style="margin-top:12px;font-size:13px;color:#c8c8c8">
+          <img src="${sentimentDonutUrl(sentiment)}" alt="${sentiment.positivePct}% positive, ${sentiment.neutralPct}% neutral, ${sentiment.negativePct}% negative" width="300" style="max-width:100%" />
+          <div style="margin-top:10px;font-size:13px;color:#c8c8c8">
             <span style="color:#10b981">&#9679;</span> ${sentiment.positivePct}% positive &nbsp; <span style="color:#9a9a9a">&#9679;</span> ${sentiment.neutralPct}% neutral &nbsp; <span style="color:#ef4444">&#9679;</span> ${sentiment.negativePct}% negative
           </div>
         </div>
-        ${hasMentions ? `<div style="margin-top:20px;border-top:1px solid #1c1c1c;padding-top:18px">
-          ${(detail.themesUp || []).length ? `<div style="margin-bottom:4px">${themeChips(detail.themesUp, "#10b981")}</div>` : ""}
-          ${(detail.themesDown || []).length ? `<div style="margin-bottom:14px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
-          ${(detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981")).join("")}
-          ${(detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444")).join("")}
-        </div>` : ""}
-      </div></div>`
+        ${themesUp ? `<div style="font-size:14px;line-height:1.5;margin-top:20px"><span style="color:#10b981;font-weight:bold">Driving it up:</span> <span style="color:#c8c8c8">${themesUp}.</span></div>` : ""}
+        ${themesDown ? `<div style="font-size:14px;line-height:1.5;margin-top:6px;margin-bottom:${hasMentions ? "18px" : "0"}"><span style="color:#ef4444;font-weight:bold">Pulling it down:</span> <span style="color:#c8c8c8">${themesDown}.</span></div>` : ""}
+        ${hasMentions ? (detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981", "Top positive")).join("") + (detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444", "Top negative")).join("") : ""}
+      </div>`
     : "";
-  const numbersSection = `<div style="padding:9px">${numbersCard}</div>`;
 
-  // ---- 3-move plan (each move is a card, tied to the service that runs it) ----
-  const planCards = recs.items.map((r, i) => {
+  // 3-move plan as a numbered list (no card boxes, no bordered pills)
+  const planList = recs.items.map((r, i) => {
     const s = r.service;
-    return `<div style="background:#0f0f0f;border:1px solid #262626;border-radius:12px;padding:16px 18px;margin-bottom:12px">
-      <table width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td valign="top" width="38"><div style="width:28px;height:28px;border-radius:50%;background:#10b981;color:#04120c;font-weight:bold;font-size:14px;text-align:center;line-height:28px">${i + 1}</div></td>
-        <td valign="top">
+    return `<table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:17px"><tr>
+        <td valign="top" width="32"><div style="width:24px;height:24px;border-radius:50%;background:#10b981;color:#04120c;font-weight:bold;font-size:13px;text-align:center;line-height:24px">${i + 1}</div></td>
+        <td valign="top" style="padding-left:10px">
           <div style="color:#e6e6e6;font-size:15px;line-height:1.5">${esc(r.text)}</div>
-          ${s ? `<a href="${esc(s.url)}" style="display:inline-block;margin-top:9px;padding:6px 12px;border:1px solid #1f3a30;border-radius:20px;color:#7ae0bf;font-size:11.5px;font-weight:bold;text-decoration:none">${esc(s.name)} &rsaquo;</a>` : ""}
+          ${s ? `<a href="${esc(s.url)}" style="color:#7ae0bf;font-size:12.5px;font-weight:bold;text-decoration:none">${esc(s.name)} &rarr;</a>` : ""}
         </td>
-      </tr></table>
-    </div>`;
+      </tr></table>`;
   }).join("");
 
   return `
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#0a0a0a;color:#ffffff;border-radius:16px;overflow:hidden">
-  <div style="padding:26px 24px 6px">
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#ffffff">
+  <div style="padding:32px 32px 4px">
     <table width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td valign="middle">
-        <div style="${KICKER};color:#10b981">Wevolv3 &middot; Adoption Report</div>
-        <h1 style="font-size:25px;margin:9px 0 2px;color:#ffffff">${esc(token.name)} <span style="color:#8a8a8a;font-weight:normal">(${esc(token.symbol)})</span></h1>
+      <td valign="top">
+        <div style="color:#10b981;font-size:12px;font-weight:bold;letter-spacing:.4px;text-transform:uppercase">Wevolv3 &middot; Adoption Report</div>
+        <h1 style="font-size:29px;margin:12px 0 3px;color:#ffffff;line-height:1.1">${esc(token.name)} <span style="color:#8a8a8a;font-weight:normal">${esc(token.symbol)}</span></h1>
         <div style="color:#8a8a8a;font-size:13px">${esc(token.chain || "")}</div>
       </td>
-      <td align="right" valign="middle">${gradeBadge}</td>
+      <td align="right" valign="top">${gradeBadge}</td>
     </tr></table>
   </div>
 
-  <!-- hero bento: gap bars (left) + scores (right) -->
-  <div style="padding:9px 15px"><table width="100%" cellpadding="0" cellspacing="0"><tr>
-    ${cell(`<div style="${CARD}">
-      <div style="${KICKER};margin-bottom:12px">Attention vs adoption &middot; ${esc(gapLabel)}</div>
-      <img src="${gapChartUrl(scores)}" alt="Attention ${scores.attention == null ? na : scores.attention}, Adoption ${scores.adoption}" width="330" style="max-width:100%;border-radius:8px" />
-    </div>`, "60%")}
-    ${cell(`<div style="${CARD};margin-bottom:16px">
-        <div style="color:#6b8cff;font-size:11px;letter-spacing:1px;text-transform:uppercase">Attention</div>
-        <div style="font-size:36px;font-weight:bold;color:#ffffff;line-height:1.1">${scores.attention == null ? na : scores.attention}<span style="font-size:14px;color:#666"> /100</span></div>
-        <div style="color:#7a7a7a;font-size:12px;margin-top:2px">Real X reach</div>
-      </div>
-      <div style="${CARD}">
-        <div style="color:#10b981;font-size:11px;letter-spacing:1px;text-transform:uppercase">Adoption</div>
-        <div style="font-size:36px;font-weight:bold;color:#ffffff;line-height:1.1">${scores.adoption}<span style="font-size:14px;color:#666"> /100</span></div>
-        <div style="color:#7a7a7a;font-size:12px;margin-top:2px">Real on-chain usage</div>
-      </div>`)}
-  </tr></table></div>
-
-  <!-- verdict: the headline leads, no eyebrow -->
-  <div style="padding:9px 15px"><div style="background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(16,185,129,0));border:1px solid #1f3a30;border-radius:14px;padding:24px">
-    <h2 style="font-size:22px;margin:0 0 10px;color:#ffffff">${esc(verdictObj.headline)}</h2>
-    <p style="color:#c8c8c8;font-size:15px;line-height:1.62;margin:0">${esc(noDash(verdictObj.body))}</p>
-  </div></div>
-
+  <!-- hero: gap chart, then the two scores as open columns -->
+  <div style="padding:22px 32px 4px">
+    <img src="${gapChartUrl(scores)}" alt="Attention ${scores.attention == null ? na : scores.attention}, Adoption ${scores.adoption}, ${esc(gapText)}" width="536" style="width:100%;max-width:536px" />
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px"><tr>
+      <td width="50%" valign="top">
+        <div style="color:#6b8cff;font-size:11px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase">Attention</div>
+        <div style="font-size:40px;font-weight:bold;color:#ffffff;line-height:1.05;margin-top:2px">${scores.attention == null ? na : scores.attention}<span style="font-size:15px;color:#666"> /100</span></div>
+        <div style="color:#7a7a7a;font-size:12px">Real X reach</div>
+      </td>
+      <td width="50%" valign="top">
+        <div style="color:#10b981;font-size:11px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase">Adoption</div>
+        <div style="font-size:40px;font-weight:bold;color:#ffffff;line-height:1.05;margin-top:2px">${scores.adoption}<span style="font-size:15px;color:#666"> /100</span></div>
+        <div style="color:#7a7a7a;font-size:12px">Real on-chain usage</div>
+      </td>
+    </tr></table>
+  </div>
+${rule}
+  <!-- verdict: label + headline + body, no box -->
+  <div style="padding:${PADX}">
+    ${label("Verdict", "&middot; " + esc(gapText))}
+    <div style="font-size:22px;font-weight:bold;color:#ffffff;line-height:1.28;margin-bottom:11px">${esc(verdictObj.headline)}</div>
+    <p style="color:#c8c8c8;font-size:15px;line-height:1.65;margin:0">${esc(noDash(verdictObj.body))}</p>
+  </div>
+${rule}
   ${analysisBlock}
-  <div style="padding:0 6px">
-    ${numbersSection}
-    ${sentimentSection}
+  ${numbersBlock}
+${rule}
+  ${sentimentBlock}
+${rule}
+  <div style="padding:${PADX}">
+    ${label("Your 3-move plan")}
+    ${planList}
   </div>
 
-  <!-- plan -->
-  <div style="padding:16px 24px 9px">
-    <div style="${KICKER};margin-bottom:16px">Your 3-move plan</div>
-    ${planCards}
-  </div>
-
-  <!-- CTA bulletproof button: bgcolor on the td survives clients that strip CSS backgrounds -->
-  <div style="padding:14px 24px 34px;text-align:center">
+  <!-- CTA bulletproof button: bgcolor on the td/a survives clients that strip CSS -->
+  <div style="padding:20px 32px 36px;text-align:center">
     <p style="color:#c8c8c8;font-size:14.5px;line-height:1.6;margin:0 0 20px">This is what we'd do for ${esc(token.name)}, and it's what we run every day. Give us 30 minutes and we'll turn this into a plan with numbers attached.</p>
     <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto">
       <tr><td align="center" bgcolor="#10b981" style="background-color:#10b981;border-radius:10px">
         <a href="https://wevolv3.com/contact.html" style="display:inline-block;background-color:#10b981;color:#04120c;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;text-decoration:none;border-radius:10px;border:2px solid #10b981">Book a free growth session &rarr;</a>
       </td></tr>
     </table>
-    <p style="color:#666666;font-size:11px;margin-top:20px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
+    <p style="color:#666666;font-size:11px;margin-top:22px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>
   </div>
 </div>`;
 }
@@ -976,6 +968,7 @@ export const handler = async (event) => {
     return json(503, { error: "The data provider is busy right now. Give it a few seconds and try again." });
   }
 };
+
 
 
 
