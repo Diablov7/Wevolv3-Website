@@ -11,6 +11,7 @@
       "cat": "BITCOIN",
       "text": "Bitcoin down 40% as ETFs bleed and Strategy exits",
       "em": "40%",
+      "summary": "Bitcoin is down 40% in six months as ETFs bleed and Strategy eyes selling BTC. Analysts explain what's really behind the drop.",
       "url": "https://defirate.com/news/bitcoin-down-40-percent-h1-etfs-bleed/",
       "source": "defirate.com"
     },
@@ -18,6 +19,7 @@
       "cat": "MARKETS",
       "text": "Money flees Bitcoin ETFs for Hyperliquid record streak",
       "em": "Hyperliquid",
+      "summary": "Bitcoin ETFs lost a record $4.5 billion in a month while Hyperliquid's new funds have never had a losing week. Here's why money is moving.",
       "url": "https://247wallst.com/investing/cryptocurrency/2026/07/03/why-money-is-leaving-bitcoin-for-hyperliquid/",
       "source": "24/7 Wall St."
     },
@@ -25,6 +27,7 @@
       "cat": "REGULATION",
       "text": "Trump opposes Bitcoin tax, SEC admits ETF mistakes",
       "em": "Trump",
+      "summary": "Trump says bitcoin shouldn't be taxed as a payment method. SEC admits past crypto ETF mistakes, promises neutral approach. BTC tests $62K.",
       "url": "https://bitcoinfoundation.org/news/regulation/us-crypto-approach/",
       "source": "Bitcoin Foundation"
     },
@@ -32,6 +35,7 @@
       "cat": "LAYER 2",
       "text": "Robinhood Chain launches with stock tokens and 7% yield",
       "em": "Robinhood Chain",
+      "summary": "Robinhood Chain launched its Arbitrum-based Layer 2 with tokenized stocks in 120+ countries and a 7% USDG lending product powered by Morpho for U.S. users.",
       "url": "https://memeburn.com/robinhood-chain-launches-with-stock-tokens-and-7-defi-yield/",
       "source": "Memeburn"
     },
@@ -39,6 +43,7 @@
       "cat": "ETHEREUM",
       "text": "ENS founder blocks renewal using 3.26M tokens",
       "em": "3.26M",
+      "summary": "ENS founder Nick Johnson used 3.26 million tokens to block a Security Council renewal, sparking calls to dissolve the DAO and raising centralization.",
       "url": "https://cryptobriefing.com/ens-governance-founder-accountability-scrutiny/",
       "source": "Crypto Briefing"
     }
