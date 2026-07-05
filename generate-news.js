@@ -105,6 +105,7 @@ ${opts.jsonLd ? opts.jsonLd.map(j => '    <script type="application/ld+json">\n'
     <link href="/css/layout.css" rel="stylesheet" type="text/css" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/css/news.css?v=${CSS_VER}" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Crypto News Today by Wevolv3" href="/crypto-news-today/feed.xml" />
     <link href="/images/favicon.png" rel="shortcut icon" type="image/png" />
     <link href="/images/favicon.png" rel="apple-touch-icon" />
     <style>
@@ -178,17 +179,41 @@ function footer() {
 // ── daily page ──────────────────────────────────────────────────────────────
 function renderDay(day, prevDay) {
   const url = `${BASE_URL}/crypto-news-today/${day.date}`;
-  const top = (day.stories && day.stories[0]) || {};
-  const desc = `Crypto News Today, ${day.dateLabel}: ${day.hook}. The day's top ${(day.stories || []).length} crypto stories with links to every source.`;
+  const storyList = day.stories || [];
+  const desc = `Crypto News Today, ${day.dateLabel}: ${day.hook}. The day's top ${storyList.length} crypto stories with links to every source.`;
+  // News engines want a precise timestamp, not a bare date. Fixed midday UTC.
+  const iso = `${day.date}T12:00:00+00:00`;
   const jsonLd = [
     {
       '@context': 'https://schema.org', '@type': 'NewsArticle',
       headline: `Crypto News Today — ${day.dateLabel}`,
       description: day.hook,
-      datePublished: day.date, dateModified: day.date,
+      datePublished: iso, dateModified: iso,
       url,
+      image: [BASE_URL + '/images/og-image.png'],
+      inLanguage: 'en',
+      isAccessibleForFree: true,
+      articleSection: 'Cryptocurrency',
+      author: { '@type': 'Organization', name: 'Wevolv3', url: BASE_URL },
       publisher: { '@type': 'Organization', name: 'Wevolv3', url: BASE_URL, logo: { '@type': 'ImageObject', url: BASE_URL + '/images/LOGO.png' } },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    },
+    // Each story as an extractable, citable unit for AI answer engines (GEO).
+    {
+      '@context': 'https://schema.org', '@type': 'ItemList',
+      name: `Top crypto stories — ${day.dateLabel}`,
+      numberOfItems: storyList.length,
+      itemListOrder: 'https://schema.org/ItemListOrderAscending',
+      itemListElement: storyList.map((s, i) => ({
+        '@type': 'ListItem', position: i + 1,
+        item: {
+          '@type': 'CreativeWork',
+          name: s.text,
+          ...(s.summary ? { abstract: s.summary } : {}),
+          ...(s.cat ? { genre: s.cat } : {}),
+          url: s.url,
+        },
+      })),
     },
     {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -222,6 +247,17 @@ function renderDay(day, prevDay) {
     ? `<a class="cnt-btn cnt-ghost" href="/crypto-news-today/${prevDay.date}">&larr; ${esc(prevDay.dateLabel)}</a>`
     : '';
 
+  // TL;DR: a clean, self-contained summary AI answer engines can lift whole (AEO).
+  const tldr = storyList.map((s) =>
+    `                    <li><span class="cnt-tldr-cat">${esc(s.cat || 'NEWS')}</span> ${esc(s.text)}</li>`).join('\n');
+  const tldrHtml = storyList.length ? `            <div class="cnt-tldr">
+                <div class="cnt-section-label">The 30-second version</div>
+                <ul>
+${tldr}
+                </ul>
+            </div>
+` : '';
+
   const body = `
     <div class="cnt-page">
         <div class="w-layout-blockcontainer main-container w-container">
@@ -229,8 +265,9 @@ function renderDay(day, prevDay) {
                 <div class="cnt-eyebrow">Crypto News Today</div>
                 <h1 class="cnt-heading">${esc(day.dateLabel)}</h1>
                 <p class="cnt-hook">${esc(day.hook)}</p>
+                <p class="cnt-published">Published <time datetime="${day.date}">${esc(day.dateLabel)}</time> by Wevolv3</p>
             </div>
-${videoHtml}            <div class="cnt-section-label">Today's stories</div>
+${tldrHtml}${videoHtml}            <div class="cnt-section-label">Today's stories</div>
             <ol class="cnt-stories">
 ${stories}
             </ol>
@@ -239,6 +276,9 @@ ${stories}
                 <a class="cnt-btn" href="https://t.me/wevolv3" target="_blank" rel="noopener">Follow @wevolv3</a>
                 <a class="cnt-btn cnt-ghost" href="/crypto-news-today">All days</a>
                 ${prevBtn}
+            </div>
+            <div class="cnt-tool">
+                <p>Curious whether a token making headlines is actually being used, or just watched? Run it through our free <a href="/adoption-check">Adoption Check</a>, the gap between attention and real on-chain adoption, scored in seconds.</p>
             </div>
         </div>
     </div>
@@ -283,6 +323,33 @@ ${cards}
   return head({ title: 'Crypto News Today — Daily Crypto Recap | Wevolv3', description: desc, canonical: url, jsonLd }) + body + footer();
 }
 
+// ── RSS feed ─────────────────────────────────────────────────────────────────
+// A real feed helps news aggregators and some AI crawlers discover each day fast.
+function renderFeed(days) {
+  const items = days.slice(0, 30).map((d) => {
+    const link = `${BASE_URL}/crypto-news-today/${d.date}`;
+    const bullets = (d.stories || []).map((s) => `• ${s.cat ? s.cat + ': ' : ''}${s.text}`).join('\n');
+    const pub = new Date(`${d.date}T12:00:00+00:00`).toUTCString();
+    return `    <item>
+      <title>${esc(`Crypto News Today — ${d.dateLabel}`)}</title>
+      <link>${link}</link>
+      <guid isPermaLink="true">${link}</guid>
+      <pubDate>${pub}</pubDate>
+      <description>${esc(d.hook + '\n\n' + bullets)}</description>
+    </item>`;
+  }).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+    <title>Crypto News Today by Wevolv3</title>
+    <link>${BASE_URL}/crypto-news-today</link>
+    <description>The 5 crypto stories that actually mattered each day, with links to every source.</description>
+    <language>en</language>
+    <lastBuildDate>${days[0] ? new Date(`${days[0].date}T12:00:00+00:00`).toUTCString() : new Date(0).toUTCString()}</lastBuildDate>
+${items}
+</channel></rss>
+`;
+}
+
 // ── build ───────────────────────────────────────────────────────────────────
 function loadDays() {
   if (!fs.existsSync(DATA_DIR)) return [];
@@ -320,7 +387,9 @@ function build() {
     : { date: null, dateLabel: '', hook: '', headlines: [] };
   fs.writeFileSync(path.join(OUT_DIR, 'latest.json'), JSON.stringify(latest) + '\n');
 
-  console.log(`[news] generated hub + ${days.length} day page(s) + latest.json → crypto-news-today/`);
+  fs.writeFileSync(path.join(OUT_DIR, 'feed.xml'), renderFeed(days));
+
+  console.log(`[news] generated hub + ${days.length} day page(s) + latest.json + feed.xml → crypto-news-today/`);
   return days;
 }
 

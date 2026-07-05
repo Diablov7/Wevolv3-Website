@@ -11,18 +11,33 @@ Wevolv3 is a Web3-native growth partner operating worldwide, with strong LATAM p
 - [Works](https://wevolv3.com/works.html): Portfolio of crypto and Web3 marketing projects (several under NDA).
 - [Blog](https://wevolv3.com/blog.html): Articles on Web3 marketing, KOLs, communities, attribution, post-quantum crypto.
 - [Contact](https://wevolv3.com/contact.html): Email, Telegram, and contact form.
-- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate the ROI of a KOL marketing campaign.
+- [Crypto News Today](https://wevolv3.com/crypto-news-today): Daily recap of the 5 crypto stories that mattered, updated every day.
 
 ## Services
 
-- Web3 Community Management: Telegram, Discord, X community building and moderation.
-- Crypto Ad Placement: Targeted advertising on crypto-native ad networks and platforms.
-- Web3 Growth Hacking: User acquisition and retention strategies for tokens and dApps.
-- Influencer Marketing (KOL): Key Opinion Leader campaigns across X, YouTube, Telegram.
-- Design & Motion: Branding, social creatives, and motion graphics for crypto projects.
-- Guerrilla Marketing: Unconventional, high-impact campaigns for token launches.
-- Token & Exchange Listing: Support for CEX/DEX listings.
-- Crypto PR & Media: Coverage on Forbes, Cointelegraph, CoinDesk, Bitcoin.com, Binance, CoinMarketCap.
+Each service has its own dedicated page:
+
+- [Crypto KOL Marketing](https://wevolv3.com/crypto-kol-marketing): Influencer (Key Opinion Leader) campaigns across X, YouTube and Telegram, matched to your chain and audience and measured on real users, not follower counts.
+- [Crypto PR & Media](https://wevolv3.com/crypto-pr): Coverage and credibility through crypto media (Cointelegraph, CoinDesk, Bitcoin.com, Binance, CoinMarketCap).
+- [Community Building](https://wevolv3.com/community-building): Telegram, Discord and X community building, moderation and retention.
+- [Crypto Ads & On-Chain Placements](https://wevolv3.com/ads-placement): Targeted advertising on crypto-native ad networks and on-chain placements.
+- [Growth Hacking](https://wevolv3.com/growth-hacking): Organic user acquisition through Reddit, Crypto Twitter and trending channels.
+- [Guerrilla Marketing](https://wevolv3.com/guerrilla-marketing): Unconventional, high-impact campaigns that stand out without whale-sized budgets.
+- [Listings](https://wevolv3.com/listings): CoinMarketCap, CoinGecko and exchange listing support and discoverability.
+- [Design & Motion](https://wevolv3.com/design-motion): Branding, social creatives and motion graphics for crypto projects.
+- [Web3 Development](https://wevolv3.com/web3-development): Smart contracts, dApps and technical execution teams can trust.
+- [Token Launch Marketing](https://wevolv3.com/token-launch-marketing): End-to-end launch campaigns built for a strong TGE.
+- [DeFi Marketing](https://wevolv3.com/defi-marketing): Growth for protocols, TVL and liquidity.
+- [Crypto Exchange Marketing](https://wevolv3.com/crypto-exchange-marketing): User acquisition and trader activation for exchanges.
+
+## Free Tools
+
+- [Adoption Check](https://wevolv3.com/adoption-check): Free tool that scores the gap between a token's ATTENTION (real X/Twitter reach) and ADOPTION (real on-chain usage). Returns an attention/adoption score, a health grade, community sentiment from X, and a tailored 3-move action plan emailed to the user. Data from CoinGecko, DexScreener and X.
+- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate the ROI of a KOL marketing campaign.
+
+## Daily News
+
+- [Crypto News Today](https://wevolv3.com/crypto-news-today): A daily recap of the 5 crypto stories that actually mattered, each with a summary and a link to the original source, updated every day. RSS feed: https://wevolv3.com/crypto-news-today/feed.xml
 
 ## Key Articles
 
