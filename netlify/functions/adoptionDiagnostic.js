@@ -369,17 +369,26 @@ async function llmText(prompt, maxTokens, temperature) {
 async function fetchMentions(token) {
   if (!TWITTER_KEY) return [];
   const sym = String(token.symbol || "").replace(/[^A-Za-z0-9]/g, "");
-  if (!sym) return [];
+  const name = String(token.name || "").replace(/["\\]/g, "").trim();
+  if (!sym && !name) return [];
   const since = new Date(Date.now() - 30 * 24 * 3600 * 1000).toISOString().slice(0, 10);
-  const q = "$" + sym + " lang:en -is:retweet min_faves:3 since:" + since;
+  // Search cashtag ($PEPE), hashtag (#PEPE) AND the project name in plain
+  // language ("Pepe") — a lot of real conversation never uses a cashtag.
+  const terms = [];
+  if (sym) { terms.push("$" + sym); terms.push("#" + sym); }
+  if (name && name.length >= 3 && name.toUpperCase() !== sym) terms.push('"' + name + '"');
+  if (!terms.length) return [];
+  const q = "(" + terms.join(" OR ") + ") lang:en -is:retweet min_faves:3 since:" + since;
   try {
     const d = await getJson(
       "https://api.twitterapi.io/twitter/tweet/advanced_search?query=" + encodeURIComponent(q) + "&queryType=Top",
       { headers: { "x-api-key": TWITTER_KEY } }, 1);
     const raw = (d && d.tweets) || [];
+    const seen = new Set();
     const mapped = raw.map((t) => {
       const a = t.author || {};
       return {
+        id: t.id || t.url || t.twitterUrl,
         text: String(t.text || "").replace(/https?:\/\/\S+/g, "").replace(/\s+/g, " ").trim(),
         author: a.userName || null,
         followers: num(a.followers) || 0,
@@ -387,7 +396,7 @@ async function fetchMentions(token) {
         rts: num(t.retweetCount) || 0,
         url: t.url || t.twitterUrl || null,
       };
-    }).filter((m) => m.text.length > 4);
+    }).filter((m) => m.text.length > 4 && m.id && !seen.has(m.id) && seen.add(m.id));
     mapped.sort((a, b) => (b.likes + 2 * b.rts) - (a.likes + 2 * a.rts)); // reach-weighted
     return mapped.slice(0, 30);
   } catch (_) { return []; }
@@ -588,7 +597,7 @@ function reportEmailHtml(base, recs) {
 
   // ---- shared card chrome (email-safe: tables + inline styles only) ----
   const CARD = "background:#0c0c0c;border:1px solid #262626;border-radius:14px;padding:22px 24px";
-  const KICKER = "color:#8a8a8a;font-size:11px;letter-spacing:1.5px;text-transform:uppercase";
+  const KICKER = "color:#7ae0bf;font-size:11px;letter-spacing:.6px;font-weight:bold";
   const cell = (inner, w) => `<td valign="top"${w ? ` width="${w}"` : ""} style="padding:9px">${inner}</td>`;
 
   // ---- hero: horizontal gap bars (landscape) ----
@@ -600,12 +609,12 @@ function reportEmailHtml(base, recs) {
         <div style="${KICKER};font-size:9.5px;margin-top:4px">Health grade</div></div>`
     : "";
 
-  // ---- narrative ("Our read") ----
+  // ---- narrative ("Our read") — plain editorial text, not a card ----
   const analysisBlock = recs.analysis
-    ? `<div style="padding:9px"><div style="background:linear-gradient(180deg,#0f1a15,#0c0c0c);border:1px solid #1f3a30;border-radius:14px;padding:24px">
-        <div style="${KICKER};color:#10b981;margin-bottom:12px">Our read</div>
-        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#e2e2e2;font-size:15.5px;line-height:1.7;margin:0 0 14px">${esc(p)}</p>`).join("")}
-      </div></div>`
+    ? `<div style="padding:20px 24px 6px">
+        <div style="${KICKER};margin-bottom:14px">Our read</div>
+        ${recs.analysis.split(/\n\n+/).map((p) => `<p style="color:#e2e2e2;font-size:15.5px;line-height:1.72;margin:0 0 16px">${esc(p)}</p>`).join("")}
+      </div>`
     : "";
 
   // ---- numbers card ----
@@ -627,44 +636,34 @@ function reportEmailHtml(base, recs) {
     </table>
   </div>`;
 
-  // ---- sentiment card (donut) ----
-  const sentCard = sentiment && sentiment.total
-    ? `<div style="${CARD}">
-        <div style="${KICKER};margin-bottom:10px">Sentiment on X</div>
-        <img src="${sentimentDonutUrl(sentiment)}" alt="${sentiment.positivePct}% positive, ${sentiment.neutralPct}% neutral, ${sentiment.negativePct}% negative" width="300" style="max-width:100%;border-radius:8px" />
-        <div style="margin-top:10px;font-size:12.5px">
-          <span style="color:#10b981">&#9679; ${sentiment.positivePct}% positive</span>&nbsp;&nbsp;
-          <span style="color:#9a9a9a">&#9679; ${sentiment.neutralPct}% neutral</span>&nbsp;&nbsp;
-          <span style="color:#ef4444">&#9679; ${sentiment.negativePct}% negative</span>
-        </div>
-        <div style="color:#666;font-size:11px;margin-top:6px">${sentiment.total} recent mentions</div>
-      </div>`
-    : "";
-
-  // numbers + sentiment sit side by side (the landscape bento centrepiece)
-  const bentoRow = sentCard
-    ? `<div style="padding:9px"><table width="100%" cellpadding="0" cellspacing="0"><tr>
-        ${cell(numbersCard, "56%")}${cell(sentCard)}
-      </tr></table></div>`
-    : `<div style="padding:9px">${numbersCard}</div>`;
-
-  // ---- what people are saying ----
+  // ---- sentiment: one section — donut, themes and top quotes together ----
   const themeChips = (arr, color) => (arr || []).map((t) =>
     `<span style="display:inline-block;border:1px solid ${color};color:${color};border-radius:20px;padding:3px 11px;font-size:12px;margin:0 6px 6px 0">${esc(t)}</span>`).join("");
+  // Quote: no side-stripe. A leading dot carries the sentiment; the card is whole.
   const quote = (t, color) => `
-    <div style="border-left:3px solid ${color};padding:9px 13px;margin:0 0 10px;background:#101010;border-radius:0 8px 8px 0">
-      <div style="color:#dcdcdc;font-size:13px;line-height:1.5">${esc(t.text)}</div>
-      <div style="color:#7a7a7a;font-size:11px;margin-top:5px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
+    <div style="padding:12px 14px;margin:0 0 10px;background:#101010;border:1px solid #232323;border-radius:10px">
+      <div style="color:#dcdcdc;font-size:13.5px;line-height:1.55"><span style="color:${color}">&#9679;</span> ${esc(t.text)}</div>
+      <div style="color:#7a7a7a;font-size:11px;margin-top:7px">@${esc(t.author || "user")} &middot; ${fmtN(t.likes)} likes &middot; ${fmtN(t.rts)} reposts${t.url ? ` &middot; <a href="${esc(t.url)}" style="color:#0a8a5f;text-decoration:none">view</a>` : ""}</div>
     </div>`;
-  const mentionsBlock = (detail.top && ((detail.top.positive || []).length || (detail.top.negative || []).length))
+  const hasMentions = detail.top && ((detail.top.positive || []).length || (detail.top.negative || []).length);
+  const sentimentSection = sentiment && sentiment.total
     ? `<div style="padding:9px"><div style="${CARD}">
-        <div style="${KICKER};margin-bottom:12px">What people are saying on X</div>
-        ${(detail.themesUp || []).length ? `<div style="margin-bottom:4px">${themeChips(detail.themesUp, "#10b981")}</div>` : ""}
-        ${(detail.themesDown || []).length ? `<div style="margin-bottom:12px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
-        ${(detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981")).join("")}
-        ${(detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444")).join("")}
+        <div style="${KICKER};margin-bottom:16px">Sentiment on X <span style="color:#6b6b6b;font-weight:normal;letter-spacing:0">&middot; ${sentiment.total} recent mentions</span></div>
+        <div style="text-align:center">
+          <img src="${sentimentDonutUrl(sentiment)}" alt="${sentiment.positivePct}% positive, ${sentiment.neutralPct}% neutral, ${sentiment.negativePct}% negative" width="320" style="max-width:100%;border-radius:8px" />
+          <div style="margin-top:12px;font-size:13px;color:#c8c8c8">
+            <span style="color:#10b981">&#9679;</span> ${sentiment.positivePct}% positive &nbsp; <span style="color:#9a9a9a">&#9679;</span> ${sentiment.neutralPct}% neutral &nbsp; <span style="color:#ef4444">&#9679;</span> ${sentiment.negativePct}% negative
+          </div>
+        </div>
+        ${hasMentions ? `<div style="margin-top:20px;border-top:1px solid #1c1c1c;padding-top:18px">
+          ${(detail.themesUp || []).length ? `<div style="margin-bottom:4px">${themeChips(detail.themesUp, "#10b981")}</div>` : ""}
+          ${(detail.themesDown || []).length ? `<div style="margin-bottom:14px">${themeChips(detail.themesDown, "#ef4444")}</div>` : ""}
+          ${(detail.top.positive || []).slice(0, 2).map((t) => quote(t, "#10b981")).join("")}
+          ${(detail.top.negative || []).slice(0, 2).map((t) => quote(t, "#ef4444")).join("")}
+        </div>` : ""}
       </div></div>`
     : "";
+  const numbersSection = `<div style="padding:9px">${numbersCard}</div>`;
 
   // ---- 3-move plan (each move is a card, tied to the service that runs it) ----
   const planCards = recs.items.map((r, i) => {
@@ -679,17 +678,6 @@ function reportEmailHtml(base, recs) {
       </tr></table>
     </div>`;
   }).join("");
-
-  // ---- services strip: the catalog behind the plan ----
-  const seenSvc = new Set(); const uniqSvc = [];
-  recs.items.forEach((r) => { const s = r.service; if (s && !seenSvc.has(s.key)) { seenSvc.add(s.key); uniqSvc.push(s); } });
-  const svcStrip = uniqSvc.length
-    ? `<div style="padding:9px"><div style="${CARD}">
-        <div style="${KICKER};color:#10b981;margin-bottom:6px">The Wevolv3 plays behind this plan</div>
-        <p style="color:#9a9a9a;font-size:13.5px;line-height:1.55;margin:0 0 14px">Each move maps to a service we run end to end. Tap one to see how it works.</p>
-        ${uniqSvc.map((s) => `<a href="${esc(s.url)}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 16px;background:#0f1a15;border:1px solid #1f3a30;border-radius:10px;color:#7ae0bf;font-size:13px;font-weight:bold;text-decoration:none">${esc(s.name)}</a>`).join("")}
-      </div></div>`
-    : "";
 
   return `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#0a0a0a;color:#ffffff;border-radius:16px;overflow:hidden">
@@ -722,25 +710,23 @@ function reportEmailHtml(base, recs) {
       </div>`)}
   </tr></table></div>
 
-  <!-- verdict -->
+  <!-- verdict: the headline leads, no eyebrow -->
   <div style="padding:9px 15px"><div style="background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(16,185,129,0));border:1px solid #1f3a30;border-radius:14px;padding:24px">
-    <div style="color:#10b981;font-size:12px;text-transform:uppercase;letter-spacing:1px">${esc(gapLabel)}</div>
-    <h2 style="font-size:21px;margin:9px 0 8px;color:#ffffff">${esc(verdictObj.headline)}</h2>
-    <p style="color:#c8c8c8;font-size:15px;line-height:1.6;margin:0">${esc(noDash(verdictObj.body))}</p>
+    <h2 style="font-size:22px;margin:0 0 10px;color:#ffffff">${esc(verdictObj.headline)}</h2>
+    <p style="color:#c8c8c8;font-size:15px;line-height:1.62;margin:0">${esc(noDash(verdictObj.body))}</p>
   </div></div>
 
+  ${analysisBlock}
   <div style="padding:0 6px">
-    ${analysisBlock}
-    ${bentoRow}
-    ${mentionsBlock}
+    ${numbersSection}
+    ${sentimentSection}
   </div>
 
   <!-- plan -->
-  <div style="padding:9px 24px">
-    <div style="${KICKER};color:#10b981;margin-bottom:14px">Your 3-move plan</div>
+  <div style="padding:16px 24px 9px">
+    <div style="${KICKER};margin-bottom:16px">Your 3-move plan</div>
     ${planCards}
   </div>
-  <div style="padding:0 6px">${svcStrip}</div>
 
   <!-- CTA -->
   <div style="padding:14px 24px 32px;text-align:center">
@@ -986,5 +972,6 @@ export const handler = async (event) => {
     return json(503, { error: "The data provider is busy right now. Give it a few seconds and try again." });
   }
 };
+
 
 
