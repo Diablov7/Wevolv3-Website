@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-06",
+  "dateLabel": "JUL 06, 2026",
+  "hook": "Save this, crypto moved fast today",
+  "video": {
+    "url": "https://uploads.postiz.com/AJ1eqXb2fb.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULATION",
+      "text": "Binance halts trading in France after missing MiCA deadline",
+      "em": "missing MiCA deadline",
+      "summary": "Binance suspended crypto trading in France and several EU countries after failing to secure a MiCA license, impacting around 2 million users.",
+      "url": "https://www.ccn.com/news/crypto/binance-halts-crypto-trading-france-europe-mica-license/",
+      "source": "ccn.com"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Hackers drain $6M from DeFi protocol Summer.fi",
+      "em": "$6M",
+      "summary": "Blockaid detected a live exploit on Summer.fi that drained $6 million, causing the SUMR token to drop despite a broader market uptrend.",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/hackers-reportedly-drain-6-million-075620230.html",
+      "source": "Yahoo Finance"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Ripple's Luxembourg license upgraded to fully compliant",
+      "em": "fully compliant",
+      "summary": "Ripple's preliminary crypto asset provider license in Luxembourg was upgraded to full compliance, allowing it to serve clients across the European Economic Area.",
+      "url": "https://www.coindesk.com/policy/2026/07/06/ripple-s-preliminary-crypto-asset-provider-license-in-luxembourg-upgraded-to-fully-compliant",
+      "source": "CoinDesk"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "South Korea's Bitplanet to invest $10M in Bitcoin mining",
+      "em": "$10M",
+      "summary": "South Korea's Bitplanet plans to deploy $10 million into Bitcoin mining operations in Oman and Paraguay to generate recurring BTC production.",
+      "url": "https://bitcoinfoundation.org/news/bitcoin-mining-news/koreas-bitplanet-to-put-10m-in-bitcoin-mining-in-oman-paraguay/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "ETHEREUM",
+      "text": "Vitalik says next Ethereum upgrade rivals the Merge",
+      "em": "next Ethereum upgrade",
+      "summary": "Ethereum co-founder Vitalik Buterin announced the network's next major overhaul, called 'Lean Ethereum,' will take three to four years and match the Merge's impact.",
+      "url": "https://unchainedcrypto.com/vitalik-buterin-says-ethereums-next-major-upgrade-will-take-three-to-four-years-and-rival-the-merge/",
+      "source": "Unchained Podcast"
+    }
+  ]
+}
