@@ -1,51 +1,51 @@
 {
   "date": "2026-07-06",
   "dateLabel": "JUL 06, 2026",
-  "hook": "Save this, crypto moved fast today",
+  "hook": "Crypto in 15 seconds, lets go",
   "video": {
-    "url": "https://uploads.postiz.com/AJ1eqXb2fb.mp4",
+    "url": "https://uploads.postiz.com/5BSqLB32D0.mp4",
     "poster": ""
   },
   "stories": [
     {
-      "cat": "REGULATION",
-      "text": "Binance halts trading in France after missing MiCA deadline",
-      "em": "missing MiCA deadline",
-      "summary": "Binance suspended crypto trading in France and several EU countries after failing to secure a MiCA license, impacting around 2 million users.",
-      "url": "https://www.ccn.com/news/crypto/binance-halts-crypto-trading-france-europe-mica-license/",
-      "source": "ccn.com"
-    },
-    {
       "cat": "DEFI",
-      "text": "Hackers drain $6M from DeFi protocol Summer.fi",
-      "em": "$6M",
-      "summary": "Blockaid detected a live exploit on Summer.fi that drained $6 million, causing the SUMR token to drop despite a broader market uptrend.",
-      "url": "https://finance.yahoo.com/markets/crypto/articles/hackers-reportedly-drain-6-million-075620230.html",
-      "source": "Yahoo Finance"
+      "text": "Summer.fi halts vaults after $6 million exploit",
+      "em": "$6 million",
+      "summary": "DeFi protocol Summer.fi paused its Lazy Summer vaults following a $6 million exploit that caused its SUMR token to drop over 18%.",
+      "url": "https://www.coindesk.com/web3/2026/07/06/defi-protocol-summer-fi-halts-lazy-summer-vaults-after-usd6-million-exploit",
+      "source": "coindesk.com"
     },
     {
       "cat": "REGULATION",
-      "text": "Ripple's Luxembourg license upgraded to fully compliant",
-      "em": "fully compliant",
-      "summary": "Ripple's preliminary crypto asset provider license in Luxembourg was upgraded to full compliance, allowing it to serve clients across the European Economic Area.",
+      "text": "SEC closes Consensys Ethereum 2.0 probe",
+      "em": "Ethereum 2.0",
+      "summary": "The SEC ended its investigation into Consensys over Ethereum 2.0, removing a major regulatory overhang for staking.",
+      "url": "https://www.tradingview.com/news/newsbtc:6652ecf65094b:0-sec-closes-consensys-ethereum-2-0-probe-removing-a-major-staking-overhang/",
+      "source": "TradingView"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Ripple's Luxembourg license upgraded to fully MiCA-compliant",
+      "em": "fully MiCA-compliant",
+      "summary": "Ripple's preliminary crypto asset provider license in Luxembourg was upgraded to fully compliant status under MiCA, allowing operations across the EEA.",
       "url": "https://www.coindesk.com/policy/2026/07/06/ripple-s-preliminary-crypto-asset-provider-license-in-luxembourg-upgraded-to-fully-compliant",
       "source": "CoinDesk"
     },
     {
-      "cat": "BITCOIN",
-      "text": "South Korea's Bitplanet to invest $10M in Bitcoin mining",
-      "em": "$10M",
-      "summary": "South Korea's Bitplanet plans to deploy $10 million into Bitcoin mining operations in Oman and Paraguay to generate recurring BTC production.",
-      "url": "https://bitcoinfoundation.org/news/bitcoin-mining-news/koreas-bitplanet-to-put-10m-in-bitcoin-mining-in-oman-paraguay/",
-      "source": "Bitcoin Foundation"
+      "cat": "DEFI",
+      "text": "HOOD bets on DeFi, tokenization, and AI trading",
+      "em": "HOOD",
+      "summary": "Robinhood announced a global expansion push into its own chain, stock tokens, DeFi lending, perpetual futures, and AI-powered trading.",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/hood-bets-defi-tokenization-ai-124800299.html",
+      "source": "Yahoo Finance"
     },
     {
       "cat": "ETHEREUM",
-      "text": "Vitalik says next Ethereum upgrade rivals the Merge",
-      "em": "next Ethereum upgrade",
-      "summary": "Ethereum co-founder Vitalik Buterin announced the network's next major overhaul, called 'Lean Ethereum,' will take three to four years and match the Merge's impact.",
-      "url": "https://unchainedcrypto.com/vitalik-buterin-says-ethereums-next-major-upgrade-will-take-three-to-four-years-and-rival-the-merge/",
-      "source": "Unchained Podcast"
+      "text": "BitMine adds $73 million ETH as Strategy dumps Bitcoin",
+      "em": "$73 million",
+      "summary": "Tom Lee's BitMine accumulated $73 million in Ethereum while Strategy sold off some of its Bitcoin holdings.",
+      "url": "https://decrypt.co/372805/tom-lee-bitmine-73-million-ethereum-strategy-dumps-bitcoin",
+      "source": "Decrypt"
     }
   ]
 }
