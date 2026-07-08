@@ -83,6 +83,61 @@
             "worksFor": { "@id": "https://wevolv3.com/#organization" },
             "sameAs": ["https://x.com/wevolv3_media"]
           },
+          "numberOfEmployees": { "@type": "QuantitativeValue", "minValue": 6 },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Wevolv3 Web3 Marketing Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Web3 Community Management", "description": "Strategic community management and growth for Web3 and crypto projects across Telegram, Discord, and other platforms." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on project scope and community size" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Crypto Ad Placement", "description": "Targeted advertising and ad placement for crypto, DeFi, and blockchain campaigns." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on ad spend and target networks" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Web3 Growth Hacking", "description": "Growth hacking and user acquisition strategies for Web3 projects, driving adoption and retention." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on growth targets and timeline" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Influencer Marketing (KOL)", "description": "Key Opinion Leader campaigns connecting Web3 projects with influential voices in the crypto space." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on KOL tier, campaign volume, and territories" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Design & Motion", "description": "Creative design and motion graphics for Web3 branding, social media, and marketing campaigns." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on deliverables and revisions" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Guerrilla Marketing", "description": "Unconventional and high-impact guerrilla marketing tactics for crypto and Web3 projects." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on campaign scale and geography" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Token & Exchange Listing", "description": "Support for token listings on centralized and decentralized exchanges." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on target exchanges and requirements" },
+                "areaServed": "Worldwide"
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": { "@type": "Service", "name": "Crypto PR & Media", "description": "Public relations and media coverage on top crypto outlets including Forbes, Cointelegraph, CoinDesk, and more." },
+                "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD", "description": "Custom quote based on outlets, article count, and turnaround" },
+                "areaServed": "Worldwide"
+              }
+            ]
+          },
           "sameAs": [
             "https://x.com/wevolv3_media",
             "https://www.linkedin.com/company/wevol3-web3-marketing",
@@ -101,8 +156,13 @@
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": "https://wevolv3.com/#website",
           "name": "Wevolv3",
+          "alternateName": "Wevolv3 - Web3 Marketing Agency",
           "url": "https://wevolv3.com",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://wevolv3.com/#organization" },
+          "dateModified": "2026-07-08",
           "potentialAction": {
             "@type": "SearchAction",
             "target": "https://wevolv3.com/blog?search={search_term_string}",
@@ -199,6 +259,13 @@
         {
           "@context": "https://schema.org",
           "@type": "FAQPage",
+          "speakable": {
+            "@type": "SpeakableSpecification",
+            "xpath": [
+              "/html/head/title",
+              "/html/head/meta[@name='description']/@content"
+            ]
+          },
           "mainEntity": [
             {
               "@type": "Question",
@@ -230,6 +297,46 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "Tell us what's not working today (for example, our community is dead, we need more users, nobody knows we exist). You can reach us on Telegram at @wevolv3, by email at contact@wevolv3.com, or via our contact form. We'll ask a few questions, understand your situation, and then propose concrete steps. No commitment until you're comfortable."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How much does Web3 marketing cost?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Web3 marketing pricing is almost always quote-based rather than off-the-shelf, because scope varies wildly: a single KOL campaign for a token launch is very different from a 6-month community-management retainer for an L1 chain. At Wevolv3 we work in three common shapes: (1) project fees for one-off pushes like an exchange listing or a media week, (2) monthly retainers for continuous community and growth work, and (3) performance-based add-ons on top of retainers. The right shape depends on your stage, your team, and what you actually need — we scope after a short discovery call so you don't overpay for services you don't need."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How long does a Web3 marketing campaign take to show results?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Different levers have different clocks. Paid ads and KOL pushes can move impressions and clicks in 24-72 hours. Community growth and trust-building usually take 30-90 days to become visible in retention data. Media and PR coverage sits somewhere in the middle: pitches, drafts, and approvals normally land the first pieces in 2-4 weeks. If someone promises you sustainable Web3 growth in a week, they are selling you noise. Our typical engagements run 60-180 days because that is the honest window where you can separate signal from launch-day spike."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the difference between a Web3 marketing agency and a KOL agency?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A KOL agency is a specialized broker: they connect you with crypto Twitter, YouTube, and Telegram influencers and run those campaigns. That is one channel. A full Web3 marketing agency covers the surrounding stack — positioning, community management, paid ads, PR, exchange listings, design, growth experiments — with KOL as one of the levers. Wevolv3 is the second kind: we run KOL campaigns when that is the right move, but not as our only tool. The advantage is you do not have to stitch four agencies together to make a launch work."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do you measure ROI for KOL campaigns in Web3?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The honest answer: attribution in Web3 is broken by default, because most on-chain and off-chain events are disconnected. What actually works is a mix: unique tracked links per KOL, dedicated landing pages, on-chain wallet tagging when the funnel ends on-chain, promo codes for CEX-side campaigns, and post-campaign wallet-analysis to see which KOLs brought wallets that stayed. We treat 'impressions delivered' as the weakest signal and 'wallets that transacted 30+ days later' as the strongest. Our KOL ROI Calculator on this site gives a directional estimate before you commit spend."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What makes Wevolv3 different from other Web3 marketing agencies?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Three things. First, modularity: clients can hire one lever (say, only KOL) or the whole stack, without being locked into a full retainer that includes services they do not need. Second, LATAM presence: a lot of Web3 agencies are US or EU-only, and we open Spanish and Portuguese speaking markets that competitors cannot service directly. Third, focus on retention over vanity metrics: our success cases are measured in retained wallets, community activity 60 days after the push, and user growth that survives the token unlock — not in launch-day impressions."
               }
             }
           ]
