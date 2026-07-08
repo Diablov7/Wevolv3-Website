@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-08",
+  "dateLabel": "JUL 08, 2026",
+  "hook": "5 things you missed in crypto today",
+  "video": {
+    "url": "https://uploads.postiz.com/w1EEbbmkVs.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "DEFI",
+      "text": "EU targets DeFi and staking beyond MiCA rulebook",
+      "em": "DeFi and staking",
+      "summary": "European Parliament asks the European Commission to assess regulatory gaps in DeFi lending, staking, and NFTs beyond MiCA's scope.",
+      "url": "https://www.financemagnates.com/cryptocurrency/regulation/eu-lawmakers-look-beyond-mica-targeting-defi-and-staking/",
+      "source": "financemagnates.com"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "SEC proposes crypto safe harbor rules this month",
+      "em": "safe harbor",
+      "summary": "SEC updates its 2026 agenda to propose a crypto safe harbor rule for startups and DeFi, opening public comment soon.",
+      "url": "https://bitcoinfoundation.org/news/regulation/sec-crypto-safe-harbor/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "ETHEREUM",
+      "text": "Tether burns $3B USDT on Ethereum, largest since February",
+      "em": "$3B",
+      "summary": "Tether burns $2.5 billion USDT on Ethereum, its biggest burn since February 2026, reducing supply on the network.",
+      "url": "https://cryptobriefing.com/tether-burns-3b-usdt-on-ethereum-largest-since-february-2026/",
+      "source": "Crypto Briefing"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "France enforces new MiCA rules for crypto firms",
+      "em": "MiCA",
+      "summary": "France implements stricter EU crypto rules under MiCA, raising investor protection and operational standards for firms.",
+      "url": "https://dig.watch/updates/france-enforces-new-eu-crypto-rules-under-mica",
+      "source": "Digital Watch Observatory"
+    },
+    {
+      "cat": "SECURITY",
+      "text": "Crypto kiosks scammed $56M from Texans last year",
+      "em": "$56M",
+      "summary": "Crypto ATMs were used to scam $56 million from Texans in 2025, prompting lawmakers to push for regulation.",
+      "url": "https://www.texastribune.org/2026/07/08/texas-cryptocurrency-kiosk-bitcoin-atm-scam-fraud/",
+      "source": "The Texas Tribune"
+    }
+  ]
+}
