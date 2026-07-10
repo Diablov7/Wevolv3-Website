@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-10",
+  "dateLabel": "JUL 10, 2026",
+  "hook": "Strategy just sold $216M of its Bitcoin",
+  "video": {
+    "url": "https://uploads.postiz.com/AiXSQtTRHG.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "BITCOIN",
+      "text": "Strategy sells $216M in Bitcoin for dividend payout",
+      "em": "$216M",
+      "summary": "Strategy sold $216 million worth of Bitcoin to cover its dividend payments, raising questions about the sustainability of its Bitcoin-heavy corporate strategy.",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/strategy-just-sold-216-million-101200617.html",
+      "source": "finance.yahoo.com"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Metaplanet explores Bitcoin-backed bonds for Japanese investors",
+      "em": "Bitcoin-backed bonds",
+      "summary": "Metaplanet is studying a plan to issue bonds backed by Bitcoin, using a yen stablecoin and security tokens via Progmat, targeting Japanese investors.",
+      "url": "https://bitcoinfoundation.org/news/crypto-companies-news/metaplanet-studies-bitcoin-backed-bonds/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Polymarket applies for US margin trading license to catch rival Kalshi",
+      "em": "margin trading license",
+      "summary": "Polymarket is seeking a U.S. license for margin trading to compete with Kalshi, which already holds one and has racked up over $5.5 billion in volume.",
+      "url": "https://bitcoinke.io/2026/07/polymarket-seeks-us-approval-to-offer-margin-trading/",
+      "source": "BitKE"
+    },
+    {
+      "cat": "ETF",
+      "text": "Crypto ETFs bleed $147M with Bitcoin and Ether leading losses",
+      "em": "$147M",
+      "summary": "Crypto ETFs saw $147 million in outflows on July 9, led by $95.3 million from Bitcoin funds and $52.2 million from Ether funds.",
+      "url": "https://pluang.com/en/news-feed/keluar-dana-etf-kripto-menguat-seiring-turunnya-bitcoin-ether",
+      "source": "Pluang"
+    },
+    {
+      "cat": "DEFI",
+      "text": "DeFi tokens outperform Bitcoin in June 2026 led by Hyperliquid",
+      "em": "Hyperliquid",
+      "summary": "DeFi tokens showed resilience in June 2026, with Hyperliquid up 160% year-to-date and Aave generating $900 million in revenue as institutions enter the space.",
+      "url": "https://bitcoinfoundation.org/news/defi/defi-outpace-btc/",
+      "source": "Bitcoin Foundation"
+    }
+  ]
+}
