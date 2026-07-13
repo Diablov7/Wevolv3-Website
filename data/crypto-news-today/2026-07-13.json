@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-13",
+  "dateLabel": "JUL 13, 2026",
+  "hook": "Mufti rules crypto impermissible under Shariah",
+  "video": {
+    "url": "https://uploads.postiz.com/5Ziue2na5f.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULATION",
+      "text": "Pakistan religious leader rules crypto not Shariah-compliant",
+      "em": "Shariah",
+      "summary": "Pakistan's crypto regulator faces a deadlock after a Mufti ruled that crypto is impermissible under Shariah law, preventing recognition as property.",
+      "url": "https://bitcoinfoundation.org/news/regulation/pakistan-crypto-reg/",
+      "source": "bitcoinfoundation.org"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "CLARITY Act enters make-or-break week in Senate July 13",
+      "em": "CLARITY Act",
+      "summary": "The CLARITY Act faces a critical phase as the U.S. Senate returns on July 13 with a narrow window for crypto regulation.",
+      "url": "https://www.tradingview.com/news/coinpedia:8db09f3e0094b:0-crypto-regulation-2026-inside-the-clarity-act-s-make-or-break-week/",
+      "source": "TradingView"
+    },
+    {
+      "cat": "MARKETS",
+      "text": "Circle wins OCC bank charter, SWIFT live with 17 banks",
+      "em": "OCC",
+      "summary": "Circle secured an OCC bank charter and SWIFT went live with 17 banks as Bitcoin holds $64K and ETF outflows ended.",
+      "url": "https://www.hextrust.com/resources-collection/regulatory-infrastructure-week-crypto-consolidation",
+      "source": "Hex Trust"
+    },
+    {
+      "cat": "ETF",
+      "text": "Bitcoin ETFs end eight-week outflow streak with $197M inflow",
+      "em": "$197M",
+      "summary": "US spot Bitcoin ETFs recorded $197 million in net inflows last week, breaking an eight-week streak of withdrawals.",
+      "url": "https://en.bloomingbit.io/feed/news/116106",
+      "source": "bloomingbit"
+    },
+    {
+      "cat": "ETHEREUM",
+      "text": "Ethereum Foundation AI agents find real validator bug in software",
+      "em": "validator bug",
+      "summary": "The Ethereum Foundation deployed AI agents that discovered a genuine security flaw in the network's validator software, though humans handled the fix.",
+      "url": "https://unchainedcrypto.com/ethereum-foundations-ai-agents-found-a-real-validator-bug-but-humans-did-the-hard-part/",
+      "source": "Unchained Podcast"
+    }
+  ]
+}
