@@ -20,7 +20,7 @@ export const handler = async (event) => {
 
   try {
     const payload = JSON.parse(event.body || "{}");
-    const { name, email, telegram, message, text, chat_id, phone, projectType, additionalMessage } = payload;
+    const { name, email, telegram, message, text, chat_id, phone, projectType, additionalMessage, firstTouch } = payload;
 
     console.log('[sendTelegram] Payload received', {
       hasName: !!name,
@@ -109,6 +109,21 @@ export const handler = async (event) => {
 
             if (additionalMessage) {
               lines.push("📝 <b>ADDITIONAL DETAILS</b>", escapeHtml(additionalMessage), "");
+            }
+
+            // Traffic source (first-touch attribution) — so sales sees where the
+            // lead actually came from instead of guessing "direct".
+            if (firstTouch && typeof firstTouch === "object") {
+              const src = firstTouch.ft_source || firstTouch.ft_referrer || "direct / unknown";
+              const srcLines = [
+                "🎯 <b>TRAFFIC SOURCE</b>",
+                `<b>Source:</b> ${escapeHtml(src)}`,
+                ...(firstTouch.ft_medium ? [`<b>Medium:</b> ${escapeHtml(firstTouch.ft_medium)}`] : []),
+                ...(firstTouch.ft_campaign ? [`<b>Campaign:</b> ${escapeHtml(firstTouch.ft_campaign)}`] : []),
+                ...(firstTouch.ft_landing ? [`<b>Landing:</b> ${escapeHtml(firstTouch.ft_landing)}`] : []),
+                "",
+              ];
+              lines.push(...srcLines);
             }
 
             lines.push("─".repeat(30), `Sent from: wevolv3.com/contact.html`);

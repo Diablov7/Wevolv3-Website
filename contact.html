@@ -316,7 +316,9 @@
                             email: email,
                             telegram: telegram || null,
                             projectType: projectType,
-                            additionalMessage: message || null
+                            additionalMessage: message || null,
+                            // first-touch attribution so the lead notification shows the real source
+                            firstTouch: (typeof window !== 'undefined' && window.wevolv3FirstTouch) || null
                         };
 
                         // Send to Netlify Function
