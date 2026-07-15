@@ -15,10 +15,39 @@
 (function () {
   'use strict';
 
+  // ── First-touch attribution ────────────────────────────────────────────
+  // Capture the utm_* (and referrer) of the visitor's FIRST landing and keep it
+  // for 30 days. Every conversion event then carries the real source, so a lead
+  // that arrived from an X/Telegram post is no longer bucketed as "direct".
+  var FT_KEY = 'wv3_first_touch';
+  function firstTouch() {
+    try {
+      var saved = localStorage.getItem(FT_KEY);
+      if (saved) { var o = JSON.parse(saved); if (o && (Date.now() - (o.t || 0)) < 30 * 864e5) return o.v; }
+      var q = new URLSearchParams(location.search);
+      var v = {
+        ft_source: q.get('utm_source') || undefined,
+        ft_medium: q.get('utm_medium') || undefined,
+        ft_campaign: q.get('utm_campaign') || undefined,
+        ft_content: q.get('utm_content') || undefined,
+        ft_landing: location.pathname || undefined,
+        ft_referrer: (document.referrer || '').slice(0, 200) || undefined
+      };
+      // only persist if there is a real signal (a utm or an external referrer)
+      if (v.ft_source || (v.ft_referrer && v.ft_referrer.indexOf(location.host) === -1)) {
+        localStorage.setItem(FT_KEY, JSON.stringify({ t: Date.now(), v: v }));
+      }
+      return v;
+    } catch (e) { return {}; }
+  }
+  var FT = firstTouch();
+
   function track(eventName, params) {
     try {
       if (typeof window.gtag === 'function') {
-        window.gtag('event', eventName, params || {});
+        // merge first-touch attribution onto every event
+        var merged = Object.assign({}, FT, params || {});
+        window.gtag('event', eventName, merged);
       }
     } catch (e) {
       /* never let tracking break the page */
@@ -27,6 +56,7 @@
 
   // Expose so page-level handlers (e.g. contact form success) can fire events.
   window.wevolv3Track = track;
+  window.wevolv3FirstTouch = FT;
 
   // Delegated click tracking — survives dynamically injected links (blog, etc.)
   document.addEventListener(
