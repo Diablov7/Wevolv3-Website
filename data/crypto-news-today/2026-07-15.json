@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-15",
+  "dateLabel": "JUL 15, 2026",
+  "hook": "Japan just cut crypto taxes from 55% to 20%",
+  "video": {
+    "url": "https://uploads.postiz.com/JKrtcqS662.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULATION",
+      "text": "Japan passes bill to cut crypto tax to 20%",
+      "em": "20%",
+      "summary": "Japan's parliament approved a law recognizing crypto as a financial product and slashing the tax rate on gains from 55% to around 20%.",
+      "url": "https://www.theblock.co/post/408361/japan-passes-key-bill",
+      "source": "theblock.co"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "South Korea moves to allow spot bitcoin ETFs",
+      "em": "spot bitcoin ETFs",
+      "summary": "South Korea plans to amend its capital markets law in the second half of this year to permit spot bitcoin exchange-traded funds.",
+      "url": "https://www.kedglobal.com/cryptocurrencies/newsView/ked202607150007",
+      "source": "The Korea Economic Daily Global Edition"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Hyperliquid lawyers meet SEC Crypto Task Force",
+      "em": "Hyperliquid",
+      "summary": "The SEC Crypto Task Force held a formal meeting with Hyperliquid Policy Center representatives on July 14, 2026.",
+      "url": "https://www.tradingview.com/news/99Bitcoins:99db4c01d094b:0-hyperliquid-s-lawyers-just-met-the-sec-crypto-unit-here-s-what-happened/",
+      "source": "TradingView"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "UK and US forge stablecoin bridge for payments",
+      "em": "stablecoin",
+      "summary": "The UK and US announced a joint stablecoin framework requiring 1:1 backing and segregated reserves for cross-border payments.",
+      "url": "https://cryptorank.io/news/feed/62252-uk-and-us-forge-stablecoin-regulatory-bridge-for-cross-border-payments",
+      "source": "CryptoRank"
+    },
+    {
+      "cat": "ETF",
+      "text": "Morgan Stanley files amended Ethereum Solana ETF",
+      "em": "Morgan Stanley",
+      "summary": "Morgan Stanley submitted amended registration documents for ETFs tied to Ethereum and Solana, with analysts saying a launch is near.",
+      "url": "https://www.benzinga.com/crypto/cryptocurrency/26/07/60461088/morgan-stanley-submits-amended-filing-for-ethereum-solana-etf",
+      "source": "Benzinga"
+    }
+  ]
+}
