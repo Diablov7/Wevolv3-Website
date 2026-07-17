@@ -877,8 +877,11 @@
                         tcss.textContent = 'html{scroll-behavior:smooth}.post-toc{border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:16px 20px;margin:0 0 32px}.post-toc-title{font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin:0 0 10px}.post-toc ul{margin:0;padding:0 0 0 2px;list-style:none}.post-toc li{margin:6px 0}.post-toc a{text-decoration:none;opacity:.9}.post-toc a:hover{text-decoration:underline;opacity:1}#post-body h2,#post-body h3{scroll-margin-top:90px}';
                         document.head.appendChild(tcss);
                     }
+                    // IMPORTANTE: a pagina tem <base href="/">, entao "#id" resolveria
+                    // pra home. Prefixa o caminho atual pra ancora cair no proprio artigo.
+                    var __path = location.pathname + location.search;
                     var tocHtml = '<nav class="post-toc" aria-label="Table of contents"><p class="post-toc-title">On this page</p><ul>' +
-                        __toc.map(function(h){ return '<li><a href="#' + h.id + '">' + h.text + '</a></li>'; }).join('') + '</ul></nav>';
+                        __toc.map(function(h){ return '<li><a href="' + __path + '#' + h.id + '">' + h.text + '</a></li>'; }).join('') + '</ul></nav>';
                     html = tocHtml + html;
                 }
 
