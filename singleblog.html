@@ -720,7 +720,23 @@
                         html += `<img src="${imageUrl}"${bDimAttr} alt="${imageAlt}" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 10px; margin: 30px 0;" />`;
                         return;
                     }
-                    
+
+                    // Handle custom HTML table blocks (density-breakers from the pipeline)
+                    if (block._type === 'htmlTable' && block.html) {
+                        if (inList) {
+                            html += listType === 'bullet' ? '</ul>' : '</ol>';
+                            inList = false;
+                        }
+                        if (!document.getElementById('post-table-css')) {
+                            const st = document.createElement('style');
+                            st.id = 'post-table-css';
+                            st.textContent = '.post-table-wrap{overflow-x:auto;margin:28px 0}.post-table-wrap table{width:100%;border-collapse:collapse;font-size:15px}.post-table-wrap th,.post-table-wrap td{border:1px solid rgba(128,128,128,.35);padding:10px 14px;text-align:left;vertical-align:top}.post-table-wrap th{background:rgba(128,128,128,.14);font-weight:700}';
+                            document.head.appendChild(st);
+                        }
+                        html += `<div class="post-table-wrap">${block.html}</div>`;
+                        return;
+                    }
+
                     if (block._type !== 'block') return;
                     
                     // Get text content with marks
