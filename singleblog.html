@@ -737,6 +737,22 @@
                         return;
                     }
 
+                    // Handle custom HTML embed blocks (charts / figures do pipeline)
+                    if (block._type === 'htmlEmbed' && block.html) {
+                        if (inList) {
+                            html += listType === 'bullet' ? '</ul>' : '</ol>';
+                            inList = false;
+                        }
+                        if (!document.getElementById('post-embed-css')) {
+                            const es = document.createElement('style');
+                            es.id = 'post-embed-css';
+                            es.textContent = '.post-chart{margin:28px 0;text-align:center}.post-chart img{max-width:100%;height:auto}.post-chart figcaption{font-size:13px;opacity:.7;margin-top:8px}.post-chart figcaption a{color:inherit;text-decoration:underline}';
+                            document.head.appendChild(es);
+                        }
+                        html += block.html;
+                        return;
+                    }
+
                     if (block._type !== 'block') return;
                     
                     // Get text content with marks
