@@ -858,7 +858,30 @@
                 if (inList) {
                     html += listType === 'bullet' ? '</ul>' : '</ol>';
                 }
-                
+
+                // Table of contents + heading anchors (post-process — robusto pros dois
+                // caminhos de render). Melhora UX, dwell time, SEO e citacao por IA.
+                var __toc = [];
+                function __slug(s){ return s.toLowerCase().replace(/<[^>]+>/g,'').replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60); }
+                html = html.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>/gi, function(m, attrs, inner){
+                    var textOnly = inner.replace(/<[^>]+>/g,'').trim();
+                    if (!textOnly) return m;
+                    var existing = attrs.match(/id="([^"]+)"/);
+                    var id = existing ? existing[1] : __slug(textOnly);
+                    __toc.push({ id: id, text: textOnly });
+                    return existing ? m : '<h2 id="' + id + '"' + attrs + '>' + inner + '</h2>';
+                });
+                if (__toc.length >= 3) {
+                    if (!document.getElementById('post-toc-css')) {
+                        var tcss = document.createElement('style'); tcss.id = 'post-toc-css';
+                        tcss.textContent = 'html{scroll-behavior:smooth}.post-toc{border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:16px 20px;margin:0 0 32px}.post-toc-title{font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin:0 0 10px}.post-toc ul{margin:0;padding:0 0 0 2px;list-style:none}.post-toc li{margin:6px 0}.post-toc a{text-decoration:none;opacity:.9}.post-toc a:hover{text-decoration:underline;opacity:1}#post-body h2,#post-body h3{scroll-margin-top:90px}';
+                        document.head.appendChild(tcss);
+                    }
+                    var tocHtml = '<nav class="post-toc" aria-label="Table of contents"><p class="post-toc-title">On this page</p><ul>' +
+                        __toc.map(function(h){ return '<li><a href="#' + h.id + '">' + h.text + '</a></li>'; }).join('') + '</ul></nav>';
+                    html = tocHtml + html;
+                }
+
                 return html;
             }
             
