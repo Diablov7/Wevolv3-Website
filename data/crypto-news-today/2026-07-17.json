@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-17",
+  "dateLabel": "JUL 17, 2026",
+  "hook": "Morgan Stanley brings crypto to E*Trade",
+  "video": {
+    "url": "https://uploads.postiz.com/4WIr3ZKuhb.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "INSTITUTIONAL",
+      "text": "Morgan Stanley launches BTC, ETH, SOL on E*Trade",
+      "em": "E*Trade",
+      "summary": "Morgan Stanley enabled eligible E*Trade customers to buy, sell, and hold Bitcoin, Ethereum, and Solana via Zero Hash, marking a major institutional push.",
+      "url": "https://decrypt.co/373681/morgan-stanley-launches-bitcoin-ethereum-solana-trading-etrade",
+      "source": "decrypt.co"
+    },
+    {
+      "cat": "SECURITY",
+      "text": "Ostium perp DEX loses $18 million in oracle attack",
+      "em": "$18 million",
+      "summary": "Attackers compromised an oracle signer key on Arbitrum-based Ostium, draining roughly $18 million from the perpetuals exchange.",
+      "url": "https://decrypt.co/373566/defi-exploit-ostium-oracle-hack",
+      "source": "Decrypt"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Galaxy Digital opens $100M on-chain lending for institutions",
+      "em": "$100M",
+      "summary": "Galaxy Digital is backing a managed on-chain lending program with $100 million from its balance sheet to offer institutional crypto borrowing.",
+      "url": "https://stocktwits.com/news-articles/markets/equity/galaxy-defi-borrowing-onchain-credit/cZZRbdYR7q9",
+      "source": "Stocktwits"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "BitPay secures EU crypto license under MiCA",
+      "em": "MiCA",
+      "summary": "Cryptocurrency payment processor BitPay received authorization to operate across the European Union under the bloc's MiCA regulation.",
+      "url": "https://www.pymnts.com/cryptocurrency/2026/bitpay-obtains-eu-crypto-license-under-mica-regulations/",
+      "source": "PYMNTS.com"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "Senators to brief Trump on crypto regulation bill Thursday",
+      "em": "Trump",
+      "summary": "Senators plan to meet with President Trump on Thursday to update him on negotiations around a landmark crypto regulation bill.",
+      "url": "https://news.bloombergtax.com/daily-tax-report-state/senators-plan-to-brief-trump-on-crypto-regulation-bill-thursday",
+      "source": "Bloomberg Tax"
+    }
+  ]
+}
