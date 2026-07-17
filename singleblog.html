@@ -519,8 +519,22 @@
                 if (options.social) {
                     return `${baseUrl}?w=1200&h=630&fit=crop&auto=format`;
                 }
-                
-                return baseUrl;
+
+                // Otimizacao de entrega (Core Web Vitals): WebP/AVIF automatico +
+                // qualidade + largura limitada. Corta capas de ~1.7MB pra ~150KB.
+                const w = options.width || 1200;
+                return `${baseUrl}?w=${w}&auto=format&q=75&fit=max`;
+            }
+
+            // Dimensoes reais da imagem (do _ref do Sanity: "...-WxH-format") para
+            // setar width/height no <img> e eliminar layout shift (CLS).
+            function sanityImageDims(source) {
+                try {
+                    const dim = source.asset._ref.split('-')[2];
+                    const parts = dim.split('x').map(Number);
+                    if (parts[0] > 0 && parts[1] > 0) return { width: parts[0], height: parts[1] };
+                } catch (e) {}
+                return null;
             }
             
             // Helper: Format date
@@ -697,11 +711,13 @@
                             html += listType === 'bullet' ? '</ul>' : '</ol>';
                             inList = false;
                         }
-                        const imageUrl = sanityImageUrl(block);
+                        const imageUrl = sanityImageUrl(block, { width: 1000 });
                         // Usar alt do bloco ou título do post como fallback para SEO
                         const postTitle = document.getElementById('post-title')?.textContent || 'Article image';
                         const imageAlt = block.alt || postTitle;
-                        html += `<img src="${imageUrl}" alt="${imageAlt}" loading="lazy" decoding="async" style="max-width: 100%; border-radius: 10px; margin: 30px 0;" />`;
+                        const bDims = sanityImageDims(block);
+                        const bDimAttr = bDims ? ` width="${bDims.width}" height="${bDims.height}"` : '';
+                        html += `<img src="${imageUrl}"${bDimAttr} alt="${imageAlt}" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 10px; margin: 30px 0;" />`;
                         return;
                     }
                     
@@ -1090,7 +1106,13 @@
                     postImageEl.alt = post.title || '';
                     postImageEl.loading = 'eager';
                     postImageEl.fetchPriority = 'high';
-                    
+                    // width/height intrinsecos reservam o espaco da capa e matam o CLS.
+                    const mainDims = sanityImageDims(post.mainImage);
+                    if (mainDims) {
+                        postImageEl.setAttribute('width', mainDims.width);
+                        postImageEl.setAttribute('height', mainDims.height);
+                    }
+
                     // Preload main image for better performance
                     const link = document.createElement('link');
                     link.rel = 'preload';
