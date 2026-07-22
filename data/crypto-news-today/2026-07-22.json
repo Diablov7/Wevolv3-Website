@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-22",
+  "dateLabel": "JUL 22, 2026",
+  "hook": "Russia just legalized crypto",
+  "video": {
+    "url": "https://uploads.postiz.com/IgjeFKCAWN.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULATION",
+      "text": "Russia legalizes crypto with new investor rules",
+      "em": "Russia",
+      "summary": "Russia passed a new law legalizing cryptocurrency, establishing rules for investors, licensed exchanges, and payment restrictions, impacting the global market.",
+      "url": "https://bitcoinfoundation.org/news/regulation/russia-just-legalized-crypto-what-changes-now-for-investors-exchanges-and-the-global-market/",
+      "source": "bitcoinfoundation.org"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Galaxy Digital pledges $5M for quantum-resistant Bitcoin",
+      "em": "$5M",
+      "summary": "Galaxy Digital committed $5 million to develop quantum-resistant protections for Bitcoin, addressing the growing quantum threat.",
+      "url": "https://bitcoinfoundation.org/news/bitcoin/bitcoins-quantum-threat-galaxy-digital-response/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "White House backs ethics provision in crypto bill",
+      "em": "ethics provision",
+      "summary": "The White House agreed to an ethics provision in a cryptocurrency regulation bill, pushing for Senate passage.",
+      "url": "https://thehill.com/policy/technology/5981574-white-house-crypto-clarity-act-ethics-provision/",
+      "source": "The Hill"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Charles Schwab launches Bitcoin and Ethereum trading",
+      "em": "Charles Schwab",
+      "summary": "Charles Schwab introduced direct Bitcoin and Ethereum trading for retail clients after reporting record quarterly revenue.",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/charles-schwab-schw-launches-bitcoin-061007968.html",
+      "source": "Yahoo Finance"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Balance Coin stablecoin exploit drains $912K",
+      "em": "$912K",
+      "summary": "An exploit of the Balance Coin stablecoin caused a 99% price crash and $912K loss, highlighting critical oracle flaws in DeFi.",
+      "url": "https://en.cryptonomist.ch/2026/07/22/balance-coin-stablecoin-exploit/",
+      "source": "The Cryptonomist"
+    }
+  ]
+}
