@@ -1,4 +1,4 @@
-# Wevolv3 — Directory Submissions Playbook
+﻿# Wevolv3 — Directory Submissions Playbook
 
 **Objetivo:** submeter Wevolv3 em 21 diretórios em 2 semanas, sem atalho e sem pagar.
 
@@ -44,7 +44,7 @@ Sem isso, qualquer submissão vira pending eterno. Reúna em uma pasta compartil
 ## Tier S — submeter nesta ordem nos próximos 5 dias
 
 ### 1. LinkedIn Company Page (se ainda não completo)
-**URL:** https://www.linkedin.com/company/wevol3-web3-marketing
+**URL:** https://www.linkedin.com/company/wevolv3-web3-growth
 **Tempo:** 30 min
 **O que fazer:**
 - Completar "About" com a long description acima

@@ -1,4 +1,4 @@
-# Wevolv3 - Web3 Marketing & Modular Advertising Agency
+﻿# Wevolv3 - Web3 Marketing & Modular Advertising Agency
 
 ## 🚀 Digital Reality - Transforming Your Vision into Digital Reality
 
@@ -104,7 +104,7 @@ O script irá:
 - **Contato**: contact@wevolv3.com
 - **Telegram**: [@wevolv3](https://t.me/wevolv3)
 - **X (Twitter)**: [@wevolv3_media](https://x.com/wevolv3_media)
-- **LinkedIn**: [Wevolv3](https://www.linkedin.com/company/wevol3-web3-marketing)
+- **LinkedIn**: [Wevolv3](https://www.linkedin.com/company/wevolv3-web3-growth)
 
 ## 📱 Blog
 

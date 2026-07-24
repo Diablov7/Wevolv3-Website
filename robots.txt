@@ -44,5 +44,10 @@ Allow: /
 User-agent: *
 Allow: /
 
+# Content-Signal (draft spec: https://contentsignals.org/) — explicit machine-readable
+# preference alongside the crawler allow-list above: welcome AI search/retrieval, no
+# stance yet on training-only use beyond what's implied by the per-bot Allow rules.
+Content-Signal: search=yes, ai-train=yes, ai-retrieval=yes
+
 # Sitemap
 Sitemap: https://wevolv3.com/sitemap.xml

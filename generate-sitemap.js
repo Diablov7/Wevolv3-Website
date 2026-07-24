@@ -36,6 +36,7 @@ const staticPages = [
   { url: '/listings', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/growth-hacking', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/adoption-check', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/kol-roi-calculator.html', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/privacy.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/terms.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/disclaimer.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },

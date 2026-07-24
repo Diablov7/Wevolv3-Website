@@ -1,4 +1,4 @@
-# Wevolv3
+﻿# Wevolv3
 
 > The Web3 growth partner behind crypto, DeFi and blockchain projects that scale. We turn attention into adoption through community, KOL campaigns, PR, growth and exchange listings.
 
@@ -61,11 +61,13 @@ Each service has its own dedicated page:
 - Email: contact@wevolv3.com
 - Telegram: https://t.me/wevolv3
 - X: https://x.com/wevolv3_media
-- LinkedIn: https://www.linkedin.com/company/wevol3-web3-marketing
+- LinkedIn: https://www.linkedin.com/company/wevolv3-web3-growth
 
 ## Optional
 
+- [Full article text](https://wevolv3.com/llms-full.txt): Plain-text export of every published blog post, for systems that only ingest text files.
 - [Sitemap](https://wevolv3.com/sitemap.xml): Full URL index.
+- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate ROI, reach, wallets and CAC from KOL marketing spend.
 - [Privacy Policy](https://wevolv3.com/privacy.html)
 - [Terms](https://wevolv3.com/terms.html)
 - [Disclaimer](https://wevolv3.com/disclaimer.html)

@@ -4,24 +4,26 @@
   command = "node generate-news.js && node generate-sitemap.js || echo 'Static generation skipped (Node.js not available)'"
   functions = "netlify/functions"
 
-# Headers para arquivos
+# Headers de seguranca aplicados a TODAS as rotas, incluindo as dinamicas
+# servidas pelas edge functions (/blog/<slug>, /works/<slug>) que antes nao
+# herdavam nada disso porque o bloco anterior so cobria "/*.html".
 [[headers]]
   for = "/*"
   [headers.values]
     X-Content-Type-Options = "nosniff"
-
-# Headers específicos para páginas normais (bloquear iframe)
-[[headers]]
-  for = "/*.html"
-  [headers.values]
     X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
 
-# Headers para Sanity Studio - permitir embedding no Dashboard
-# Removemos X-Frame-Options e usamos apenas Content-Security-Policy
-# conforme documentação: https://www.sanity.io/docs/dashboard/dashboard-configure
+# Sanity Studio precisa embutir em iframe do proprio Sanity Dashboard e roda
+# muito JS de terceiros (Studio bundle) — CSP dedicada e mais permissiva so
+# nessa rota, sem X-Frame-Options DENY que quebraria o embed.
 [[headers]]
   for = "/studio/*"
   [headers.values]
+    X-Frame-Options = ""
     Content-Security-Policy = "frame-ancestors 'self' https://*.sanity.io https://www.sanity.io;"
 
 # Sanity Studio JS - Force content type
