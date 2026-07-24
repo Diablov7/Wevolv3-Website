@@ -1,4 +1,4 @@
-// Netlify Edge Function: clean URLs for the Works / case-study pages.
+﻿// Netlify Edge Function: clean URLs for the Works / case-study pages.
 // Serves the singlework.html shell for /works/<slug> and 301-redirects the legacy
 // /singlework(.html)?slug=<slug> URLs to the clean path. Mirrors the blog approach
 // in inject-og-tags.js: fetch the case-study data from Sanity and render it
@@ -17,7 +17,7 @@ const SECURITY_HEADERS = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.apicdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com; media-src 'self' https://res.cloudinary.com https://uploads.postiz.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
 };
 
 export default async (request, context) => {
