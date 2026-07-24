@@ -7,6 +7,19 @@
 // that normally populates this page. Before this fix, every /works/<slug> URL
 // returned only the raw shell — literally "Project not found" text — to any
 // crawler that doesn't run JavaScript.
+
+// Security headers duplicated from netlify.toml's "/*" rule. An edge function that
+// builds its own Response does NOT inherit headers from [[headers]] in netlify.toml,
+// so every Response this function returns must carry them explicitly.
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
+};
+
 export default async (request, context) => {
   const url = new URL(request.url);
 
@@ -75,7 +88,7 @@ export default async (request, context) => {
 
     if (!work || !work.title) {
       console.log('Work not found or missing title, slug:', slug);
-      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
     }
 
     function sanityImageUrl(source) {
@@ -266,9 +279,9 @@ export default async (request, context) => {
       );
     }
 
-    return new Response(updatedHtml, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+    return new Response(updatedHtml, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
   } catch (error) {
     console.error('Error rendering work page:', error);
-    return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+    return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
   }
 };

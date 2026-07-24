@@ -1,6 +1,19 @@
 // Netlify Edge Function to inject Open Graph and Twitter Card meta tags
 // This runs BEFORE the page is served, so Twitter/Facebook crawlers see the correct tags
 
+// Security headers duplicated from netlify.toml's "/*" rule. An edge function that
+// builds its own Response does NOT inherit headers from [[headers]] in netlify.toml
+// (confirmed live: only Netlify's own default HSTS showed up here, none of the rest) —
+// so every Response this function returns must carry them explicitly.
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
+};
+
 export default async (request, context) => {
   const url = new URL(request.url);
   
@@ -86,7 +99,7 @@ export default async (request, context) => {
     if (!post || !post.title) {
       console.log('Post not found or missing title, slug:', slug);
       // Serve the shell unmodified so the client-side JS can render / show its error state
-      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
     }
 
     // Generate image URL from Sanity reference
@@ -434,6 +447,7 @@ export default async (request, context) => {
       status: 200,
       headers: {
         'Content-Type': 'text/html; charset=UTF-8',
+        ...SECURITY_HEADERS,
       },
     });
   } catch (error) {
