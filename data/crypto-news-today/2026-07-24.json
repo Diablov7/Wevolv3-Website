@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-24",
+  "dateLabel": "JUL 24, 2026",
+  "hook": "Nigeria just signed a crypto executive order",
+  "video": {
+    "url": "https://uploads.postiz.com/0uz8mDJ4ZU.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULATION",
+      "text": "Nigeria signs executive order to regulate virtual assets",
+      "em": "Nigeria",
+      "summary": "Nigeria's President Bola Tinubu signed an executive order that creates a Virtual Asset Council and a regulatory sandbox for cryptocurrencies.",
+      "url": "https://african.business/2026/07/quick-reads/tinubu-signs-executive-order-as-nigeria-opens-up-to-cryptocurrency",
+      "source": "african.business"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Ransom note demands millions in bitcoin in Guthrie case",
+      "em": "bitcoin",
+      "summary": "A newly revealed ransom note in the Nancy Guthrie case demanded millions of dollars in bitcoin, according to a crime podcast.",
+      "url": "https://www.wcnc.com/video/news/nation-world/ransom-note-in-nancy-guthrie-case-demanded-millions-in-bitcoin-podcast-reveals/275-397bdcbc-245b-496d-a9cc-92eb7ed8f702",
+      "source": "WCNC"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "India finance panel backs SROs for crypto regulation",
+      "em": "SROs",
+      "summary": "India's Parliamentary Committee on Finance recommended a framework using Self-Regulatory Organizations for crypto oversight.",
+      "url": "https://coinpedia.org/news/crypto-india-moves-closer-to-regulation-as-finance-panel-backs-industry-sros/amp/",
+      "source": "Coinpedia"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "EU bars Belarusians from owning MiCA crypto firms",
+      "em": "Belarusians",
+      "summary": "The European Union expanded sanctions to prevent Belarusian nationals from controlling MiCA-regulated crypto firms after August 25.",
+      "url": "https://crypto.news/eu-bars-belarusians-from-owning-mica-regulated-crypto-firms/",
+      "source": "Crypto News"
+    },
+    {
+      "cat": "REGULATION",
+      "text": "CLARITY Act regains momentum with ethics compromise",
+      "em": "Clarity act",
+      "summary": "The CLARITY Act, a key US crypto bill, gained new momentum after an ethics compromise revived its regulatory outlook.",
+      "url": "https://fxnewsgroup.com/forex-news/cryptocurrency/clarity-act-regains-momentum-as-ethics-compromise-revives-regulatory-outlook/",
+      "source": "FX News Group"
+    }
+  ]
+}
