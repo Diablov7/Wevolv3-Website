@@ -433,7 +433,7 @@ export default async (request, context) => {
     return new Response(updatedHtml, {
       status: 200,
       headers: {
-        'Content-Type': 'text/html',
+        'Content-Type': 'text/html; charset=UTF-8',
       },
     });
   } catch (error) {
