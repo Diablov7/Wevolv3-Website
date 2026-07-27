@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-27",
+  "dateLabel": "JUL 27, 2026",
+  "hook": "CEO do Goldman Sachs apoia nova lei de cripto",
+  "video": {
+    "url": "https://uploads.postiz.com/Mk3j5sxRLk.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULACAO",
+      "text": "Goldman Sachs apoia Lei Clarity de regulação cripto",
+      "em": "Lei Clarity",
+      "summary": "O CEO do Goldman Sachs, David Solomon, endossou publicamente a Lei Clarity, proposta que visa estabelecer um marco regulatório para criptomoedas nos EUA.",
+      "url": "https://www.gurufocus.com/news/8979890/goldman-sachs-ceo-david-solomon-supports-clarity-act-for-crypto-regulation",
+      "source": "gurufocus.com"
+    },
+    {
+      "cat": "ETF",
+      "text": "ETFs Ethereum captam US$ 104 milhões pela terceira semana",
+      "em": "US$ 104 milhões",
+      "summary": "Os ETFs de Ethereum à vista atraíram US$ 104 milhões em entradas líquidas na última semana, marcando a terceira semana consecutiva de ganhos.",
+      "url": "https://cryptorank.io/news/feed/14ad4-spot-ethereum-etfs-see-104m-inflows-marking-third-straight-week-of-gains",
+      "source": "CryptoRank"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Japão propõe aliviar limite de alavancagem em cripto",
+      "em": "alavancagem",
+      "summary": "Um parlamentar do Partido Liberal Democrata do Japão pediu a flexibilização do limite de alavancagem de 2x para negociação de criptomoedas.",
+      "url": "https://en.bloomingbit.io/feed/news/117060",
+      "source": "bloomingbit"
+    },
+    {
+      "cat": "EXCHANGE",
+      "text": "BitMart, exchange de altcoins, anuncia fechamento após quase uma década",
+      "em": "BitMart",
+      "summary": "A exchange BitMart, que já foi uma das principais plataformas de altcoins, vai encerrar as operações após quase dez anos, segundo comunicado oficial.",
+      "url": "https://bitcoinke.io/2026/07/bitmart-shutdown/",
+      "source": "BitKE"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Bitcoin a US$ 65 mil; Tesla perde US$ 112 mi",
+      "em": "US$ 65 mil",
+      "summary": "O Bitcoin subiu 0,15% na semana, negociado a US$ 65.436, enquanto a Tesla registrou um impairment de US$ 112 milhões em suas participações em cripto.",
+      "url": "https://www.moomoo.com/community/feed/crypto-weekly-digest-bitcoin-edges-up-to-65k-defi-suffers-116990432116742",
+      "source": "Moomoo"
+    }
+  ]
+}
