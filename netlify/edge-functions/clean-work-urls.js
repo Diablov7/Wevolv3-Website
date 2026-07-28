@@ -88,7 +88,8 @@ export default async (request, context) => {
 
     if (!work || !work.title) {
       console.log('Work not found or missing title, slug:', slug);
-      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
+      // Real 404, not 200: a 200'd "not found" shell is a soft 404 to Google.
+      return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
     }
 
     function sanityImageUrl(source) {

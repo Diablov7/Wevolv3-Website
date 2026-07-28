@@ -1,172 +1,174 @@
-# Wevolv3 — SEO Baseline (preencher em 2026-04-23)
+# Wevolv3 — SEO Baseline
 
-**Objetivo:** capturar o "antes" pra medir impacto das ações SEO/content/backlinks nos próximos 30, 60 e 90 dias.
+**Status:** o template original foi criado para 2026-04-23 e **nunca foi preenchido**.
+Nenhum dos checkpoints (maio, junho, julho) tem número. Portanto **não existe medição
+anterior para comparar**. Esta leitura, de 2026-07-27, é a linha de base real.
 
-**Como preencher:** abra [Google Search Console](https://search.google.com/search-console) → propriedade wevolv3.com → filtre **últimos 28 dias** → anote cada número abaixo. Total: 10-15 minutos.
+Fonte: Google Search Console (propriedade `https://wevolv3.com/`, conta `authuser=2`) e
+GA4 (propriedade "Wevolv3 Website", `a377350418p515955885`). Windsor foi desinstalado, então
+a coleta foi manual pelo navegador.
 
 ---
 
-## 1. Performance geral (28 dias)
+## 1. Performance geral
 
-| Métrica | Valor hoje (2026-04-23) | T+30 dias | T+60 dias | T+90 dias |
+**GSC, 28 dias (29/06 a 26/07/2026), tipo de pesquisa Web:**
+
+| Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Cliques orgânicos totais | | | | |
-| Impressões totais | | | | |
-| CTR médio (%) | | | | |
-| Posição média | | | | |
+| Cliques orgânicos totais | **5** | | | |
+| Impressões totais | **36** | | | |
+| CTR médio | **13,9%** | | | |
+| Posição média | **25,4** | | | |
+
+Leitura: 5 cliques em 28 dias. O CTR de 13,9% parece bom mas é artefato de amostra
+minúscula. Posição média 25,4 significa página 3 do Google.
 
 ---
 
-## 2. Indexação (Pages)
+## 2. Indexação
 
-| Métrica | Valor hoje | T+30 | T+60 | T+90 |
+**GSC, última atualização 23/07/2026. Total de páginas conhecidas: 80.**
+
+| Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Total páginas indexadas | | | | |
-| Páginas não indexadas | | | | |
-| Erros de coverage (se houver) | | | | |
+| Páginas indexadas | **18** | | | |
+| Páginas não indexadas | **62** | | | |
 
-**Páginas indexadas críticas — conferir individualmente:**
-- [ ] `wevolv3.com/` — indexada?
-- [ ] `wevolv3.com/about.html` — indexada?
-- [ ] `wevolv3.com/works.html` — indexada?
-- [ ] `wevolv3.com/contact.html` — indexada?
-- [ ] `wevolv3.com/blog.html` — indexada? **(crítico — antes canonical bugado podia estar removendo do índice)**
-- [ ] Pelo menos 10 dos 22 posts do blog indexados?
+Motivos da não indexação:
 
----
-
-## 3. Top 10 keywords trazendo cliques hoje
-
-Aba **Queries** ordenada por **Clicks** descendente. Copie as 10 top:
-
-| # | Keyword | Cliques | Impressões | CTR | Posição |
-|---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
-| 6 | | | | | |
-| 7 | | | | | |
-| 8 | | | | | |
-| 9 | | | | | |
-| 10 | | | | | |
-
----
-
-## 4. Top 10 keywords por impressões (oportunidades)
-
-Aba **Queries** ordenada por **Impressions** descendente. Foco: keywords com alto volume de impressão mas baixo CTR = oportunidade de rankear melhor.
-
-| # | Keyword | Impressões | Cliques | CTR | Posição |
-|---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
-| 6 | | | | | |
-| 7 | | | | | |
-| 8 | | | | | |
-| 9 | | | | | |
-| 10 | | | | | |
-
-**Alvo:** keywords com >500 impressões/mês e posição 11-20 são quick wins — melhorar pra top 10 com 1 rodada de on-page optimization.
-
----
-
-## 5. Top 10 páginas por impressões
-
-Aba **Pages** ordenada por **Impressions**.
-
-| # | URL | Impressões | Cliques | CTR | Posição |
-|---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
-| 6 | | | | | |
-| 7 | | | | | |
-| 8 | | | | | |
-| 9 | | | | | |
-| 10 | | | | | |
-
----
-
-## 6. Backlinks baseline
-
-Usar **[Ahrefs Webmaster Tools](https://ahrefs.com/webmaster-tools)** (gratuito, requer verificação de domínio) ou **Ubersuggest** free tier. Anotar:
-
-| Métrica | Valor hoje | T+30 | T+60 | T+90 |
-|---|---|---|---|---|
-| Referring domains (únicos) | | | | |
-| Total de backlinks | | | | |
-| Domain Rating / DR (Ahrefs) | | | | |
-| Top 5 domínios linkando | | | | |
-
----
-
-## 7. Core Web Vitals (GSC → Experience)
-
-| Métrica | Status hoje | T+90 |
+| Motivo | Páginas | Fonte |
 |---|---|---|
-| LCP (Largest Contentful Paint) | | |
-| INP (Interaction to Next Paint) | | |
-| CLS (Cumulative Layout Shift) | | |
-| Mobile Usability | | |
+| **Detectada, mas não indexada no momento** | **49** | Google |
+| Rastreada, mas não indexada no momento | 9 | Google |
+| Erro soft 404 | 3 | Site |
+| Cópia, Google escolheu canônica diferente | 1 | Google |
 
-**Meta:** todos "Good" ou "Needs Improvement" → "Good".
+Vídeos: 1 página de vídeo não indexada, 0 indexadas.
+
+**Este é o gargalo principal.** O sitemap tem 67 URLs e só 18 páginas estão no índice.
+"Detectada, mas não indexada" em 49 páginas significa que o Google conhece a URL e
+**escolheu não gastar rastreamento nela**. Não é bug técnico, é sinal de baixa autoridade
+de domínio e/ou conteúdo que o Google não julgou digno de indexar.
+
+O gráfico mostra dois saltos no volume de páginas não indexadas, por volta de 11/06 e
+03/07, que coincidem com a entrada de conteúdo novo (crypto-news-today e posts). Ou seja,
+publicar mais está aumentando a pilha de não indexadas, não o tráfego.
 
 ---
 
-## 8. Social / Referral (Google Analytics 4)
+## 3. Consultas
 
-Abra GA4 → Acquisition → Traffic acquisition → filtre 28 dias.
+Apenas **5 consultas no total** em 28 dias.
 
-| Fonte | Users | Sessions | Conversions |
+| # | Consulta | Cliques | Impressões |
 |---|---|---|---|
-| Organic Search | | | |
-| Direct | | | |
-| Social (todos) | | | |
-| Referral | | | |
+| 1 | evolv3 | 0 | 5 |
+| 2 | wevolv | 0 | 1 |
+| 3 | guerilla marketing crypto | 0 | 1 |
+| 4 | wevol | 0 | 1 |
+| 5 | crypto kol marketing | 0 | 1 |
+
+Três das cinco são **erro de digitação da marca** (evolv3, wevolv, wevol). Só duas são
+consultas não-marca, com 1 impressão cada. Os 5 cliques vieram de consultas que o Google
+anonimiza por privacidade, então não aparecem na lista.
+
+**Conclusão dura: o site não tem visibilidade orgânica não-marca.**
 
 ---
 
-## 9. Checkpoint qualitativo
+## 4. Páginas por impressões
 
-Pontos pra revisitar aos 30/60/90 dias:
+| # | URL | Cliques | Impressões |
+|---|---|---|---|
+| 1 | `/` | **5** | 31 |
+| 2 | `/blog` | 0 | 12 |
+| 3 | `/crypto-pr` | 0 | 10 |
+| 4 | `/crypto-exchange-marketing` | 0 | 9 |
+| 5 | `/defi-marketing` | 0 | 9 |
+| 6 | `/crypto-kol-marketing` | 0 | 9 |
+| 7 | `/disclaimer` | 0 | 5 |
 
-- [ ] Algum post ranqueando top 10 pra keyword-alvo?
-- [ ] Rich snippets aparecendo pra BlogPosting ou BreadcrumbList?
-- [ ] FAQ snippet aparecendo pra algum post?
-- [ ] Sitelinks da home aparecendo em search pela marca?
-- [ ] CTR médio subiu? (indicador de title/description melhores)
-- [ ] Tempo na página melhorou? (GA4)
+A home concentra 100% dos cliques. Nenhuma página de serviço converteu uma única
+impressão em clique.
 
----
-
-## 10. Ações conectadas a cada checkpoint
-
-### T+30 dias (2026-05-23)
-- [ ] 4 posts novos publicados (posts #1-4 do content plan)
-- [ ] 7 diretórios Tier S submetidos
-- [ ] 2 respostas HARO enviadas
-- [ ] Anotar métricas acima e comparar
-
-### T+60 dias (2026-06-23)
-- [ ] 8 posts novos publicados (posts #5-8 do content plan)
-- [ ] Todos 21 diretórios submetidos
-- [ ] 1 guest post publicado
-- [ ] 1 podcast gravado
-- [ ] Anotar métricas + ajustar estratégia
-
-### T+90 dias (2026-07-23)
-- [ ] KOL ROI Calculator publicado (primeira linkable asset)
-- [ ] 5 outreaches resource page feitos
-- [ ] Avaliar: bater metas do SEO_CONTENT_STRATEGY.md seção 7?
-- [ ] Decidir: dobrar aposta ou pivotar?
+Nota: a soma das impressões por página (85) excede o total do relatório (36). É um
+artefato conhecido de agregação do GSC em amostras pequenas, não um erro de leitura.
 
 ---
 
-*Baseline a preencher em 2026-04-23. Checkpoints: 2026-05-23, 2026-06-23, 2026-07-23.*
+## 5. Core Web Vitals
+
+| Métrica | 2026-07-27 |
+|---|---|
+| LCP / INP / CLS | **Nenhum dado** (celular e desktop) |
+
+Sem dados de campo porque o volume de tráfego é insuficiente para o CrUX gerar amostra.
+
+---
+
+## 6. GA4 — aquisição de tráfego
+
+**28 dias (30/06 a 27/07/2026).** Total: **311 sessões**, 107 engajadas (34,41%),
+tempo médio 22s, 5,65 eventos por sessão.
+
+| Canal | Sessões | % | Engajadas | Taxa engaj. | Tempo médio |
+|---|---|---|---|---|---|
+| **Direct** | 231 | 74,28% | 69 | 29,87% | 16s |
+| **Organic Social** | 55 | 17,68% | 33 | **60%** | **53s** |
+| Unassigned | 18 | 5,79% | 0 | 0% | 2s |
+| **Organic Search** | 4 | 1,29% | 3 | 75% | 21s |
+| Referral | 2 | 0,64% | 2 | 100% | 41s |
+| Organic Video | 1 | 0,32% | 0 | 0% | 0s |
+
+Últimos 7 dias: 62 usuários ativos (-31,1%), 34 novos (-2,9%), 1 evento principal (-96,9%).
+
+**Coerência entre as duas fontes:** GA4 marca 4 sessões de Organic Search e o GSC marca 5
+cliques. Bate, considerando janelas de atribuição diferentes. Não há indício de tráfego
+falso.
+
+**O que os números dizem:**
+
+1. **Social é o único canal que traz gente de verdade.** 60% de engajamento e 53 segundos
+   de permanência, contra 29,87% e 16 segundos do Direct. É o melhor tráfego do site por
+   uma margem larga, e é o menor investimento.
+2. **Direct com 74% e 16 segundos é suspeito.** Direct desse tamanho normalmente é tráfego
+   sem UTM, não gente digitando o domínio. Provavelmente são os links de Telegram e DM
+   entrando sem parâmetro. Vale conferir se o tracker first-party está marcando.
+3. **Unassigned com 0% de engajamento e 2 segundos** são 18 sessões que não valem nada.
+4. **Busca orgânica é ruído estatístico.** 4 sessões em 28 dias.
+
+---
+
+## 7. Prioridades que saem desta leitura
+
+Em ordem de impacto sobre o problema real, que é indexação e não conteúdo:
+
+1. **Atacar as 49 "Detectada, mas não indexada".** Publicar mais não resolve, está
+   piorando. O caminho é autoridade externa (backlinks, diretórios, PR) e consolidação do
+   que já existe, não volume novo.
+2. **Corrigir os 3 soft 404** e a 1 página com canônica trocada. É a única parte
+   puramente técnica e é rápida.
+3. **Migrar a propriedade do GSC para tipo Domínio.** Hoje é prefixo de URL
+   (`https://wevolv3.com/`), que ignora http, www e subdomínios. Cega parte dos dados.
+4. **Investigar o Direct de 74%.** Se for UTM faltando, o canal Social real é bem maior
+   do que 17,68% e a decisão de investimento muda.
+5. **Dobrar no Social**, que é o único canal com engajamento decente, e é exatamente onde
+   o calendário editorial do Telegram e X acabou de entrar.
+
+---
+
+## 8. Próximos checkpoints
+
+Como não havia baseline, os checkpoints partem de hoje:
+
+- **T+30: 2026-08-26**
+- **T+60: 2026-09-25**
+- **T+90: 2026-10-25**
+
+Reler as mesmas telas, nas mesmas janelas de 28 dias, e preencher as colunas vazias das
+tabelas acima.
+
+---
+
+*Preenchido em 2026-07-27 por leitura manual do GSC e GA4 (Windsor desinstalado).*

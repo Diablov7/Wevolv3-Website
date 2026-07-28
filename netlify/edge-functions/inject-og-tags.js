@@ -43,7 +43,11 @@ export default async (request, context) => {
 
   if (!slug) {
     console.log('No slug found');
-    return context.next();
+    // Bare /singleblog (no slug at all) has no article to show. Serve a real 404 instead
+    // of a 200'd empty shell, which Google flags as a soft 404.
+    const shellResp = await fetch(new URL('/singleblog.html?__shell=1', url.origin).toString());
+    const html = await shellResp.text();
+    return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
   }
 
   console.log('Processing slug:', slug);
@@ -98,8 +102,10 @@ export default async (request, context) => {
 
     if (!post || !post.title) {
       console.log('Post not found or missing title, slug:', slug);
-      // Serve the shell unmodified so the client-side JS can render / show its error state
-      return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
+      // Serve the shell so the client-side JS can render its error state, but with a real
+      // 404 status. A 200 here is a soft 404 (Google flags pages that look like "not found"
+      // but return success) and gets the URL stuck in limbo instead of cleanly dropped.
+      return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
     }
 
     // Generate image URL from Sanity reference
