@@ -20,8 +20,36 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.apicdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com; media-src 'self' https://res.cloudinary.com https://uploads.postiz.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
 };
 
+// Fetch the case-study shell (singlework.html) from our own origin.
+// IMPORTANT: a fetch() from an edge function to the same site starts a NEW request
+// chain, so every edge function matching that path runs again — including this one.
+// The ?__shell=1 marker is what breaks that: the re-entrant invocation bails out at
+// the top of the handler with context.next() and serves the static file untouched.
+// Never fetch this shell without the marker.
+const SHELL_PATH = '/singlework.html?__shell=1';
+
+async function fetchShell(origin) {
+  const resp = await fetch(new URL(SHELL_PATH, origin).toString());
+  if (!resp.ok) {
+    throw new Error(`Shell request failed with status ${resp.status}`);
+  }
+  const html = await resp.text();
+  // If what came back isn't the case-study shell (an error page, an empty body,
+  // index.html from a redirect fallback), every replace() below silently no-ops and
+  // we'd serve a blank page. Bail out instead and let the normal pipeline serve it.
+  if (!html || !html.includes('id="work-content"')) {
+    throw new Error('Shell response does not look like singlework.html');
+  }
+  return html;
+}
+
 export default async (request, context) => {
   const url = new URL(request.url);
+
+  // Re-entrant call from fetchShell() above: serve the static shell as-is.
+  if (url.searchParams.has('__shell')) {
+    return context.next();
+  }
 
   const isWorkPath = url.pathname.startsWith('/works/') && url.pathname !== '/works/';
   const isSinglework = url.pathname.includes('singlework');
@@ -47,14 +75,12 @@ export default async (request, context) => {
     return context.next();
   }
 
-  // Fetch the case-study shell (singlework.html). Clean /works/<slug> URLs have no
-  // static file at that path, so fetch the shell explicitly rather than using
-  // context.next() (which, when an edge function owns the path, hits the SPA
-  // fallback and returns index.html).
+  // Clean /works/<slug> URLs have no static file at that path, so fetch the shell
+  // explicitly rather than using context.next() (which, when an edge function owns
+  // the path, hits the SPA fallback and returns index.html).
   let html;
   try {
-    const shellResp = await fetch(new URL('/singlework.html?__shell=1', url.origin).toString());
-    html = await shellResp.text();
+    html = await fetchShell(url.origin);
   } catch (e) {
     console.error('Failed to fetch work shell:', e);
     return context.next();
