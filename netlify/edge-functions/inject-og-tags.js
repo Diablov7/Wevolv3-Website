@@ -14,11 +14,43 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.sanity.io https://res.cloudinary.com https://www.google-analytics.com https://wevolv3.com; connect-src 'self' https://*.api.sanity.io https://*.apicdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com; media-src 'self' https://res.cloudinary.com https://uploads.postiz.com; frame-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'",
 };
 
+// Fetch the article shell (singleblog.html) from our own origin.
+// IMPORTANT: a fetch() from an edge function to the same site starts a NEW request
+// chain, so every edge function matching that path runs again — including this one.
+// The ?__shell=1 marker is what breaks that: the re-entrant invocation bails out at
+// the top of the handler with context.next() and serves the static file untouched.
+// Never fetch this shell without the marker.
+const SHELL_PATH = '/singleblog.html?__shell=1';
+
+async function fetchShell(origin) {
+  const resp = await fetch(new URL(SHELL_PATH, origin).toString());
+  if (!resp.ok) {
+    throw new Error(`Shell request failed with status ${resp.status}`);
+  }
+  const html = await resp.text();
+  // Sanity check: if what came back isn't the article shell (an error page, an empty
+  // body, index.html from a redirect fallback), every replace() below silently no-ops
+  // and we'd serve a blank page. Better to bail out and let the normal pipeline serve
+  // the page so the client-side JS can still render the article.
+  if (!html || !html.includes('id="post-body"')) {
+    throw new Error('Shell response does not look like singleblog.html');
+  }
+  return html;
+}
+
 export default async (request, context) => {
   const url = new URL(request.url);
-  
+
   console.log('Edge Function called for:', url.pathname, url.search);
-  
+
+  // Re-entrant call from fetchShell() above: serve the static shell as-is.
+  // Without this the /singleblog.html?__shell=1 request re-enters this function,
+  // which fetches the shell again, and so on until Netlify kills the request chain.
+  if (url.searchParams.has('__shell')) {
+    console.log('Shell request, serving static file');
+    return context.next();
+  }
+
   // Process both clean blog URLs (/blog/<slug>) and legacy singleblog URLs
   const isBlogPath = url.pathname.startsWith('/blog/') && url.pathname !== '/blog/';
   const isSingleblog = url.pathname.includes('singleblog');
@@ -45,20 +77,26 @@ export default async (request, context) => {
     console.log('No slug found');
     // Bare /singleblog (no slug at all) has no article to show. Serve a real 404 instead
     // of a 200'd empty shell, which Google flags as a soft 404.
-    const shellResp = await fetch(new URL('/singleblog.html?__shell=1', url.origin).toString());
-    const html = await shellResp.text();
-    return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
+    try {
+      const html = await fetchShell(url.origin);
+      return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
+    } catch (e) {
+      console.error('Failed to fetch article shell for bare /singleblog:', e);
+      return new Response('<!doctype html><meta charset="utf-8"><title>Not found | Wevolv3</title><p>Article not found. <a href="/blog.html">Back to all articles</a>.</p>', {
+        status: 404,
+        headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS },
+      });
+    }
   }
 
   console.log('Processing slug:', slug);
 
-  // Fetch the article shell (singleblog.html). Clean /blog/<slug> URLs have no static
-  // file at that path, so we fetch the shell explicitly rather than using context.next()
-  // (which, when an edge function owns the path, hits the SPA fallback and returns index.html).
+  // Clean /blog/<slug> URLs have no static file at that path, so we fetch the shell
+  // explicitly rather than using context.next() (which, when an edge function owns the
+  // path, hits the SPA fallback and returns index.html).
   let html;
   try {
-    const shellResp = await fetch(new URL('/singleblog.html?__shell=1', url.origin).toString());
-    html = await shellResp.text();
+    html = await fetchShell(url.origin);
   } catch (e) {
     console.error('Failed to fetch article shell:', e);
     return context.next();
