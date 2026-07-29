@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-29",
+  "dateLabel": "JUL 29, 2026",
+  "hook": "Morgan Stanley lança ETPs de Ethereum e Solana",
+  "video": {
+    "url": "https://uploads.postiz.com/DziQeAbDVh.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "ETF",
+      "text": "Morgan Stanley lança ETPs de Ethereum e Solana nos EUA",
+      "em": "ETPs de Ethereum e Solana",
+      "summary": "O Morgan Stanley Investment Management lançou fundos negociados em bolsa de Ethereum e Solana, ampliando acesso institucional a criptomoedas.",
+      "url": "https://www.morganstanley.com/press-releases/morgan-stanley-investment-management-launches-ethereum-and-solana-etps",
+      "source": "morganstanley.com"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Hungria concede primeira licença MiCA e afrouxa regras",
+      "em": "primeira licença MiCA",
+      "summary": "A Hungria relaxou sua fiscalização de criptomoedas após autorizar a CoinCash sob a nova regulamentação europeia MiCA, incentivando a retomada de serviços.",
+      "url": "https://www.tradingview.com/news/cointelegraph:62cc3056f094b:0-hungary-repeals-crypto-checks-as-first-mica-license-is-granted/",
+      "source": "TradingView"
+    },
+    {
+      "cat": "DEFI",
+      "text": "1inch lança Aqua, camada de liquidez compartilhada em 13 chains",
+      "em": "Aqua",
+      "summary": "A 1inch disponibilizou publicamente a Aqua, uma camada de liquidez compartilhada e auto-custódia para DeFi, com incentivo de 10 milhões de tokens 1INCH.",
+      "url": "https://www.theblock.co/post/409866/1inch-launches-aqua-publicly-a-shared-liquidity-layer-for-defi-across-13-chains",
+      "source": "The Block"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Alpen Labs lança Testnet III para DeFi nativo no Bitcoin",
+      "em": "Testnet III",
+      "summary": "O Alpen Labs lançou a terceira testnet para infraestrutura DeFi nativa do Bitcoin, com mais de 21 parceiros e novos modelos de segurança.",
+      "url": "https://en.cryptonomist.ch/2026/07/29/bitcoin-native-defi-infrastructure/",
+      "source": "The Cryptonomist"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Trade.xyz vai cobrir perdas de quase US$ 60 milhões em liquidações",
+      "em": "US$ 60 milhões",
+      "summary": "Após liquidações de aproximadamente 60 milhões de dólares no contrato de SK Hynix, a Trade.xyz anunciou que cobrirá os prejuízos dos usuários.",
+      "url": "https://bitcoinfoundation.org/news/blockchain-news/tradexyz-cover-losses-from-60m-sk-hynix-liquidations/",
+      "source": "Bitcoin Foundation"
+    }
+  ]
+}
