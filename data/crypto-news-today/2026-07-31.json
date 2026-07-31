@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-31",
+  "dateLabel": "JUL 31, 2026",
+  "hook": "Quarenta milhões em BTC roubados",
+  "video": {
+    "url": "https://uploads.postiz.com/s5wvTauygO.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "SEGURANCA",
+      "text": "Coldcard ataque: US$ 40M em BTC sumiu",
+      "em": "US$ 40M",
+      "summary": "Um ataque à cold wallet Coldcard resultou no roubo de aproximadamente quarenta milhões de dólares em bitcoin, gerando temores de uma queda brusca no preço da criptomoeda.",
+      "url": "https://www.forbes.com/sites/digital-assets/2026/07/31/massive-surprise-bitcoin-attack-sparks-sudden-price-crash-fears/",
+      "source": "forbes.com"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "NH rejeita fundo municipal de US$ 100M em BTC",
+      "em": "US$ 100M",
+      "summary": "O Conselho Executivo de New Hampshire votou contra a proposta de um fundo municipal de cem milhões de dólares em bitcoin, após a Moody's ter dado rating Ba2 ao título.",
+      "url": "https://pro.stateaffairs.com/nh/news/new-hampshire-votes-down-bitcoin-bond?ref=AAAAAAAEAO4AAE-WAA&utm_source=product&utm_medium=referral&utm_campaign=guest_share_link&utm_content=news",
+      "source": "State Affairs"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Republicanos soltam texto atualizado pro mercado cripto",
+      "em": "texto atualizado",
+      "summary": "Senadores republicanos divulgaram uma versão revisada da legislação de estrutura de mercado para criptomoedas, abordando registros na CFTC, inovação em IA e proteção a investidores.",
+      "url": "https://www.dwt.com/blogs/financial-services-law-advisor/2026/07/senate-updates-crypto-market-bill",
+      "source": "Davis Wright Tremaine"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Senado democrata propõe bureau anticorrupção após ganhos de Trump",
+      "em": "bureau anticorrupção",
+      "summary": "Senadores democratas propuseram a criação de um bureau anticorrupção, após declarações financeiras revelarem que Trump obteve centenas de milhões em receitas ligadas a criptomoedas.",
+      "url": "https://www.theblock.co/post/410260/senate-democrat-anti-corruption-bureau",
+      "source": "The Block"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Hungria revoga regra de validação que travava empresas cripto",
+      "em": "revoga regra",
+      "summary": "O parlamento húngaro aprovou a revogação de uma exigência de validação adicional para transações cripto, eliminando um obstáculo para empresas do setor no país.",
+      "url": "https://dig.watch/updates/hungary-removes-crypto-validator-rule",
+      "source": "Digital Watch Observatory"
+    }
+  ]
+}
