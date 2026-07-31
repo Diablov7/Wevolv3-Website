@@ -12,3 +12,26 @@ GSC = janela de 28 dias do Search Console. GA4 = últimos 28 dias, aquisição d
 | 2026-07-30 | 5 | 36 | 13,9% | 23,8 | 18 | 62 | 307 | 74,59% | 17,26% | 1,30% | Sem mudança — mesma janela de ontem, GA4 ainda não reflete o fix do `track.ts` (deploy foi 29/07 à noite, fora da janela 1–28/07 lida hoje). Unassigned e Direct seguem no mesmo patamar; é esperado, não é regressão. Bing Webmaster Tools configurado hoje (site verificado, sitemap enviado, status "Processing") — ainda sem dado, tratar como coletando. |
 | 2026-07-30 (2ª leitura) | 5 | 39 | 12,8% | 25,0 | 18 | 62 | 279 | 73,12% | 17,92% | 1,43% | Parado, com um sinal fraco positivo. Janela GA4 rolou para 2–29/07 e perdeu dias antigos (311→307→279 sessões: efeito de janela, não queda de tráfego). GSC ganhou 3 impressões (36→39) sem clique novo, então CTR caiu por aritmética, não por perda de performance — ruído puro. Indexação travada em 18/80 pelo 4º dia. Unassigned em 6,81% (19 sessões, 0% de engajamento, 30 dos 34 eventos principais): acima do gatilho de 5%, mas a janela ainda é 100% pré-fix (deploy 29/07 à noite), então não é regressão — o teste real só começa quando a janela cobrir agosto. Direct em 73,12% vs 74,28% do baseline: variação dentro do ruído, ainda não confirma a hipótese. Bing: sitemap crawleado com sucesso, 70 URLs descobertas (ontem estava "Processing"); Search Performance ainda zerado. Acesso: GSC e GA4 migraram para `authuser=2` (o `u/0` agora é romulololico@gmail.com). |
 | 2026-07-31 | 5 | 38 | 13,2% | 25,6 | 18 | 62 | 228 | 68,86% | 19,74% | 1,75% | Primeiro sinal real de que o fix funcionou. GA4 (3–30/07) inclui o primeiro dia inteiro pós-deploy: Unassigned ficou **congelado em 19 sessões absolutas** — mesma contagem de ontem, mesmos 30 eventos principais, apesar de a janela ter avançado um dia. Ou seja, o dia novo entrou sem gerar nenhum evento fantasma. O % subiu (6,81%→8,33%) só porque o denominador caiu (279→228 sessões, efeito de janela rolando e perdendo dias antigos), não porque apareceu Unassigned novo — não é regressão, apesar de estar acima do gatilho de 5%. Direct caiu pelo 2º dia seguido: 74,28% (baseline) → 73,12% → 68,86%, com Organic Social subindo 17,68%→19,74%: começa a sustentar a hipótese de que o Direct inflado era Unassigned mal atribuído. GSC: +2 impressões (36→38), 0 clique novo, posição 25,6 — ruído. Indexação travada em 18/80 pelo 5º dia (62 não indexadas) — é o gargalo real, não o CTR. Bing: "No pages found" em Search Performance, ainda coletando. GSC Platform Properties (IG/TikTok/X): as três seguem em "processando, volte em até 48h" — sem dado. |
+
+## 2026-07-31 — ação: causa-raiz da não indexação
+
+Achado que explica os 49 "detectada, mas não indexada" com último rastreamento N/D:
+
+- `blog.html` só linkava os artigos de dentro de um bloco `<noscript>`. Googlebot executa JS,
+  logo nunca via link interno nenhum para post nenhum — as URLs só existiam no sitemap.
+  O comentário no código dizia "ensures every post has a crawlable internal link"; era falso.
+- `/kol-roi-calculator.html` não tinha um único link interno em todo o site.
+
+Corrigido no commit `1672a60` (deploy Netlify confirmado em produção):
+índice dos 31 posts renderizado de verdade no `blog.html`, e bloco "Resources" no rodapé da home
+com o calculador + artigos-pilar.
+
+Submetido pela Inspeção de URL (8 URLs distintas confirmadas com "Indexação solicitada"):
+`/blog/web3-marketing-agency-growth-partner`, `/kol-roi-calculator.html`, `/community-building`,
+`/web3-development`, `/blog/crypto-kol-marketing-evolution`, `/blog/web3-kol-attribution-2026`,
+`/blog/web-three-gtm-framework`, `/blog/building-crypto-communities`.
+
+**Pendente para amanhã** (cota diária do GSC estourou):
+`/blog/web3-community-playbook-for-builders` e `/blog/web3-adoption-funnels-metrics`.
+Nota: uma submissão foi gasta em duplicata do calculador (erro de automação), o que
+consumiu uma vaga da cota do dia.
