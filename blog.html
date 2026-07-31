@@ -203,34 +203,46 @@
                     </div>
                 </div>
 
-                <!-- SEO: Static fallback for crawlers and JS-disabled clients.
-                     Hidden from normal users (JS removes it on load). Ensures every post has a crawlable internal link. -->
-                <noscript>
-                    <ul class="blog-static-fallback" style="list-style:none;padding:0;margin:40px 0;">
-                        <li><a href="/blog/web3-marketing-2026">Web3 Marketing 2026</a></li>
-                        <li><a href="/blog/post-quantum-crypto-projects-2026">Post-Quantum Crypto Projects 2026</a></li>
-                        <li><a href="/blog/web3-marketing-trends">Web3 Marketing Trends</a></li>
-                        <li><a href="/blog/ai-blockchain-decentralized-computing">AI, Blockchain &amp; Decentralized Computing</a></li>
-                        <li><a href="/blog/retrofit-projects-quantum-threat">Retrofitting Projects for the Quantum Threat</a></li>
-                        <li><a href="/blog/why-cellframe-post-quantum">Why Cellframe Leads Post-Quantum</a></li>
-                        <li><a href="/blog/why-discord-support-works-better">Why Discord Support Works Better</a></li>
-                        <li><a href="/blog/crypto-kol-marketing-evolution">Crypto KOL Marketing Evolution</a></li>
-                        <li><a href="/blog/sovereign-communities-web-three">Sovereign Communities in Web3</a></li>
-                        <li><a href="/blog/web-three-quest-platforms-roi">Web3 Quest Platforms &amp; ROI</a></li>
-                        <li><a href="/blog/building-crypto-communities">Building Crypto Communities</a></li>
-                        <li><a href="/blog/web-three-attribution-tool">Web3 Attribution Tools</a></li>
-                        <li><a href="/blog/web-three-gtm-framework">Web3 GTM Framework</a></li>
-                        <li><a href="/blog/web-three-crm">Web3 CRM</a></li>
-                        <li><a href="/blog/galxe-vs-zealy-roi-platforms">Galxe vs Zealy: ROI Platforms Compared</a></li>
-                        <li><a href="/blog/web-three-marketing-mistakes">Web3 Marketing Mistakes to Avoid</a></li>
-                        <li><a href="/blog/web-three-marketing-tools">Web3 Marketing Tools</a></li>
-                        <li><a href="/blog/web3-community-playbook-for-builders">Web3 Community Playbook for Builders</a></li>
-                        <li><a href="/blog/guide-mitigating-post-airdrop-fud">Guide: Mitigating Post-Airdrop FUD</a></li>
-                        <li><a href="/blog/why-exchanges-need-marketing-to-win-in-2026">Why Exchanges Need Marketing to Win in 2026</a></li>
-                        <li><a href="/blog/when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos">When AI Becomes the Marketer: ai16z &amp; ElizaOS</a></li>
-                        <li><a href="/blog/the-silent-collapse-of-web3-communities">The Silent Collapse of Web3 Communities</a></li>
+                <!-- SEO: full article index, always present in the served HTML.
+                     This used to live inside <noscript>, which meant Googlebot (which executes JS)
+                     never saw it — every post was effectively orphaned. Kept rendered so each
+                     article has a real crawlable internal link. -->
+                <nav class="blog-archive-index" aria-label="All articles" style="margin:56px 0 8px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
+                    <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#10b981;margin-bottom:16px;">All articles</div>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:12px 30px;">
+                        <li><a href="/blog/web3-marketing-agency-growth-partner" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing Agency vs Growth Partner</a></li>
+                        <li><a href="/blog/web3-growth-partner-checklist" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Growth Partner Checklist</a></li>
+                        <li><a href="/blog/crypto-kol-marketing-evolution" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Crypto KOL Marketing Evolution</a></li>
+                        <li><a href="/blog/web3-kol-attribution-2026" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 KOL Attribution in 2026</a></li>
+                        <li><a href="/blog/web-three-gtm-framework" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 GTM Framework</a></li>
+                        <li><a href="/blog/web3-adoption-funnels-metrics" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Adoption Funnels &amp; Metrics</a></li>
+                        <li><a href="/blog/building-crypto-communities" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Building Crypto Communities</a></li>
+                        <li><a href="/blog/web3-community-playbook-for-builders" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Community Playbook for Builders</a></li>
+                        <li><a href="/blog/the-silent-collapse-of-web3-communities" style="color:#cfcfcf;text-decoration:none;font-size:15px;">The Silent Collapse of Web3 Communities</a></li>
+                        <li><a href="/blog/web3-failure-data-reality" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Failure: The Data Reality</a></li>
+                        <li><a href="/blog/crypto-marketing-stack" style="color:#cfcfcf;text-decoration:none;font-size:15px;">The Crypto Marketing Stack</a></li>
+                        <li><a href="/blog/crypto-pr-builds-leadership-faster" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Crypto PR Builds Leadership Faster</a></li>
+                        <li><a href="/blog/crypto-flow-etf-outflows" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Crypto Flows &amp; ETF Outflows</a></li>
+                        <li><a href="/blog/ethereum-l2-adoption" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Ethereum L2 Adoption</a></li>
+                        <li><a href="/blog/web3-marketing-2026" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing 2026</a></li>
+                        <li><a href="/blog/web3-marketing-trends" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing Trends</a></li>
+                        <li><a href="/blog/web-three-marketing-tools" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing Tools</a></li>
+                        <li><a href="/blog/web-three-marketing-mistakes" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing Mistakes to Avoid</a></li>
+                        <li><a href="/blog/web-three-attribution-tool" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Attribution Tools</a></li>
+                        <li><a href="/blog/web-three-crm" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 CRM</a></li>
+                        <li><a href="/blog/web-three-quest-platforms-roi" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Quest Platforms &amp; ROI</a></li>
+                        <li><a href="/blog/galxe-vs-zealy-roi-platforms" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Galxe vs Zealy: ROI Platforms Compared</a></li>
+                        <li><a href="/blog/guide-mitigating-post-airdrop-fud" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Guide: Mitigating Post-Airdrop FUD</a></li>
+                        <li><a href="/blog/why-discord-support-works-better" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Why Discord Support Works Better</a></li>
+                        <li><a href="/blog/why-exchanges-need-marketing-to-win-in-2026" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Why Exchanges Need Marketing to Win in 2026</a></li>
+                        <li><a href="/blog/sovereign-communities-web-three" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Sovereign Communities in Web3</a></li>
+                        <li><a href="/blog/when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos" style="color:#cfcfcf;text-decoration:none;font-size:15px;">When AI Becomes the Marketer: ai16z &amp; ElizaOS</a></li>
+                        <li><a href="/blog/ai-blockchain-decentralized-computing" style="color:#cfcfcf;text-decoration:none;font-size:15px;">AI, Blockchain &amp; Decentralized Computing</a></li>
+                        <li><a href="/blog/post-quantum-crypto-projects-2026" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Post-Quantum Crypto Projects 2026</a></li>
+                        <li><a href="/blog/retrofit-projects-quantum-threat" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Retrofitting Projects for the Quantum Threat</a></li>
+                        <li><a href="/blog/why-cellframe-post-quantum" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Why Cellframe Leads Post-Quantum</a></li>
                     </ul>
-                </noscript>
+                </nav>
 
             </div>
         </div>
