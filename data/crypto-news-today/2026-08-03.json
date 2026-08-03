@@ -1,0 +1,51 @@
+{
+  "date": "2026-08-03",
+  "dateLabel": "AUG 03, 2026",
+  "hook": "Ataque drena US$ 89 milhões em Bitcoin",
+  "video": {
+    "url": "https://uploads.postiz.com/DfdF0waf6o.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "SEGURANÇA",
+      "text": "Ataque à Coldcard drena US$ 89M em Bitcoin",
+      "em": "US$ 89M",
+      "summary": "Uma vulnerabilidade em software da Coldcard permitiu que hackers roubassem cerca de US$ 89 milhões em Bitcoin de mais de 1.200 carteiras.",
+      "url": "https://www.google.com/goto?url=CAESogEB7keqTa1xm-ppv6Lyq1DbZjJnsJI3Jodo0xFL6EyJ_rMrOhQtZ3FRrANBCgyHNjQqgrr9_55fHQHYaI_SiVetJAV4_cMRq6bVbDKqfp4JLWOSbcMXwqJ5K2NxXqgTwKYBTq062QHFpbl1MtKo3uJPoa_WguIifg9PhvDkqQYeVuLHzpmj7jCbl-8LHaVqTF1L58HCi2O4zN3Qf7Y_cUWiJ3g=",
+      "source": "google.com"
+    },
+    {
+      "cat": "REGULAÇÃO",
+      "text": "Senado tem dias para salvar o CLARITY Act",
+      "em": "Clarity act",
+      "summary": "O CLARITY Act enfrenta prazo no Senado antes do recesso de agosto, com pressão eleitoral para aprovar o marco regulatório cripto.",
+      "url": "https://bitcoinfoundation.org/news/regulation/clarity-act-countdown-senate-has-days-to-save-landmark-crypto-bill-before-recess/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "American Bitcoin dos irmãos Trump tem prejuízo",
+      "em": "prejuízo",
+      "summary": "A American Bitcoin, apoiada pelos filhos de Donald Trump, registrou perda no segundo trimestre devido à queda no preço da criptomoeda.",
+      "url": "https://www.google.com/goto?url=CAESpgEB7keqTRtfEfXCIM2qAo3LrThBPfylqhucl2dNg4HezeqKKHDPbSdIlX33RMVQuyiKJVLaivTy7PJMCwjkqIpoIt8pfMLERegm2Je3vOxVxk3Y7yXHnYp52kDAwxICHg8au9Bguy_XA8-9V1XstFwFSBtnt9tT9avFmxFxjrbFVEMKZ3vYw5EP9dGboFKwukYf2K-86AgaGSdVTg0Nfkmjj0pxEdez",
+      "source": "Reuters"
+    },
+    {
+      "cat": "ETF",
+      "text": "Morgan Stanley lança ETFs de Ethereum e Solana",
+      "em": "Morgan Stanley",
+      "summary": "O banco de investimentos ampliou sua oferta de ETFs cripto, lançando fundos de Ethereum e Solana para investidores.",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/morgan-stanley-just-launched-ethereum-172400392.html",
+      "source": "Yahoo Finance"
+    },
+    {
+      "cat": "REGULAÇÃO",
+      "text": "Robinhood ganha registro no Reino Unido",
+      "em": "Robinhood",
+      "summary": "A Robinhood obteve registro no Reino Unido para oferecer serviços de criptomoedas, pouco antes do novo regime regulatório entrar em vigor.",
+      "url": "https://www.coindesk.com/policy/2026/08/03/robinhood-wins-uk-crypto-registration-before-new-regulatory-regime-kicks-off",
+      "source": "CoinDesk"
+    }
+  ]
+}
