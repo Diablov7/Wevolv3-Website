@@ -359,9 +359,15 @@
   </url>
   <url>
     <loc>https://wevolv3.com/crypto-news-today</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://wevolv3.com/crypto-news-today/2026-08-05</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/crypto-news-today/2026-08-03</loc>

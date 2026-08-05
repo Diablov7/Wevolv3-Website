@@ -1,0 +1,51 @@
+{
+  "date": "2026-08-05",
+  "dateLabel": "AUG 05, 2026",
+  "hook": "BlackRock tokeniza tesouro americano em Solana",
+  "video": {
+    "url": "https://uploads.postiz.com/PsoES2srXw.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "ETF",
+      "text": "BlackRock lança fundo tokenizado em Solana e Ethereum para stablecoins",
+      "em": "Solana",
+      "summary": "BlackRock lançou um fundo de money market tokenizado em Solana e Ethereum, lastreado em títulos do Tesouro americano, para servir de reserva para stablecoins.",
+      "url": "https://www.altcoinbuzz.io/blackrock-tokenized-fund-solana-ethereum",
+      "source": "altcoinbuzz.io"
+    },
+    {
+      "cat": "SEGURANCA",
+      "text": "Fabricante de carteira Bitcoin hackeada culpa IA por bug não detectado",
+      "em": "bug",
+      "summary": "A fabricante de carteiras Bitcoin atacada alertou que a inteligência artificial não conseguiu detectar a falha de software que permitiu o roubo de fundos.",
+      "url": "https://www.bloomberg.com/news/articles/2026-08-05/hacked-bitcoin-wallet-maker-warns-of-ai-failure-to-detect-bug",
+      "source": "Bloomberg.com"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Associação Blockchain rebate que lei protegeria crimes cripto",
+      "em": "Blockchain",
+      "summary": "A Blockchain Association contestou a afirmação de um grupo de xerifes de que o Clarity Act protegeria crimes cripto, enquanto o Senado se prepara para o recesso.",
+      "url": "https://www.blockhead.co/2026/08/05/blockchain-association-fights-back-as-sheriffs-group-warns-clarity-act-would-shield-crypto-crime/",
+      "source": "Blockhead"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Japão cria divisão exclusiva para cripto e stablecoins",
+      "em": "Japão",
+      "summary": "O Japão estabeleceu uma divisão dedicada a criptomoedas e stablecoins dentro da sua agência reguladora financeira, elevando a supervisão.",
+      "url": "https://crypto.news/japans-fsa-launches-standalone-crypto-and-stablecoin-division/",
+      "source": "Crypto News"
+    },
+    {
+      "cat": "SEGURANCA",
+      "text": "ChainDrop infecta 444 pacotes npm com backdoor Ethereum",
+      "em": "444",
+      "summary": "O worm ChainDrop contaminou 444 pacotes e 2212 versões no npm, usando um backdoor com Ethereum como C2 para roubar credenciais.",
+      "url": "https://www.stepsecurity.io/blog/chaindrop-npm-worm",
+      "source": "Step Security"
+    }
+  ]
+}
