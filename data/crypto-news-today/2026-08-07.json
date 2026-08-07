@@ -1,0 +1,51 @@
+{
+  "date": "2026-08-07",
+  "dateLabel": "AUG 07, 2026",
+  "hook": "Coldcard hack drena US$ 130 milhões",
+  "video": {
+    "url": "https://uploads.postiz.com/U4aPBMXlpp.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "SEGURANCA",
+      "text": "Coldcard hack rouba US$ 130 milhões em BTC",
+      "em": "US$ 130 milhões",
+      "summary": "Exploraram uma falha de software na hardware wallet Coldcard, causando um roubo estimado em US$ 130 milhões de investidores.",
+      "url": "https://www.japantimes.co.jp/business/2026/08/07/tech/bitcoin-hack-safety-cryptocurrencies/",
+      "source": "japantimes.co.jp"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Wintermute ganha licença da SEC para negociar ações",
+      "em": "SEC",
+      "summary": "A market maker cripto Wintermute recebeu aprovação para operar como corretora de ações e ETFs nos EUA, integrando crypto com finanças tradicionais.",
+      "url": "https://www.coindesk.com/business/2026/08/07/wintermute-gains-u-s-broker-dealer-status-in-wall-street-push",
+      "source": "CoinDesk"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Senado adia votação da CLARITY Act para setembro",
+      "em": "Clarity act",
+      "summary": "O Senado dos EUA adiou a votação do projeto de lei CLARITY Act, que regulamenta criptomoedas, gerando incerteza até setembro.",
+      "url": "https://www.altcoinbuzz.io/senate-delays-clarity-act-vote-september",
+      "source": "AltcoinBuzz"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "Baleias compram US$ 1,2 bi em BTC; ETFs captam US$ 754 mi",
+      "em": "US$ 1,2 bi",
+      "summary": "Grandes investidores acumularam US$ 1,2 bilhão em Bitcoin, enquanto os ETFs spot de BTC nos EUA tiveram entrada de US$ 754 milhões, maior em quatro meses.",
+      "url": "https://bitcoinfoundation.org/news/bitcoin/bitcoin-whales-snap-up-1-2-billion-worth-of-btc-as-etf-inflows-surge-toward-four-month-high/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "DEFI",
+      "text": "Depósitos em ativos reais tokenizados sobem para US$ 7,4 bi",
+      "em": "US$ 7,4 bi",
+      "summary": "Depósitos em ativos do mundo real tokenizados (RWA) mais que triplicaram ano a ano, atingindo US$ 7,4 bilhões mesmo com queda geral nos depósitos DeFi.",
+      "url": "https://cryptorank.io/news/feed/200eb-rwa-deposits-defi-tokenized-assets-growth",
+      "source": "CryptoRank"
+    }
+  ]
+}
