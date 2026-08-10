@@ -1,0 +1,51 @@
+{
+  "date": "2026-08-10",
+  "dateLabel": "AUG 10, 2026",
+  "hook": "Cem milhões de dólares sumiram de cold wallets",
+  "video": {
+    "url": "https://uploads.postiz.com/AWrxZuo5EM.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "SEGURANCA",
+      "text": "Bug na Coldcard roubou US$ 100 milhões em Bitcoin",
+      "em": "US$ 100 milhões",
+      "summary": "Um erro na geração de seed phrases da Coldcard permitiu que hackers roubassem mais de cem milhões de dólares em Bitcoin de usuários que confiavam na segurança offline do hardware.",
+      "url": "https://www.google.com/goto?url=CAESkwEB7keqTfMheeufh22UsmS8FXE8bKEV3RPGmHWwyokzSLEi5ix4IZy_zHy9jRBoIFiCaWXaC5pTwqkHZ-KDtnhDkh_kReACeQV1DMtTRrIlVWyjkOxi26MrLEsQcJdvPZa7okHJeauY19IGNvSVodZoBF6zLJ7H49CGvf6W97X4EdXc5BebN9ARfshQeJBOWEda7dc=",
+      "source": "google.com"
+    },
+    {
+      "cat": "ETF",
+      "text": "Grayscale retirou pedidos de ETF de ADA, HBAR e DOT",
+      "em": "Ada, hbar e dot",
+      "summary": "A Grayscale withdraw suas solicitações de registro S-1 para ETFs de Cardano, Hedera e Polkadot, sinalizando possíveis mudanças na estratégia de produtos cripto.",
+      "url": "https://www.google.com/goto?url=CAESegHuR6pN_863tSWPIOeUndYLqGLE54VvGTjqGeugMThcrNA0dTTwVY77gkxv9dsKavk-8hrWFjrSFKyNG9zjGAWasXfcXoFSfxiIDNv_9qEErmY7c4OdHldmo7qF7a4RvkmBzBxg0RvqZDtQk7202X0LKUyz2LbHcVFc",
+      "source": "Pluang"
+    },
+    {
+      "cat": "MERCADO",
+      "text": "ETFs de Bitcoin têm maior entrada semanal desde abril",
+      "em": "maior entrada semanal",
+      "summary": "Os fundos de Bitcoin listados nos EUA registraram o maior fluxo de capital em quatro meses, impulsionados pelo foco renovado em segurança após o hack da Coldcard.",
+      "url": "https://www.google.com/goto?url=CAESrQEB7keqTUlsGW82D13GHfQBpYNIgv6lXo6TECyCoNMUwacNOcLgqoY4AD3xYlERF2Jz0E8QdV8d-i1TqSf9VhTn-MX6OzfV-Hb6ifKDii0PiFQFcw-WbDZb3BqX3nbsWD8YaWaxLtZxMhgcaK46BO0mjAOt79jxg1oXjUl1e6ipksPjvG4BIdmaFEib45NwqinwrV-jmp1_q2sI5sogdCmlaUrmhg1MTgpOTGV13w==",
+      "source": "Bloomberg.com"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Wintermute virou corretora de ações com aprovação da SEC",
+      "em": "Wintermute",
+      "summary": "A maior formadora de mercado cripto, Wintermute, registrou-se na SEC e FINRA para negociar ações, opções e ETPs cripto, aproximando Wall Street das criptomoedas.",
+      "url": "https://crypto.news/wintermute-sec-broker-dealer-crypto-market-maker-stocks/",
+      "source": "Crypto News"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Banco Central do Brasil vai segurar transferências acima de US$ 10 mil",
+      "em": "US$ 10 mil",
+      "summary": "A partir de janeiro de 2027, transferências cripto acima de dez mil dólares para exchanges estrangeiras ou carteiras próprias terão retenção de 24 horas pelo Banco Central para coibir fraudes.",
+      "url": "https://bitcoinke.io/2026/08/banco-central-do-brasil-to-require-crypto-transfer-delays/",
+      "source": "BitKE"
+    }
+  ]
+}
