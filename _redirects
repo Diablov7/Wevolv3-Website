@@ -32,3 +32,52 @@
 # Blog/works limpos e /studio sao tratados nas regras acima, entao so caem aqui
 # paths que realmente nao existem.
 /*    /404.html   404
+
+# ---------------------------------------------------------------
+# Material interno: publish="." serve a raiz inteira do repositorio.
+# O sufixo ! forca a regra a vencer o arquivo estatico existente.
+# ---------------------------------------------------------------
+/docs/*   /404.html   404!
+/wevolv3/*   /404.html   404!
+/netlify/*   /404.html   404!
+/ANALISE_IMPACTO_CORRECOES.md   /404.html   404!
+/ANALISE_INDEXACAO_GOOGLE.md   /404.html   404!
+/ANALISE_SANITY_STUDIO.md   /404.html   404!
+/AUTOMACAO_SITEMAP.md   /404.html   404!
+/COMMIT_AUTOMACAO.sh   /404.html   404!
+/COMMIT_FIX.sh   /404.html   404!
+/COMMIT_FIX_WORKFLOW.sh   /404.html   404!
+/COMMIT_HEADERS.sh   /404.html   404!
+/COMMIT_MOBILE_FIX.sh   /404.html   404!
+/COMMIT_MSG.txt   /404.html   404!
+/COMMIT_SEO_PERFORMANCE.sh   /404.html   404!
+/COMMIT_STUDIO.sh   /404.html   404!
+/CORRECOES_INDEXACAO_IMPLEMENTADAS.md   /404.html   404!
+/DO_COMMIT.sh   /404.html   404!
+/FAZER_COMMIT.sh   /404.html   404!
+/FINAL_COMMIT.sh   /404.html   404!
+/FORCAR_COMMIT.sh   /404.html   404!
+/GUIA_RAPIDO_WORKS.md   /404.html   404!
+/GUIA_REINDEXACAO.md   /404.html   404!
+/GUIA_TELEGRAM_GRUPO.md   /404.html   404!
+/PUSH_STUDIO.sh   /404.html   404!
+/RELATORIO_VERIFICACAO_PROJETO.md   /404.html   404!
+/SANITY_WORK_SCHEMA.md   /404.html   404!
+/SOLUCAO_STUDIO.md   /404.html   404!
+/SOLUCAO_TWITTER_CARDS.md   /404.html   404!
+/TESTE_TELEGRAM.md   /404.html   404!
+/VERIFICACAO_PROJETO.md   /404.html   404!
+/commit-studio.sh   /404.html   404!
+/commit.sh   /404.html   404!
+/contributing.md   /404.html   404!
+/convert-staff-photos.sh   /404.html   404!
+/deno.lock   /404.html   404!
+/generate-llms-full.js   /404.html   404!
+/generate-news.js   /404.html   404!
+/generate-sitemap.js   /404.html   404!
+/license   /404.html   404!
+/netlify.toml   /404.html   404!
+/package.json   /404.html   404!
+/para%20conectar%20ao%20github%EF%80%BA%EF%80%A2   /404.html   404!
+/readme.md   /404.html   404!
+/sync-news.js   /404.html   404!
