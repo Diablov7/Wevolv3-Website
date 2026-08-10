@@ -4,6 +4,12 @@
   command = "(node generate-news.js && node generate-sitemap.js) || echo 'Static generation skipped (Node.js not available)'; node strip-internal.js"
   functions = "netlify/functions"
 
+
+# Remove o codigo-fonte das funcoes do output publicado. Precisa ser um plugin
+# porque o empacotamento das funcoes acontece depois do comando de build.
+[[plugins]]
+  package = "/plugins/strip-functions"
+
 # Headers de seguranca aplicados a TODAS as rotas, incluindo as dinamicas
 # servidas pelas edge functions (/blog/<slug>, /works/<slug>) que antes nao
 # herdavam nada disso porque o bloco anterior so cobria "/*.html".
