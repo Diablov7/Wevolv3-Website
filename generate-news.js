@@ -97,10 +97,6 @@ ${opts.jsonLd ? opts.jsonLd.map(j => '    <script type="application/ld+json">\n'
       gtag('js', new Date());
       gtag('config', 'G-E7E4GJ0QP9');
     </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
     <link href="/css/layout.css" rel="stylesheet" type="text/css" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
@@ -120,7 +116,7 @@ ${opts.jsonLd ? opts.jsonLd.map(j => '    <script type="application/ld+json">\n'
                 <div class="logo-wrapper">
                     <a href="/index.html" class="logo w-inline-block">
                         <img src="/images/LOGO.PNG?v=4" alt="Wevolv3" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                        <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Orbitron', monospace; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
+                        <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Clashdisplay', sans-serif; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
                     </a>
                 </div>
                 <a href="/contact.html" class="lets-talk-btn">LET'S TALK</a>

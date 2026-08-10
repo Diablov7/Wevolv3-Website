@@ -54,13 +54,19 @@
       gtag('config', 'G-E7E4GJ0QP9');
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link href="images/favicon.png" rel="shortcut icon" type="image/png" />
 
-    <style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Clashdisplay: esta pagina e autonoma e nao carrega o CSS do site */
+@font-face { font-family:'Clashdisplay'; src:url('/fonts/ClashDisplay-Regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Clashdisplay'; src:url('/fonts/ClashDisplay-Medium.otf') format('opentype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Clashdisplay'; src:url('/fonts/ClashDisplay-Semibold.otf') format('opentype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Clashdisplay'; src:url('/fonts/ClashDisplay-Bold.otf') format('opentype'); font-weight:700; font-style:normal; font-display:swap; }
+</style>
+<style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
             background: #000;
@@ -80,16 +86,16 @@
             max-width: 1100px; margin: 0 auto;
         }
         .brand {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800; font-size: 20px; letter-spacing: 0.04em;
+            font-family: 'Clashdisplay', sans-serif;
+            font-weight: 700; font-size: 20px; letter-spacing: 0.04em;
             color: #fff;
         }
         .brand span { color: #10b981; }
         nav a { margin-left: 24px; color: #ccc; font-size: 14px; }
 
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
+            font-family: 'Clashdisplay', sans-serif;
+            font-weight: 700;
             font-size: clamp(28px, 5vw, 44px);
             line-height: 1.15;
             margin-bottom: 16px;
@@ -99,13 +105,13 @@
         .lede { color: #aaa; font-size: 17px; max-width: 760px; margin-bottom: 40px; }
 
         h2 {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Clashdisplay', sans-serif;
             font-weight: 700;
             font-size: 22px;
             margin: 48px 0 16px;
             color: #fff;
         }
-        h3 { font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 16px; margin-top: 24px; margin-bottom: 8px; color: #10b981; letter-spacing: 0.02em; text-transform: uppercase; }
+        h3 { font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 16px; margin-top: 24px; margin-bottom: 8px; color: #10b981; letter-spacing: 0.02em; text-transform: uppercase; }
         p { margin-bottom: 14px; color: #ccc; }
 
         .grid {
@@ -162,7 +168,7 @@
         .metric:last-child { border-bottom: 0; }
         .metric-label { color: #9aa19d; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
         .metric-value {
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Clashdisplay', sans-serif;
             font-weight: 700;
             font-size: 22px;
             color: #fff;
@@ -176,8 +182,8 @@
             padding: 8px 0;
             font-size: 13px;
         }
-        .layer .lname { color: #10b981; font-weight: 600; font-family: 'Orbitron', sans-serif; letter-spacing: 0.04em; }
-        .layer .lval { font-family: 'Orbitron', sans-serif; color: #fff; font-weight: 600; }
+        .layer .lname { color: #10b981; font-weight: 600; font-family: 'Clashdisplay', sans-serif; letter-spacing: 0.04em; }
+        .layer .lval { font-family: 'Clashdisplay', sans-serif; color: #fff; font-weight: 600; }
 
         .share {
             margin-top: 32px;
@@ -192,7 +198,7 @@
             border: 0;
             padding: 10px 18px;
             border-radius: 8px;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Clashdisplay', sans-serif;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
@@ -217,7 +223,7 @@
             padding: 14px 28px;
             background: #10b981;
             color: #000;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Clashdisplay', sans-serif;
             font-weight: 700;
             font-size: 14px;
             border-radius: 8px;
@@ -356,7 +362,7 @@
         </div>
 
         <div class="share">
-            <strong style="display:block;margin-bottom:10px;font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:#10b981;">Share / Save these numbers</strong>
+            <strong style="display:block;margin-bottom:10px;font-family:'Clashdisplay', sans-serif;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;color:#10b981;">Share / Save these numbers</strong>
             <button onclick="copyShareURL()">Copy share URL</button>
             <button class="secondary" onclick="resetInputs()">Reset defaults</button>
             <span id="copyNote" style="color:#10b981;margin-left:12px;font-size:13px;"></span>

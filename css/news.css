@@ -244,7 +244,7 @@
 .cnt-tldr { margin: 6px 0 34px; }
 .cnt-tldr ul { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 11px; max-width: 760px; }
 .cnt-tldr li { color: var(--white); font-family: Clashdisplay, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.5; }
-.cnt-tldr-cat { display: inline-block; font-family: Orbitron, monospace; font-weight: 600; font-size: 10.5px; letter-spacing: .1em; color: var(--default); margin-right: 9px; text-transform: uppercase; vertical-align: middle; }
+.cnt-tldr-cat { display: inline-block; font-family: 'Clashdisplay', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: .1em; color: var(--default); margin-right: 9px; text-transform: uppercase; vertical-align: middle; }
 .cnt-published { color: #8a8a8a; font-family: Clashdisplay, sans-serif; font-weight: 300; font-size: 13px; margin: 12px 0 0; }
 .cnt-published time { color: #b7b7b7; }
 .cnt-tool { margin-top: 30px; padding: 20px 22px; border: 1px solid var(--border-color); border-radius: 10px; background: #0c0c0c; }
