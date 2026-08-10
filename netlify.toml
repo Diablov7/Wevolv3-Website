@@ -1,7 +1,7 @@
 # Site estático - Gera páginas de news + sitemap durante o build
 [build]
   publish = "."
-  command = "node generate-news.js && node generate-sitemap.js || echo 'Static generation skipped (Node.js not available)'"
+  command = "(node generate-news.js && node generate-sitemap.js) || echo 'Static generation skipped (Node.js not available)'; node strip-internal.js"
   functions = "netlify/functions"
 
 # Headers de seguranca aplicados a TODAS as rotas, incluindo as dinamicas
