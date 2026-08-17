@@ -1,0 +1,51 @@
+{
+  "date": "2026-08-17",
+  "dateLabel": "AUG 17, 2026",
+  "hook": "Trump reúne CEOs cripto e reguladores na Casa Branca",
+  "video": {
+    "url": "https://uploads.postiz.com/7WAijKaRZE.mp4",
+    "poster": ""
+  },
+  "stories": [
+    {
+      "cat": "REGULACAO",
+      "text": "Trump reúne CEOs de cripto e reguladores na Casa Branca",
+      "em": "Casa Branca",
+      "summary": "O presidente Trump participa de reunião na Casa Branca com executivos de cripto e reguladores no dia 19 de agosto.",
+      "url": "https://coindcx.com/blog/crypto-news-global/trump-to-meet-crypto-ceos-and-regulators-at-white-house/",
+      "source": "coindcx.com"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "Binance entregou à Rússia provas de doações cripto",
+      "em": "Binance",
+      "summary": "A Binance forneceu às autoridades russas evidências de doações em criptomoedas de Yuri Belenkiy para acusações de financiamento ao terrorismo.",
+      "url": "https://newscord.org/article/binance-handed-russian-authorities-yuri-belenkiys-crypto-donations-evidence-for--Story_20260817_BinancegaveRussianau02d376eb",
+      "source": "NewsCord"
+    },
+    {
+      "cat": "BITCOIN",
+      "text": "JPMorgan agora aceita Bitcoin e Ethereum como colateral em empréstimos",
+      "em": "JPMorgan",
+      "summary": "O banco JPMorgan expande o uso de cripto ao permitir que clientes usem Bitcoin e Ethereum como garantia em operações de crédito.",
+      "url": "https://bitcoinfoundation.org/news/bitcoin/jpmorgan-opens-bitcoin-backed-lending-as-wall-street-pushes-deeper-into-crypto/",
+      "source": "Bitcoin Foundation"
+    },
+    {
+      "cat": "REGULACAO",
+      "text": "BitPanda multada em 70 mil euros na primeira penalidade MiCA da Áustria",
+      "em": "70 mil euros",
+      "summary": "A exchange BitPanda foi multada em 70 mil euros pela primeira aplicação do regulamento MiCA na Áustria, sinalizando maior fiscalização na UE.",
+      "url": "https://bitcoinke.io/2026/08/bitpanda-fined-in-austria/",
+      "source": "BitKE"
+    },
+    {
+      "cat": "SOLANA",
+      "text": "Solana lança Alpenglow com finalidade de 150 milissegundos",
+      "em": "Alpenglow",
+      "summary": "O upgrade Alpenglow da Solana promete finalidade de 100 a 150 milissegundos e votação off-chain, melhorando a escalabilidade da rede.",
+      "url": "https://www.altcoinbuzz.io/solana-alpenglow-upgrade",
+      "source": "Altcoin Buzz"
+    }
+  ]
+}
