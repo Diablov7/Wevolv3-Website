@@ -78,14 +78,43 @@ trade-off fica mensurável.
   operation". O dado está íntegro e o site renderiza, mas **editar o corpo desse artigo pelo
   Studio é arriscado** até o schema incluir `htmlTable`. Editar título e resumo é seguro.
 - **H1 do corpo divergiu do título** em `web-three-attribution-tool`: o corpo abre com um H1
-  escrito "Choosing the Best Web3 Attribution Tool for 2026", que é o título antigo. Fora do
-  escopo aprovado (snippet, não corpo), mas vale alinhar.
+  escrito "Choosing the Best Web3 Attribution Tool for 2026", que é o título antigo.
+  **RESOLVIDO no mesmo dia** — ver a seção "H1 duplicado" logo abaixo.
 
 **Como medir, e como NÃO medir:** o Google leva de dias a semanas para atualizar snippet, e
 esta série já registrou **três backfills** que reescrevem a mesma janela retroativamente
 (14/08, 15/08 e 20/08). Ler CTR amanhã não diz nada. O sinal válido é o CTR das consultas do
 cluster de ferramentas em 1 a 2 semanas, contra a linha de base de hoje: **5 cliques / 410
 impressões / CTR 1,2% / posição 35,2**.
+
+## 2026-08-20 — ação executada: H1 duplicado em `web-three-attribution-tool` (RESOLVIDO)
+
+Pendência aberta na reescrita dos snippets do mesmo dia. O corpo do artigo começava com um
+bloco de estilo `h1` escrito "Choosing the Best Web3 Attribution Tool for 2026 Success", que
+era o **título antigo**, agora divergente do novo.
+
+**Por que remover o bloco e não renomear:** o shell já emite o H1 a partir do campo `title`
+do Sanity (`singleblog.html:373` cria `<h1 id="post-title">`, `:1153` preenche com
+`post.title`). O bloco do corpo virava um **segundo** `<h1>` na mesma página. Renomear
+manteria os dois H1, só que com texto igual, o que não corrige nada. Confirmado ao vivo antes
+do fix: `document.querySelectorAll('h1').length` retornava **2**.
+
+**Feito:** bloco `h1` do corpo removido pelo Studio, junto com a linha vazia que vinha depois.
+Verificado pela API do Sanity após publicar: **66 blocos** (eram 68), **zero** blocos de
+estilo `h1`, corpo agora abrindo no H2 "The Real Challenge of Attribution in Web3". Resto do
+artigo intacto. Verificado ao vivo: **1 H1**, com o texto do título novo.
+
+**Varredura preventiva:** query em todos os posts procurando `body[0].style == "h1"` retornou
+**1 documento**, o próprio. **Não é problema sistêmico** do pipeline do Sanity, os outros 33
+posts estão limpos. Não há o que varrer de novo.
+
+**Armadilha de verificação, registrar para não repetir:** depois de publicar, a página seguiu
+mostrando 2 H1 por vários minutos, **mesmo com `location.reload(true)` e com query string
+nova na URL da página**. Não era cache da CDN do Sanity: consultados na mão, `apicdn` e `api`
+já devolviam o dado limpo (66 blocos / 0 h1). Era **cache HTTP do navegador na chamada da
+API**, cuja URL não muda quando se troca a query string da página. Só uma **aba nova**
+mostrou o estado real. Ao validar mudança de conteúdo vindo do Sanity, conferir pela API
+primeiro e abrir aba nova depois; não confiar em reload.
 
 ## 2026-08-05 — ação executada: lote de Inspeção de URL (15 URLs, sem estourar cota)
 
