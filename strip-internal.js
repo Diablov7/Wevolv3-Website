@@ -31,6 +31,7 @@ const NAMES = new Set([
   "generate-sitemap.js",
   "generate-llms-full.js",
   "sync-news.js",
+  "inject-analytics.js",
   "license",
 ]);
 

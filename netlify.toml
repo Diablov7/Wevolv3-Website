@@ -1,7 +1,7 @@
 # Site estático - Gera páginas de news + sitemap durante o build
 [build]
   publish = "."
-  command = "(node generate-news.js && node generate-sitemap.js) || echo 'Static generation skipped (Node.js not available)'; node strip-internal.js"
+  command = "(node generate-news.js && node generate-sitemap.js) || echo 'Static generation skipped (Node.js not available)'; node inject-analytics.js && node strip-internal.js"
   functions = "netlify/functions"
 
 
@@ -273,6 +273,12 @@
 
 [[redirects]]
   from = "/deno.lock"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/inject-analytics.js"
   to = "/404.html"
   status = 404
   force = true
