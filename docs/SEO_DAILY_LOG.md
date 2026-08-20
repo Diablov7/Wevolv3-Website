@@ -25,6 +25,68 @@ GSC = janela de 28 dias do Search Console. GA4 = últimos 28 dias, aquisição d
 | 2026-08-19 | n/d | n/d | n/d | n/d | n/d | n/d | 173 | 76,88% | 11,56% | 5,20% | **Leitura parcial: só GA4. Nenhum Chrome pareado na extensão (`list_connected_browsers` voltou vazio nas duas tentativas), então GSC, Bing e Platform Properties não foram lidos hoje** — o GA4 saiu pela API (MCP `analytics-mcp`), que não depende do navegador. **1) WATCH DO UNASSIGNED: fechado de vez.** GA4 (22/07–18/08, 173 sessões): Unassigned em **8 sessões (4,62%)**, abaixo do gatilho de 5% pelo 2º dia, e a série diária mostra **zero sessão sem origem desde 15/08** (16, 17 e 18/08 não aparecem no relatório) — a última foi 15/08 com 2. Os eventos principais do site inteiro caíram de **34 para 3** (1 Direct, 1 Unassigned, 1 Organic Video): o bloco fantasma de 30 eventos pré-fix saiu inteiro da janela, como previsto para ~26/08, e antes do prazo. O `track.ts` não voltou. **2) Organic Search consolidou o patamar novo**: 9 sessões (5,20%), contra 10 ontem e 1,29% do baseline — a variação é ruído, o nível é 4x o baseline e é o 3º dia seguido acima de 5%. Dias com tráfego orgânico agora são rotina (17/08: 2, 16/08: 3, 13/08: 1, 12/08: 2), não evento isolado. **3) Organic Social estável em 20 sessões (11,56%)** vs 20 ontem: o ALERTA de queda estrutural aberto em 13/08 **segue suspenso** pelo 3º dia. Qualidade do canal continua sendo a melhor da casa: 40% de engajamento e **456s de sessão média**, contra 37s do Direct. **4) Direct em 76,88%, acima do baseline (74,28%)** e do valor de ontem (76,0%) — mas é o mesmo artefato já diagnosticado: os dois picos dentro da janela (07/08 com 15 sessões, 10/08 com 9) inflam o canal em %, enquanto Social e Search não caíram em absoluto. Não é volta do bug de atribuição. Canais residuais: AI Assistant 1 sessão (100% engaj., 2º dia da série), Organic Video 1 (100% engaj., 613s, **e 1 evento principal** — a conversão de melhor qualidade do período), Referral 1. **5) A recomendação de ontem foi executada e está em produção.** O commit **`298d86e`** ("seo: link growth-partner-vs-agency internally and sync blog index") resolveu o post órfão exatamente na tabela de âncoras do rascunho: verificado por grep, o link existe agora em `index.html` (2x), `about`, `community-building`, `crypto-kol-marketing`, `growth-hacking`, `token-launch-marketing` e no índice do `blog.html`. Confirmado em produção por HTTP: home 200 com 2 links para o post, `blog.html` 200 com **34 posts** (era 31) e o post novo presente, `/blog/growth-partner-vs-agency` 200. **A causa-raiz que travou os 49 "detectada, mas não indexada" em julho não se repetiu neste post.** Falta só submeter por Inspeção de URL, que depende da extensão do Chrome. **6) Trabalho novo de aquisição apareceu no repo** (não medido ainda): PostHog instalado na home (commits `d9aaae5` + `a8a792a` com o fix de CSP) e três documentos de submissão a diretórios (`DIRECTORY_SUBMISSIONS_PLAYBOOK.md`, `DIRECTORY_SUBMISSIONS_LOG.md`, `SEO_DIRECTORIES.md`, ainda não commitados) — diretórios atacam justamente os 3 domínios referenciadores, que são o gargalo diagnosticado em 13/08. **Recomendação do dia: parear o Chrome antes da próxima execução** (é o que bloqueou GSC/Bing hoje e já falhou em 15, 16 e 18/08 — 4 das 5 últimas rodadas) e, na volta, submeter `/blog/growth-partner-vs-agency` por Inspeção de URL. Com a linkagem interna feita e as 279 impressões de 18/08 mostrando demanda comercial real, o próximo gargalo é autoridade externa: executar o playbook de diretórios é a alavanca de maior impacto agora. |
 | 2026-08-20 | 5 | 410 | 1,2% | 35,2 | 53 | 40 | 173 | 76,88% | 11,56% | 5,20% | **Melhorando forte nos dois gargalos ao mesmo tempo: indexação e autoridade externa. Primeira rodada completa desde 16/08.** Causa da série de leituras parciais **identificada pelo Rômulo e corrigida na skill**: o Chrome abria em `romulololico@gmail.com`, e tudo está em `diablov2021@gmail.com`. Eu vinha tratando como índice `authuser` instável e varrendo `u/0..u/3`, o que nunca poderia funcionar: nenhum `authuser` alcança conta que não está logada no perfil. Com o perfil certo, GSC abriu de primeira. Bing exigiu login manual do Rômulo (sessão não autenticada; login não é ação minha). **1) Indexação destravou de novo: 46/45 → 53 indexadas / 40 não indexadas**, +7 em dois dias. Cartão HTTPS 42 URLs; vídeo segue 1 não indexada / 0 indexada; 54 indicadores de localização válidos. **2) GSC 28d (21/07–17/08): 5 cliques, 410 impressões, CTR 1,2%, posição 35,2.** As mesmas 279 impressões lidas em 18/08, **na janela idêntica**, viraram 410: terceiro episódio de backfill da série (os outros em 14 e 15/08), então a janela do GSC não é estável por vários dias e comparação dia a dia sem reler a mesma janela engana. Cliques 6→5 na mesma janela é revisão do Google, não perda. Consultas visíveis 64→73. **3) O top 10 virou 100% não-marca e o cluster de ferramentas web3 assumiu:** "defi marketing agency" (18 impr.), a consulta comparativa de modelo de trabalho (15, 7º dia como principal), "web3 crm" (12), "top web3 analytics and attribution tools for defi growth" (11), "web3 messaging tool market" (11), "token launch marketing" (10), "marketing analytics platforms for web3 growth teams" (8), "spindl alternatives for defi attribution" (7), "web3 crm solution" (5), "web3 customer engagement solution" (5). **Zero clique nas dez.** 410 impressões para 5 cliques é o gargalo inteiro num número: o site aparece e não é clicado, porque está na posição 35. O GSC ainda sinalizou sozinho que `/blog/web-three-marketing-tools` teve mais impressões que o normal, coerente com o cluster. **4) BACKLINKS SAÍRAM DO ZERO: 14 links externos de 5 domínios** no relatório Links do GSC (`goodfirms.co` 4, `t.me` 3, `wekolnect.com` 2, `crunchbase.com` 1, `edverise.com` 1), todos apontando para a home. Autoridade externa era o gargalo diagnosticado em 13/08, e goodfirms + crunchbase aparecendo indica que **o playbook de diretórios está convertendo**. Links internos: 159, com `/blog` (39), `/` (21) e `/disclaimer` (19) no topo. **Atenção metodológica:** a referência antiga de "3 domínios" vinha do **Bing**, não do GSC, então 3→14 **não é comparação válida**; o correto daqui pra frente é acompanhar as duas fontes separadas. **5) Bing parado e defasado:** Search Performance com **11 impressões / 0 clique**, mesmo total desde 13/08, com a última impressão em 11/08 (9 em 31/07, 1 em 05/08, 1 em 11/08) — 9 dias sem veicular. Backlinks do Bing **idênticos há 7 dias: 3 domínios / 3 páginas / 3 anchors** (`cbinsights.com`, `findglocal.com`, `x.com`). Ou seja, o Google já enxerga os links de diretório e o Bing ainda não rastreou — divergência esperada, mas registra que o Bing está atrasado, não que os links não existem. AI Performance (citações em Copilot): **0 citações / 0 páginas citadas**, parado desde 05/08. Recomendação do próprio Bing que vale registrar: **meta descriptions curtas demais em muitas páginas** — com CTR de 1,2%, isso deixou de ser cosmético. **6) Platform Properties: Instagram dobrou, 1 → 2 cliques** (08/08 e um novo em 16/08), sendo 1 de Pesquisa na web e 1 de Pesquisa de vídeos, ainda concentrado no Reel da carta falsa da Ledger, Portugal >99%. X segue em **1 clique** (01/08, Canadá, no perfil e não num post). TikTok **0**, sem nenhum clique desde 30/07. **Recomendação do dia: parar de perseguir posição e atacar CTR.** As dez maiores consultas são comerciais, específicas e já entregam 410 impressões, mas rendem zero clique. Subir da posição 35 depende de autoridade, que agora está crescendo sozinha via diretórios. O que dá pra mover esta semana é o snippet: reescrever title e meta description das páginas que casam com o cluster de ferramentas (`web-three-crm`, `web-three-attribution-tool`, `crypto-marketing-stack`, `web-three-marketing-tools`, `defi-marketing`), que é exatamente o que o Bing apontou de forma independente. **Ação executada hoje:** `/blog/growth-partner-vs-agency` **submetido por Inspeção de URL**, com "Indexação solicitada" confirmada (fila de rastreamento prioritário). Estado antes: "Detectada, mas não indexada no momento". **Detalhe que fecha a hipótese de 18/08:** a inspeção mostra **Página de referência: `/blog/the-silent-collapse-of-web3-communities`** — ou seja, o Google chegou ao post por um link interno, não só pelo sitemap. A linkagem do commit `298d86e` pegou, e o post deixou de ser órfão de fato, não só no HTML. **Pendência que segue aberta:** o check de 24h do PostHog fora da home (a tentativa de hoje teve só 13 min de janela pós-deploy). |
 
+## 2026-08-20 — ação executada: reescrita dos snippets das 5 páginas do cluster comercial
+
+Executado depois da leitura do dia, seguindo a recomendação dela. **Motivo:** 410 impressões
+para 5 cliques, CTR 1,2%, posição 35,2, com as dez maiores consultas 100% não-marca e
+**zero clique em todas**. Subir da posição 35 depende de autoridade, que já está crescendo
+sozinha via diretórios; o snippet é o que dava para mover na mesma semana. O Bing apontou o
+mesmo problema de forma independente ("meta descriptions on many pages are too short").
+
+**Descoberta que mudou a execução:** os quatro posts **não moram no repo**. A edge function
+`inject-og-tags` monta `<title>` a partir do campo `title` do Sanity e a meta description a
+partir do `excerpt`, cortado em 160 caracteres. Editar HTML não teria efeito nenhum. E mudar
+o `title` no Sanity **também muda o headline visível do artigo** e o texto do índice do blog,
+então não é edição invisível. Não há token de escrita no repo (só query pública read-only),
+então os quatro foram aplicados pelo Studio (`/studio`), autenticado pela conta `diablov2021`.
+
+**Antes e depois (verificado por HTTP em produção):**
+
+| página | title antes | title depois | desc antes | desc depois |
+|---|---|---|---|---|
+| `web-three-crm` | 82 (truncado no SERP) | 54 | 147 | 152 |
+| `web-three-attribution-tool` | 71 | 55 | 144 | 152 |
+| `crypto-marketing-stack` | 66 | 61 | 125 | 148 |
+| `web-three-marketing-tools` | 70 | 51 | 153 | 146 |
+| `defi-marketing` | 24 | 47 | 153 | 152 |
+
+**Três correções de fundo, além do tamanho:**
+
+1. **`Contact us at wevolv3.com/contact.` removido de três descriptions.** Gastava ~40
+   caracteres do espaço mais valioso do snippet. Ninguém clica num resultado porque tem uma
+   URL na descrição.
+2. **Ano errado em produção:** a description de `web-three-marketing-tools` dizia "shaping
+   **2025** strategies" em pleno agosto de 2026. É a página que o próprio GSC sinalizou com
+   pico de impressões. Snippet com ano vencido derruba clique sozinho.
+3. **`defi-marketing` tinha título de 24 caracteres** ("DeFi Marketing | Wevolv3"), gastando
+   o slot inteiro no nome da página. `og:title` e `twitter:title` sincronizados junto.
+
+**Restrição registrada:** a maior consulta do site (18 impressões) contém a palavra banida
+por regra global. Foi alvejada pela intenção ("Services for Protocols", que captura quem
+procura fornecedor) e **não pela correspondência exata**. Isso custa match e é uma escolha
+deliberada, não um descuido. Se essa página seguir com zero clique em duas semanas, o
+trade-off fica mensurável.
+
+**Integridade do conteúdo verificada depois de publicar** (query direta na API do Sanity):
+`web-three-crm` 27 blocos, `web-three-attribution-tool` 68, `crypto-marketing-stack` 40
+**com o bloco `htmlTable` preservado**, `web-three-marketing-tools` 57. Nada foi perdido.
+
+**Dois achados colaterais, não corrigidos:**
+
+- **O Studio não reconhece o tipo `htmlTable` no schema.** Ao abrir `crypto-marketing-stack`
+  ele mostra "Invalid Portable Text value" e um `Uncaught error: cannot apply an insert_node
+  operation". O dado está íntegro e o site renderiza, mas **editar o corpo desse artigo pelo
+  Studio é arriscado** até o schema incluir `htmlTable`. Editar título e resumo é seguro.
+- **H1 do corpo divergiu do título** em `web-three-attribution-tool`: o corpo abre com um H1
+  escrito "Choosing the Best Web3 Attribution Tool for 2026", que é o título antigo. Fora do
+  escopo aprovado (snippet, não corpo), mas vale alinhar.
+
+**Como medir, e como NÃO medir:** o Google leva de dias a semanas para atualizar snippet, e
+esta série já registrou **três backfills** que reescrevem a mesma janela retroativamente
+(14/08, 15/08 e 20/08). Ler CTR amanhã não diz nada. O sinal válido é o CTR das consultas do
+cluster de ferramentas em 1 a 2 semanas, contra a linha de base de hoje: **5 cliques / 410
+impressões / CTR 1,2% / posição 35,2**.
+
 ## 2026-08-05 — ação executada: lote de Inspeção de URL (15 URLs, sem estourar cota)
 
 Executado depois da leitura do dia, seguindo o plano combinado em 04/08. **A cota não estourou** —
