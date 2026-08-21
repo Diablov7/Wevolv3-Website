@@ -23,6 +23,7 @@ const staticPages = [
   { url: '/works.html', priority: '0.9', changefreq: 'weekly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/blog.html', priority: '0.9', changefreq: 'daily', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/contact.html', priority: '0.7', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+    { url: '/linktree/', priority: '0.6', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/crypto-exchange-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/token-launch-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/defi-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
