@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Wevolv3 Links</title>
+<meta name="description" content="Every Wevolv3 channel in one place: the site, the Telegram, WeKOLnect, X, LinkedIn and the builders catalog.">
+<!-- A hub reached from bios, not from search: it passes equity to the pages
+     that should rank, without adding a thin page to the index. -->
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://wevolv3.com/linktree/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wevolv3">
+<meta property="og:title" content="Wevolv3 Links">
+<meta property="og:description" content="Every Wevolv3 channel in one place.">
+<meta property="og:url" content="https://wevolv3.com/linktree/">
+<meta property="og:image" content="https://wevolv3.com/linktree/poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wevolv3_media">
+<link rel="preload" href="/fonts/ClashDisplay-Semibold.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="/fonts/ClashDisplay-Extralight.otf" as="font" type="font/otf" crossorigin>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-E7E4GJ0QP9');
+</script>
+
+<style>
+/* ============================================================
+   Wevolv3 · link hub
+   Built on wevolv3.com's own system, values measured off css/style.css and
+   the live page rather than eyeballed:
+     --border-color #292929 · panels #191919 · --default #10b981 · black ground
+     .main-title        80/50, w600, uppercase, emerald bottom rule
+     .the-path-card     #191919, radius 5, padding 20
+     .the-path-number   1px #292929 on #191919, radius 4, padding 7
+     .the-path-card-title  40/30, w200, uppercase, white
+     .the-path-card-text   16/24, w300, white
+   ClashDisplay ships at 200/400/600: the light weight is the site's signature
+   and no browser will synthesise it, so the Extralight file is embedded.
+   ============================================================ */
+
+@font-face{font-family:"ClashDisplay";src:url("/fonts/ClashDisplay-Extralight.otf") format("opentype");font-weight:200;font-style:normal;font-display:swap;}
+@font-face{font-family:"ClashDisplay";src:url("/fonts/ClashDisplay-Regular.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:"ClashDisplay";src:url("/fonts/ClashDisplay-Semibold.otf") format("opentype");font-weight:600;font-style:normal;font-display:swap;}
+
+:root{
+  --black:#000;
+  --surface:#191919;
+  --border:#292929;
+  --emerald:#10b981;
+  --white:#fff;
+  --body:#c8c8c8;
+  --muted:#8a8a8a;
+  --on-emerald:#04120c;
+  --tone-blue:#3b82f6;
+  --tone-dark:#191919;
+  --display:"ClashDisplay",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+*{box-sizing:border-box;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms !important;animation:none !important;}}
+
+a,button{-webkit-tap-highlight-color:rgba(16,185,129,.2);}
+::selection{background:var(--emerald);color:var(--on-emerald);}
+html{scrollbar-width:thin;scrollbar-color:#3a3a3a transparent;}
+::-webkit-scrollbar{width:11px;height:11px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#3a3a3a;border:3px solid transparent;background-clip:content-box;}
+::-webkit-scrollbar-thumb:hover{background:#4a4a4a;background-clip:content-box;}
+
+body{
+  margin:0;min-height:100dvh;background:var(--black);color:var(--body);
+  font-family:var(--display);font-weight:400;-webkit-font-smoothing:antialiased;
+  padding:calc(clamp(34px,9vw,72px) + env(safe-area-inset-top))
+          calc(clamp(20px,5vw,28px) + env(safe-area-inset-right))
+          calc(clamp(48px,11vw,80px) + env(safe-area-inset-bottom))
+          calc(clamp(20px,5vw,28px) + env(safe-area-inset-left));
+  display:flex;justify-content:center;
+}
+.wrap{width:100%;max-width:760px;text-align:center;}
+
+/* ---------- masthead ---------- */
+.lockup{display:flex;align-items:center;justify-content:center;gap:12px;
+  margin-bottom:clamp(18px,4.6vw,24px);}
+.lockup img{width:clamp(32px,7.5vw,38px);height:clamp(32px,7.5vw,38px);object-fit:contain;display:block;}
+.lockup span{
+  font-size:clamp(10px,2.6vw,11px);font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);line-height:1.4;
+}
+h1{
+  margin:0;
+  font-weight:600;text-transform:uppercase;
+  font-size:clamp(46px,13.5vw,80px);
+  line-height:.72;letter-spacing:-.01em;color:var(--white);
+}
+.intro{
+  margin:clamp(20px,5vw,26px) auto 0;max-width:52ch;
+  font-weight:300;font-size:clamp(15px,3.9vw,17px);line-height:1.7;color:var(--body);
+}
+.since{
+  margin:13px 0 0;font-size:clamp(12.5px,3.2vw,13.5px);
+  font-weight:400;letter-spacing:.02em;color:var(--muted);
+}
+.cta{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-top:clamp(24px,6vw,30px);
+  background:var(--emerald);color:var(--on-emerald);
+  font-family:var(--display);font-weight:700;font-size:clamp(13px,3.4vw,14px);
+  letter-spacing:.02em;text-transform:uppercase;text-decoration:none;
+  padding:13px 26px;border-radius:6px;
+  transition:background .2s ease,transform .2s ease;
+}
+.cta svg{width:16px;height:16px;display:block;}
+.cta:hover,.cta:focus-visible{background:#0ea371;transform:translateY(-1px);}
+.cta:focus-visible{outline:2px solid var(--white);outline-offset:3px;}
+
+/* ---------- proof ----------
+   .hero-partners, verbatim: hairline above and below, 15px inset, a nowrap
+   row that runs. The list is duplicated so the loop closes on -50%. */
+.proof{
+  margin-top:clamp(30px,7vw,42px);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:15px 0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+}
+.proof-track{
+  display:flex;align-items:center;width:max-content;
+  animation:marquee 38s linear infinite;
+}
+.proof-track img{
+  display:block;width:clamp(126px,32vw,158px);height:auto;
+  margin-right:clamp(26px,6.5vw,40px);opacity:.9;
+}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion:reduce){.proof-track{animation:none;}}
+
+/* ---------- cards ----------
+   Two up once there is room for a 40px title to sit on one line. */
+.cards{
+  margin-top:clamp(34px,8vw,48px);
+  display:grid;grid-template-columns:1fr;gap:clamp(12px,3vw,16px);
+}
+@media (min-width:600px){.cards{grid-template-columns:repeat(2,1fr);}}
+.card{
+  --ink:var(--white);
+  display:flex;flex-flow:column;align-items:center;
+  background:var(--tone-dark);border-radius:5px;padding:20px;
+  text-decoration:none;border:1px solid var(--border);
+  transition:border-color .22s ease,transform .22s ease,box-shadow .22s ease;
+}
+/* One column: straight alternation. */
+.card:nth-child(odd){background:var(--tone-dark);}
+.card:nth-child(even){background:var(--tone-blue);--ink:var(--on-emerald);}
+/* Two columns: a checkerboard, because straight alternation would turn each
+   column into a solid stripe of one colour instead of a rhythm. */
+@media (min-width:600px){
+  .card:nth-child(4n+1),.card:nth-child(4n+4){background:var(--tone-dark);--ink:var(--white);}
+  .card:nth-child(4n+2),.card:nth-child(4n+3){background:var(--tone-blue);--ink:var(--on-emerald);}
+}
+.card:hover,.card:focus-visible{
+  border-color:rgba(255,255,255,.55);transform:translateY(-2px);
+  box-shadow:0 10px 26px rgba(0,0,0,.5);
+}
+.card:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;}
+/* .the-path-number is inline-block at width auto; it only reads full width on
+   the site because it is a stretched flex item */
+.chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;margin-bottom:20px;
+  border:1px solid var(--border);background:var(--tone-dark);border-radius:4px;
+  color:var(--emerald);transition:border-color .22s ease;
+}
+.card:hover .chip,.card:focus-visible .chip{border-color:var(--emerald);}
+.chip svg{width:20px;height:20px;display:block;}
+.card-title{
+  display:block;text-transform:uppercase;font-weight:200;
+  font-size:clamp(24px,6vw,32px);line-height:.8;letter-spacing:0;
+  color:var(--ink);margin-bottom:14px;
+}
+.card-text{
+  display:block;font-weight:300;
+  font-size:clamp(13.5px,3.5vw,15px);line-height:1.5;color:var(--ink);
+}
+
+/* ---------- film ----------
+   .service-img is the one thing the site rounds further, at 10px. */
+.film{position:relative;margin-top:clamp(24px,6vw,32px);border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);background:#000;}
+.film video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;}
+.film iframe{position:absolute;inset:0;z-index:4;width:100%;height:100%;border:0;display:block;}
+.cover{
+  position:absolute;inset:0;z-index:5;cursor:pointer;
+  margin:0;padding:0;border:0;background:transparent;-webkit-appearance:none;appearance:none;
+  transition:opacity .3s ease;
+}
+.cover:focus-visible{outline:2px solid var(--emerald);outline-offset:-4px;}
+.play{
+  position:absolute;right:clamp(12px,3.2vw,16px);bottom:clamp(12px,3.2vw,16px);
+  width:clamp(48px,12vw,56px);height:clamp(48px,12vw,56px);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--emerald);color:var(--on-emerald);
+  transition:transform .24s ease,background .24s ease;
+}
+.cover:hover .play,.cover:focus-visible .play{transform:scale(1.07);background:#0ea371;}
+/* the triangle's bounding box sits right of the viewBox centre; transform, not
+   margin, because the button is a centred flex box */
+.play svg{width:20px;height:20px;display:block;transform:translateX(-1.5px);}
+.time{
+  position:absolute;right:clamp(10px,2.8vw,12px);top:clamp(10px,2.8vw,12px);
+  padding:4px 8px;border:1px solid var(--border);background:rgba(0,0,0,.72);
+  border-radius:4px;color:var(--white);
+  font-size:11px;font-weight:400;letter-spacing:.04em;font-variant-numeric:tabular-nums;
+}
+
+/* ---------- foot ---------- */
+.foot{
+  margin:clamp(34px,8vw,46px) 0 0;padding-top:clamp(18px,4.6vw,22px);
+  border-top:1px solid var(--border);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;
+  font-size:clamp(12.5px,3.2vw,13.5px);
+}
+.foot a{position:relative;color:var(--muted);text-decoration:none;
+  border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease;}
+.foot a:hover,.foot a:focus-visible{color:var(--emerald);border-bottom-color:var(--emerald);}
+.foot a::after{content:"";position:absolute;left:-10px;right:-10px;top:-14px;bottom:-14px;}
+
+@media (prefers-reduced-motion:no-preference){
+  .lockup,h1,.intro,.since,.cta,.proof,.card,.film,.foot{
+    animation:arrive .8s cubic-bezier(.16,1,.3,1) backwards;
+  }
+  h1{animation-delay:.06s}
+  .intro{animation-delay:.12s}
+  .since{animation-delay:.16s}
+  .cta{animation-delay:.2s}
+  .proof{animation-delay:.24s}
+  .card:nth-child(1){animation-delay:.3s}
+  .card:nth-child(2){animation-delay:.31s}
+  .card:nth-child(3){animation-delay:.36s}
+  .card:nth-child(4){animation-delay:.41s}
+  .card:nth-child(5){animation-delay:.46s}
+  .card:nth-child(6){animation-delay:.51s}
+  .film{animation-delay:.57s}
+  .foot{animation-delay:.63s}
+}
+@keyframes arrive{from{opacity:0;transform:translateY(14px);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="lockup">
+    <img src="mark.png" alt="">
+    <span>Web3 &amp; crypto marketing</span>
+  </div>
+
+  <h1>Wevolv3</h1>
+
+  <p class="intro">Web3 growth partner. We build the growth that stays after the incentives stop.</p>
+  <p class="since">200+ crypto projects since 2020</p>
+
+  <a class="cta" href="https://wevolv3.com/contact.html">Let's talk
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg>
+  </a>
+
+  <div class="proof" aria-label="Media coverage">
+    <div class="proof-track">
+      <img src="/images/forbes-media-partner.png" alt="Forbes" width="500" height="125">
+      <img src="/images/bitcoin-com-media-partner.png" alt="Bitcoin.com" width="500" height="125">
+      <img src="/images/cointelegraph-media-partner.png" alt="Cointelegraph" width="500" height="125">
+      <img src="/images/coindesk-media-partner.png" alt="CoinDesk" width="500" height="125">
+      <img src="/images/binance-media-partner.png" alt="Binance" width="500" height="125">
+      <img src="/images/coinmarketcap-media-partner.png" alt="CoinMarketCap" width="500" height="125">
+      <img src="/images/skkicmotion-media-partner.png" alt="Skkicmotion" width="500" height="125">
+      <img src="/images/forbes-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/bitcoin-com-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/cointelegraph-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/coindesk-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/binance-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/coinmarketcap-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+      <img src="/images/skkicmotion-media-partner.png" alt="" aria-hidden="true" width="500" height="125">
+    </div>
+  </div>
+
+  <nav class="cards">
+      <a class="card" href="https://wevolv3.com">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.9 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.9-3.8-9S9.5 5.7 12 3z"/></svg></span>
+        <span class="card-title">Website</span>
+        <span class="card-text">Nine service lines, one team</span>
+      </a>
+      <a class="card" href="https://t.me/wevolv3">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3l-3 14.1c-.2 1-.8 1.3-1.7.8l-4.6-3.4-2.2 2.1c-.25.25-.45.45-.92.45l.33-4.7 8.5-7.7c.37-.33-.08-.5-.57-.2L7.2 12.1 2.66 10.7c-1-.3-1-1 .2-1.5l17.6-6.8c.82-.3 1.55.2 1.44 1.9z"/></svg></span>
+        <span class="card-title">Telegram</span>
+        <span class="card-text">Where the deals get made</span>
+      </a>
+      <a class="card" href="https://wekolnect.com">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.6"/><circle cx="4.5" cy="6" r="2.1"/><circle cx="19.5" cy="6" r="2.1"/><circle cx="4.5" cy="18" r="2.1"/><circle cx="19.5" cy="18" r="2.1"/><path d="M6.2 7.3l3.9 3M17.8 7.3l-3.9 3M6.2 16.7l3.9-3M17.8 16.7l-3.9-3"/></svg></span>
+        <span class="card-title">WeKOLnect</span>
+        <span class="card-text">Our vetted KOLs hub</span>
+      </a>
+      <a class="card" href="https://x.com/wevolv3_media">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.2 3h3.3l-7.2 8.3L21.8 21h-6.6l-4.3-5.6L5.9 21H2.6l7.7-8.9L2.5 3h6.8l3.9 5.2L17.2 3zm-1.2 16h1.8L8.1 4.9H6.2L16 19z"/></svg></span>
+        <span class="card-title">X</span>
+        <span class="card-text">@wevolv3_media</span>
+      </a>
+      <a class="card" href="https://www.linkedin.com/company/wevolv3-web3-growth">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9.5h4v11H3v-11zm7 0h3.8v1.5h.05c.53-.95 1.83-1.95 3.77-1.95 4.03 0 4.78 2.5 4.78 5.76v5.69h-4v-5.05c0-1.2-.02-2.75-1.75-2.75-1.75 0-2.02 1.32-2.02 2.67v5.13h-4v-11z"/></svg></span>
+        <span class="card-title">LinkedIn</span>
+        <span class="card-text">Company page</span>
+      </a>
+      <a class="card" href="https://drive.google.com/file/d/1Mt3duPjS2HcUX1K5P92EcqvWsZvNxF4s/view?usp=sharing">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span>
+        <span class="card-title">Builders Catalog</span>
+        <span class="card-text">Every service, in one document</span>
+      </a>
+  </nav>
+
+  <section class="film" id="film">
+    <video id="reel" playsinline preload="none" poster="poster.jpg">
+      <source src="reel.mp4" type="video/mp4">
+    </video>
+    <button class="cover" id="reelBtn" type="button" aria-label="Play the Wevolv3 brand film">
+      <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.2v13.6c0 .8.9 1.3 1.6.9l11-6.8c.6-.4.6-1.4 0-1.8l-11-6.8c-.7-.4-1.6.1-1.6.9z"/></svg></span>
+      <span class="time">0:34</span>
+    </button>
+  </section>
+
+  <p class="foot">
+    <a href="https://wevolv3.com">wevolv3.com</a>
+    <a href="https://wevolv3.com/blog.html">Blog</a>
+    <a href="https://wevolv3.com/contact.html">Contact</a>
+  </p>
+
+</div>
+
+<script>
+(function(){
+  var v=document.getElementById('reel'),b=document.getElementById('reelBtn'),
+      media=v&&v.parentNode;
+  if(!v||!b||!media)return;
+
+  function hideCover(){
+    b.style.opacity='0';b.style.pointerEvents='none';
+    setTimeout(function(){if(b.style.opacity==='0')b.style.visibility='hidden';},330);
+  }
+  function showCover(){b.style.visibility='';b.style.opacity='';b.style.pointerEvents='';}
+
+  /* the local file is the fallback for a host that refuses third party frames */
+  function playLocal(){
+    var f=media.querySelector('iframe');
+    if(f)f.parentNode.removeChild(f);
+    v.controls=true;
+    var p=v.play();
+    if(p&&p.catch)p.catch(function(){showCover();});
+  }
+  v.addEventListener('ended',function(){v.controls=false;v.currentTime=0;showCover();});
+
+  /* a host that refuses the frame announces it; that is the exact signal to
+     fall back, instead of guessing from a frame that is merely still loading */
+  document.addEventListener('securitypolicyviolation',function(e){
+    if(String(e.blockedURI||'').indexOf('youtube')!==-1)playLocal();
+  });
+
+  b.addEventListener('click',function(){
+    hideCover();
+    var f=document.createElement('iframe');
+    f.addEventListener('error',playLocal);
+    f.title='Wevolv3 brand film';
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+    f.setAttribute('allowfullscreen','');
+    f.referrerPolicy='strict-origin-when-cross-origin';
+    f.src='https://www.youtube-nocookie.com/embed/a2TWKTEieH4?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+    media.appendChild(f);
+  });
+})();
+</script>
+</body>
+</html>
