@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <title>What Web3 KOLs Charge: 861 Creator Pricing Benchmark | Wevolv3</title>
+    <meta name="description" content="Rates from 861 Web3 creators. A placement costs about the same at 2,000 followers as at 40,000, which makes small audiences the most expensive reach in the market.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://wevolv3.com/kol-pricing-benchmark.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://wevolv3.com/kol-pricing-benchmark.html">
+    <meta property="og:title" content="What Web3 KOLs charge">
+    <meta property="og:description" content="861 creators, 390 with a rate and an audience number. Medians by tier, niche, platform and deliverable, with the messy parts left in.">
+    <meta property="og:image" content="https://wevolv3.com/images/og-image.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="What Web3 KOLs charge">
+    <meta name="twitter:description" content="A placement costs about the same at 2,000 followers as at 40,000. Rates from 861 Web3 creators.">
+    <meta name="twitter:image" content="https://wevolv3.com/images/og-image.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Web3 KOL Pricing Benchmark 2026",
+      "description": "Advertised rates from 861 Web3 creators, of which 390 carry both a rate and an audience count once a bulk default value is removed. Medians and quartiles by audience tier, niche, platform and deliverable.",
+      "url": "https://wevolv3.com/kol-pricing-benchmark.html",
+      "license": "https://wevolv3.com/terms.html",
+      "isAccessibleForFree": true,
+      "creator": { "@type": "Organization", "name": "Wevolv3", "url": "https://wevolv3.com" },
+      "variableMeasured": [
+        "Advertised price per placement in USD",
+        "Follower count",
+        "Price per thousand followers in USD",
+        "Niche",
+        "Platform",
+        "Deliverable format"
+      ],
+      "measurementTechnique": "Aggregation of advertised rates collected in the WeKOLnect creator database"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "What Web3 KOLs charge",
+      "description": "Rates from 861 Web3 creators, with medians and quartiles by audience size, niche, platform and deliverable.",
+      "mainEntityOfPage": "https://wevolv3.com/kol-pricing-benchmark.html",
+      "author": { "@type": "Organization", "name": "Wevolv3" },
+      "publisher": { "@type": "Organization", "name": "Wevolv3", "url": "https://wevolv3.com" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wevolv3.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Web3 KOL Pricing Benchmark", "item": "https://wevolv3.com/kol-pricing-benchmark.html" }
+      ]
+    }
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E7E4GJ0QP9');
+    </script>
+
+    <link href="css/normalize.css" rel="stylesheet" type="text/css" />
+    <link href="css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="images/favicon.png" rel="shortcut icon" type="image/png" />
+    <link href="images/favicon.png" rel="apple-touch-icon" />
+    <link href="css/landing.css?v=5" rel="stylesheet" type="text/css" />
+
+    <style>
+    /* Estudo de dados: apenas o que o sistema lp- ainda nao cobre. Numeral
+       tabular para as colunas de valor, e o grafico de amplitude. */
+    .bench-table td.bench-n, .bench-table th.bench-n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .bench-table td.bench-lead { color:#fff; font-weight:600; }
+    .bench-table td.bench-off { color:#8a8a8a; font-style:normal; }
+    .bench-figure { margin:0 0 46px; }
+    .bench-figure svg { display:block; width:100%; height:auto; }
+    .bench-figure figcaption { color:#9a9a9a; font-size:14px; line-height:1.6; margin-top:18px; max-width:70ch; }
+    .bench-strip { transform-origin:left center; transform-box:fill-box; }
+    .bench-source { color:#9a9a9a; font-size:14.5px; line-height:1.65; max-width:70ch; margin:26px 0 0; padding-top:18px; border-top:1px solid rgba(255,255,255,.09); }
+    .bench-note { color:#9a9a9a; font-size:14.5px; line-height:1.65; max-width:70ch; margin:18px 0 0; }
+    .bench-aside { margin:34px 0 0; padding:24px 0; border-top:1px solid rgba(16,185,129,.35); border-bottom:1px solid rgba(16,185,129,.35); }
+    .bench-aside p { margin:0; color:#e6e6e6; font-size:17.5px; line-height:1.65; max-width:70ch; font-weight:300; }
+    @media (prefers-reduced-motion:no-preference) {
+        .bench-strip { animation:benchGrow 900ms cubic-bezier(.16,1,.3,1) both; }
+        .bench-strip:nth-of-type(2) { animation-delay:80ms; }
+        .bench-strip:nth-of-type(3) { animation-delay:160ms; }
+        .bench-strip:nth-of-type(4) { animation-delay:240ms; }
+        @keyframes benchGrow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+    }
+    @media (max-width:600px) {
+        .bench-table td.bench-n { text-align:left; }
+    }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="header-inner w-nav">
+                <div class="logo-wrapper">
+                    <a href="index.html" class="logo w-inline-block">
+                        <img src="images/LOGO.PNG?v=4" alt="Wevolv3" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Clashdisplay', sans-serif; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
+                    </a>
+                </div>
+                <a href="contact.html" class="lets-talk-btn">LET'S TALK</a>
+                <nav role="navigation" class="main-menu w-nav-menu">
+                    <a href="index.html" class="menu-item w-nav-link">HOME</a>
+                    <a href="about.html" class="menu-item w-nav-link">ABOUT</a>
+                    <a href="works.html" class="menu-item w-nav-link">WORK</a>
+                    <a href="blog.html" class="menu-item w-nav-link">BLOG</a>
+                    <a href="crypto-news-today" class="menu-item w-nav-link">NEWS</a>
+                    <a href="adoption-check" class="menu-item w-nav-link">TOOLS</a>
+                    <a href="contact.html" class="menu-item w-nav-link">CONTACT</a>
+                </nav>
+                <div class="menu-button w-nav-button">
+                    <div class="icon w-icon-nav-menu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="lp-hero">
+            <div class="lp-wrap">
+                <span class="lp-eyebrow">Pricing benchmark 2026</span>
+                <h1>What Web3 KOLs <em>charge</em></h1>
+                <p class="lp-sub">A placement costs about the same on a 2,000 follower account as on a 40,000 follower account. Around 750 dollars, either way. That single fact reorganizes most crypto influencer budgets, and it only shows up when you put 861 rate cards in one table.</p>
+                <div class="lp-hero-ctas">
+                    <a href="kol-roi-calculator.html" class="lp-cta">Run your own numbers</a>
+                    <a href="contact.html" class="lp-cta lp-cta-ghost">Have us source the campaign</a>
+                </div>
+                <p class="bench-source">Rates come from WeKOLnect, the creator database we keep for sourcing campaigns. 390 creators carry both a rate and an audience number. Everything in dollars, collected up to August 2026.</p>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>The rate barely moves, the audience does</h2>
+
+                <figure class="bench-figure">
+                    <svg viewBox="0 0 880 330" role="img" aria-label="Range chart of price per thousand followers by audience tier. Up to 10k: quartiles 49 to 201 dollars, median 128. 10k to 50k: 9 to 59, median 28. 50k to 250k: 3 to 21, median 7. 250k to 1M: 3 to 41, median 10.">
+                        <g font-family="'Clashdisplay', sans-serif">
+                            <line x1="150" y1="34" x2="150" y2="272" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+                            <line x1="316" y1="34" x2="316" y2="272" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+                            <line x1="483" y1="34" x2="483" y2="272" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+                            <line x1="650" y1="34" x2="650" y2="272" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+                            <line x1="817" y1="34" x2="817" y2="272" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+
+                            <text x="150" y="296" fill="#9a9a9a" font-size="13">$0</text>
+                            <text x="316" y="296" fill="#9a9a9a" font-size="13">50</text>
+                            <text x="483" y="296" fill="#9a9a9a" font-size="13">100</text>
+                            <text x="650" y="296" fill="#9a9a9a" font-size="13">150</text>
+                            <text x="817" y="296" fill="#9a9a9a" font-size="13">200</text>
+                            <text x="150" y="322" fill="#9a9a9a" font-size="12.5" letter-spacing="0.12em">DOLLARS PER THOUSAND FOLLOWERS</text>
+
+                            <text x="0" y="70" fill="#fff" font-size="15" font-weight="600" letter-spacing="0.06em">UP TO 10K</text>
+                            <rect class="bench-strip" x="315" y="62" width="506" height="10" rx="5" fill="#10b981" opacity="0.3"/>
+                            <circle cx="577" cy="67" r="7" fill="#10b981"/>
+                            <text x="577" y="47" fill="#10b981" font-size="16" font-weight="600" text-anchor="middle">128</text>
+
+                            <text x="0" y="132" fill="#fff" font-size="15" font-weight="600" letter-spacing="0.06em">10K TO 50K</text>
+                            <rect class="bench-strip" x="180" y="124" width="168" height="10" rx="5" fill="#10b981" opacity="0.3"/>
+                            <circle cx="244" cy="129" r="7" fill="#10b981"/>
+                            <text x="244" y="109" fill="#10b981" font-size="16" font-weight="600" text-anchor="middle">28</text>
+
+                            <text x="0" y="194" fill="#fff" font-size="15" font-weight="600" letter-spacing="0.06em">50K TO 250K</text>
+                            <rect class="bench-strip" x="160" y="186" width="58" height="10" rx="5" fill="#10b981" opacity="0.3"/>
+                            <circle cx="175" cy="191" r="7" fill="#10b981"/>
+                            <text x="175" y="171" fill="#10b981" font-size="16" font-weight="600" text-anchor="middle">7</text>
+
+                            <text x="0" y="256" fill="#fff" font-size="15" font-weight="600" letter-spacing="0.06em">250K TO 1M</text>
+                            <rect class="bench-strip" x="159" y="248" width="127" height="10" rx="5" fill="#10b981" opacity="0.3"/>
+                            <circle cx="182" cy="253" r="7" fill="#10b981"/>
+                            <text x="182" y="233" fill="#10b981" font-size="16" font-weight="600" text-anchor="middle">10</text>
+                        </g>
+                    </svg>
+                    <figcaption>Each bar covers the middle half of the market for that tier, from the 25th to the 75th percentile. The dot is the median. The bar for small accounts is wide because small accounts disagree with each other about what they are worth.</figcaption>
+                </figure>
+
+                <p class="lp-lead">Creators under 10,000 followers and creators up to 50,000 quote the same median rate, 750 dollars. The audience behind that rate grows by more than ten times. Divide one by the other and the small account costs 128 dollars per thousand followers while the mid tier costs 7.</p>
+
+                <p class="lp-body">Small creators can still be worth it. You are buying access to a specific room, and rooms are priced by who is in them. The number only looks wrong when reach was what you were after.</p>
+
+                <table class="lp-table bench-table" style="margin-top:38px">
+                    <thead>
+                        <tr>
+                            <th>Audience</th>
+                            <th class="bench-n">Creators</th>
+                            <th class="bench-n">Median</th>
+                            <th class="bench-n">Middle half</th>
+                            <th class="bench-n lp-us">Per 1k followers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Up to 10k</td><td class="bench-n">40</td><td class="bench-n">$750</td><td class="bench-n">300 to 1,100</td><td class="bench-n lp-us">128.10</td></tr>
+                        <tr><td>10k to 50k</td><td class="bench-n">158</td><td class="bench-n">$750</td><td class="bench-n">200 to 1,319</td><td class="bench-n lp-us">28.31</td></tr>
+                        <tr><td>50k to 250k</td><td class="bench-n">150</td><td class="bench-n">$1,000</td><td class="bench-n">350 to 2,175</td><td class="bench-n lp-us">7.38</td></tr>
+                        <tr><td>250k to 1M</td><td class="bench-n">34</td><td class="bench-n">$5,058</td><td class="bench-n">1,100 to 18,000</td><td class="bench-n lp-us">9.64</td></tr>
+                        <tr><td>Above 1M</td><td class="bench-n">8</td><td class="bench-off" colspan="3">too few priced creators to publish a median</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="bench-aside">
+                    <p>Efficiency stops improving before the top. The 50k to 250k tier reaches people more cheaply than the tier above it, so the best value here is not the largest account a budget can reach. It sits in the middle, bought in volume.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>Same thousand dollars, seven times the difference</h2>
+
+                <p class="lp-lead">Four of the five niches we can publish cluster around a thousand dollars for a placement. They stop agreeing the moment you account for audience: education and news creators keep their rates on smaller followings, so their reach costs seven times what DeFi reach costs.</p>
+
+                <table class="lp-table bench-table">
+                    <thead>
+                        <tr>
+                            <th>Niche</th>
+                            <th class="bench-n">Creators</th>
+                            <th class="bench-n">Median</th>
+                            <th class="bench-n lp-us">Per 1k followers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Crypto education</td><td class="bench-n">133</td><td class="bench-n">$1,000</td><td class="bench-n lp-us">33.24</td></tr>
+                        <tr><td>Crypto news</td><td class="bench-n">46</td><td class="bench-n">$1,100</td><td class="bench-n lp-us">27.46</td></tr>
+                        <tr><td>Crypto trading</td><td class="bench-n">111</td><td class="bench-n">$1,000</td><td class="bench-n lp-us">11.57</td></tr>
+                        <tr><td>Memecoins</td><td class="bench-n">33</td><td class="bench-n">$1,000</td><td class="bench-n lp-us">7.31</td></tr>
+                        <tr><td>DeFi</td><td class="bench-n">36</td><td class="bench-n">$300</td><td class="bench-n lp-us">4.63</td></tr>
+                    </tbody>
+                </table>
+
+                <p class="bench-note">GameFi, NFTs, infrastructure, DePIN and RWA are in the database and stayed out of this table. After the cleanup described below, each had between 1 and 14 priced creators, and a median over 5 rows is worth nothing.</p>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>Telegram is the expensive one</h2>
+
+                <p class="lp-lead">YouTube carries the large cheques, a median of 20,455 dollars for a placement and a top quarter near 39,000. Telegram is the one that surprises buyers: 1,100 dollars looks manageable until you notice the channels are small, which puts it second in cost per person reached. X holds half the priced sample and sits with TikTok in the efficient middle, near 11 dollars per thousand.</p>
+
+                <table class="lp-table bench-table">
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th class="bench-n">Creators</th>
+                            <th class="bench-n">Median</th>
+                            <th class="bench-n lp-us">Per 1k followers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>YouTube</td><td class="bench-n">22</td><td class="bench-n">$20,455</td><td class="bench-n lp-us">61.96</td></tr>
+                        <tr><td>Telegram</td><td class="bench-n">98</td><td class="bench-n">$1,100</td><td class="bench-n lp-us">48.12</td></tr>
+                        <tr><td>X</td><td class="bench-n">196</td><td class="bench-n">$900</td><td class="bench-n lp-us">11.60</td></tr>
+                        <tr><td>TikTok</td><td class="bench-n">23</td><td class="bench-n">$1,600</td><td class="bench-n lp-us">10.28</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>What a placement buys</h2>
+
+                <p class="lp-lead">The rate cards break the work down further, 809 of them across the database. A promotional tweet runs 550 dollars at the median, a single post on other platforms runs double that, and a listing placement runs 160. Monthly packages sit between 4,250 and 10,000, though only six creators quote one, so treat that as a hint rather than a number.</p>
+
+                <table class="lp-table bench-table">
+                    <thead>
+                        <tr>
+                            <th>Deliverable</th>
+                            <th class="bench-n">Quotes</th>
+                            <th class="bench-n lp-us">Median</th>
+                            <th class="bench-n">Middle half</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Single post</td><td class="bench-n">119</td><td class="bench-n lp-us">$1,100</td><td class="bench-n">888 to 1,600</td></tr>
+                        <tr><td>Promotional tweet</td><td class="bench-n">141</td><td class="bench-n lp-us">$550</td><td class="bench-n">300 to 1,100</td></tr>
+                        <tr><td>Listing placement</td><td class="bench-n">52</td><td class="bench-n lp-us">$160</td><td class="bench-n">150 to 170</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>How to spend this</h2>
+
+                <p class="lp-lead">Carry the width of the middle half into the negotiation, more than the median itself. Among creators with 50,000 to 250,000 followers, the cheaper quarter quote under 350 dollars and the pricier quarter quote over 2,175. Six times the price, for audiences of the same size in the same market. Whoever knows the distribution sets the anchor, and until now that was almost always the seller.</p>
+
+                <p class="lp-body">None of this predicts whether a placement works. Two creators at the same rate, in the same niche, routinely deliver very different signups, and no rate card tells you which one you are talking to. We publish this so buyers stop overpaying at the start, then measure the placement to find out what it was actually worth. That measurement is <a href="/blog/web3-kol-attribution-2026">the part we care about</a>.</p>
+            </div>
+        </section>
+
+        <section class="lp-section">
+            <div class="lp-wrap">
+                <h2>How we got the numbers</h2>
+
+                <p class="lp-body" style="margin-bottom:22px">The source is WeKOLnect, our own creator database, which lists what creators quote rather than what any specific client paid. Of 861 creators, 713 have an audience number and 482 have a rate. After the exclusion below, 390 carry both, and that group is the basis for every per follower figure here.</p>
+
+                <p class="lp-body" style="margin-bottom:22px">Everything reported is a median, never an average, because a handful of very large quotes would drag any mean upward. Cost per thousand followers is worked out creator by creator and then aggregated, rather than dividing one median by another, which would flatter the result. No median is published from fewer than 15 creators.</p>
+
+                <p class="lp-body" style="margin-bottom:22px">One value had to go. The exact figure 107.69 dollars appeared on 69 records, 14.3 percent of everything priced. All 69 sat on one platform, none carried a rate label, they were spread across eight unrelated niches, and every one shared a single deliverable label. That is an import, not a market. Removing it cut the smallest tier from 102 creators to 40 and moved the overall figure from 25.19 to 17.73 dollars per thousand followers, which is why both numbers appear here instead of only the better one. GameFi and NFTs lost their tables entirely. The 50k to 250k and 250k to 1M tiers did not move at all, which is how we know the default lived among the small accounts.</p>
+
+                <p class="lp-body">Rates move, so this page carries its date. No creator, client or campaign is identifiable here, or in the aggregation behind it.</p>
+            </div>
+        </section>
+    </main>
+
+    <section class="lp-final">
+        <div class="lp-wrap">
+            <h2>Before you commit a budget</h2>
+            <p>Take the ranges above as your floor and ceiling, then run your own numbers in the <a href="kol-roi-calculator.html" style="color:#10b981;">KOL ROI calculator</a>. If you would rather hand the sourcing over with attribution attached to every placement, that is the work we do.</p>
+            <a href="contact.html" class="lp-cta">Book a strategy call</a>
+            <p style="margin:24px 0 0;font-size:15px;line-height:1.6;color:#cfcfcf;">More on this: <a href="/blog/crypto-kol-marketing-evolution" style="color:#10b981;">how crypto KOL marketing changed</a> and <a href="crypto-kol-marketing.html" style="color:#10b981;">how we run campaigns</a>.</p>
+        </div>
+    </section>
+
+    <div class="footer">
+        <div class="w-layout-blockcontainer main-container w-container">
+            <div class="inner-footer">
+                <a href="mailto:contact@wevolv3.com" class="mail-link">contact@wevolv3.com</a>
+                <a href="https://t.me/wevolv3" target="_blank" class="phone-link">@wevolv3</a>
+                <div class="socials">
+                    <a href="https://x.com/wevolv3_media" target="_blank" class="social-link w-inline-block"><div class="social-text">X</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="https://www.linkedin.com/company/wevolv3-web3-growth" target="_blank" class="social-link w-inline-block"><div class="social-text">linkedin</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="https://t.me/wevolv3" target="_blank" class="social-link w-inline-block"><div class="social-text">telegram</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                    <a href="blog.html" class="social-link last-social w-inline-block"><div class="social-text">blog</div><img src="images/arrow-down-right.png" alt="External link arrow" class="social-arrow" loading="lazy" /></a>
+                </div>
+            </div>
+            <div class="footer-legal-links">
+                <a href="privacy.html" class="legal-link">Privacy Policy</a>
+                <span class="legal-separator">|</span>
+                <a href="terms.html" class="legal-link">Terms &amp; Conditions</a>
+                <span class="legal-separator">|</span>
+                <a href="disclaimer.html" class="legal-link">Legal Disclaimer</a>
+            </div>
+            <div class="copyright">
+                <div class="copyright-text"><span class="copyright-year">2026</span> Wevolv3. All rights reserved.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/plugins.js" type="text/javascript"></script>
+    <script>document.querySelectorAll('.copyright-year').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script src="js/track-events.js" defer></script>
+</body>
+</html>
