@@ -1,16 +1,27 @@
 /*
- * Wevolv3 — GA4 conversion event tracking
- * Fires clean, named GA4 events for the site's real conversion actions so they
- * can be marked as Key Events in GA4 (Admin > Events > mark as key event).
+ * Wevolv3 — conversion event tracking (GA4 + PostHog)
+ * Fires clean, named events for the site's real conversion actions so they can
+ * be marked as Key Events in GA4 (Admin > Events > mark as key event) and used
+ * as conversions in PostHog (Data management > Events).
  *
  * Events sent:
- *   generate_lead    -> contact form submitted successfully (primary conversion)
- *   telegram_click   -> click on a Telegram link (t.me/wevolv3)
- *   email_click      -> click on a mailto: link
- *   lets_talk_click  -> click on a "LET'S TALK" CTA button
- *   calculator_used  -> KOL ROI calculator was run
+ *   generate_lead        -> contact form submitted successfully (primary conversion)
+ *   qualify_lead         -> same submit, carrying the project type
+ *   telegram_click       -> click on a Telegram link (t.me/wevolv3)
+ *   email_click          -> click on a mailto: link
+ *   lets_talk_click      -> click on a "LET'S TALK" CTA button
+ *   calculator_used      -> KOL ROI calculator was run
+ *   calculator_share     -> calculator result shared
+ *   adoption_check_run   -> adoption check executed
+ *   adoption_check_unlock / adoption_check_share
  *
- * Depends on gtag() already being loaded on the page (G-E7E4GJ0QP9).
+ * Both destinations get the SAME event name and the same properties, so the two
+ * tools can be compared line by line instead of arguing.
+ *
+ * Destinations are optional and independent: gtag() comes from the GA4 tag
+ * (G-E7E4GJ0QP9) and posthog from the snippet that inject-analytics.js writes
+ * into every page at build time. If either is missing or blocked, the other
+ * still fires and the page never breaks.
  */
 (function () {
   'use strict';
@@ -42,15 +53,43 @@
   }
   var FT = firstTouch();
 
+  // Attach first-touch attribution to every PostHog event on the page, pageviews
+  // included. Without this PostHog buckets a visit from an X or Telegram post as
+  // "direct", exactly the blind spot the GA4 side already works around.
+  try {
+    if (window.posthog && typeof window.posthog.register === 'function') {
+      var superProps = {};
+      for (var k in FT) {
+        if (Object.prototype.hasOwnProperty.call(FT, k) && FT[k] !== undefined) {
+          superProps[k] = FT[k];
+        }
+      }
+      if (Object.keys(superProps).length) window.posthog.register(superProps);
+    }
+  } catch (e) {
+    /* attribution is a nice-to-have; never let it break the page */
+  }
+
   function track(eventName, params) {
+    // merge first-touch attribution onto every event
+    var merged = Object.assign({}, FT, params || {});
+
     try {
       if (typeof window.gtag === 'function') {
-        // merge first-touch attribution onto every event
-        var merged = Object.assign({}, FT, params || {});
         window.gtag('event', eventName, merged);
       }
     } catch (e) {
       /* never let tracking break the page */
+    }
+
+    try {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        // sendBeacon so the event survives the navigation that an outbound
+        // click (mailto:, t.me) starts immediately after this handler returns.
+        window.posthog.capture(eventName, merged, { transport: 'sendBeacon' });
+      }
+    } catch (e) {
+      /* same contract as above: tracking never breaks the page */
     }
   }
 
@@ -81,7 +120,43 @@
           link_text: (el.textContent || '').trim().slice(0, 60),
           transport_type: 'beacon'
         });
+        return;
       }
+      // Any other route to the contact page is intent too: 81 links point there
+      // and only 25 of them carry the lets-talk-btn class, so without this the
+      // funnel loses most of the clicks that lead to the form.
+      if (/(^|\/)contact\.html(\?|#|$)/i.test(href) || /^\/contact(\/|\?|#|$)/i.test(href)) {
+        track('contact_click', {
+          link_text: (el.textContent || '').trim().slice(0, 60),
+          from_page: location.pathname,
+          transport_type: 'beacon'
+        });
+      }
+    },
+    true
+  );
+
+  // ── Form start ─────────────────────────────────────────────────────────
+  // The step that explains the drop-off: arriving at the form is a pageview,
+  // submitting is generate_lead, and everyone who gave up in between was
+  // invisible. Fires once per page, on the first real interaction with a field.
+  var formStarted = {};
+  document.addEventListener(
+    'focusin',
+    function (ev) {
+      var field = ev.target;
+      if (!field || !field.closest) return;
+      if (!/^(INPUT|TEXTAREA|SELECT)$/.test(field.tagName || '')) return;
+      if (field.type === 'submit' || field.type === 'hidden') return;
+
+      var form = field.closest('form');
+      if (!form) return;
+
+      var id = form.getAttribute('id') || form.getAttribute('name') || 'form';
+      if (formStarted[id]) return;
+      formStarted[id] = true;
+
+      track('form_start', { form_id: id, page: location.pathname });
     },
     true
   );
