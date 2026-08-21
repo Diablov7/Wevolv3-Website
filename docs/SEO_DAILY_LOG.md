@@ -50,8 +50,12 @@ Commit `9c04797` (deploy Netlify confirmado em produção):
 Verificado em produção, não só no código:
 
 - `posthog.capture(..., { transport: 'sendBeacon' })` e `posthog.register()` funcionam com o
-  snippet instalado (evento de teste `__wiring_test_conversion`, 21/08, **pode ser excluído no
-  PostHog**).
+  snippet instalado (evento de teste `__wiring_test_conversion`, 21/08). **Esses eventos de teste NÃO podem ser
+  apagados:** o PostHog não exclui evento avulso, e a exclusão por pessoa não se aplica porque o
+  site roda com `person_profiles: 'identified_only'` — visita anônima não cria pessoa (a tela
+  People devolve "Person not found"). A saída é filtrar: toda consulta do relatório usa
+  `AND events.distinct_id NOT IN ('01a01d3f-dc75-7447-a51e-c5cfcab4eff4','rollout-verify')`.
+  Ao filtrar, as 4 views de `web-three-attribution-tool` somem: eram todas minhas.
 - `form_start` disparado no formulário real de `/contact.html` **chegou na ingestão** (17:02Z).
 - `contact_click` disparou num link `/contact` sem a classe de CTA, com `from_page`.
 - Armadilha de método: a primeira tentativa não gerou evento porque o navegador executava a

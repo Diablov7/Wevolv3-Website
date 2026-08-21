@@ -423,21 +423,19 @@
           <tr><th>Página</th><th>Views (14d)</th><th>Sessões</th></tr>
         </thead>
         <tbody>
-          <tr><td>/ (home)</td><td>13</td><td>12</td></tr>
-          <tr><td>/blog/web-three-attribution-tool</td><td>4</td><td>1</td></tr>
+          <tr><td>/ (home)</td><td>14</td><td>13</td></tr>
           <tr><td>/blog/defi-marketing-agency-checklist</td><td>1</td><td>1</td></tr>
           <tr><td>/blog/crypto-kol-marketing-evolution</td><td>1</td><td>1</td></tr>
           <tr><td>/blog/web3-kol-attribution-2026</td><td>1</td><td>1</td></tr>
-          <tr><td>/crypto-kol-marketing.html</td><td>1</td><td>0</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Leitura honesta desta tabela: 21 visualizações em cinco dias, com a home concentrando 13.
-    O pico de 20 de agosto (14 views num dia só) coincide com o dia em que eu validava o rollout
-    do próprio PostHog, então provavelmente é medição minha, não público. As quatro views em
-    <code>web-three-attribution-tool</code> vieram todas de uma sessão só, o que reforça a
-    mesma suspeita.</p>
+    <p>Estes números já estão <b>limpos do meu tráfego de teste</b>, e a limpeza mudou a
+    conclusão de antes: as quatro visualizações em <code>web-three-attribution-tool</code> eram
+    todas minhas, validando o rollout, e sumiram da lista. Ou seja, o blog ainda não recebeu
+    visita real relevante; quem chega, chega na home. Sobram 17 visualizações em cinco dias,
+    com a home concentrando 14.</p>
 
     <p>De onde vieram: quase tudo aparece como direto, sem origem declarada (7 views de celular
     nos Estados Unidos, 4 de desktop no Brasil, 4 de desktop nos Estados Unidos), mais duas
@@ -479,6 +477,17 @@
     encaminhou, guardada 30 dias) agora viaja como propriedade fixa em todo evento do PostHog,
     inclusive nos pageviews. É o conserto do mesmo problema que faz o Direct parecer 74% no
     Analytics.</p>
+
+    <div class="callout">
+      <div class="eyebrow">Sobre os eventos de teste que ficaram na base</div>
+      <p>Os disparos que usei para verificar a instrumentação continuam gravados, e não dá para
+      apagar: o PostHog não exclui evento avulso, e a exclusão por pessoa não se aplica aqui
+      porque o site roda com perfil de pessoa só para visitante identificado, então visita
+      anônima não cria pessoa nenhuma para deletar (é por isso que a tela People responde
+      "Person not found"). A saída é filtrar, e é o que este relatório faz: toda consulta exclui
+      os identificadores <code>01a01d3f-…</code> e <code>rollout-verify</code>. Nenhum número
+      desta página conta esses eventos.</p>
+    </div>
 
     <p><b>Verificado em produção, não só no código:</b> o <code>form_start</code> disparado no
     formulário real chegou no PostHog, o <code>contact_click</code> disparou num link comum de
@@ -547,12 +556,13 @@
   var COL = { impr:1, cliq:2, pos:3, idx:4, nidx:5, sess:6, search:7, social:8 };
 
   // PostHog: medição própria, começou a valer em 17/08. [data, pageviews, sessões]
+  // Já sem o tráfego de teste (distinct_ids 01a01d3f-… e rollout-verify).
   var SERIE_PH = [
-    ["17/08",  1,  1],
-    ["18/08",  2,  2],
-    ["19/08",  2,  1],
-    ["20/08", 14, 10],
-    ["21/08",  2,  2]
+    ["17/08", 1, 1],
+    ["18/08", 2, 2],
+    ["19/08", 2, 1],
+    ["20/08", 9, 9],
+    ["21/08", 3, 3]
   ];
 
   function paint(){
