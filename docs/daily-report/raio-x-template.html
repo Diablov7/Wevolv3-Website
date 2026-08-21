@@ -1,0 +1,738 @@
+<title>Raio-X de aquisição Wevolv3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+  :root{
+    --paper:#F1F3F6;
+    --card:#FFFFFF;
+    --ink:#111821;
+    --ink-soft:#4E5A69;
+    --line:#D6DCE4;
+    --accent:#1F4FA8;
+    --accent-soft:#E4EBF8;
+    --good:#1B7355;
+    --warn:#9A5B15;
+    --crit:#A32820;
+    --serie-a:#1F4FA8;
+    --serie-b:#A8641F;
+    --shadow:0 1px 2px rgba(17,24,33,.06), 0 12px 28px rgba(17,24,33,.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1319;
+      --card:#161D26;
+      --ink:#E8ECF2;
+      --ink-soft:#9AA7B6;
+      --line:#28323E;
+      --accent:#7FA6EE;
+      --accent-soft:#1B2738;
+      --good:#5FC49B;
+      --warn:#D9A25C;
+      --crit:#E48078;
+      --serie-a:#5B87D8;
+      --serie-b:#B3803C;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1319;
+    --card:#161D26;
+    --ink:#E8ECF2;
+    --ink-soft:#9AA7B6;
+    --line:#28323E;
+    --accent:#7FA6EE;
+    --accent-soft:#1B2738;
+    --good:#5FC49B;
+    --warn:#D9A25C;
+    --crit:#E48078;
+    --serie-a:#5B87D8;
+    --serie-b:#B3803C;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.45);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:18px;
+    line-height:1.62;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 24px 96px;display:flex;flex-direction:column;gap:56px;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  h1{
+    font-family:"Archivo", system-ui, sans-serif;
+    font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1.1;
+    letter-spacing:-.02em;margin:10px 0 0;text-wrap:balance;
+  }
+  h2{
+    font-family:"Archivo", system-ui, sans-serif;
+    font-weight:600;font-size:clamp(21px,2.6vw,27px);line-height:1.22;
+    letter-spacing:-.01em;margin:0;text-wrap:balance;
+  }
+  h3{
+    font-family:"Archivo", system-ui, sans-serif;
+    font-weight:600;font-size:16px;margin:0 0 6px;letter-spacing:.005em;
+  }
+  p{margin:0;max-width:66ch;}
+  .lead{font-size:20px;color:var(--ink-soft);max-width:64ch;margin-top:14px;}
+
+  header{border-bottom:1px solid var(--line);padding-bottom:34px;}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:30px;}
+  .tile{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:16px 18px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow);
+  }
+  .tile .k{font-family:"JetBrains Mono", monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .tile .v{font-family:"Archivo", sans-serif;font-weight:700;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums;}
+  .tile .d{font-family:"JetBrains Mono", monospace;font-size:12px;color:var(--ink-soft);}
+  .up{color:var(--good);} .down{color:var(--crit);} .flat{color:var(--warn);}
+
+  section{display:flex;flex-direction:column;gap:20px;}
+  .head{display:flex;flex-direction:column;gap:6px;}
+  .stack{display:flex;flex-direction:column;gap:16px;}
+
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  figure img{display:block;width:100%;height:auto;}
+  figcaption{
+    border-top:1px solid var(--line);padding:14px 18px;
+    font-family:"JetBrains Mono", monospace;font-size:12.5px;line-height:1.6;color:var(--ink-soft);
+  }
+  figcaption b{color:var(--ink);font-weight:600;}
+
+  .glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+  .term{background:var(--accent-soft);border-radius:10px;padding:14px 16px;}
+  .term h3{color:var(--ink);}
+  .term p{font-size:16px;color:var(--ink-soft);}
+
+  .callout{
+    background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;
+  }
+  .callout .eyebrow{color:var(--accent);}
+
+  ul{margin:0;padding-left:20px;max-width:66ch;}
+  li{margin:6px 0;}
+  code{font-family:"JetBrains Mono", monospace;font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;}
+
+  footer{border-top:1px solid var(--line);padding-top:24px;color:var(--ink-soft);font-size:15px;}
+  a{color:var(--accent);}
+
+  /* ---- série histórica ---- */
+  .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;}
+  .chart{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px 12px;box-shadow:var(--shadow);position:relative;
+  }
+  .chart h3{margin:0;font-size:15px;}
+  .chart .sub{
+    font-family:"JetBrains Mono", monospace;font-size:11.5px;color:var(--ink-soft);
+    margin:2px 0 10px;letter-spacing:.02em;
+  }
+  .chart svg{display:block;width:100%;height:auto;overflow:visible;}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
+  .legend span{
+    font-family:"JetBrains Mono", monospace;font-size:11.5px;color:var(--ink-soft);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .swatch{width:12px;height:3px;border-radius:2px;display:inline-block;}
+  .tip{
+    position:absolute;pointer-events:none;opacity:0;transition:opacity .12s;
+    background:var(--card);border:1px solid var(--line);border-radius:8px;
+    padding:7px 10px;font-family:"JetBrains Mono", monospace;font-size:11.5px;
+    color:var(--ink);box-shadow:var(--shadow);white-space:nowrap;z-index:5;
+  }
+  table{border-collapse:collapse;width:100%;font-size:15px;}
+  .tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);}
+  th,td{padding:11px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    font-family:"JetBrains Mono", monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-soft);font-weight:400;
+  }
+  tbody td{font-variant-numeric:tabular-nums;font-family:"Archivo",sans-serif;font-size:15px;}
+  tbody tr:last-child td{border-bottom:none;}
+  .delta{font-family:"JetBrains Mono", monospace;font-size:13px;}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Wevolv3 · leitura de 21 de agosto de 2026</div>
+    <h1>Raio-X de aquisição</h1>
+    <p class="lead">O site nunca apareceu tanto na busca quanto agora, e quase ninguém clica.
+    Essa frase resume a leitura de hoje. Abaixo, cada painel que usei, o que ele significa em
+    português claro e onde olhar quando você abrir sozinho.</p>
+
+    <div class="tiles">
+      <div class="tile">
+        <span class="k">Apareceu (impressões)</span>
+        <span class="v">651</span>
+        <span class="d up">+17% na leitura anterior</span>
+      </div>
+      <div class="tile">
+        <span class="k">Entrou (cliques)</span>
+        <span class="v">6</span>
+        <span class="d flat">mesmo número de ontem</span>
+      </div>
+      <div class="tile">
+        <span class="k">Posição média</span>
+        <span class="v">34,8</span>
+        <span class="d flat">página 4 do Google</span>
+      </div>
+      <div class="tile">
+        <span class="k">Sessões no site (28d)</span>
+        <span class="v">171</span>
+        <span class="d up">busca orgânica em recorde</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Linha do tempo · 27 de julho a 21 de agosto</div>
+      <h2>Quanto subiu, quanto caiu, desde a primeira medição</h2>
+    </div>
+
+    <p>Um número sozinho não diz nada. O que diz é a série. Abaixo estão todas as leituras
+    diárias registradas desde o dia em que começamos a medir. Passe o mouse em qualquer ponto
+    para ver a data e o valor.</p>
+
+    <div class="charts" id="charts"></div>
+
+    <p>Duas observações para ler os gráficos sem se enganar. Na <b>posição média</b>, número
+    menor é melhor, porque é o lugar na fila do Google, então a linha subindo é notícia ruim. E
+    o salto de meados de agosto aparece em quase todos os painéis porque foi quando 28 páginas
+    entraram no índice de uma vez, depois de semanas paradas por falta de link interno apontando
+    para elas.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Métrica</th>
+            <th>27/07 (início)</th>
+            <th>13/08 (meio)</th>
+            <th>21/08 (hoje)</th>
+            <th>Desde o início</th>
+          </tr>
+        </thead>
+        <tbody id="deltas"></tbody>
+      </table>
+    </div>
+
+    <p>Uma ressalva honesta sobre a última linha da tabela: as 311 sessões de julho estavam
+    infladas por um erro de medição que mandava eventos falsos para o Analytics. Ele foi
+    corrigido em 29 de julho, e boa parte da queda para 171 é o inchaço saindo da conta, não
+    público indo embora. O que dá para afirmar sem ressalva é a composição: a fatia de busca
+    orgânica quintuplicou no mesmo período.</p>
+
+    <div class="callout">
+      <div class="eyebrow">O que a série conta em uma frase</div>
+      <p>Visibilidade multiplicou por 18, indexação quase triplicou e a busca orgânica saiu de
+      1,29% para 6,43% das visitas. O clique é o único indicador que não acompanhou, e a posição
+      média piorou justamente porque o site passou a aparecer em centenas de buscas novas onde
+      ainda está no fim da fila. Crescer em cauda longa sempre piora a média antes de melhorar.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Tela 1 · Search Console → Desempenho</div>
+      <h2>Onde se vê se o Google está mostrando o site</h2>
+    </div>
+
+    <p>Essa é a tela que responde à pergunta mais básica: as pessoas estão vendo a Wevolv3
+    quando pesquisam? Ela trabalha com quatro números, e vale entender cada um antes de olhar
+    o gráfico.</p>
+
+    <div class="glossary">
+      <div class="term">
+        <h3>Impressão</h3>
+        <p>Seu link apareceu na lista de resultados. Ninguém precisou clicar. É vitrine.</p>
+      </div>
+      <div class="term">
+        <h3>Clique</h3>
+        <p>Alguém viu e entrou no site. É a porta abrindo.</p>
+      </div>
+      <div class="term">
+        <h3>CTR</h3>
+        <p>De cada 100 que viram, quantos entraram. Mede o poder do título, não do site.</p>
+      </div>
+      <div class="term">
+        <h3>Posição média</h3>
+        <p>Em que lugar da lista você costuma aparecer. Cada página do Google tem 10 posições,
+        então 34,8 é a quarta página.</p>
+      </div>
+    </div>
+
+    <figure>
+      <img src="{{IMG1}}" alt="Search Console, relatório Desempenho em 28 dias, com 6 cliques, 651 impressões, CTR 0,9% e posição média 34,8">
+      <figcaption><b>Onde olhar:</b> os quatro cartões no topo são o placar. Só Cliques e
+      Impressões vêm marcados; CTR e Posição precisam ser clicados para entrar no gráfico.
+      Embaixo, a aba <b>CONSULTAS</b> lista o que a pessoa digitou. É ali que está o diagnóstico
+      de hoje: a coluna Cliques inteira em zero, ao lado de impressões de 22, 22, 22, 19.</figcaption>
+    </figure>
+
+    <p>Traduzindo: em 28 dias a Wevolv3 apareceu 651 vezes e recebeu 6 visitas. As dez maiores
+    buscas são todas comerciais, gente procurando exatamente o que você vende (CRM web3,
+    atribuição, analytics, lançamento de token), e nenhuma delas rendeu um clique sequer.</p>
+
+    <p>Isso tem uma explicação simples e uma armadilha. A explicação é a posição 34,8: aparecer
+    na quarta página é quase não aparecer, porque quase ninguém rola até lá. A armadilha é o
+    CTR de 0,9%, que caiu em relação a ontem. Ele caiu porque o número de aparições cresceu e o
+    de cliques ficou igual, ou seja, a conta piorou por causa de uma boa notícia. CTR caindo com
+    impressões subindo não é queda de desempenho.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Tela 2 · Search Console → Visão geral</div>
+      <h2>Quantas páginas o Google aceitou guardar</h2>
+    </div>
+
+    <p>Antes de aparecer, uma página precisa estar indexada, que é o Google ter lido, aprovado e
+    guardado ela no acervo dele. Página não indexada é estoque parado: existe no site e não
+    existe na busca.</p>
+
+    <figure>
+      <img src="{{IMG2}}" alt="Search Console, tela Visão geral, mostrando 53 páginas indexadas e 40 não indexadas">
+      <figcaption><b>Onde olhar:</b> o card <b>Indexação</b>, na parte de baixo, com as duas
+      linhas: 53 indexadas contra 40 fora. No meio da tela, o card <b>Recomendações</b> é o
+      próprio Google avisando que <b>/blog/web-three-marketing-tools</b> teve mais aparições que
+      o normal, o que bate com o assunto que está crescendo.</figcaption>
+    </figure>
+
+    <p>53 contra 40 é o mesmo placar de ontem, e é bem melhor que o do começo do mês, quando
+    eram 18 indexadas. O salto veio de resolver um problema antigo: artigos que só existiam no
+    sitemap e não tinham link nenhum apontando para eles dentro do site. O Google trata página
+    sem link interno como página sem importância.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Tela 3 · Search Console → Links</div>
+      <h2>Quantos sites de fora recomendam a Wevolv3</h2>
+    </div>
+
+    <p>Aqui está a razão de fundo da posição 34,8. O Google decide ordem por relevância e por
+    autoridade. Relevância você já tem, tanto que aparece nas buscas certas. Autoridade é outra
+    coisa: são links de outros sites apontando para o seu, e cada um funciona como um voto de
+    quem já tem reputação.</p>
+
+    <figure>
+      <img src="{{IMG3}}" alt="Search Console, relatório Links, com 14 links externos de 5 domínios e 159 links internos">
+      <figcaption><b>Onde olhar:</b> a coluna da esquerda, <b>Links externos</b>, é a
+      autoridade: 14 links vindos de 5 sites (goodfirms, t.me, wekolnect, crunchbase, edverise),
+      todos apontando para a home. A coluna da direita, <b>Links internos</b>, é a arrumação da
+      casa: 159 links de páginas suas para páginas suas.</figcaption>
+    </figure>
+
+    <p>Cinco domínios é muito pouco, e é exatamente o gargalo. O detalhe importante é que esse
+    número está congelado desde a leitura de ontem, o que significa que nenhuma submissão nova
+    a diretório entrou. Foi o único canal que já provou funcionar (goodfirms e crunchbase
+    apareceram justamente assim) e parou de andar.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Tela 4 · Google Analytics → Aquisição de tráfego</div>
+      <h2>Por onde as pessoas realmente chegaram</h2>
+    </div>
+
+    <p>O Search Console mostra o que acontece dentro do Google. O Analytics mostra o que
+    acontece depois que a pessoa entra no site, e de onde ela veio. Cada linha é um canal.</p>
+
+    <ul>
+      <li><b>Direct</b>: chegou sem rastro de origem. Parte é gente digitando o endereço, parte
+      é link clicado em app, PDF ou mensagem, onde a origem se perde.</li>
+      <li><b>Organic Social</b>: veio de post no Instagram, X, TikTok, LinkedIn.</li>
+      <li><b>Organic Search</b>: veio de busca, sem anúncio. É o canal que o trabalho de SEO move.</li>
+      <li><b>Unassigned</b>: o Analytics recebeu a visita e não soube classificar. Muito disso é
+      sintoma de medição quebrada, e era justamente o problema que a gente corrigiu em julho.</li>
+    </ul>
+
+    <figure>
+      <img src="{{IMG4}}" alt="Google Analytics, relatório Aquisição de tráfego, tabela por canal com 171 sessões no total">
+      <figcaption><b>Onde olhar:</b> a tabela embaixo do gráfico. Linha <b>Total</b> como
+      referência (171 sessões), depois cada canal com sua fatia. A coluna <b>Taxa de
+      engajamento</b> é a que separa visita boa de visita que bate e sai: Organic Social está em
+      40,91% contra 22,83% do Direct.</figcaption>
+    </figure>
+
+    <p>Duas leituras importam aqui. A primeira: <b>Organic Search em 11 sessões (6,43%)</b> é o
+    melhor número da série inteira, contra 1,29% em julho. O conteúdo que entrou no índice já
+    está virando visita de verdade. A segunda: <b>Unassigned em 8 sessões</b> parece alto, mas a
+    série dia a dia mostra uma única visita sem origem em 20/08 e nenhuma entre 16 e 19/08. É
+    resíduo, não é o bug voltando.</p>
+
+    <div class="callout">
+      <div class="eyebrow">Detalhe de método</div>
+      <p>Os números que puxei pela API mais cedo diferem de leve dos da tela (126 contra 127 em
+      Direct). É dado ainda sendo processado pelo Google, não erro. Por isso a leitura honesta
+      de hoje é que o Direct empatou com o patamar histórico de 74%, não que caiu.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Tela 5 · Bing Webmaster Tools → Backlinks</div>
+      <h2>O mesmo site pelos olhos do outro buscador</h2>
+    </div>
+
+    <p>O Bing é pequeno em volume, mas serve de segunda opinião. Quando os dois discordam, a
+    diferença costuma dizer algo.</p>
+
+    <figure>
+      <img src="{{IMG5}}" alt="Bing Webmaster Tools, relatório Backlinks, com 3 domínios, 3 páginas e 3 anchor texts">
+      <figcaption><b>Onde olhar:</b> os três cartões do topo, todos em 3, e a lista com
+      cbinsights, findglocal e x.com. É o mesmo retrato de oito dias atrás.</figcaption>
+    </figure>
+
+    <p>Compare com a tela 3: o Google já enxerga 14 links de 5 domínios, o Bing ainda vê 3. Não
+    são dados conflitantes, é atraso de rastreamento. A conclusão prática é só uma: nunca
+    compare o número de links de um com o do outro, acompanhe cada fonte na própria série.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Medição própria · PostHog</div>
+      <h2>O contador que é nosso, não do Google</h2>
+    </div>
+
+    <p>Search Console e Analytics são do Google, medem do jeito dele e escondem parte do
+    caminho. O PostHog roda no nosso próprio domínio desde 17 de agosto e conta as visitas por
+    conta própria. Serve para três coisas que as outras ferramentas não entregam: caminho página
+    a página sem amostragem, velocidade real sentida por quem abriu o site, e independência de
+    cookie de terceiro. A amostra ainda é de dias, então trate como termômetro, não como série.</p>
+
+    <div class="charts" id="charts-ph"></div>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Página</th><th>Views (14d)</th><th>Sessões</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>/ (home)</td><td>13</td><td>12</td></tr>
+          <tr><td>/blog/web-three-attribution-tool</td><td>4</td><td>1</td></tr>
+          <tr><td>/blog/defi-marketing-agency-checklist</td><td>1</td><td>1</td></tr>
+          <tr><td>/blog/crypto-kol-marketing-evolution</td><td>1</td><td>1</td></tr>
+          <tr><td>/blog/web3-kol-attribution-2026</td><td>1</td><td>1</td></tr>
+          <tr><td>/crypto-kol-marketing.html</td><td>1</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Leitura honesta desta tabela: 21 visualizações em cinco dias, com a home concentrando 13.
+    O pico de 20 de agosto (14 views num dia só) coincide com o dia em que eu validava o rollout
+    do próprio PostHog, então provavelmente é medição minha, não público. As quatro views em
+    <code>web-three-attribution-tool</code> vieram todas de uma sessão só, o que reforça a
+    mesma suspeita.</p>
+
+    <p>De onde vieram: quase tudo aparece como direto, sem origem declarada (7 views de celular
+    nos Estados Unidos, 4 de desktop no Brasil, 4 de desktop nos Estados Unidos), mais duas
+    vindas de busca no Google, de celular, no Paquistão. Isso confirma pelo lado de cá o que o
+    Analytics já mostrava: o canal Direct grande não é gente digitando o endereço, é origem que
+    se perde no caminho.</p>
+
+    <div class="callout">
+      <div class="eyebrow">Velocidade do site, 15 amostras reais</div>
+      <p><b>LCP 704 ms</b> (o tempo até o maior elemento da tela aparecer, bom é abaixo de 2500),
+      <b>FCP 1808 ms</b> (primeiro pedaço de conteúdo pintado) e <b>CLS zero</b> (nada pula de
+      lugar enquanto a página carrega). Ou seja, velocidade não é gargalo aqui, e isso importa
+      porque elimina uma hipótese comum para CTR baixo.</p>
+    </div>
+
+    <div class="callout">
+      <div class="eyebrow">Resolvido em 21/08: os eventos de conversão foram instrumentados</div>
+      <p>Até hoje o PostHog só tinha eventos automáticos (página vista, página fechada,
+      velocidade), então media tráfego e não resultado. O arquivo que já mandava conversão para
+      o Analytics passou a mandar as mesmas ações, com o mesmo nome, também para o PostHog, e
+      ganhou dois eventos novos. Está no ar desde hoje, commit <code>9c04797</code>.</p>
+    </div>
+
+    <ul>
+      <li><b>generate_lead</b> e <b>qualify_lead</b>: formulário de contato enviado com sucesso,
+      o segundo carregando o tipo de projeto. É a conversão principal.</li>
+      <li><b>form_start</b> (novo): primeiro campo do formulário tocado. É o degrau que faltava,
+      porque quem chegava e desistia no meio era indistinguível de quem nunca abriu a página.</li>
+      <li><b>contact_click</b> (novo): qualquer link para a página de contato. Só uma fatia dos
+      links de contato carregava a classe do botão que já era rastreada, então a maior parte da
+      intenção era invisível.</li>
+      <li><b>lets_talk_click</b>, <b>telegram_click</b>, <b>email_click</b>: os três caminhos de
+      conversa direta.</li>
+      <li><b>calculator_used</b>, <b>calculator_share</b>, <b>adoption_check_run</b>,
+      <b>adoption_check_unlock</b>, <b>adoption_check_share</b>: uso das ferramentas.</li>
+    </ul>
+
+    <p>Junto foi a atribuição de primeiro toque: a origem da primeira visita (utm ou site que
+    encaminhou, guardada 30 dias) agora viaja como propriedade fixa em todo evento do PostHog,
+    inclusive nos pageviews. É o conserto do mesmo problema que faz o Direct parecer 74% no
+    Analytics.</p>
+
+    <p><b>Verificado em produção, não só no código:</b> o <code>form_start</code> disparado no
+    formulário real chegou no PostHog, o <code>contact_click</code> disparou num link comum de
+    contato e o botão principal continuou disparando <code>lets_talk_click</code> uma única vez,
+    sem contar duplicado. <b>O que esperar:</b> os primeiros dados úteis aparecem quando visitas
+    reais passarem por essas ações, então a leitura de amanhã ainda deve mostrar pouco. O número
+    a acompanhar daqui pra frente é a razão entre <code>contact_click</code>,
+    <code>form_start</code> e <code>generate_lead</code>: é ela que diz se o site perde gente
+    antes do formulário ou dentro dele.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <div class="eyebrow">Conclusão</div>
+      <h2>O que fazer com isso nesta semana</h2>
+    </div>
+
+    <div class="callout">
+      <div class="eyebrow">A ação de maior impacto</div>
+      <p><b>Executar o playbook de submissão a diretórios.</b> A demanda está provada (651
+      aparições em buscas comerciais). O que impede o clique é a posição, e posição depende de
+      autoridade externa, que hoje são 5 domínios parados. Diretórios são o único canal que já
+      converteu para a Wevolv3.</p>
+    </div>
+
+    <p>E uma coisa para <b>não</b> fazer: não mexer em título nem em descrição de página até
+    27 de agosto. Os textos de cinco páginas foram reescritos no dia 20 e ainda estão entrando
+    no índice do Google. Qualquer edição nova reinicia o relógio e impede medir se a mudança
+    funcionou. A comparação já está congelada: 5 cliques, 410 aparições, CTR 1,2% na janela de
+    referência.</p>
+  </section>
+
+  <footer>
+    Leitura completa registrada em <code>docs/SEO_DAILY_LOG.md</code>. As cinco telas foram
+    capturadas na conta diablov2021, no perfil do Chrome que tem acesso às propriedades.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Uma linha por leitura registrada em docs/SEO_DAILY_LOG.md.
+  // n = null quando a fonte não foi lida naquele dia (extensão do Chrome fora do ar).
+  var SERIE_SEO = [
+    ["27/07",  36, 5, 25.4, 18, 62, 311, 1.29, 17.68],
+    ["29/07",  36, 5, 23.8, 18, 62, 307, 1.30, 17.26],
+    ["30/07",  39, 5, 25.0, 18, 62, 279, 1.43, 17.92],
+    ["31/07",  38, 5, 25.6, 18, 62, 228, 1.75, 19.74],
+    ["01/08",  39, 5, 25.0, 18, 62, 223, 1.79, 21.08],
+    ["02/08",  38, 5, 25.7, 18, 62, 205, 1.95, 19.51],
+    ["03/08",  40, 5, 29.0, 18, 62, 203, 1.97, 18.72],
+    ["04/08",  39, 4, 31.9, 18, 62, 197, 2.03, 18.27],
+    ["05/08",  42, 4, 31.8, 18, 62, 194, 2.06, 18.56],
+    ["13/08",  46, 3, 37.5, 46, 42, 184, 2.72, 10.87],
+    ["14/08",  74, 3, 26.0, 46, 42, 194, 3.09,  9.79],
+    ["15/08",  79, 4, 26.9, 46, 42, 182, 3.30,  9.34],
+    ["16/08",  78, 4, 27.3, 46, 42, 193, 3.11, 11.92],
+    ["18/08", 279, 6, 35.1, 46, 45, 175, 5.71, 11.43],
+    ["19/08", null, null, null, null, null, 173, 5.20, 11.56],
+    ["20/08", 556, 6, 35.2, 53, 40, 178, 5.62, 11.80],
+    ["21/08", 651, 6, 34.8, 53, 40, 171, 6.43, 12.87]
+  ];
+
+  var COL = { impr:1, cliq:2, pos:3, idx:4, nidx:5, sess:6, search:7, social:8 };
+
+  // PostHog: medição própria, começou a valer em 17/08. [data, pageviews, sessões]
+  var SERIE_PH = [
+    ["17/08",  1,  1],
+    ["18/08",  2,  2],
+    ["19/08",  2,  1],
+    ["20/08", 14, 10],
+    ["21/08",  2,  2]
+  ];
+
+  function paint(){
+    var cs = getComputedStyle(document.documentElement);
+    return {
+      a: cs.getPropertyValue("--serie-a").trim(),
+      b: cs.getPropertyValue("--serie-b").trim(),
+      line: cs.getPropertyValue("--line").trim(),
+      soft: cs.getPropertyValue("--ink-soft").trim(),
+      card: cs.getPropertyValue("--card").trim()
+    };
+  }
+
+  var W = 460, H = 190, PAD = { t:14, r:46, b:26, l:46 };
+
+  function fmt(v, dec){ return Number(v).toFixed(dec || 0).replace(".", ","); }
+
+  function build(cfg){
+    var c = paint();
+    var SERIE = cfg.rows || SERIE_SEO;
+    var series = cfg.series.map(function(s){
+      var ci = (typeof s.col === "number") ? s.col : COL[s.col];
+      return { name:s.name, color:s.key === "b" ? c.b : c.a,
+               pts: SERIE.map(function(r){ return r[ci]; }) };
+    });
+
+    var all = [];
+    series.forEach(function(s){ s.pts.forEach(function(v){ if(v !== null) all.push(v); }); });
+    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    if (cfg.zero) lo = 0;
+    if (hi === lo) hi = lo + 1;
+    var pad = (hi - lo) * 0.12; hi += pad; lo = cfg.zero ? 0 : Math.max(0, lo - pad);
+
+    var iw = W - PAD.l - PAD.r, ih = H - PAD.t - PAD.b;
+    var x = function(i){ return PAD.l + (SERIE.length === 1 ? 0 : i * iw / (SERIE.length - 1)); };
+    var y = function(v){ return PAD.t + ih - (v - lo) / (hi - lo) * ih; };
+
+    var svg = ['<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + cfg.title + '">'];
+
+    // grade recessiva + rótulos do eixo
+    for (var g = 0; g <= 3; g++){
+      var val = lo + (hi - lo) * g / 3, yy = y(val);
+      svg.push('<line x1="' + PAD.l + '" y1="' + yy.toFixed(1) + '" x2="' + (W - PAD.r) +
+               '" y2="' + yy.toFixed(1) + '" stroke="' + c.line + '" stroke-width="1"/>');
+      svg.push('<text x="' + (PAD.l - 8) + '" y="' + (yy + 3.5).toFixed(1) +
+               '" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9.5" fill="' +
+               c.soft + '">' + fmt(val, cfg.dec) + '</text>');
+    }
+
+    // rótulos de data: primeiro, meio, último
+    [0, Math.floor(SERIE.length / 2), SERIE.length - 1].forEach(function(i){
+      svg.push('<text x="' + x(i).toFixed(1) + '" y="' + (H - 8) +
+               '" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="' +
+               c.soft + '">' + SERIE[i][0] + '</text>');
+    });
+
+    series.forEach(function(s){
+      var d = "", open = false, last = -1;
+      s.pts.forEach(function(v, i){
+        if (v === null) { open = false; return; }
+        d += (open ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1) + " ";
+        open = true; last = i;
+      });
+      svg.push('<path d="' + d + '" fill="none" stroke="' + s.color +
+               '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>');
+      if (last >= 0){
+        svg.push('<circle cx="' + x(last).toFixed(1) + '" cy="' + y(s.pts[last]).toFixed(1) +
+                 '" r="4" fill="' + s.color + '" stroke="' + c.card + '" stroke-width="2"/>');
+        svg.push('<text x="' + (x(last) + 9) + '" y="' + (y(s.pts[last]) + 3.5).toFixed(1) +
+                 '" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600" fill="' +
+                 s.color + '">' + fmt(s.pts[last], cfg.dec) + '</text>');
+      }
+    });
+
+    svg.push('<line class="cross" x1="0" y1="' + PAD.t + '" x2="0" y2="' + (PAD.t + ih) +
+             '" stroke="' + c.soft + '" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>');
+    svg.push('<rect x="' + PAD.l + '" y="' + PAD.t + '" width="' + iw + '" height="' + ih +
+             '" fill="transparent" class="hit"/>');
+    svg.push('</svg>');
+
+    var el = document.createElement("div");
+    el.className = "chart";
+    el.innerHTML =
+      '<h3>' + cfg.title + '</h3>' +
+      '<div class="sub">' + cfg.sub + '</div>' +
+      svg.join("") +
+      (series.length > 1
+        ? '<div class="legend">' + series.map(function(s){
+            return '<span><i class="swatch" style="background:' + s.color + '"></i>' + s.name + '</span>';
+          }).join("") + '</div>'
+        : "") +
+      '<div class="tip"></div>';
+
+    // camada de hover: ponto mais próximo, crosshair e tooltip
+    var svgEl = el.querySelector("svg"), tip = el.querySelector(".tip"),
+        cross = el.querySelector(".cross"), hit = el.querySelector(".hit");
+    function move(ev){
+      var box = svgEl.getBoundingClientRect();
+      var px = (ev.clientX - box.left) / box.width * W;
+      var i = Math.round((px - PAD.l) / (iw / (SERIE.length - 1)));
+      i = Math.max(0, Math.min(SERIE.length - 1, i));
+      cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i));
+      cross.setAttribute("opacity", "1");
+      var rows = series.map(function(s){
+        var v = s.pts[i];
+        return (series.length > 1 ? s.name + ": " : "") + (v === null ? "sem leitura" : fmt(v, cfg.dec));
+      }).join(" · ");
+      tip.textContent = SERIE[i][0] + "  " + rows;
+      tip.style.opacity = "1";
+      tip.style.left = Math.min(box.width - 150, Math.max(0, (x(i) / W) * box.width - 60)) + "px";
+      tip.style.top = "44px";
+    }
+    hit.addEventListener("pointermove", move);
+    hit.addEventListener("pointerleave", function(){
+      tip.style.opacity = "0"; cross.setAttribute("opacity", "0");
+    });
+    return el;
+  }
+
+  var CHARTS = [
+    { title:"Impressões no Google", sub:"quantas vezes o site apareceu, janela de 28 dias",
+      zero:true, dec:0, series:[{ name:"Impressões", col:"impr", key:"a" }] },
+    { title:"Cliques no Google", sub:"quantas visitas vieram da busca, janela de 28 dias",
+      zero:true, dec:0, series:[{ name:"Cliques", col:"cliq", key:"a" }] },
+    { title:"Posição média", sub:"menor é melhor, cada 10 posições é uma página de resultados",
+      zero:false, dec:1, series:[{ name:"Posição", col:"pos", key:"a" }] },
+    { title:"Indexação", sub:"páginas que o Google guardou contra as que ficaram de fora",
+      zero:true, dec:0, series:[{ name:"Indexadas", col:"idx", key:"a" },
+                                { name:"Não indexadas", col:"nidx", key:"b" }] },
+    { title:"Busca orgânica, % das sessões", sub:"fatia do tráfego que chegou pela busca",
+      zero:true, dec:2, series:[{ name:"Organic Search", col:"search", key:"a" }] },
+    { title:"Sessões no site", sub:"total de visitas, janela de 28 dias no Analytics",
+      zero:true, dec:0, series:[{ name:"Sessões", col:"sess", key:"a" }] }
+  ];
+
+  var CHARTS_PH = [
+    { title:"Pageviews por dia", sub:"contagem própria, sem depender do Google", rows:SERIE_PH,
+      zero:true, dec:0, series:[{ name:"Pageviews", col:1, key:"a" }] },
+    { title:"Sessões por dia", sub:"visitas distintas registradas pelo PostHog", rows:SERIE_PH,
+      zero:true, dec:0, series:[{ name:"Sessões", col:2, key:"a" }] }
+  ];
+
+  function render(){
+    var host = document.getElementById("charts");
+    host.innerHTML = "";
+    CHARTS.forEach(function(cfg){ host.appendChild(build(cfg)); });
+    var hostPh = document.getElementById("charts-ph");
+    if (hostPh){
+      hostPh.innerHTML = "";
+      CHARTS_PH.forEach(function(cfg){ hostPh.appendChild(build(cfg)); });
+    }
+  }
+  render();
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    (mq.addEventListener ? mq.addEventListener.bind(mq, "change") : mq.addListener.bind(mq))(render);
+  }
+  new MutationObserver(render).observe(document.documentElement, { attributeFilter:["data-theme"] });
+
+  // tabela de variação
+  var first = SERIE_SEO[0], mid = SERIE_SEO[9], last = SERIE_SEO[SERIE_SEO.length - 1];
+  var LINHAS = [
+    ["Impressões", COL.impr, 0, "up"],
+    ["Cliques", COL.cliq, 0, "up"],
+    ["Posição média", COL.pos, 1, "down"],
+    ["Páginas indexadas", COL.idx, 0, "up"],
+    ["Páginas fora do índice", COL.nidx, 0, "down"],
+    ["Busca orgânica (% das sessões)", COL.search, 2, "up"],
+    ["Sessões no site", COL.sess, 0, "up"]
+  ];
+  document.getElementById("deltas").innerHTML = LINHAS.map(function(r){
+    var a = first[r[1]], b = mid[r[1]], c2 = last[r[1]], dec = r[2];
+    var diff = c2 - a;
+    var pct = a ? Math.round(diff / a * 100) : 0;
+    var better = (r[3] === "up") ? diff > 0 : diff < 0;
+    var cls = diff === 0 ? "flat" : (better ? "up" : "down");
+    var seta = diff === 0 ? "sem mudança" : (diff > 0 ? "▲" : "▼") + " " +
+               fmt(Math.abs(diff), dec) + (a ? " (" + (pct > 0 ? "+" : "") + pct + "%)" : "");
+    return "<tr><td>" + r[0] + "</td><td>" + fmt(a, dec) + "</td><td>" + fmt(b, dec) +
+           "</td><td>" + fmt(c2, dec) + '</td><td class="delta ' + cls + '">' + seta + "</td></tr>";
+  }).join("");
+})();
+</script>
