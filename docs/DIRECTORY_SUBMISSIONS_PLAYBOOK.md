@@ -1,5 +1,16 @@
 ﻿# Wevolv3 — Directory Submissions Playbook
 
+> **Atualização 2026-08-02.** Este documento é de 23/04 e segue válido como lista mestre, mas
+> duas coisas mudaram:
+>
+> 1. **Os templates de descrição abaixo estão desatualizados.** Eles se autodescrevem como
+>    "Web3 marketing agency". A posição atual é **"Web3 growth partner", não "agency"**. Usar os
+>    textos de [`DIRECTORY_SUBMISSIONS_LOG.md`](DIRECTORY_SUBMISSIONS_LOG.md), não os daqui.
+> 2. **O tracking que a seção final pede agora existe:**
+>    [`DIRECTORY_SUBMISSIONS_LOG.md`](DIRECTORY_SUBMISSIONS_LOG.md). Registrar lá, no ato de cada
+>    submissão. Ver também [`SEO_DIRECTORIES.md`](SEO_DIRECTORIES.md), que tem custos e URLs de
+>    submissão conferidos um a um em 02/08.
+
 **Objetivo:** submeter Wevolv3 em 21 diretórios em 2 semanas, sem atalho e sem pagar.
 
 **Para cada diretório abaixo tem:** link direto, o que preparar, pitch template, tempo estimado.
@@ -187,14 +198,11 @@ Diretório de startups brasileiras. Rápido de aprovar.
 
 ---
 
-## Tracking — planilha mínima
+## Tracking
 
-Crie uma Google Sheet com colunas:
-
-| Diretório | URL submissão | Data submeti | Status | Data aprovado | URL backlink | DR | Notas |
-|---|---|---|---|---|---|---|---|
-
-Preencha à medida que submete. Sem isso, em 30 dias você perde o track.
+**Feito.** Está em [`DIRECTORY_SUBMISSIONS_LOG.md`](DIRECTORY_SUBMISSIONS_LOG.md), no repo em vez
+de numa Google Sheet, para ficar versionado junto com o resto da documentação de SEO. Preencher no
+ato de cada submissão. Sem isso, em 30 dias se perde o track.
 
 ---
 
