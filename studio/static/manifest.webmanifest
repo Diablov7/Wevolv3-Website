@@ -1,10 +1,4 @@
 {
-  "name": "Wevolv3 Blog Studio",
-  "short_name": "Wevolv3 Studio",
-  "start_url": "/studio",
-  "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#10b981",
   "icons": [
     {
       "src": "/studio/static/favicon-96.png",
