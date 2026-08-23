@@ -37,7 +37,10 @@ export const handler = async (event) => {
 
     // Suporta múltiplos chat_ids separados por vírgula, ponto e vírgula, ou quebra de linha
     // Também suporta variável alternativa TELEGRAM_CHAT_ID_GROUP para grupos
-    // Exemplo: "426197451,-1001234567890" ou "426197451;-1001234567890" ou "426197451\n-1001234567890"
+    // Exemplo: "<id_privado>,-100xxxxxxxxxx" ou "<id_privado>;-100xxxxxxxxxx"
+    // Exemplo com valor real de proposito NAO, nem em comentario: o id real e o
+    // valor de uma env var, e a varredura de segredos do Netlify reprova o build
+    // quando ele aparece no bundle da funcao (foi o que derrubou o deploy 3cc22c5).
     const chatIdsRaw = process.env.TELEGRAM_CHAT_ID || '';
     const groupChatIdRaw = process.env.TELEGRAM_CHAT_ID_GROUP || '';
     
