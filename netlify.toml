@@ -4,6 +4,22 @@
   command = "(node generate-news.js && node generate-sitemap.js) || echo 'Static generation skipped (Node.js not available)'; node inject-analytics.js && node strip-internal.js"
   functions = "netlify/functions"
 
+# Varredura de segredos: LIGADA (SECRETS_SCAN_ENABLED=true no painel). Ela ficou
+# desligada ate 23/08/2026, e foi por isso que um token do Telegram hardcoded passou
+# 52 dias em producao sem nenhum alarme.
+#
+# As duas chaves abaixo sao os unicos falsos positivos, e sao publicas por definicao:
+# o prefixo VITE_ significa que o valor vai para o bundle do cliente, e todo navegador
+# que abre o blog precisa das duas para consultar o CDN do Sanity. Aparecem em
+# blog.html, index.html, singleblog.html, singlework.html, works.html e no bundle do
+# Studio. Nao sao credencial: nao dao escrita, e o dataset e publico.
+#
+# Silenciar SO estas duas e o ponto. Nao voltar a desligar a varredura inteira, senao
+# credencial de verdade (TELEGRAM_BOT_TOKEN, RESEND_API_KEY, OPENROUTER_API_KEY,
+# TWITTERAPI_IO_KEY, SANITY_PREVIEW_SECRET) volta a passar batido.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SANITY_PROJECT_ID,VITE_SANITY_DATASET"
+
 
 # Remove o codigo-fonte das funcoes do output publicado. Precisa ser um plugin
 # porque o empacotamento das funcoes acontece depois do comando de build.
