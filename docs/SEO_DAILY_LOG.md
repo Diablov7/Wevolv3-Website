@@ -54,10 +54,31 @@ so vale no deploy seguinte. Como o push do fix disparou o deploy, os dois entrar
 copia orfa de 33,8 MB em `.claude/worktrees/` removidas - era o ultimo lugar do disco com o
 token velho.
 
-**Fica em aberto:** conferir o valor de `SECRETS_SCAN_ENABLED` no projeto. Se estiver `false`,
-e a explicacao de o token hardcoded ter ido para producao sem alarme, e o certo e apagar a
-variavel para a varredura voltar ao padrao ligado. Idem marcar `OPENROUTER_API_KEY` e
-`RESEND_API_KEY` como secret, que estavam expostas na UI, na API e nos build logs.
+**CONFIRMADO: `SECRETS_SCAN_ENABLED` esta `false`.** E a explicacao de o token hardcoded ter
+ido para producao sem alarme nenhum. O certo e **apagar a variavel** (o padrao do Netlify e
+ligado).
+
+Auditoria feita antes de recomendar, para saber se religar quebra a build. **Nenhum valor de
+env var vai para o output publicado:** `sendTelegram.js` e `adoptionDiagnostic.js` sao
+server-side e o plugin `strip-functions` remove o fonte das funcoes do publish; `sync-news.js`
+e script de build e nao emite nada para a pagina; e `inject-analytics.js` **nao le env nenhuma**
+(as chaves de GA4/PostHog ali sao literais publicas). Ou seja, nao existe o caso legitimo de
+variavel que precisa ir para o bundle do cliente. Religar deve passar limpo.
+
+Se ainda assim falhar, **nao voltar para `false`**: ler qual chave foi apontada e usar
+`SECRETS_SCAN_OMIT_KEYS` so para ela. O sinal de que foi exatamente isso que aconteceu na
+epoca e que nao existe `SECRETS_SCAN_OMIT_KEYS` nem `SECRETS_SCAN_OMIT_PATHS` em lugar nenhum
+do repo - alguem desligou o alarme inteiro em vez de silenciar o sensor certo.
+
+Escopo: a varredura protege daqui pra frente, nao varre o historico do git. O token velho
+segue la, e quem resolveu isso foi a revogacao.
+
+**Auditoria da outra function (boa noticia):** `adoptionDiagnostic.js` esta limpa - todos os
+fallbacks sao `""` ou valores nao sensiveis (nomes de modelo, remetente publico do Resend), e
+ate documenta que credencial vem so de env. O `sendTelegram.js` era o ponto fora da curva.
+
+**Fica em aberto:** marcar `OPENROUTER_API_KEY` e `RESEND_API_KEY` como secret, que estavam
+expostas na UI, na API e nos build logs.
 
 ### O diagnostico, registrado como estava
 
