@@ -54,7 +54,40 @@ so vale no deploy seguinte. Como o push do fix disparou o deploy, os dois entrar
 copia orfa de 33,8 MB em `.claude/worktrees/` removidas - era o ultimo lugar do disco com o
 token velho.
 
-**CONFIRMADO: `SECRETS_SCAN_ENABLED` esta `false`.** E a explicacao de o token hardcoded ter
+### RESOLVIDO: varredura religada e build verde (deploy `cf6fe29`)
+
+Religar quebrou 3 builds seguidas (`3cc22c5`, `73f1666`, `de3fc67`), todas com "Exposed
+secrets detected". O log do deploy nomeia as **2 unicas deteccoes**:
+
+```
+Scanning complete. 240 file(s) scanned. Secrets scanning found 2 instance(s)
+Secret env var "VITE_SANITY_PROJECT_ID"'s value detected: blog.html, index.html,
+  singleblog.html, singlework.html, works.html, studio/static/sanity.config-*.js
+Secret env var "VITE_SANITY_DATASET"'s value detected: (os mesmos arquivos)
+```
+
+Sao o ID do projeto Sanity e o nome do dataset. **Publicos por definicao:** o prefixo `VITE_`
+significa que o valor vai para o bundle do cliente, e todo navegador que abre o blog precisa
+dos dois para consultar o CDN do Sanity. Nao dao escrita. Falso positivo, e quase certamente
+o motivo de alguem ter desligado a varredura inteira na epoca.
+
+**Correcao aplicada** (commit `cf6fe29`, no `netlify.toml`):
+`SECRETS_SCAN_OMIT_KEYS = "VITE_SANITY_PROJECT_ID,VITE_SANITY_DATASET"`. Silencia so essas
+duas e mantem a varredura ligada para `TELEGRAM_BOT_TOKEN`, `RESEND_API_KEY`,
+`OPENROUTER_API_KEY`, `TWITTERAPI_IO_KEY` e `SANITY_PREVIEW_SECRET`. Publicado em 20s, e
+`OPTIONS /.netlify/functions/sendTelegram` responde 204.
+
+**Erro de metodo meu, registrado para nao repetir:** gastei 2 deploys deduzindo qual era o
+segredo em vez de abrir o log da primeira falha. As duas correcoes que fiz no caminho
+(placeholder no comentario do `sendTelegram.js`, redacao do chat id no
+`GUIA_TELEGRAM_GRUPO.md` e no log) sao melhorias legitimas e ficam, mas **nao eram o que
+travava o build**. Regra: em falha de build, ler o log antes de formular hipotese. E o log e
+acessivel pelo navegador (`app.netlify.com/projects/<projeto>/deploys/<id>`), nao precisa da
+CLI - que aqui esta instalada (21.4.1) mas com a sessao expirada.
+
+### Como estava antes
+
+**CONFIRMADO: `SECRETS_SCAN_ENABLED` estava `false`.** E a explicacao de o token hardcoded ter
 ido para producao sem alarme nenhum. O certo e **apagar a variavel** (o padrao do Netlify e
 ligado).
 
