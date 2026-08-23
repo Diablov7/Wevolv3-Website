@@ -103,9 +103,10 @@ aparece so como dependencia transitiva no `package-lock.json`. Blog e cases vem 
 caminho publico: project id e dataset sao identificadores publicos e estao hardcoded no
 `sanity.config.ts`. Os `preview:` nos schemas (`post.ts`, `work.ts`, `category.ts`) sao a
 miniatura da lista interna do Studio, nome igual e funcao sem relacao.
-**Recomendacao: apagar, nao marcar.** Nao apagado ainda - credencial morta e passivo, mas
-apagar e irreversivel e nao da para provar daqui que ela nao esta cadastrada do lado do
-sanity.io ou em outro projeto do mesmo time.
+**APAGADA em 23/08**, a pedido do Romulo, depois da investigacao acima. O painel confirmava
+"updated 8 months ago", coerente com config esquecida. Confirmacao do Netlify nomeava a
+variavel certa, e a lista pos-remocao nao a contem mais. Se algum dia o preview do Sanity for
+montado de verdade, gera-se um segredo novo no proprio Sanity - nao ha nada a restaurar.
 
 **Redundancia encontrada junto:** `VITE_SANITY_PROJECT_ID` e `VITE_SANITY_DATASET` duplicam
 valores que ja estao literais no `sanity.config.ts` e no HTML. Estao marcadas como secret no
