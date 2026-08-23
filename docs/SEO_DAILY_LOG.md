@@ -85,6 +85,33 @@ travava o build**. Regra: em falha de build, ler o log antes de formular hipotes
 acessivel pelo navegador (`app.netlify.com/projects/<projeto>/deploys/<id>`), nao precisa da
 CLI - que aqui esta instalada (21.4.1) mas com a sessao expirada.
 
+### Auditoria das credenciais no painel da Netlify (23/08, fim do dia)
+
+Marcadas como secret hoje: `RESEND_API_KEY` e `TWITTERAPI_IO_KEY` (as duas estavam abertas na
+UI, na API e nos build logs). `OPENROUTER_API_KEY` **ja era** secret - eu tinha lido errado o
+cadeado no print e afirmei que estava exposta. `TELEGRAM_BOT_TOKEN` foi marcado mais cedo.
+
+Seguem abertas de propriedade: `EMAIL_FROM` (remetente, nao credencial), `TELEGRAM_CHAT_ID`
+(identificador) e `SECRETS_SCAN_ENABLED` (config, valor `true`).
+
+**`SANITY_PREVIEW_SECRET` e configuracao morta.** Investigado a pedido do Romulo, que suspeitava
+ser do blog e dos cases. Nada no repo le essa variavel; as edge functions `inject-og-tags` e
+`clean-work-urls` (que servem blog e cases) **nao leem env var nenhuma**; nao ha rota de preview
+no `_redirects`; e o `wevolv3/sanity.config.ts` tem so `structureTool` e `visionTool`, sem o
+plugin Presentation, que seria quem usaria preview secret. O `@sanity/preview-url-secret`
+aparece so como dependencia transitiva no `package-lock.json`. Blog e cases vem do Sanity pelo
+caminho publico: project id e dataset sao identificadores publicos e estao hardcoded no
+`sanity.config.ts`. Os `preview:` nos schemas (`post.ts`, `work.ts`, `category.ts`) sao a
+miniatura da lista interna do Studio, nome igual e funcao sem relacao.
+**Recomendacao: apagar, nao marcar.** Nao apagado ainda - credencial morta e passivo, mas
+apagar e irreversivel e nao da para provar daqui que ela nao esta cadastrada do lado do
+sanity.io ou em outro projeto do mesmo time.
+
+**Redundancia encontrada junto:** `VITE_SANITY_PROJECT_ID` e `VITE_SANITY_DATASET` duplicam
+valores que ja estao literais no `sanity.config.ts` e no HTML. Estao marcadas como secret no
+painel, e e exatamente por isso que a varredura as cacava. Limpeza definitiva seria desmarcar
+as duas e remover o `SECRETS_SCAN_OMIT_KEYS` do `netlify.toml`. O que esta no ar ja funciona.
+
 ### Como estava antes
 
 **CONFIRMADO: `SECRETS_SCAN_ENABLED` estava `false`.** E a explicacao de o token hardcoded ter
