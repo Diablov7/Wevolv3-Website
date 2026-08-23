@@ -28,13 +28,17 @@ export const handler = async (event) => {
       hasProjectType: !!projectType
     });
 
-    // Usar env vars ou fallback hardcoded para garantir funcionamento
-    const token = process.env.TELEGRAM_BOT_TOKEN || '7615783171:AAHjemZssJN-NOzIEb2jfitm0XEJ5YE2g9E';
-    
+    // Credenciais vêm SÓ das env vars. Não existe fallback hardcoded, de propósito:
+    // até 23/08/2026 havia um, e ele custou 52 dias de leads perdidos em silêncio. Com o
+    // fallback, a função sempre "tinha" credencial, passava por toda a lógica e só falhava
+    // na chamada ao Telegram, com um 401 que ninguém via. Sem ele, credencial faltando é
+    // erro de configuração explícito (ver o guard logo abaixo) e aparece no primeiro envio.
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+
     // Suporta múltiplos chat_ids separados por vírgula, ponto e vírgula, ou quebra de linha
     // Também suporta variável alternativa TELEGRAM_CHAT_ID_GROUP para grupos
     // Exemplo: "426197451,-1001234567890" ou "426197451;-1001234567890" ou "426197451\n-1001234567890"
-    const chatIdsRaw = process.env.TELEGRAM_CHAT_ID || '426197451';
+    const chatIdsRaw = process.env.TELEGRAM_CHAT_ID || '';
     const groupChatIdRaw = process.env.TELEGRAM_CHAT_ID_GROUP || '';
     
     // Log do valor bruto (sem expor completamente por segurança)
@@ -68,11 +72,30 @@ export const handler = async (event) => {
       chatIds = [...chatIds, ...groupIds];
     }
 
-    console.log('[sendTelegram] Using credentials', { 
-      hasToken: !!token, 
+    console.log('[sendTelegram] Using credentials', {
+      hasToken: !!token,
       chatIdsCount: chatIds.length,
       chatIds: chatIds // Log dos IDs parseados para debug
     });
+
+    // Guard de configuração: falha alto e com mensagem legível em vez de tentar enviar com
+    // credencial que não existe. Sem isso, a ausência de env var vira um 401 genérico do
+    // Telegram, indistinguível de um token revogado.
+    const missing = [];
+    if (!token) missing.push('TELEGRAM_BOT_TOKEN');
+    if (chatIds.length === 0 && !chat_id) missing.push('TELEGRAM_CHAT_ID');
+    if (missing.length > 0) {
+      console.error('[sendTelegram] MISCONFIGURED: missing env vars', missing);
+      return {
+        statusCode: 500,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          error: 'Server misconfigured: missing Telegram credentials',
+          missing,
+          hint: 'Set these environment variables in the Netlify project settings and redeploy.',
+        }),
+      };
+    }
 
     // Telegram HTML parse_mode only requires escaping &, < and > in user-supplied
     // text. This is far more robust than legacy Markdown, which breaks the whole
