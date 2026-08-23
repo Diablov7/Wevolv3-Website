@@ -170,20 +170,20 @@
     <div class="eyebrow">Wevolv3 · leitura de 23 de agosto de 2026</div>
     <h1>Raio-X de aquisição</h1>
     <p class="lead">Esqueça o SEO por um minuto. Testei o formulário de contato em produção e
-    ele <b>não envia</b>. Está assim desde 2 de julho: 52 dias em que toda pessoa que tentou
-    falar com a Wevolv3 pelo site recebeu uma mensagem de erro. O resto do relatório continua
-    abaixo, mas nada nele importa tanto quanto isso.</p>
+    ele <b>não enviava</b>: 52 dias em que toda pessoa que tentou falar com a Wevolv3 pelo site
+    recebeu uma mensagem de erro. Diagnosticado às 16h35, <b>consertado e verificado às
+    16h55</b>. O resto do relatório continua abaixo, mas nada nele importou tanto quanto isso.</p>
 
     <div class="tiles">
       <div class="tile">
         <span class="k">Formulário de contato</span>
-        <span class="v">502</span>
-        <span class="d down">quebrado em produção</span>
+        <span class="v">200</span>
+        <span class="d up">consertado hoje</span>
       </div>
       <div class="tile">
-        <span class="k">Dias sem receber lead</span>
+        <span class="k">Dias que ficou quebrado</span>
         <span class="v">52</span>
-        <span class="d down">último em 02/07</span>
+        <span class="d down">02/07 a 23/08</span>
       </div>
       <div class="tile">
         <span class="k">Apareceu (impressões)</span>
@@ -501,14 +501,23 @@
 
   <section>
     <div class="head">
-      <div class="eyebrow">O achado do dia · teste em produção</div>
-      <h2>O formulário não envia. Está assim desde 2 de julho.</h2>
+      <div class="eyebrow">O achado do dia · teste em produção · RESOLVIDO</div>
+      <h2>O formulário não enviava desde 2 de julho. Voltou ao ar hoje.</h2>
+    </div>
+
+    <div class="callout">
+      <div class="eyebrow">Verificado às 16h55, depois da correção</div>
+      <p>O envio responde <b>200</b> com <code>{"ok":true,"sentTo":1}</code>, a tela mostra
+      "Thanks! Someone from our team will reach out soon.", e o evento de conversão apareceu nos
+      dois medidores: <b>Analytics em tempo real</b> e <b>PostHog</b>, às 16:55:22. A cadeia
+      inteira está de pé, do formulário até a notificação no Telegram. O que vem abaixo é o
+      diagnóstico, registrado como estava.</p>
     </div>
 
     <p>De manhã os dados apontaram para o formulário. À tarde eu fui testá-lo em produção, com
-    dados marcados como teste, e ele falhou na cara. O servidor responde <b>erro 502</b> e a
-    pessoa vê uma mensagem pedindo que tente de novo ou mande e-mail. Nenhuma mensagem chega
-    do outro lado.</p>
+    dados marcados como teste, e ele falhou na cara. O servidor respondia <b>erro 502</b> e a
+    pessoa via uma mensagem pedindo que tentasse de novo ou mandasse e-mail. Nenhuma mensagem
+    chegava do outro lado.</p>
 
     <div class="callout">
       <div class="eyebrow">O erro exato, em português</div>
@@ -530,14 +539,20 @@
     fricção de formulário. É o envio, e só o envio.</p>
 
     <div class="callout">
-      <div class="eyebrow">Como consertar, na ordem</div>
-      <p><b>1.</b> Gerar um token novo para o robô no BotFather do Telegram. <b>2.</b> Guardar
-      esse token nas variáveis de ambiente do projeto na Netlify, junto com o destinatário.
-      <b>3.</b> Tirar do código a cópia do token que hoje está escrita ali dentro, e que é a
-      razão de o problema ter passado 52 dias despercebido: com ela, o programa acha que tem
-      credencial e só descobre que não tem na hora de enviar. Sem ela, o erro aparece na hora
-      da publicação. <b>4.</b> Publicar e refazer este mesmo teste.</p>
+      <div class="eyebrow">O que foi feito, na ordem</div>
+      <p><b>1.</b> Token novo para o robô, gerado no BotFather. <b>2.</b> Guardado nas variáveis
+      de ambiente da Netlify, agora <b>marcado como secreto</b>, para o valor parar de aparecer
+      na interface, na API e nos registros de publicação. <b>3.</b> Removida do código a cópia
+      do token, que era a razão de o problema ter passado 52 dias despercebido: com ela, o
+      programa achava que tinha credencial e só descobria que não na hora de enviar. No lugar
+      dela entrou uma checagem que recusa a publicação com mensagem clara se faltar credencial.
+      <b>4.</b> Publicado e testado de novo, com o resultado que está no quadro acima.</p>
     </div>
+
+    <p><b>Detalhe que quase morde:</b> trocar a variável de ambiente sozinho não bastava. O
+    Netlify só entrega o valor novo para uma função na próxima publicação, então a variável
+    certa com o código antigo continuaria falhando. Como a correção do código foi publicada
+    junto, as duas coisas entraram no mesmo passo.</p>
 
     <p>Vale um alarme para isso não se repetir: se em alguns dias houver gente começando o
     formulário e nenhum envio bem-sucedido, alguém precisa ser avisado. O sintoma estava visível
@@ -648,19 +663,23 @@
     </div>
 
     <div class="callout">
-      <div class="eyebrow">A ação de maior impacto</div>
-      <p><b>Trocar o token do robô do Telegram e voltar o formulário ao ar, hoje.</b> É a única
-      coisa nesta página que custa dez minutos e vale mais do que qualquer ganho de SEO. Toda
-      aparição a mais na busca só aumenta o número de pessoas que chegam num formulário que não
-      funciona. Enquanto isso não estiver feito, vale colocar o e-mail e o Telegram em destaque
-      na página de contato, para quem quiser falar ter um caminho que funciona.</p>
+      <div class="eyebrow">Feito hoje</div>
+      <p><b>O formulário voltou ao ar</b>, o que era a ação de maior impacto e custou vinte
+      minutos. Não sobra nada a fazer nessa frente além de olhar, nos próximos dias, se as
+      pessoas que aparecem começando o formulário passam a aparecer também como contato
+      recebido. Esse é o par de números que precisa andar junto daqui pra frente.</p>
     </div>
 
-    <p>A recomendação de fundo continua a mesma e continua não executada pela quarta leitura
-    seguida: <b>submeter o site aos diretórios</b>. A demanda está provada (870 aparições em
-    buscas comerciais), o que impede o clique é a posição, e posição depende de autoridade
-    externa, hoje 5 domínios parados. Ela só sai do primeiro lugar hoje porque o formulário é
-    mais barato de consertar e o prejuízo dele já está documentado.</p>
+    <p>Com isso resolvido, a recomendação de fundo volta ao primeiro lugar, e ela continua não
+    executada pela quarta leitura seguida: <b>submeter o site aos diretórios</b>. A demanda está
+    provada (870 aparições em buscas comerciais), o que impede o clique é a posição, e posição
+    depende de autoridade externa, hoje 5 domínios parados. Agora vale mais do que valia de
+    manhã, porque quem chegar tem para onde ir.</p>
+
+    <p>E fica uma pendência pequena de segurança, dois cliques cada: conferir se a varredura de
+    segredos do Netlify está ligada (era provavelmente ela desligada que deixou o token ir para
+    produção sem alarme), e marcar as chaves do OpenRouter e do Resend como secretas, que hoje
+    aparecem abertas na interface e nos registros de publicação.</p>
 
     <p>E uma coisa para <b>não</b> fazer: não mexer em título nem em descrição de página até
     27 de agosto. Os textos de cinco páginas foram reescritos no dia 20 e ainda estão entrando
