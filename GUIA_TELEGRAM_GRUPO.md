@@ -51,7 +51,7 @@ Você tem **duas opções** para configurar múltiplos destinos:
 
    **Exemplo:**
    ```
-   426197451,-1001234567890
+   <CHAT_ID_PRIVADO>,-1001234567890
    ```
 
    **Nota:** Você também pode usar ponto e vírgula (`;`) ou quebra de linha como separador.
@@ -63,7 +63,7 @@ Você tem **duas opções** para configurar múltiplos destinos:
 
 1. Acesse o **Netlify Dashboard**
 2. Vá em **Site settings** → **Environment variables**
-3. Mantenha `TELEGRAM_CHAT_ID` com o chat privado (ex: `426197451`)
+3. Mantenha `TELEGRAM_CHAT_ID` com o chat privado (ex: `<CHAT_ID_PRIVADO>`)
 4. Crie uma **nova variável** chamada `TELEGRAM_CHAT_ID_GROUP`
 5. Defina o valor como o chat_id do grupo (ex: `-1001234567890`)
 6. Se tiver múltiplos grupos, separe por vírgula: `-1001234567890,-1009876543210`
@@ -92,11 +92,11 @@ Você tem **duas opções** para configurar múltiplos destinos:
 ## Exemplo de Configuração
 
 ```
-TELEGRAM_CHAT_ID = 426197451,-1001234567890
+TELEGRAM_CHAT_ID = <CHAT_ID_PRIVADO>,-1001234567890
 ```
 
 Isso enviará as mensagens para:
-1. Chat privado: `426197451`
+1. Chat privado: `<CHAT_ID_PRIVADO>`
 2. Grupo: `-1001234567890`
 
 ## Troubleshooting
@@ -123,7 +123,7 @@ Isso enviará as mensagens para:
    - Não adicione espaços extras
 
 5. **Teste o formato da variável:**
-   - Tente usar vírgula: `426197451,-1001234567890`
+   - Tente usar vírgula: `<CHAT_ID_PRIVADO>,-1001234567890`
    - Ou use a variável separada: `TELEGRAM_CHAT_ID_GROUP = -1001234567890`
    - Evite espaços desnecessários
 

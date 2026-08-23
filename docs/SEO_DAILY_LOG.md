@@ -89,7 +89,7 @@ Resultado: **o formulario nao enviava**. Nenhum lead chegou entre 02/07/2026 e h
 
 ```
 {"error":"Telegram API error - all sends failed",
- "details":[{"chatId":"426197451","success":false,
+ "details":[{"chatId":"<CHAT_ID_PRIVADO>","success":false,
              "error":"{\"ok\":false,\"error_code\":401,\"description\":\"Unauthorized\"}"}]}
 ```
 
@@ -109,10 +109,10 @@ do Telegram commitado em repo publico costuma ser **revogado automaticamente**, 
 Unauthorized` e exatamente a resposta de token revogado.
 
 **Correcao da hipotese inicial (23/08, mesmo dia).** Eu tinha suposto que as env vars nem
-estavam setadas na Netlify, porque a resposta mostrou o chat_id `426197451`, igual ao valor
+estavam setadas na Netlify, porque a resposta mostrou o chat_id `<CHAT_ID_PRIVADO>`, igual ao valor
 hardcoded. **Errado**: o painel da Netlify tem `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID`, as
 duas. Entao o fallback nunca chegou a ser usado - a variavel estava setada com o token que
-morreu, e o `426197451` e simplesmente o valor legitimo dela. Nao muda o diagnostico (token
+morreu, e o `<CHAT_ID_PRIVADO>` e simplesmente o valor legitimo dela. Nao muda o diagnostico (token
 revogado) nem a correcao (tirar o fallback continua certo, porque ele mascarava a falha),
 muda so a explicacao de por que passou despercebido.
 
