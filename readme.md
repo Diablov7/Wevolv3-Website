@@ -4,6 +4,11 @@
 
 Site oficial da Wevolv3 com foco em marketing Web3 e publicidade modular.
 
+## 📖 Documentos principais
+
+- **[CATALOGO_SERVICOS.md](CATALOGO_SERVICOS.md)** — catálogo completo: 9 módulos, 40+ serviços, preços, pacotes fechados e termos de engajamento. Fonte para propostas, parcerias e orçamento.
+- [docs/](docs/) — SEO, backlinks, diretórios e rascunhos de conteúdo.
+
 ## 📋 Sobre o Projeto
 
 - **Tipo**: Site estático HTML/CSS/JS
