@@ -468,7 +468,7 @@ async function buildAnalysis(ctx) {
     : "unknown turnover";
   const catalog = Object.entries(SERVICES).map(([k, s]) => k + " = " + s.name).join("; ");
   const prompt =
-    "You are a senior growth strategist at Wevolv3 (a Web3 marketing agency) writing a short diagnostic for this project's team. Use ONLY the numbers below. Never invent metrics, prices, partnerships or events.\n\n" +
+    "You are a senior growth strategist at Wevolv3 (a Web3 growth partner) writing a short diagnostic for this project's team. Use ONLY the numbers below. Never invent metrics, prices, partnerships or events.\n\n" +
     "TOKEN: " + ctx.name + " (" + ctx.symbol + ")" + (ctx.mcapRank ? ", CoinGecko market-cap rank #" + ctx.mcapRank : "") + " on " + (ctx.chain || "unknown chain") + ".\n" +
     "SCORES: Attention " + (ctx.attention ?? "n/a") + "/100, Adoption " + ctx.adoption + "/100, Gap " + (ctx.gap ?? "n/a") + " (positive = more attention than real usage).\n" +
     "ATTENTION DATA: X followers " + (ctx.followers != null ? Number(ctx.followers).toLocaleString("en-US") : "unknown") + (ctx.xVerified ? " (verified account)" : "") + ".\n" +
