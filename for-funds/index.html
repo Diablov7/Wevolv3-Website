@@ -42,6 +42,10 @@
   }
 }
 </script>
+
+<!-- GA4 is not injected at build time: it sits inline in every page of this site
+     by hand. inject-analytics.js only adds PostHog, and only for folders listed
+     in its ROOTS. Keep this here or the page ships measuring nothing. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -656,10 +660,10 @@ a.case:hover .case-go svg{transform:translateX(4px);}
     <h2>One portfolio company.</h2>
     <p class="lede">Pick the one where marketing is the bottleneck and everything else already works. We scope it and come back inside 48 hours at no cost, so you decide from what you see rather than from this document.</p>
     <p class="lede">If the scope is wrong you have lost a day. If it is right, you have an answer ready the next time a founder asks, and you will know whether it worked without having to ask anyone.</p>
-    <a class="cta" href="mailto:contact@wevolv3.com?subject=Portfolio%20execution">Send us one company</a>
+    <a class="cta" href="mailto:info@wevolv3.com?subject=Portfolio%20execution">Send us one company</a>
     <div class="contact">
       <span><a href="https://wevolv3.com">wevolv3.com</a></span>
-      <span><a href="mailto:contact@wevolv3.com">contact@wevolv3.com</a></span>
+      <span><a href="mailto:info@wevolv3.com">info@wevolv3.com</a></span>
       <span><a href="https://t.me/wevolv3">t.me/wevolv3</a></span>
     </div>
   </div>
