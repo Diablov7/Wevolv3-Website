@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Web3 Marketing for Crypto VC Portfolios | Wevolv3</title>
+<meta name="description" content="Wevolv3 is the execution layer behind crypto VC and market maker portfolios: community, creators, press, listings and engineering, with portfolio level reporting back to the fund.">
+<link rel="canonical" href="https://wevolv3.com/for-funds/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wevolv3">
+<meta property="og:url" content="https://wevolv3.com/for-funds/">
+<meta property="og:title" content="Web3 Marketing for Crypto VC Portfolios | Wevolv3">
+<meta property="og:description" content="Your founder asks who to hire. You send three names and never hear how it went. We execute, you keep the relationship, and the reporting comes back to you.">
+<meta property="og:image" content="https://wevolv3.com/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@wevolv3_media">
+<meta name="twitter:title" content="Web3 Marketing for Crypto VC Portfolios | Wevolv3">
+<meta name="twitter:description" content="The execution layer behind your portfolio. Community, creators, press, listings and engineering, reported back to the fund.">
+<meta name="twitter:image" content="https://wevolv3.com/images/og-image.png">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/images/favicon.png" type="image/png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Web3 Marketing for Crypto VC Portfolios",
+  "url": "https://wevolv3.com/for-funds/",
+  "description": "Execution partner for crypto VC and market maker portfolio companies, covering community, creator distribution, press, listings and engineering.",
+  "isPartOf": { "@type": "WebSite", "name": "Wevolv3", "url": "https://wevolv3.com" },
+  "about": {
+    "@type": "Organization",
+    "name": "Wevolv3",
+    "url": "https://wevolv3.com",
+    "sameAs": ["https://x.com/wevolv3_media", "https://www.linkedin.com/company/wevolv3-web3-growth", "https://t.me/wevolv3"]
+  }
+}
+</script>
+</head>
+<body>
+<style>
+@font-face{font-family:'ClashDisplay';src:url(/fonts/ClashDisplay-Extralight.otf) format('opentype');font-weight:200;font-style:normal;font-display:swap;}
+@font-face{font-family:'ClashDisplay';src:url(/fonts/ClashDisplay-Regular.otf) format('opentype');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'ClashDisplay';src:url(/fonts/ClashDisplay-Semibold.otf) format('opentype');font-weight:600;font-style:normal;font-display:swap;}
+
+:root{
+  --black:#000;
+  --surface:#191919;
+  --border:#292929;
+  --emerald:#10b981;
+  --white:#fff;
+  --body:#c8c8c8;
+  --muted:#8a8a8a;
+  --on-emerald:#04120c;
+  --tone-blue:#3b82f6;
+  --tone-dark:#191919;
+
+  --ground:var(--black);
+  --ink:var(--white);
+  --text:var(--body);
+  --dim:var(--muted);
+  --accent:var(--tone-blue);
+  --hair:var(--border);
+
+  --font:'ClashDisplay','Helvetica Neue',Arial,sans-serif;
+  --pad:clamp(1.4rem,5vw,6rem);
+}
+
+*{box-sizing:border-box;}
+
+html{
+  scroll-snap-type:y proximity;
+  scroll-behavior:smooth;
+  background:var(--black);
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  background:var(--black);
+  color:var(--text);
+  font-family:var(--font);
+  font-weight:400;
+  font-size:clamp(0.95rem,0.9rem + 0.3vw,1.0625rem);
+  line-height:1.6;
+}
+
+.slide{
+  min-height:100vh;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:calc(var(--pad) * 1.15) var(--pad);
+  background:var(--ground);
+  color:var(--text);
+  position:relative;
+}
+
+.slide.dark{--ground:var(--surface);}
+
+.slide.blue{
+  --ground:var(--tone-blue);
+  --ink:var(--on-emerald);
+  --text:#071a30;
+  --dim:#071a30;
+  --accent:var(--on-emerald);
+  --hair:rgba(4,18,12,.22);
+}
+
+.inner{width:100%;max-width:62rem;margin:0 auto;}
+.wide .inner{max-width:74rem;}
+
+.num{
+  position:absolute;
+  top:calc(var(--pad) * 0.6);
+  right:var(--pad);
+  font-size:0.75rem;
+  font-weight:400;
+  color:var(--dim);
+  letter-spacing:0.1em;
+}
+
+.label{
+  font-size:0.75rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.2em;
+  color:var(--accent);
+  margin:0 0 1.9rem;
+  display:flex;
+  align-items:center;
+  gap:0.9rem;
+}
+.label::after{content:"";flex:1;height:1px;background:var(--hair);max-width:16rem;}
+
+h1{
+  font-size:clamp(2.7rem,1.4rem + 5.6vw,6.2rem);
+  font-weight:200;
+  line-height:1;
+  letter-spacing:-0.028em;
+  margin:0;
+  color:var(--ink);
+  text-wrap:balance;
+}
+h2{
+  font-size:clamp(2rem,1.15rem + 3.4vw,3.7rem);
+  font-weight:200;
+  line-height:1.06;
+  letter-spacing:-0.025em;
+  margin:0 0 1.6rem;
+  color:var(--ink);
+  max-width:20ch;
+  text-wrap:balance;
+}
+h2 b{font-weight:600;}
+h3{font-size:1.0625rem;font-weight:600;margin:0 0 0.45rem;color:var(--ink);letter-spacing:-0.005em;}
+
+.lede{
+  font-size:clamp(1.05rem,0.98rem + 0.45vw,1.3rem);
+  font-weight:400;
+  line-height:1.55;
+  color:var(--text);
+  max-width:52ch;
+  margin:0;
+}
+.lede + .lede{margin-top:1.1rem;}
+.lede b{font-weight:600;color:var(--ink);}
+
+/* cover */
+.cover{justify-content:space-between;}
+.cover-top{display:flex;align-items:center;gap:0.85rem;flex-wrap:wrap;}
+.mark{width:34px;height:34px;object-fit:contain;display:block;}
+.wordmark{font-size:clamp(1.35rem,1.2rem + 0.7vw,1.75rem);font-weight:600;letter-spacing:-0.03em;color:var(--white);}
+.cover-tag{
+  font-size:0.75rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:0.2em;color:var(--accent);margin-left:auto;
+}
+.cover-mid{padding:clamp(3rem,8vh,6rem) 0;}
+.cover-mid h1{max-width:15ch;}
+.cover-mid .lede{margin-top:2.1rem;}
+.cover-foot{display:flex;gap:clamp(1.4rem,4vw,3.5rem);flex-wrap:wrap;padding-top:1.6rem;border-top:1px solid var(--hair);}
+.stat{min-width:7.5rem;}
+.stat-n{display:block;font-size:clamp(1.5rem,1.2rem + 1.1vw,2.15rem);font-weight:200;color:var(--white);letter-spacing:-0.02em;font-variant-numeric:tabular-nums;}
+.stat-l{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--dim);}
+
+/* big statement on blue slides */
+.pull{
+  font-size:clamp(1.75rem,1.05rem + 2.9vw,3.4rem);
+  font-weight:200;
+  line-height:1.12;
+  letter-spacing:-0.025em;
+  color:var(--ink);
+  max-width:21ch;
+  margin:0 0 2.6rem;
+}
+.pull b{font-weight:600;}
+
+/* large legible list, used on blue where body copy would fail contrast */
+.big-list{list-style:none;margin:0;padding:0;display:grid;gap:0;}
+.big-list li{
+  padding:1.4rem 0;
+  border-top:1px solid var(--hair);
+  font-size:clamp(1.1rem,1rem + 0.5vw,1.35rem);
+  font-weight:400;
+  line-height:1.45;
+  color:var(--text);
+  max-width:56ch;
+}
+.big-list li:last-child{border-bottom:1px solid var(--hair);}
+.big-list b{font-weight:600;color:var(--ink);}
+
+.split{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,4.5rem);align-items:start;}
+@media(min-width:900px){.split{grid-template-columns:1.05fr 1fr;}}
+
+.rows{list-style:none;margin:0;padding:0;}
+.rows li{padding:1.2rem 0;border-top:1px solid var(--hair);display:grid;gap:0.3rem;}
+.rows li:last-child{border-bottom:1px solid var(--hair);}
+.rows p{margin:0;color:var(--text);font-size:0.95rem;line-height:1.55;}
+
+.grid{display:grid;grid-template-columns:1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1100px){.grid.g3{grid-template-columns:1fr 1fr 1fr;}}
+.cell{background:var(--surface);padding:clamp(1.25rem,2.2vw,1.9rem);display:flex;flex-direction:column;gap:0.5rem;}
+.cell .k{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--tone-blue);}
+.cell p{margin:0;color:var(--body);font-size:0.9rem;line-height:1.55;}
+.cell.accent{background:var(--tone-blue);}
+.cell.accent .k{color:var(--on-emerald);opacity:.75;}
+.cell.accent h3{color:var(--on-emerald);}
+.cell.accent p{color:#071a30;}
+
+.steps{display:grid;grid-template-columns:1fr;gap:1px;background:var(--hair);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);}
+@media(min-width:820px){.steps{grid-template-columns:repeat(5,1fr);}}
+.step{background:var(--black);padding:1.4rem clamp(0.9rem,1.6vw,1.4rem);}
+.step .d{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;color:var(--tone-blue);display:block;margin-bottom:0.65rem;text-transform:uppercase;}
+.step .t{display:block;color:var(--white);font-weight:600;font-size:0.95rem;margin-bottom:0.28rem;}
+.step p{margin:0;font-size:0.85rem;color:var(--muted);line-height:1.5;}
+
+.proof{border:1px solid var(--hair);background:var(--black);padding:clamp(1.6rem,3.4vw,3rem);margin-bottom:1.9rem;}
+.proof .big{font-size:clamp(3.2rem,2rem + 6vw,7rem);font-weight:200;line-height:.95;letter-spacing:-0.04em;color:var(--tone-blue);font-variant-numeric:tabular-nums;display:block;}
+.proof .cap{color:var(--white);font-size:clamp(1.05rem,0.98rem + 0.35vw,1.25rem);font-weight:200;max-width:34ch;margin:1.2rem 0 0;line-height:1.4;}
+.proof .src{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-top:1rem;}
+
+.cta{
+  display:inline-flex;align-items:center;gap:0.6rem;margin-top:2.6rem;
+  padding:1.05rem 1.9rem;background:var(--emerald);color:var(--on-emerald);
+  font-weight:600;font-size:1.05rem;letter-spacing:-0.01em;text-decoration:none;
+  transition:filter .18s ease,transform .18s ease;
+}
+.cta:hover{filter:brightness(1.08);transform:translateY(-1px);}
+.cta:focus-visible{outline:2px solid var(--white);outline-offset:3px;}
+
+.contact{margin-top:2.3rem;padding-top:1.5rem;border-top:1px solid var(--hair);font-size:0.85rem;color:var(--muted);display:flex;gap:1.6rem;flex-wrap:wrap;}
+.contact a{color:var(--white);text-decoration:none;border-bottom:1px solid var(--border);}
+.contact a:hover{border-color:var(--tone-blue);}
+
+/* ---- chapter rail: magnified tick scrubber ---- */
+.rail{position:fixed;right:clamp(0.9rem,2.2vw,2.2rem);top:50%;transform:translateY(-50%);z-index:40;}
+.rail-list{display:flex;flex-direction:column;align-items:flex-end;}
+.rail-row{display:flex;width:100%;align-items:center;justify-content:flex-end;background:none;border:0;padding:0;margin:0;cursor:pointer;outline:none;}
+.rail-row:focus-visible{outline:2px solid var(--tone-blue);outline-offset:3px;}
+.tick{display:block;height:2px;border-radius:999px;background:var(--white);will-change:width,opacity,transform;}
+.tick.is-current{background:var(--tone-blue);}
+.rail-card{
+  position:absolute;right:calc(100% + 18px);width:244px;
+  border:1px solid var(--border);background:var(--surface);
+  padding:0.85rem 1rem;pointer-events:none;opacity:0;
+  transform-origin:right center;
+  box-shadow:0 18px 44px -16px rgba(0,0,0,.85);
+}
+.rc-meta{font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--tone-blue);margin-bottom:0.38rem;}
+.rc-title{font-size:0.95rem;font-weight:600;color:var(--white);line-height:1.3;}
+@media(max-width:1024px){.rail{display:none;}}
+
+/* ---- portfolio view mock (slide 06) ---- */
+.panel{background:var(--black);border:1px solid #2b2b2b;padding:clamp(1rem,2vw,1.45rem);}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-bottom:0.8rem;border-bottom:1px solid #262626;}
+.panel-title{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);}
+.panel-live{font-size:0.7rem;font-weight:600;color:var(--emerald);display:flex;align-items:center;gap:0.45rem;letter-spacing:0.08em;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;}
+.prow{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:0.72rem 0;border-bottom:1px solid #1c1c1c;}
+.prow:last-of-type{border-bottom:0;}
+.pname{font-size:0.9rem;color:var(--white);}
+.pmeta{font-size:0.75rem;color:var(--muted);margin-top:0.12rem;}
+.pill{font-size:0.66rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;padding:0.3rem 0.55rem;white-space:nowrap;}
+.pill.live{color:var(--emerald);background:rgba(16,185,129,.13);}
+.pill.up{color:#8ab4f8;background:rgba(59,130,246,.16);}
+.pill.flat{color:var(--muted);background:rgba(255,255,255,.06);}
+.panel-note{font-size:0.7rem;color:var(--muted);margin:0.95rem 0 0;letter-spacing:0.03em;}
+
+/* ---- indexed comparison bars (slide 08) ---- */
+.bars{display:grid;gap:0.85rem;margin-top:1.8rem;padding-top:1.5rem;border-top:1px solid #232323;}
+.bar-row{display:grid;grid-template-columns:1fr;gap:0.4rem;}
+@media(min-width:640px){.bar-row{grid-template-columns:11rem 1fr 3.4rem;gap:1rem;align-items:center;}}
+.bar-l{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);}
+.bar-t{height:10px;background:#0d0d0d;border:1px solid #232323;position:relative;overflow:hidden;}
+.bar-f{position:absolute;top:0;bottom:0;left:0;background:#343434;}
+.bar-f.hi{background:var(--tone-blue);}
+.bar-v{font-size:0.85rem;font-variant-numeric:tabular-nums;color:var(--white);text-align:right;}
+
+/* ---- case cards ---- */
+.cases{display:grid;grid-template-columns:1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);margin-top:0.4rem;}
+@media(min-width:760px){.cases{grid-template-columns:1fr 1fr;}}
+.case{background:var(--black);padding:clamp(1.2rem,2.2vw,1.75rem);display:flex;flex-direction:column;gap:0.7rem;}
+.case-k{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);display:flex;justify-content:space-between;gap:1rem;}
+.case-k em{font-style:normal;color:var(--tone-blue);}
+.case-n{font-size:clamp(2.1rem,1.5rem + 2.4vw,3.2rem);font-weight:200;line-height:1;letter-spacing:-0.03em;color:var(--white);font-variant-numeric:tabular-nums;}
+.case-n small{font-size:0.34em;font-weight:600;letter-spacing:0.05em;color:var(--tone-blue);margin-left:0.5rem;vertical-align:middle;}
+.case-w{font-size:0.9rem;color:var(--body);line-height:1.5;margin:0;}
+.case-s{font-size:0.78rem;color:var(--muted);line-height:1.5;margin:0;padding-top:0.7rem;border-top:1px solid #1c1c1c;}
+a.case{text-decoration:none;color:inherit;transition:background .2s ease;}
+a.case:hover{background:#0b0d10;}
+a.case:focus-visible{outline:2px solid var(--tone-blue);outline-offset:-2px;}
+.case-go{margin-top:auto;padding-top:0.95rem;display:flex;align-items:center;gap:0.45rem;font-size:0.78rem;font-weight:600;color:var(--tone-blue);}
+.case-go svg{transition:transform .2s ease;flex:none;}
+a.case:hover .case-go svg{transform:translateX(4px);}
+.case-go.none{color:var(--muted);font-weight:400;}
+.case-span{grid-column:1 / -1;}
+.case-named{background:#0b0d10;}
+.all-cases{display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-size:0.85rem;font-weight:600;color:var(--white);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:0.25rem;}
+.all-cases:hover{border-color:var(--tone-blue);}
+.all-cases:focus-visible{outline:2px solid var(--tone-blue);outline-offset:3px;}
+.all-cases svg{transition:transform .2s ease;}
+.all-cases:hover svg{transform:translateX(4px);}
+
+/* ---- charts ---- */
+.charts{display:grid;grid-template-columns:1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);}
+@media(min-width:900px){.charts{grid-template-columns:1fr 1fr;}}
+.chart{background:var(--black);padding:clamp(1.2rem,2.2vw,1.7rem);}
+.chart-h{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:0.25rem;flex-wrap:wrap;}
+.chart-t{font-size:0.95rem;font-weight:600;color:var(--white);}
+.chart-p{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.chart-sub{font-size:0.8rem;color:var(--muted);margin:0 0 1.1rem;line-height:1.45;}
+.plot{display:flex;align-items:flex-end;gap:3px;height:132px;border-bottom:1px solid #262626;padding-bottom:1px;}
+.col{flex:1;background:#2b2b2b;min-height:2px;border-radius:1px 1px 0 0;transition:height .5s cubic-bezier(.22,1,.36,1);}
+.col.on{background:var(--tone-blue);}
+.axis{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);margin-top:0.5rem;letter-spacing:0.04em;}
+.legend{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:0.72rem;color:var(--muted);margin-top:0.9rem;}
+.legend span{display:flex;align-items:center;gap:0.4rem;}
+.sw{width:10px;height:3px;border-radius:2px;display:inline-block;}
+.sw.a{background:#2b2b2b;}
+.sw.b{background:var(--tone-blue);}
+.sw.c{background:var(--emerald);}
+.sw.d{background:#8a3b3b;}
+.chart-note{font-size:0.7rem;color:var(--muted);margin:1rem 0 0;line-height:1.5;}
+.spark{width:100%;height:132px;display:block;}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}.col{transition:none;}}
+
+@media print{
+  html{scroll-snap-type:none;}
+  .rail{display:none !important;}
+  .slide{min-height:auto;page-break-after:always;break-after:page;padding:2cm 1.9cm;}
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+
+<!-- 01 -->
+<section class="slide cover">
+  <span class="num">01</span>
+  <div class="inner cover-top">
+    <img class="mark" src="/images/favicon.png" alt="">
+    <span class="wordmark">Wevolv3</span>
+    <span class="cover-tag">Web3 growth partner</span>
+  </div>
+  <div class="inner cover-mid">
+    <h1>The execution layer behind your portfolio.</h1>
+    <p class="lede">You back the companies. We do the work that decides whether anyone notices, and the reporting comes back to you, not only to the founder.</p>
+  </div>
+  <div class="inner cover-foot">
+    <div class="stat"><span class="stat-n">200+</span><span class="stat-l">Projects since 2020</span></div>
+    <div class="stat"><span class="stat-n">9</span><span class="stat-l">Service modules</span></div>
+    <div class="stat"><span class="stat-n">2</span><span class="stat-l">Platforms we own</span></div>
+    <div class="stat"><span class="stat-n">30+</span><span class="stat-l">Direct outlet relationships</span></div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section class="slide blue">
+  <span class="num">02</span>
+  <div class="inner">
+    <p class="label">What happens today</p>
+    <p class="pull">A founder asks who to hire. You send three names in a Telegram message and <b>never hear how it went.</b></p>
+    <ul class="big-list">
+      <li><b>You get asked constantly.</b> Marketing is the most common thing a portfolio company brings back to its investors, and the hardest one to answer without guessing.</li>
+      <li><b>You cannot verify any of it.</b> The moment you make the introduction, the reporting goes to the founder. You find out it failed at the next board update.</li>
+      <li><b>And a token lists once.</b> The attention window is days, not quarters. A company that misses it spends the next year doing recovery marketing instead of growth, on your money.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="slide dark">
+  <span class="num">03</span>
+  <div class="inner">
+    <p class="label">What we are</p>
+    <h2>We execute. <b>You keep the relationship.</b></h2>
+    <div class="split">
+      <p class="lede">We work under your introduction and never compete for the founder's loyalty. The company gets the delivery. You stay the one who solved it.</p>
+      <ul class="rows">
+        <li><h3>Nine modules, one accountable operator</h3><p>The company hires once instead of stitching together four vendors who blame each other when a launch slips.</p></li>
+        <li><h3>We are not a body shop</h3><p>We built and run two platforms of our own. That is product and infrastructure, not hours resold at a markup.</p></li>
+        <li><h3>You are never the last to know</h3><p>Reporting reaches the company and you in the same view, on the same day.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section class="slide wide">
+  <span class="num">04</span>
+  <div class="inner">
+    <p class="label">What we execute</p>
+    <h2>Everything a token needs <b>after the money lands.</b></h2>
+    <div class="grid g3">
+      <div class="cell">
+        <span class="k">Community</span>
+        <h3>The room, and the people in it</h3>
+        <p>Round the clock management across Telegram and Discord with our own antispam and antiscam layer, operators keeping conversation alive, and ambassador programs run end to end with a live dashboard.</p>
+      </div>
+      <div class="cell">
+        <span class="k">Distribution</span>
+        <h3>Creators, activated per campaign</h3>
+        <p>Verified creator networks across X, YouTube and TikTok, vetted inside 72 hours and briefed against the campaign narrative rather than against a follower count.</p>
+      </div>
+      <div class="cell">
+        <span class="k">Credibility</span>
+        <h3>Press that reads as third party</h3>
+        <p>Direct relationships with 30+ outlets, from crypto native desks to tier one business media, plus interviews, podcasts and AMAs inside investor communities.</p>
+      </div>
+      <div class="cell">
+        <span class="k">Market surfaces</span>
+        <h3>Where investors actually look</h3>
+        <p>Listings and supply verification on the major aggregators and trackers, data accuracy across the chart surfaces, and paid placement on the pages and wallets people check before they buy.</p>
+      </div>
+      <div class="cell">
+        <span class="k">Engineering</span>
+        <h3>When the gap is product, not noise</h3>
+        <p>Smart contracts, DeFi and staking systems, Telegram bots, backend and automation, and long term maintenance. Sometimes the honest answer is that a campaign will not fix it.</p>
+      </div>
+      <div class="cell accent">
+        <span class="k">The point</span>
+        <h3>One contract, one throat to choke</h3>
+        <p>Your portfolio company should not have to become a marketing manager to get marketing done. That is the whole proposition.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section class="slide dark">
+  <span class="num">05</span>
+  <div class="inner">
+    <p class="label">The creator layer</p>
+    <h2>Two engines, <b>one brief.</b></h2>
+    <div class="split">
+      <div>
+        <p class="lede">Creator distribution is where most launches quietly fail. The company pays for followers and receives impressions from an audience that was never going to care.</p>
+        <p class="lede">We run it on two engines and choose per campaign, so the brief picks the roster instead of the roster deciding the brief.</p>
+      </div>
+      <ul class="rows">
+        <li><h3>Our own marketplace</h3><p>Verified creators contracted and paid through a smart vault, so the deliverable and the payment are tied together. We own the platform, which means we own the accountability.</p></li>
+        <li><h3>Partner networks</h3><p>Direct creator relationships activated campaign by campaign, reaching tiers a marketplace does not reach. Contracted through us and delivered under our name.</p></li>
+        <li><h3>Briefed, not just booked</h3><p>Every creator works against the campaign narrative. Volume without a story is the reason this channel earned its reputation.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section class="slide blue">
+  <span class="num">06</span>
+  <div class="inner">
+    <p class="label">What no vendor gives you</p>
+    <p class="pull">Every vendor reports to its client. <b>That is why you are blind.</b></p>
+    <div class="split">
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Portfolio view</span>
+          <span class="panel-live"><span class="dot"></span>Live</span>
+        </div>
+        <div class="prow">
+          <div><div class="pname">Portfolio company 01</div><div class="pmeta">Ambassador season, 4 placements, listing cleared</div></div>
+          <span class="pill up">Up</span>
+        </div>
+        <div class="prow">
+          <div><div class="pname">Portfolio company 02</div><div class="pmeta">Launch campaign in market, day 9 of 30</div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <div class="prow">
+          <div><div class="pname">Portfolio company 03</div><div class="pmeta">Community rebuilt, creator brief pending founder sign off</div></div>
+          <span class="pill flat">Flat</span>
+        </div>
+        <div class="prow">
+          <div><div class="pname">Portfolio company 04</div><div class="pmeta">Aggregator listing and supply verification submitted</div></div>
+          <span class="pill live">Live</span>
+        </div>
+        <p class="panel-note">Illustrative view. Company names are anonymised here.</p>
+      </div>
+      <ul class="big-list">
+        <li><b>It is not a report we assemble for you.</b> It is the same system that runs the work, which is why a flat month shows up flat instead of being written around.</li>
+        <li><b>It costs you nothing and it is not for sale.</b> No vendor offers this because no vendor is built to. It is the reason to send us the first company rather than the fourth.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section class="slide wide">
+  <span class="num">07</span>
+  <div class="inner">
+    <p class="label">How it runs</p>
+    <h2>Live inside two weeks. <b>No discovery theatre.</b></h2>
+    <div class="steps">
+      <div class="step"><span class="d">Days 1 to 3</span><span class="t">Diagnosis</span><p>We audit what exists, what is broken and what is missing. You get findings, not a proposal.</p></div>
+      <div class="step"><span class="d">Days 4 to 7</span><span class="t">Stack and war room</span><p>The build is assembled and a shared channel opens with the company and with you.</p></div>
+      <div class="step"><span class="d">Days 8 to 14</span><span class="t">Campaigns live</span><p>Work in market. Community, creators, press or listings, depending on the diagnosis.</p></div>
+      <div class="step"><span class="d">Days 15 to 21</span><span class="t">Iterate and scale</span><p>What worked gets more budget. What did not gets cut, on the record.</p></div>
+      <div class="step"><span class="d">Days 22 to 30</span><span class="t">Traction report</span><p>Numbers and a 60 day plan, delivered to the company and to you at the same time.</p></div>
+    </div>
+    <p class="lede" style="margin-top:2.3rem;">Scope and plan come back within 48 hours of your introduction. We do not run three calls before telling you what something takes.</p>
+  </div>
+</section>
+
+<!-- 08 -->
+<section class="slide dark wide">
+  <span class="num">08</span>
+  <div class="inner">
+    <p class="label">Proof of work</p>
+    <h2>Five engagements. <b>The numbers, not the adjectives.</b></h2>
+    <p class="lede" style="margin:-0.6rem 0 1.6rem;">Three are under NDA and stay unnamed. Two we can name. Four of the five have a page you can open right now.</p>
+    <div class="cases">
+      <a class="case" href="https://wevolv3.com/works/l1-blockchain-under-nda" target="_blank" rel="noopener">
+        <span class="case-k">Layer 1 blockchain <em>2023 to 2025</em></span>
+        <span class="case-n">1.8k <small>TO 5.57k</small></span>
+        <p class="case-w">Holders on the original network, grown through the whole bear market. Across every network the ecosystem now runs past 20,000.</p>
+        <p class="case-s">Retained brand strategy, community distribution, press and selected creators. Under NDA.</p>
+        <span class="case-go">Read the case <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="case" href="https://wevolv3.com/works/blockhain-l0-under-nda" target="_blank" rel="noopener">
+        <span class="case-k">Layer 0 blockchain <em>2025</em></span>
+        <span class="case-n">60 <small>DEVELOPERS ONBOARDED</small></span>
+        <p class="case-w">From 340k reach and 8,450 brand mentions in a two week window, converting at 14.76% with 200+ organic posts on top.</p>
+        <p class="case-s">Ten micro creators plus targeted ads, briefed for developer acquisition rather than impressions. Under NDA.</p>
+        <span class="case-go">Read the case <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="case" href="https://wevolv3.com/works/ai-infrastructure-nda" target="_blank" rel="noopener">
+        <span class="case-k">AI infrastructure <em>Dec 2025</em></span>
+        <span class="case-n">89% <small>LESS NEGATIVE VOLUME</small></span>
+        <p class="case-w">A coordinated FUD operation, amplified by a competing project, neutralised with narrative control restored in under 72 hours.</p>
+        <p class="case-s">Crisis work: source analysis, structured counter messaging, sentiment tracked daily. Under NDA.</p>
+        <span class="case-go">Read the case <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <div class="case case-named">
+        <span class="case-k">Cellframe <em>Ambassador season 4</em></span>
+        <span class="case-n">+137% <small>CONTRIBUTIONS</small></span>
+        <p class="case-w">Total community contributions against the previous season, running the ambassador program end to end.</p>
+        <p class="case-s">Named client. Not yet written up on the site.</p>
+        <span class="case-go none">Full write up on request</span>
+      </div>
+      <a class="case case-named case-span" href="https://wevolv3.com/works/subbd" target="_blank" rel="noopener">
+        <span class="case-k">SUBBD <em>2025, community building</em></span>
+        <span class="case-n">300+ <small>DAILY MESSAGES, FROM UNDER 25</small></span>
+        <p class="case-w">A community that had gone quiet, brought back to a sustained conversation and held there through the fundraising window. The activation chart on the next slide is this engagement.</p>
+        <p class="case-s">Named client. Members recruited for alignment rather than headcount, which is why the volume held after the campaign instead of collapsing.</p>
+        <span class="case-go">Read the case <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+    <a class="all-cases" href="https://wevolv3.com/works" target="_blank" rel="noopener">All case studies <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+    <div class="grid" style="margin-top:1.6rem;">
+      <div class="cell"><span class="k">Track record</span><h3>200+ projects since 2020</h3><p>Across launches, listings, recoveries and long term retained growth. Through two full cycles, which is where most of this industry's operators stopped existing.</p></div>
+      <div class="cell"><span class="k">Owned product</span><h3>Two platforms we built and operate</h3><p>A creator marketplace with smart vault payments, and an antispam and antiscam layer running inside client communities every day. We ship software, not only hours.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="slide wide">
+  <span class="num">09</span>
+  <div class="inner">
+    <p class="label">What the work looks like</p>
+    <h2>A dead room, and a narrative <b>coming back.</b></h2>
+    <div class="charts">
+      <div class="chart">
+        <div class="chart-h">
+          <span class="chart-t">Community activation, SUBBD</span>
+          <span class="chart-p">Jan to Apr 2025</span>
+        </div>
+        <p class="chart-sub">Daily messages in the community, averaged by week. The room was not small. It was asleep.</p>
+        <div class="plot" id="plotA" aria-hidden="true"></div>
+        <div class="axis"><span>28 Jan</span><span>Campaign starts</span><span>30 Apr</span></div>
+        <div class="legend">
+          <span><i class="sw a"></i>Before</span>
+          <span><i class="sw b"></i>After</span>
+        </div>
+        <p class="chart-note">Weekly average went from under 25 messages a day to a sustained band above 300.</p>
+      </div>
+
+      <div class="chart">
+        <div class="chart-h">
+          <span class="chart-t">Narrative recovery</span>
+          <span class="chart-p">Nov to Dec 2025</span>
+        </div>
+        <p class="chart-sub">Positive against negative sentiment through a coordinated FUD campaign and the response to it.</p>
+        <svg class="spark" id="plotB" viewBox="0 0 320 132" preserveAspectRatio="none" role="img" aria-label="Positive sentiment rises sharply after the response begins while negative sentiment falls"></svg>
+        <div class="axis"><span>24 Nov</span><span>Response begins</span><span>19 Dec</span></div>
+        <div class="legend">
+          <span><i class="sw c"></i>Positive</span>
+          <span><i class="sw d"></i>Negative</span>
+        </div>
+        <p class="chart-note">Negative volume fell 89% and the recovery held rather than spiking and fading.</p>
+      </div>
+    </div>
+    <p class="chart-note" style="max-width:64ch;">Both charts are redrawn from the client reporting dashboards. The activation chart is the SUBBD engagement, shared with permission. The sentiment chart stays anonymous under NDA.</p>
+  </div>
+</section>
+
+<!-- 09 -->
+<section class="slide">
+  <span class="num">10</span>
+  <div class="inner">
+    <p class="label">How we work with funds</p>
+    <h2>Preferred execution partner. <b>Nothing asked of you.</b></h2>
+    <div class="split">
+      <div>
+        <p class="lede">You make the introduction. The portfolio company contracts us and pays us directly, so nothing moves through your balance sheet and nothing needs approval on your side.</p>
+        <p class="lede">The portfolio view comes free with it. If you want referral participation on top, we will structure it. If you would rather this stay clean, that works too.</p>
+      </div>
+      <ul class="rows">
+        <li><h3>No exclusivity asked of you</h3><p>Keep every vendor you already use. We expect to earn the next introduction out of the last one.</p></li>
+        <li><h3>No retainer, no commitment</h3><p>You are not buying anything here. The engagement sits between us and the company.</p></li>
+        <li><h3>Short leash by design</h3><p>Thirty days notice on any engagement, no penalty. If we are not worth keeping, the company should not be stuck with us and neither should you.</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide dark">
+  <span class="num">11</span>
+  <div class="inner">
+    <p class="label">The ask</p>
+    <h2>One portfolio company.</h2>
+    <p class="lede">Pick the one where marketing is the bottleneck and everything else already works. We scope it and come back inside 48 hours at no cost, so you decide from what you see rather than from this document.</p>
+    <p class="lede">If the scope is wrong you have lost a day. If it is right, you have an answer ready the next time a founder asks, and you will know whether it worked without having to ask anyone.</p>
+    <a class="cta" href="mailto:contact@wevolv3.com?subject=Portfolio%20execution">Send us one company</a>
+    <div class="contact">
+      <span><a href="https://wevolv3.com">wevolv3.com</a></span>
+      <span><a href="mailto:contact@wevolv3.com">contact@wevolv3.com</a></span>
+      <span><a href="https://t.me/wevolv3">t.me/wevolv3</a></span>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- A: community activation, weekly average of daily messages --- */
+  var WEEKS = [180, 200, 15, 20, 15, 35, 15, 20, 180, 350, 370, 360, 330];
+  var START = 8; // the week the campaign went live
+  var plotA = document.getElementById('plotA');
+  var cols = [];
+  if (plotA){
+    var peak = Math.max.apply(null, WEEKS);
+    WEEKS.forEach(function(v, i){
+      var c = document.createElement('span');
+      c.className = 'col' + (i >= START ? ' on' : '');
+      c.dataset.h = Math.max(2, Math.round(v / peak * 130));
+      c.style.height = reduce ? c.dataset.h + 'px' : '2px';
+      plotA.appendChild(c);
+      cols.push(c);
+    });
+  }
+
+  /* --- B: sentiment through a coordinated FUD wave and the response --- */
+  var POS = [.08,.06,.09,.07,.10,.08,.07,.09,.08,.10,.55,.78,.82,.80,.84,.79,.83,.86,.81,.84,.80,.83,.85,.82,.84,.83];
+  var NEG = [.62,.70,.78,.85,.88,.84,.80,.76,.72,.68,.50,.34,.24,.18,.14,.12,.11,.10,.09,.10,.09,.08,.09,.08,.09,.08];
+  var svg = document.getElementById('plotB');
+  var paths = [];
+  if (svg){
+    var W = 320, H = 132, NS = 'http://www.w3.org/2000/svg';
+    var pts = function(a){
+      return a.map(function(v, i){
+        return (i / (a.length - 1) * W).toFixed(1) + ',' + (H - 4 - v * (H - 10)).toFixed(1);
+      }).join(' ');
+    };
+    var marker = document.createElementNS(NS, 'line');
+    var mx = (10 / (POS.length - 1) * W).toFixed(1);
+    marker.setAttribute('x1', mx); marker.setAttribute('x2', mx);
+    marker.setAttribute('y1', '2'); marker.setAttribute('y2', H);
+    marker.setAttribute('stroke', '#3b82f6');
+    marker.setAttribute('stroke-width', '1');
+    marker.setAttribute('stroke-dasharray', '3 3');
+    marker.setAttribute('opacity', '.65');
+    svg.appendChild(marker);
+
+    [[NEG, '#8a3b3b'], [POS, '#10b981']].forEach(function(s){
+      var p = document.createElementNS(NS, 'polyline');
+      p.setAttribute('points', pts(s[0]));
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', s[1]);
+      p.setAttribute('stroke-width', '2');
+      p.setAttribute('stroke-linecap', 'round');
+      p.setAttribute('stroke-linejoin', 'round');
+      p.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(p);
+      paths.push(p);
+    });
+    if (!reduce){
+      paths.forEach(function(p){
+        var len = p.getTotalLength ? p.getTotalLength() : 700;
+        p.style.strokeDasharray = len;
+        p.style.strokeDashoffset = len;
+        p.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)';
+      });
+    }
+  }
+
+  /* draw once the slide is actually on screen */
+  function draw(){
+    cols.forEach(function(c, i){
+      setTimeout(function(){ c.style.height = c.dataset.h + 'px'; }, reduce ? 0 : i * 55);
+    });
+    paths.forEach(function(p, i){
+      setTimeout(function(){ p.style.strokeDashoffset = 0; }, reduce ? 0 : 260 + i * 240);
+    });
+  }
+
+  var host = plotA && plotA.closest('section');
+  if (!host){ draw(); return; }
+  if (!('IntersectionObserver' in window)){ draw(); return; }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting){ draw(); io.disconnect(); }
+    });
+  }, { threshold: 0.35 });
+  io.observe(host);
+})();
+</script>
+
+<div class="rail" id="rail">
+  <div class="rail-list" id="railList" role="listbox" aria-label="Slides" aria-orientation="vertical"></div>
+  <div class="rail-card" id="railCard">
+    <div class="rc-meta" id="rcMeta"></div>
+    <div class="rc-title" id="rcTitle"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var ROW = 24, REST = 14, PEAK = 52, RADIUS = 3;
+  var slides = [].slice.call(document.querySelectorAll('section.slide'));
+  if (slides.length < 2) return;
+
+  var list = document.getElementById('railList'),
+      card = document.getElementById('railCard'),
+      rcMeta = document.getElementById('rcMeta'),
+      rcTitle = document.getElementById('rcTitle');
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var meta = slides.map(function(s, i){
+    var lab = s.querySelector('.label'), h = s.querySelector('h1,h2,.pull'), n = s.querySelector('.num');
+    return {
+      num: n ? n.textContent.trim() : String(i + 1),
+      label: lab ? lab.textContent.trim() : 'Cover',
+      title: h ? h.textContent.replace(/\s+/g, ' ').trim() : ('Slide ' + (i + 1))
+    };
+  });
+
+  var ticks = [], rows = [];
+  meta.forEach(function(m, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'rail-row';
+    b.setAttribute('role', 'option');
+    b.setAttribute('aria-label', m.num + '. ' + m.title);
+    b.setAttribute('aria-selected', 'false');
+    b.tabIndex = i === 0 ? 0 : -1;
+    b.style.height = ROW + 'px';
+    var t = document.createElement('span');
+    t.className = 'tick';
+    t.setAttribute('aria-hidden', 'true');
+    t.style.width = REST + 'px';
+    b.appendChild(t);
+    list.appendChild(b);
+    ticks.push(t); rows.push(b);
+    b.addEventListener('click', function(){
+      slides[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    });
+    b.addEventListener('focus', function(){ focused = i; engage(i, i); });
+  });
+
+  var pTarget = 0, pVal = 0, pVel = 0;
+  var sTarget = 0, sVal = 0, sVel = 0;
+  var current = 0, active = -1, focused = null, hovering = false, raf = null, lastT = 0;
+
+  // Raised cosine: 1 at the crest, 0 past the radius, zero slope at both ends,
+  // which is what removes the seam a linear falloff leaves.
+  function bump(d, r){ return d >= r ? 0 : 0.5 * (1 + Math.cos(Math.PI * (d / r))); }
+
+  function step(cur, vel, target, k, c, m, dt){
+    var a = (-k * (cur - target) - c * vel) / m;
+    vel += a * dt; cur += vel * dt;
+    return [cur, vel];
+  }
+
+  function render(){
+    var total = slides.length * ROW;
+    for (var i = 0; i < ticks.length; i++){
+      var rise = sVal * bump(Math.abs(i - pVal), RADIUS);
+      var base = (i === current) ? 0.55 : 0.22;
+      ticks[i].style.width = (REST + rise * (PEAK - REST)).toFixed(2) + 'px';
+      ticks[i].style.opacity = (base + rise * (1 - base)).toFixed(3);
+      ticks[i].style.transform = 'scaleY(' + (1 + rise * 0.4).toFixed(3) + ')';
+    }
+    var half = (card.offsetHeight || 0) / 2;
+    var centre = Math.min(Math.max((pVal + 0.5) * ROW, half), Math.max(half, total - half));
+    card.style.top = (centre - half) + 'px';
+    card.style.opacity = sVal.toFixed(3);
+    card.style.transform = 'translateX(' + ((1 - sVal) * 6).toFixed(2) + 'px) scale(' + (0.97 + sVal * 0.03).toFixed(4) + ')';
+  }
+
+  function frame(now){
+    var dt = Math.min(0.032, (now - lastT) / 1000 || 0.016);
+    lastT = now;
+    if (reduce){ pVal = pTarget; sVal = sTarget; pVel = 0; sVel = 0; }
+    else {
+      var a = step(pVal, pVel, pTarget, 700, 52, 0.5, dt); pVal = a[0]; pVel = a[1];
+      var b = step(sVal, sVel, sTarget, 260, 30, 0.6, dt); sVal = b[0]; sVel = b[1];
+    }
+    render();
+    if (Math.abs(pVal - pTarget) < 0.001 && Math.abs(pVel) < 0.001 &&
+        Math.abs(sVal - sTarget) < 0.001 && Math.abs(sVel) < 0.001){
+      pVal = pTarget; sVal = sTarget; render(); raf = null;
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
+  }
+  function run(){ if (raf == null){ lastT = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function engage(prow, act){
+    pTarget = prow; sTarget = 1;
+    act = Math.max(0, Math.min(slides.length - 1, act));
+    if (act !== active){
+      active = act;
+      rcMeta.textContent = meta[act].num + ' · ' + meta[act].label;
+      rcTitle.textContent = meta[act].title;
+    }
+    run();
+  }
+
+  list.addEventListener('pointermove', function(e){
+    var r = list.getBoundingClientRect();
+    var row = (e.clientY - r.top) / ROW - 0.5;
+    hovering = true;
+    engage(Math.max(-0.5, Math.min(slides.length - 0.5, row)), Math.round(row));
+  });
+  list.addEventListener('pointerleave', function(){
+    hovering = false;
+    if (focused != null) pTarget = focused; else sTarget = 0;
+    run();
+  });
+  list.addEventListener('focusout', function(e){
+    if (!list.contains(e.relatedTarget)){
+      focused = null;
+      if (!hovering){ sTarget = 0; run(); }
+    }
+  });
+  list.addEventListener('keydown', function(e){
+    var n = focused != null ? focused : active, k = e.key;
+    if (n < 0) n = current;
+    if (k === 'ArrowDown' || k === 'ArrowRight') n = Math.min(slides.length - 1, n + 1);
+    else if (k === 'ArrowUp' || k === 'ArrowLeft') n = Math.max(0, n - 1);
+    else if (k === 'Home') n = 0;
+    else if (k === 'End') n = slides.length - 1;
+    else return;
+    e.preventDefault();
+    rows[n].focus();
+  });
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var i = slides.indexOf(en.target);
+        if (i < 0 || i === current) return;
+        current = i;
+        rows.forEach(function(r, j){
+          r.setAttribute('aria-selected', j === i ? 'true' : 'false');
+          if (document.activeElement !== r) r.tabIndex = (j === i) ? 0 : -1;
+        });
+        ticks.forEach(function(t, j){ t.classList.toggle('is-current', j === i); });
+        if (sTarget === 0){ pTarget = i; pVal = i; }
+        run();
+      });
+    }, { threshold: 0.55 });
+    slides.forEach(function(s){ io.observe(s); });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
