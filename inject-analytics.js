@@ -29,7 +29,7 @@ const PROJECT_KEY = "phc_xBJMSbNpTkqS9HMCkCmedgNShMxEnPXXCCkdXM5cbGDx";
 const API_HOST = "https://us.i.posthog.com";
 
 // Directories to walk. Anything not listed here is never touched.
-const ROOTS = [".", "crypto-news-today"];
+const ROOTS = [".", "crypto-news-today", "for-funds"];
 
 // Pages that must not receive the tag.
 //   google*.html      - Google Search Console verification file. Its body is
