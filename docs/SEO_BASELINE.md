@@ -16,13 +16,21 @@ a coleta foi manual pelo navegador.
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Cliques orgânicos totais | **5** | | | |
-| Impressões totais | **36** | | | |
-| CTR médio | **13,9%** | | | |
-| Posição média | **25,4** | | | |
+| Cliques orgânicos totais | **5** | **7** | | |
+| Impressões totais | **36** | **1.240** | | |
+| CTR médio | **13,9%** | **0,6%** | | |
+| Posição média | **25,4** | **36,3** | | |
 
 Leitura: 5 cliques em 28 dias. O CTR de 13,9% parece bom mas é artefato de amostra
 minúscula. Posição média 25,4 significa página 3 do Google.
+
+**Leitura do T+30 (2026-08-26, janela 28/07 a 24/08):** impressões multiplicaram por 34
+(36 → 1.240) e o site passou a aparecer em 123 buscas distintas, contra um punhado em
+julho. O clique andou pouco (5 → 7) e os dois números que "pioraram" pioraram por
+aritmética, não por desempenho: o CTR cai porque o denominador explodiu, e a posição média
+sobe (25,4 → 36,3) porque centenas de consultas novas de cauda longa entraram na média
+posicionadas no fim da fila. O gargalo mudou de lugar no período: em julho era indexação,
+hoje é autoridade externa (5 domínios referenciadores, parados desde 20/08).
 
 ---
 
@@ -32,8 +40,8 @@ minúscula. Posição média 25,4 significa página 3 do Google.
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Páginas indexadas | **18** | | | |
-| Páginas não indexadas | **62** | | | |
+| Páginas indexadas | **18** | **56** | | |
+| Páginas não indexadas | **62** | **40** | | |
 
 Motivos da não indexação:
 
