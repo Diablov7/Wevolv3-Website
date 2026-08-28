@@ -14,7 +14,7 @@ Obrigado por considerar contribuir para o projeto Wevolv3! Este documento fornec
 
 ## 📜 **Código de Conduta**
 
-Este projeto adere ao [Contributor Covenant](https://www.contributor-covenant.org/). Ao participar, você deve seguir este código. Reporte comportamentos inaceitáveis para contato@wevolv3.com.
+Este projeto adere ao [Contributor Covenant](https://www.contributor-covenant.org/). Ao participar, você deve seguir este código. Reporte comportamentos inaceitáveis para info@wevolv3.com.
 
 ## 🚀 **Como Contribuir**
 
@@ -288,7 +288,7 @@ test('renders button with text', () => {
 ### **Canais:**
 - **GitHub Issues** - Bugs e features
 - **GitHub Discussions** - Discussões gerais
-- **Email** - contato@wevolv3.com
+- **Email** - info@wevolv3.com
 
 ### **Respondemos em:**
 - Issues: 24-48 horas

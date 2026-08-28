@@ -34,7 +34,7 @@ Sem isso, qualquer submissão vira pending eterno. Reúna em uma pasta compartil
 - [ ] **2-3 clientes dispostos a deixar review** (Clutch, GoodFirms pedem isso)
 - [ ] **Team photos** (founders, pelo menos 3)
 - [ ] **Social links** (X, LinkedIn, Telegram)
-- [ ] **Email corporativo** (contact@wevolv3.com)
+- [ ] **Email corporativo** (info@wevolv3.com)
 
 ### Template: Short description (300 chars)
 > Wevolv3 is a Web3 marketing agency specializing in KOL campaigns, community building, and on-chain attribution for crypto, DeFi, and blockchain projects worldwide. We turn attention into verified adoption with strategic, modular marketing designed for the realities of Web3.
@@ -68,7 +68,7 @@ Sem isso, qualquer submissão vira pending eterno. Reúna em uma pasta compartil
 **Tempo:** 45 min
 **Prep:** logo, founded year, HQ, funding stage (Bootstrapped), categoria (Marketing & Advertising > Blockchain)
 **Pitch nada — é formulário direto**
-**Tip:** Crunchbase exige verificação por email corporativo. Use contact@wevolv3.com.
+**Tip:** Crunchbase exige verificação por email corporativo. Use info@wevolv3.com.
 **Prazo de aprovação:** 3-14 dias
 
 ### 3. Clutch.co

@@ -106,7 +106,7 @@ O script irá:
 ## 🌐 Links
 
 - **Site**: [wevolv3.com](https://wevolv3.com)
-- **Contato**: contact@wevolv3.com
+- **Contato**: info@wevolv3.com
 - **Telegram**: [@wevolv3](https://t.me/wevolv3)
 - **X (Twitter)**: [@wevolv3_media](https://x.com/wevolv3_media)
 - **LinkedIn**: [Wevolv3](https://www.linkedin.com/company/wevolv3-web3-growth)
