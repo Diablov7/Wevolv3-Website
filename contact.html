@@ -98,6 +98,10 @@
             body {
                 cursor: auto !important;
             }
+            /* keep the form title clear of the header when jumped to by anchor */
+            #contact-form {
+                scroll-margin-top: 96px;
+            }
         </style>
 
     </head>
@@ -113,7 +117,13 @@
                             <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Clashdisplay', sans-serif; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
                         </a>
                     </div>
-                    <a href="contact.html" class="lets-talk-btn">LET'S TALK</a>
+                    <!-- On the contact page itself this used to point back at
+                         contact.html, so clicking it reloaded the page and wiped
+                         whatever was already typed into the form. Confirmed in
+                         PostHog on 22/08: form_start -> lets_talk_click -> reload
+                         -> form_start again -> never submitted. It now scrolls to
+                         the form instead. -->
+                    <a href="#contact-form" class="lets-talk-btn">LET'S TALK</a>
                     <nav role="navigation" class="main-menu w-nav-menu">
                         <a href="index.html" class="menu-item w-nav-link">HOME</a>
                         <a href="about.html" class="menu-item w-nav-link">ABOUT</a>
@@ -121,7 +131,7 @@
                         <a href="blog.html" class="menu-item w-nav-link">BLOG</a>
                         <a href="crypto-news-today" class="menu-item w-nav-link">NEWS</a>
                         <a href="adoption-check" class="menu-item w-nav-link">TOOLS</a>
-                        <a href="contact.html" aria-current="page" class="menu-item w-nav-link w--current">CONTACT</a>
+                        <a href="#contact-form" aria-current="page" class="menu-item w-nav-link w--current">CONTACT</a>
                     </nav>
                     <div class="menu-button w-nav-button">
                         <div class="icon w-icon-nav-menu"></div>
@@ -171,7 +181,7 @@
                         </div>
                     </div>
 
-                    <div class="w-layout-cell single-cell contact-form-cell">
+                    <div id="contact-form" class="w-layout-cell single-cell contact-form-cell">
                         <h2 class="comtact-main-title contact-title-with-border">drop us a line</h2>
                         <div class="contact-form-block w-form">
                             <form id="email-form2" method="post" action="#">
@@ -353,6 +363,12 @@
                             }
                             alert('Thanks! Someone from our team will reach out soon.');
                             form.reset();
+                            // reset() fires no input/change event, so the saved
+                            // draft has to be dropped explicitly or it would come
+                            // back on the next visit.
+                            if (typeof window.wevolv3ClearContactDraft === 'function') {
+                                window.wevolv3ClearContactDraft();
+                            }
                         } else {
                             console.error('Telegram error:', result);
                             console.error('Response status:', response.status);
@@ -374,6 +390,105 @@
                         }
                     }
                 });
+            })();
+        </script>
+        <!-- Smooth in-page scroll for the header links that now target the form
+             instead of reloading the page. -->
+        <script>
+            (function () {
+                'use strict';
+                // Capture phase + stopImmediatePropagation, because preventDefault
+                // alone is not enough: the Webflow bundle writes "#contact-form"
+                // into the address bar with JS, ignoring the cancelled default.
+                // GA4 enhanced measurement counts a history change as a page_view,
+                // so that cosmetic hash would show up as a fake extra view of
+                // /contact, on the very page whose funnel we are measuring.
+                //
+                // Killing propagation also kills track-events.js for this click,
+                // so lets_talk_click is fired here by hand, with the same name and
+                // properties that track-events.js would have sent.
+                document.addEventListener('click', function (ev) {
+                    var el = ev.target && ev.target.closest
+                        ? ev.target.closest('a[href="#contact-form"]')
+                        : null;
+                    if (!el) return;
+                    var target = document.getElementById('contact-form');
+                    if (!target) return;
+
+                    ev.preventDefault();
+                    ev.stopImmediatePropagation();
+
+                    if (/lets-talk/i.test((el.className || '').toString()) &&
+                        typeof window.wevolv3Track === 'function') {
+                        window.wevolv3Track('lets_talk_click', {
+                            link_text: (el.textContent || '').trim().slice(0, 60),
+                            transport_type: 'beacon'
+                        });
+                    }
+
+                    // No focus() here on purpose: focusing a field would fire
+                    // form_start and inflate the funnel with intent the visitor
+                    // never showed.
+                    try {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } catch (e) {
+                        target.scrollIntoView();
+                    }
+                }, true);
+            })();
+        </script>
+
+        <!-- Draft autosave. Any reload (back button, refresh, a stray link) used
+             to wipe the form. Two visitors re-typed everything from scratch in
+             the last two weeks, and one of them gave up. -->
+        <script>
+            (function () {
+                'use strict';
+                var KEY = 'wv3_contact_draft';
+                var FIELDS = ['name', 'email', 'telegram', 'project-type', 'Message'];
+                var form = document.getElementById('email-form2');
+                if (!form) return;
+
+                function save() {
+                    try {
+                        var data = {};
+                        FIELDS.forEach(function (id) {
+                            var el = document.getElementById(id);
+                            if (el && el.value) data[id] = el.value;
+                        });
+                        if (Object.keys(data).length) {
+                            sessionStorage.setItem(KEY, JSON.stringify(data));
+                        } else {
+                            sessionStorage.removeItem(KEY);
+                        }
+                    } catch (e) {
+                        /* storage can be blocked or full; never break the form */
+                    }
+                }
+
+                function clear() {
+                    try { sessionStorage.removeItem(KEY); } catch (e) {}
+                }
+
+                // Restore. Assigning .value does not fire focusin, so restoring a
+                // draft never counts as form_start.
+                try {
+                    var draft = JSON.parse(sessionStorage.getItem(KEY) || '{}') || {};
+                    FIELDS.forEach(function (id) {
+                        var el = document.getElementById(id);
+                        if (el && typeof draft[id] === 'string' && draft[id] !== '') {
+                            el.value = draft[id];
+                        }
+                    });
+                } catch (e) {
+                    /* a corrupt draft is not worth a broken page */
+                }
+
+                form.addEventListener('input', save);
+                form.addEventListener('change', save);
+                window.addEventListener('pagehide', save);
+
+                window.wevolv3ClearContactDraft = clear;
             })();
         </script>
         <script>document.querySelectorAll('.copyright-year').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
