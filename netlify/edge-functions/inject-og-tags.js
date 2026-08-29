@@ -59,6 +59,15 @@ export default async (request, context) => {
     return context.next();
   }
 
+  // Slugs that were renamed or merged. The legacy 301 below rewrites the path but
+  // keeps the slug, so a slug that no longer exists in Sanity lands on a real 404.
+  // Search Console flagged exactly that on 29/08/2026 with
+  // /singleblog.html?slug=roi-overview. Map the dead slug to the article that
+  // replaced it instead of losing whatever link equity points at the old URL.
+  const RENAMED_SLUGS = {
+    'roi-overview': 'galxe-vs-zealy-roi-platforms',
+  };
+
   // Get slug from clean path (/blog/<slug>) first, then fall back to ?slug=
   let slug = null;
   if (isBlogPath) {
@@ -66,6 +75,14 @@ export default async (request, context) => {
   }
   if (!slug) {
     slug = url.searchParams.get('slug');
+  }
+
+  // A renamed slug 301s to its replacement, whichever URL shape it arrived in.
+  if (slug && Object.prototype.hasOwnProperty.call(RENAMED_SLUGS, slug)) {
+    return Response.redirect(
+      new URL('/blog/' + encodeURIComponent(RENAMED_SLUGS[slug]), url.origin).toString(),
+      301
+    );
   }
 
   // 301 legacy singleblog URLs (?slug=) to the clean /blog/<slug> URL
