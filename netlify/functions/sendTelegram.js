@@ -110,31 +110,36 @@ export const handler = async (event) => {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 
-    // Suporta três formatos:
+    // Suporta dois formatos:
     // 1) { text, chat_id? } (proxy direto do front/bundle)
-    // 2) { name, email, telegram, message } (formulário antigo)
-    // 3) { name, email, telegram, projectType, additionalMessage } (formulário novo)
+    // 2) { name, email, telegram, additionalMessage?, projectType?, firstTouch? }
+    //
+    // A montagem rica era condicionada a `projectType`, campo que foi removido do
+    // formulário em 29/08 por ser o maior ponto de abandono. Com ele ausente, todo
+    // envio caía no formato antigo e a notificação perdia SILENCIOSAMENTE a
+    // atribuição de origem e a mensagem do contato. A montagem rica agora é o
+    // caminho único, e o bloco de projeto é que virou condicional.
     const finalText = typeof text === "string" && text.trim().length > 0
       ? escapeHtml(text)
       : (() => {
-          // Novo formato com campos de auditoria
-          if (projectType) {
+          {
             const lines = [
               "🚀 <b>NEW CONTACT FORM SUBMISSION</b>",
               "",
               "👤 <b>CONTACT INFO</b>",
               `<b>Name:</b> ${escapeHtml(name) || "N/A"}`,
-              `<b>Email:</b> ${escapeHtml(email) || "N/A"}`,
+              ...(email ? [`<b>Email:</b> ${escapeHtml(email)}`] : []),
               ...(phone ? [`<b>Phone:</b> ${escapeHtml(phone)}`] : []),
               ...(telegram ? [`<b>Telegram:</b> ${escapeHtml(telegram)}`] : []),
               "",
-              "📊 <b>PROJECT DETAILS</b>",
-              `<b>Type:</b> ${escapeHtml(projectType) || "N/A"}`,
-              "",
+              ...(projectType
+                ? ["📊 <b>PROJECT DETAILS</b>", `<b>Type:</b> ${escapeHtml(projectType)}`, ""]
+                : []),
             ];
 
-            if (additionalMessage) {
-              lines.push("📝 <b>ADDITIONAL DETAILS</b>", escapeHtml(additionalMessage), "");
+            const body = additionalMessage || message;
+            if (body) {
+              lines.push("📝 <b>ADDITIONAL DETAILS</b>", escapeHtml(body), "");
             }
 
             // Traffic source (first-touch attribution) — so sales sees where the
@@ -156,19 +161,6 @@ export const handler = async (event) => {
 
             return lines.join("\n");
           }
-
-          // Formato antigo (fallback)
-          return [
-            "🚀 <b>New message from Wevolv3!</b>",
-            "",
-            `<b>Name:</b> ${escapeHtml(name) || "N/A"}`,
-            `<b>Email:</b> ${escapeHtml(email) || "N/A"}`,
-            ...(phone ? [`<b>Phone:</b> ${escapeHtml(phone)}`] : []),
-            ...(telegram ? [`<b>Telegram:</b> ${escapeHtml(telegram)}`] : []),
-            "",
-            `<b>Message:</b>`,
-            escapeHtml(message) || "",
-          ].join("\n");
         })();
 
     console.log('[sendTelegram] Sending to Telegram API');

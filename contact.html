@@ -183,41 +183,48 @@
 
                     <div id="contact-form" class="w-layout-cell single-cell contact-form-cell">
                         <h2 class="comtact-main-title contact-title-with-border">drop us a line</h2>
+
+                        <!-- Direct conversation, above the form on purpose: a share of the
+                             people who land here do not want to fill anything in. -->
+                        <div class="contact-direct">
+                            <p class="contact-direct-text">Rather skip the form? Message us directly and we answer in the same place.</p>
+                            <div class="contact-direct-actions">
+                                <a href="https://t.me/wevolv3" target="_blank" rel="noopener" class="contact-direct-btn" data-direct="telegram">Telegram @wevolv3</a>
+                                <a href="mailto:info@wevolv3.com" class="contact-direct-btn contact-direct-btn-ghost" data-direct="email">info@wevolv3.com</a>
+                            </div>
+                        </div>
+
                         <div class="contact-form-block w-form">
-                            <form id="email-form2" method="post" action="#">
+                            <form id="email-form2" method="post" action="#" novalidate>
                                 <div id="darkyn30" class="w-layout-layout form-stack wf-layout-layout">
-                                    <!-- Row 1: Name e Email -->
-                                    <div id="darkyn31" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="name" data-name="Name" placeholder="Name *" type="text" id="name" required="" />
+                                    <!-- Row 1: Name -->
+                                    <div id="darkyn31" class="w-layout-cell form-cell form-cell-full">
+                                        <label class="field-label" for="name">Name</label>
+                                        <input class="input-style w-input" maxlength="256" name="name" data-name="Name" placeholder="How should we call you?" type="text" id="name" autocomplete="name" />
                                     </div>
+
+                                    <!-- Row 2: one contact channel, either one. Email is no longer
+                                         mandatory on its own: this audience often prefers Telegram. -->
                                     <div id="darkyn33" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="email" data-name="Email" placeholder="Email Address *" type="email" id="email" required="" />
+                                        <label class="field-label" for="email">Email</label>
+                                        <input class="input-style w-input" maxlength="256" name="email" data-name="Email" placeholder="you@company.com" type="email" id="email" autocomplete="email" />
                                     </div>
-
-                                    <!-- Row 2: Telegram (opcional) -->
                                     <div id="darkyn34-telegram" class="w-layout-cell form-cell">
-                                        <input class="input-style w-input" maxlength="256" name="telegram" data-name="Telegram" placeholder="Telegram @handle" type="text" id="telegram" />
+                                        <label class="field-label" for="telegram">Telegram</label>
+                                        <input class="input-style w-input" maxlength="256" name="telegram" data-name="Telegram" placeholder="@handle" type="text" id="telegram" />
                                     </div>
-                                    <div id="project-type-cell" class="w-layout-cell form-cell">
-                                        <select class="input-style w-input" name="project-type" id="project-type" required="" style="color: #fff; background-color: rgba(255, 255, 255, 0.05);">
-                                            <option value="" disabled selected style="color: rgba(255, 255, 255, 0.5);">Project Type *</option>
-                                            <option value="Token Launch" style="color: #000;">Token Launch</option>
-                                            <option value="Meme Token" style="color: #000;">Meme Token</option>
-                                            <option value="NFT Project" style="color: #000;">NFT Project</option>
-                                            <option value="DeFi Protocol" style="color: #000;">DeFi Protocol</option>
-                                            <option value="L0/L1/L2 Blockchain" style="color: #000;">L0/L1/L2 Blockchain</option>
-                                            <option value="Web3 Startup" style="color: #000;">Web3 Startup</option>
-                                            <option value="DAO/Community" style="color: #000;">DAO/Community</option>
-                                            <option value="Exchange/Platform" style="color: #000;">Exchange/Platform</option>
-                                            <option value="Other" style="color: #000;">Other</option>
-                                        </select>
+                                    <div class="w-layout-cell form-cell form-cell-full">
+                                        <p class="field-hint" id="channel-hint">Either one is enough, pick whichever you actually check.</p>
                                     </div>
 
-                                    <!-- Row 6: Additional Message (full width) -->
+                                    <!-- Row 3: Additional Message (full width) -->
                                     <div id="darkyn35" class="w-layout-cell form-cell form-cell-full">
-                                        <textarea class="input-style textarea w-input" maxlength="1000" name="Message" data-name="Message" placeholder="Additional Details (optional)" id="Message" rows="4"></textarea>
+                                        <label class="field-label" for="Message">What do you need? <span class="field-optional">optional</span></label>
+                                        <textarea class="input-style textarea w-input" maxlength="1000" name="Message" data-name="Message" placeholder="A line or two is plenty." id="Message" rows="4"></textarea>
                                     </div>
                                 </div>
+                                <p class="form-error" id="form-error" role="alert" hidden></p>
+                                <p class="form-success" id="form-success" role="status" hidden></p>
                                 <input type="submit" data-wait="Please wait..." data-w-id="d6b9384e-cf9a-93e8-1727-42d1ba9d2cf6" class="submit-button w-button" value="send" />
                             </form>
                         </div>
@@ -292,15 +299,53 @@
                     e.stopPropagation();
 
                     // Get form values
-                    const name = document.getElementById('name')?.value?.trim() || '';
-                    const email = document.getElementById('email')?.value?.trim() || '';
-                    const telegram = document.getElementById('telegram')?.value?.trim() || '';
-                    const projectType = document.getElementById('project-type')?.value || '';
+                    const nameEl = document.getElementById('name');
+                    const emailEl = document.getElementById('email');
+                    const telegramEl = document.getElementById('telegram');
+                    const name = nameEl?.value?.trim() || '';
+                    const email = emailEl?.value?.trim() || '';
+                    const telegram = telegramEl?.value?.trim() || '';
                     const message = document.getElementById('Message')?.value?.trim() || '';
 
-                    // Validate required fields
-                    if (!name || !email || !projectType) {
-                        alert('Please fill in all required fields (marked with *).');
+                    const errorEl = document.getElementById('form-error');
+                    const successEl = document.getElementById('form-success');
+
+                    function clearErrors() {
+                        if (errorEl) { errorEl.hidden = true; errorEl.textContent = ''; }
+                        [nameEl, emailEl, telegramEl].forEach(function (el) {
+                            if (el) el.classList.remove('input-invalid');
+                        });
+                    }
+
+                    // Inline error instead of alert(): the alert never said which field was
+                    // missing, and on mobile it was worse.
+                    function fail(msg, fields) {
+                        if (errorEl) {
+                            errorEl.textContent = msg;
+                            errorEl.hidden = false;
+                        }
+                        (fields || []).forEach(function (el) {
+                            if (el) el.classList.add('input-invalid');
+                        });
+                        (fields || [])[0]?.focus();
+                        if (!errorEl) alert(msg);
+                    }
+
+                    clearErrors();
+                    if (successEl) successEl.hidden = true;
+
+                    // Only two things are required now: a name and ONE way to reply.
+                    // Project type moved out of the form and into the conversation.
+                    if (!name) {
+                        fail('We just need a name to reply to.', [nameEl]);
+                        return;
+                    }
+                    if (!email && !telegram) {
+                        fail('Leave an email or a Telegram handle, whichever you prefer, so we can get back to you.', [emailEl, telegramEl]);
+                        return;
+                    }
+                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        fail('That email address looks incomplete. Fix it, or clear it and leave your Telegram instead.', [emailEl]);
                         return;
                     }
 
@@ -319,9 +364,8 @@
                         // Prepare payload
                         const payload = {
                             name: name,
-                            email: email,
+                            email: email || null,
                             telegram: telegram || null,
-                            projectType: projectType,
                             additionalMessage: message || null,
                             // first-touch attribution so the lead notification shows the real source
                             firstTouch: (typeof window !== 'undefined' && window.wevolv3FirstTouch) || null
@@ -350,9 +394,13 @@
                             // `qualify_lead`, which is already configured as a Key Event in
                             // this GA4 property, so a form submission counts as a conversion
                             // immediately, aligned with the existing funnel taxonomy.
+                            // project_type is gone from the form, so it is no longer sent.
+                            // `contact_channel` replaces it as the segmenting parameter and
+                            // answers a question we could not answer before: which channel
+                            // people actually choose when given the choice.
                             var leadParams = {
                                 method: 'contact_form',
-                                project_type: projectType || undefined
+                                contact_channel: (email && telegram) ? 'both' : (telegram ? 'telegram' : 'email')
                             };
                             if (typeof window.wevolv3Track === 'function') {
                                 window.wevolv3Track('generate_lead', leadParams);
@@ -361,7 +409,14 @@
                                 gtag('event', 'generate_lead', { method: 'contact_form' });
                                 gtag('event', 'qualify_lead', { method: 'contact_form' });
                             }
-                            alert('Thanks! Someone from our team will reach out soon.');
+                            if (successEl) {
+                                successEl.textContent = 'Got it. We reply on the channel you left, usually within a day.';
+                                successEl.hidden = false;
+                                successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            } else {
+                                alert('Thanks! Someone from our team will reach out soon.');
+                            }
+                            clearErrors();
                             form.reset();
                             // reset() fires no input/change event, so the saved
                             // draft has to be dropped explicitly or it would come
@@ -372,7 +427,7 @@
                         } else {
                             console.error('Telegram error:', result);
                             console.error('Response status:', response.status);
-                            alert('There was an error sending your message. Please try again or contact us directly at info@wevolv3.com');
+                            fail('That did not go through. Try again, or reach us on Telegram at @wevolv3.', []);
                         }
                     } catch (error) {
                         console.error('Form submission error:', error);
@@ -381,7 +436,7 @@
                             stack: error.stack,
                             name: error.name
                         });
-                        alert('There was an error sending your message. Please check the console for details or contact us directly at info@wevolv3.com');
+                        fail('That did not go through. Try again, or reach us on Telegram at @wevolv3.', []);
                     } finally {
                         // Re-enable button
                         if (submitBtn) {
@@ -445,7 +500,7 @@
             (function () {
                 'use strict';
                 var KEY = 'wv3_contact_draft';
-                var FIELDS = ['name', 'email', 'telegram', 'project-type', 'Message'];
+                var FIELDS = ['name', 'email', 'telegram', 'Message'];
                 var form = document.getElementById('email-form2');
                 if (!form) return;
 

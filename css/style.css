@@ -2496,6 +2496,102 @@ select.input-style option:checked {
   grid-column: 1 / -1;
 }
 
+/* Persistent labels: the form used to rely on placeholders alone, so the prompt
+   disappeared the moment someone started typing. That is a known cause of
+   abandonment mid-fill, which is exactly where this form was losing people. */
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.field-optional {
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.field-hint {
+  margin: -8px 0 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Inline validation, replacing the browser alert() that never said which field
+   was missing. */
+.form-error,
+.form-success {
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  border-radius: 5px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.form-error {
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+}
+
+.form-success {
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #6ee7b7;
+}
+
+.input-style.input-invalid {
+  border-color: rgba(239, 68, 68, 0.7);
+}
+
+/* Direct conversation block, placed above the form for the people who will
+   never fill one in. */
+.contact-direct {
+  margin-bottom: 32px;
+}
+
+.contact-direct-text {
+  margin: 0 0 14px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.contact-direct-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.contact-direct-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border: 1px solid #10b981;
+  border-radius: 5px;
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-direct-btn:hover {
+  background-color: rgba(16, 185, 129, 0.22);
+}
+
+.contact-direct-btn-ghost {
+  border-color: var(--border-color);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.contact-direct-btn-ghost:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+
 .contact-stack {
   margin-top: 0;
   padding: 0;
