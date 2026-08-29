@@ -75,7 +75,7 @@ function head(opts) {
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>${esc(opts.title)}</title>
     <meta name="description" content="${esc(opts.description)}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="${esc(opts.robots || 'index, follow')}">
     <link rel="canonical" href="${esc(opts.canonical)}">
 
     <meta property="og:type" content="${opts.ogType || 'website'}">
@@ -279,7 +279,11 @@ ${stories}
         </div>
     </div>
 `;
-  return head({ title: `Crypto News Today — ${day.dateLabel} | Wevolv3`, description: desc, canonical: url, ogType: 'article', jsonLd }) + body + footer();
+  // noindex desde 29/08/2026: a página diária fica no ar e continua linkada pelo
+  // hub, mas para de disputar fila de rastreamento. Ver o comentário longo em
+  // generate-sitemap.js. `follow` é proposital: os links internos daqui (Adoption
+  // Check, blog) continuam valendo. O hub segue indexável.
+  return head({ title: `Crypto News Today — ${day.dateLabel} | Wevolv3`, description: desc, canonical: url, ogType: 'article', robots: 'noindex, follow', jsonLd }) + body + footer();
 }
 
 // ── hub page ────────────────────────────────────────────────────────────────

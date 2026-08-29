@@ -178,7 +178,17 @@ Promise.all([
   } catch (e) { console.warn(`⚠️ sitemap: falha ao ler crypto-news-today: ${e.message}`); }
   newsDays.sort((a, b) => (a < b ? 1 : -1));
 
-  // Hub
+  // Só o hub entra no sitemap. As páginas diárias saíram em 29/08/2026.
+  //
+  // Motivo, medido no Search Console: as 18 diárias estavam em "Detectada, mas
+  // não indexada" com último rastreamento "N/D", ou seja, o Google nunca abriu
+  // nenhuma delas. Eram 19 das 82 URLs do sitemap (23%) consumindo fila de
+  // rastreamento de um domínio com só 5 backlinks, enquanto 7 posts de blog
+  // reais esperavam na mesma fila. Página de 345 palavras agregando notícia de
+  // terceiros não ranqueia, e pedir rastreamento dela tira vez de quem ranquearia.
+  //
+  // As diárias continuam no ar e continuam linkadas pelo hub, apenas param de
+  // pedir vez ao Google (elas também carregam noindex, ver generate-news.js).
   xml += `  <url>
     <loc>${BASE_URL}/crypto-news-today</loc>
     <lastmod>${newsDays[0] || new Date().toISOString().split('T')[0]}</lastmod>
@@ -186,17 +196,7 @@ Promise.all([
     <priority>0.9</priority>
   </url>
 `;
-  // Uma URL por dia
-  newsDays.forEach(date => {
-    xml += `  <url>
-    <loc>${BASE_URL}/crypto-news-today/${date}</loc>
-    <lastmod>${date}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-`;
-  });
-  console.log(`✅ Adicionadas ${newsDays.length} página(s) de Crypto News Today ao sitemap`);
+  console.log(`✅ Crypto News Today: só o hub no sitemap (${newsDays.length} diária(s) omitida(s) de propósito)`);
 
   xml += `</urlset>`;
 
