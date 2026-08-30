@@ -123,6 +123,8 @@
   .callout.warn .eyebrow{color:var(--warn);}
   .callout.good{border-left-color:var(--good);}
   .callout.good .eyebrow{color:var(--good);}
+  .callout.crit{border-left-color:var(--crit);}
+  .callout.crit .eyebrow{color:var(--crit);}
 
   p.note{font-size:15px;color:var(--ink-soft);}
 
@@ -173,36 +175,36 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">Wevolv3 · leitura de 30 de agosto de 2026 · o clique destravou, e o vazamento do formulário era medição contaminada</div>
+    <div class="eyebrow">Wevolv3 · 30 de agosto de 2026, segunda leitura do dia · nenhum número andou, mas o diagnóstico mudou</div>
     <h1>Raio-X de aquisição</h1>
-    <p class="lead">Dois movimentos hoje. O primeiro é bom e é raro: o Search Console saiu de
-    <b>7 para 9 cliques</b> depois de seis leituras travado no mesmo número, com as aparições indo
-    de 1.430 para <b>1.620</b>. O segundo corrige o parecer de ontem. A conta de
-    <b>&ldquo;15 começam o formulário, 4 enviam&rdquo;</b> veio do Google Analytics, que não filtra
-    o meu próprio navegador. A medição própria, já sem o tráfego de teste, mostra
-    <b>4 inícios de formulário em 14 dias, de 2 pessoas</b>. O buraco de 73% não está provado, e a
-    prioridade de ontem não se sustenta nesse número.</p>
+    <p class="lead">Esta é a segunda leitura do mesmo dia, e o resultado honesto é que
+    <b>nenhuma das quatro fontes se moveu</b>: Search Console segue em 9 cliques e 1.620 aparições
+    (atualizado há 5 horas), o Analytics segue em 193 sessões com a mesma composição, o PostHog
+    fecha 29/08 em 7 e o relatório de Links segue em 5 domínios. O que mudou não é métrica, é
+    entendimento. Pela primeira vez o <b>tamanho</b> do gargalo de autoridade foi medido contra os
+    concorrentes, e a medição derruba a segunda recomendação que esta página vinha repetindo: o
+    programa de diretório não está lento, está <b>morto</b>, com zero publicações em 27 dias.</p>
 
     <div class="tiles">
       <div class="tile">
         <span class="k">Cliques (28 dias)</span>
         <span class="v">9</span>
-        <span class="d up">+2 depois de seis leituras paradas em 7</span>
+        <span class="d">sem mudança na segunda leitura</span>
       </div>
       <div class="tile">
-        <span class="k">Apareceu (impressões)</span>
-        <span class="v">1.620</span>
-        <span class="d up">+190 em um dia, 130 buscas distintas</span>
-      </div>
-      <div class="tile">
-        <span class="k">Formulário começado (14 dias)</span>
-        <span class="v">4</span>
-        <span class="d">medição limpa: 2 pessoas, 2 envios</span>
+        <span class="k">Autoridade (DR Ahrefs)</span>
+        <span class="v">6</span>
+        <span class="d down">concorrentes entre 39 e 62</span>
       </div>
       <div class="tile">
         <span class="k">Sites de fora que linkam</span>
         <span class="v">5</span>
-        <span class="d down">parado há 11 leituras</span>
+        <span class="d down">parado há 12 leituras</span>
+      </div>
+      <div class="tile">
+        <span class="k">Diretórios publicados</span>
+        <span class="v">0</span>
+        <span class="d down">de 3 enviados há 27 dias</span>
       </div>
     </div>
   </header>
@@ -408,6 +410,54 @@
     ela se resolve exatamente aqui, neste cartão de cinco domínios que não anda desde 19 de
     agosto. Enquanto ele não se mexer, as aparições podem dobrar de novo sem que o clique
     acompanhe, porque o que trava é a fila, não a demanda.</p>
+
+    <h3>Novo hoje: o tamanho do buraco, medido contra os concorrentes</h3>
+
+    <p>Até agora esta página dizia "5 domínios é pouco" sem nunca dizer <b>pouco comparado a
+    quê</b>. A medição foi feita hoje no verificador gratuito do Ahrefs, um domínio de cada vez.
+    O DR, ou Domain Rating, é a nota de autoridade de 0 a 100 que o Ahrefs dá a um domínio, e é
+    <b>logarítmica</b>: cada faixa custa muito mais que a anterior.</p>
+
+    <table>
+      <thead>
+        <tr><th>Domínio</th><th>DR</th><th>Backlinks</th><th>Sites que linkam</th><th>% dofollow</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>wevolv3.com</b></td><td><b>6</b></td><td>433</td><td>363 (só ~5 contam)</td><td><b>8%</b></td></tr>
+        <tr><td>seocircular.com</td><td>39</td><td>4,0 mil</td><td>892</td><td>48%</td></tr>
+        <tr><td>marketacross.com</td><td>n/d</td><td>3,9 mil</td><td>1,4 mil</td><td>40%</td></tr>
+        <tr><td>coinbound.io</td><td>62</td><td>n/d</td><td>n/d</td><td>n/d</td></tr>
+      </tbody>
+    </table>
+
+    <p>Ler isso como "10x pior" seria errar a escala. <b>DR 6 contra DR 62 é outra ordem de
+    grandeza</b>, não um múltiplo. E o dado que fecha o argumento é a coluna da direita: o menor
+    concorrente medido tem 892 sites linkando, com quase metade em dofollow. A Wevolv3 tem cinco.</p>
+
+    <div class="callout crit">
+      <div class="eyebrow">Achado que ninguém foi procurar · o perfil de links está tomado por spam</div>
+      <p>O Ahrefs enxerga <b>363 sites</b> linkando para wevolv3.com. O Search Console enxerga
+      <b>5</b>. A diferença não é erro de ferramenta: a amostra do Ahrefs mostra que quase tudo é
+      <b>rede de PBN vendendo backlink</b>, com nomes como <code>siterankexpress.shop</code>,
+      <code>thebacklinks.shop</code>, <code>seoexpress-*.store</code>,
+      <code>pbnseolinks.shop</code>, <code>googleseocraft.shop</code> e
+      <code>toprankprovider.shop</code>.</p>
+      <p>Pior: esses sites usam a Wevolv3 como <b>depoimento falso</b>, com o mesmo texto repetido
+      domínio a domínio, dizendo que o Rômulo contratou um serviço de backlink e que o tráfego
+      dele disparou. Nada disso aconteceu. É raspagem de domínio para fabricar prova social alheia.
+      Os <b>8% de dofollow</b> são a assinatura desse tipo de rede.</p>
+      <p><b>Três consequências práticas.</b> A primeira: qualquer ferramenta de SEO vai mostrar
+      "433 backlinks" e isso é miragem, o número de links que realmente contam é 14, vindos de 5
+      domínios. A segunda: <b>provavelmente não está prejudicando</b>, porque a posição oficial do
+      Google há anos é que ele ignora spam óbvio sem precisar de disavow. A terceira: por isso
+      mesmo, <b>desautorizar esses links não é prioridade</b>, é higiene, e não move a posição 36,6.</p>
+    </div>
+
+    <p>Um achado lateral que vale registrar, porque conecta com o conserto feito hoje de manhã: o
+    link legítimo de maior autoridade que a Wevolv3 tem é o <code>wevolv3.hashnode.dev</code>, o
+    espelho do próprio blog, com <b>DR 83</b>. Ele apontava para
+    <code>singleblog.html?slug=roi-overview</code>, que era um 404 até hoje. Agora faz 301 para o
+    artigo certo, ou seja, a maior força externa do site parou de ser jogada num erro.</p>
   </section>
 
   <section>
@@ -756,15 +806,46 @@
       lista, mais abaixo, por bom senso, não por evidência.</p>
     </div>
 
-    <div class="callout">
-      <div class="eyebrow">Segundo, e ainda de pé · submeter o site aos diretórios</div>
-      <p>A demanda continua provada: <b>1.620 aparições em 130 buscas distintas</b>, quase todas
-      comerciais, com clique zero nas dez maiores. O que impede o clique é a posição 36,6, e
-      posição depende de autoridade externa, que hoje são <b>5 domínios parados há onze
-      leituras</b>. O teste dos títulos e os Web Vitals já eliminaram as duas hipóteses
-      concorrentes, texto do resultado e site lento. Continua sendo a única alavanca que já provou
-      funcionar para a Wevolv3 (goodfirms e crunchbase entraram por aí). Fica em segundo por prazo:
-      diretório leva semanas para virar posição.</p>
+    <div class="callout crit">
+      <div class="eyebrow">Correção · &ldquo;submeter aos diretórios&rdquo; sai da lista, e o motivo é medição</div>
+      <p>Esta página vinha repetindo a submissão a diretório como segunda prioridade, com o
+      argumento de que era a única alavanca que já provou funcionar. <b>A verificação de hoje
+      derruba isso.</b> Das 5 submissões feitas em 02 de agosto, duas foram descartadas na hora e
+      três ficaram &ldquo;em moderação&rdquo;. Vinte e sete dias depois, fui conferir uma a uma:</p>
+      <table>
+        <thead>
+          <tr><th>Diretório</th><th>O log dizia</th><th>Verificado em 30/08</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>The Business of Crypto</td><td>em moderação</td><td><b>Não publicado.</b> Varri o diretório, ~60 empresas, nenhuma menção</td></tr>
+          <tr><td>AMW Blockchain &amp; Web3</td><td>em revisão editorial</td><td><b>Não publicado.</b> 20 listagens, nenhuma menção</td></tr>
+          <tr><td>ChainHire</td><td>7 dias úteis</td><td>Prazo estourado há 20 dias, sem confirmação</td></tr>
+        </tbody>
+      </table>
+      <p><b>Zero publicações em 27 dias.</b> Fila de moderação de diretório pequeno e grátis não
+      converte. O que funcionou de verdade foram os dois grandes onde o perfil está publicado,
+      GoodFirms (4 links) e Crunchbase (1), e nenhum dos dois veio de fila de moderação.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="eyebrow">Segundo, no lugar dela · disparar o pedido de review do Clutch</div>
+      <p>É o item mais alavancado que existe hoje e <b>não precisa de trabalho novo</b>: o texto
+      está escrito desde 22 de agosto e nunca foi enviado.</p>
+      <p><b>Por que ele é o desbloqueio:</b> na varredura de 21/08, seis páginas da categoria
+      <code>blockchain-marketing/web3</code> do Clutch, cerca de 96 empresas, a Wevolv3 não aparece
+      em nenhuma. O perfil existe, está com a categorização certa desde 02/08, e hoje foi conferido
+      de novo: <b>0 reviews, nota 0,0</b>. Enquanto for zero, o perfil inteiro é investimento
+      parado, porque o ranking do Clutch roda em cima de review verificado.</p>
+      <p><b>O que destrava os clientes sob NDA:</b> o Clutch aceita review anônimo, com identidade
+      verificada por dentro e nome não publicado. É o que permite 4 dos 5 clientes participarem.</p>
+      <p><b>O último buraco foi fechado hoje:</b> a URL de review estava como espaço em branco no
+      documento, o que na prática transferia o trabalho de achar a empresa para o cliente. Ela agora
+      está lá, com o identificador do perfil:
+      <code>review.clutch.co/review/?provider_id=2591072</code>.</p>
+      <p><b>Uma trava a respeitar:</b> o template antigo oferecia amplificar o case em troca do
+      review. Isso está fora. O Clutch proíbe review em troca de compensação e mantém um programa
+      de alerta público para influência indevida. Divulgar o case depois pode; condicionar uma
+      coisa à outra, não.</p>
     </div>
 
     <p>Terceira ação, herdada de ontem e ainda não feita, agora maior do que parecia:
@@ -789,13 +870,18 @@
   </section>
 
   <footer>
-    Leitura completa registrada em <code>docs/SEO_DAILY_LOG.md</code>. Hoje havia <b>um único
-    Chrome pareado</b>, e ainda assim as leituras do Google saíram normalmente na conta
-    diablov2021, pelo caminho <code>/u/2</code>, com <code>authuser=2</code> na interface do
-    Analytics. <b>Sobre as imagens:</b> as telas 1 a 4 foram <b>recapturadas hoje</b>, 30 de
-    agosto, e trazem os números desta leitura. A tela 5, do Bing, é a de <b>26 de agosto</b>,
-    porque a sessão do navegador não está autenticada e fazer login é ação humana. Os números do
-    texto são todos da leitura de hoje.
+    Leitura completa registrada em <code>docs/SEO_DAILY_LOG.md</code>. <b>Esta é a segunda rodada
+    de 30 de agosto</b>, e as quatro fontes foram lidas de novo do zero: Search Console pelo
+    navegador na conta diablov2021 (caminho <code>/u/2</code>), Analytics e PostHog por API.
+    Nenhuma delas mudou em relação à rodada da manhã, e por isso <b>a linha do dia no log não foi
+    duplicada</b> e a série dos gráficos não ganhou ponto novo. <b>Sobre as imagens:</b> as telas 1
+    a 4 são as capturas de 30 de agosto e continuam corretas, porque os números que elas mostram
+    são exatamente os desta releitura; recapturar produziria imagem idêntica. A tela 5, do Bing, é
+    a de <b>26 de agosto</b>, porque a sessão do navegador não está autenticada e fazer login é
+    ação humana. A tabela de DR e o achado de spam vieram do verificador gratuito do Ahrefs, um
+    domínio por vez; o conector do Semrush está sem unidades de API e o Semrush pelo navegador
+    esgotou as 10 consultas grátis, o que está registrado aqui para a próxima rodada não repetir a
+    tentativa.
   </footer>
 
 </div>
