@@ -41,6 +41,7 @@ Each service has its own dedicated page:
 
 ## Key Articles
 
+- [What Is a KOL in Crypto](https://wevolv3.com/what-is-a-kol-in-crypto): Definition of KOL (Key Opinion Leader) in crypto, where the term came from, how it differs from influencer, the four audience tiers with median rates from 390 creators, and how to spot a rented audience.
 - [Web3 Marketing 2026](https://wevolv3.com/blog/web3-marketing-2026): State of Web3 marketing for 2026.
 - [Web3 KOL Attribution 2026](https://wevolv3.com/blog/web3-kol-attribution-2026): How to measure KOL campaign ROI.
 - [Post-Quantum Crypto Projects 2026](https://wevolv3.com/blog/post-quantum-crypto-projects-2026): Marketing post-quantum blockchains.
