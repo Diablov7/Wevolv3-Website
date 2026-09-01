@@ -44,6 +44,14 @@ Allow: /
 User-agent: *
 Allow: /
 
+# /p/* (client proposals) is deliberately NOT disallowed here, and that is not an
+# oversight. Disallow blocks the crawl, and a page that is never crawled is a page
+# whose noindex is never read: Google can still list the bare URL if it finds a link
+# to it somewhere. Allowing the crawl is what lets the X-Robots-Tag: noindex on /p/*
+# (netlify.toml) actually take effect and keep those pages out of the index. The real
+# protection is the 22 character random slug, which is not enumerable. Do not "fix"
+# this by adding a Disallow.
+
 # Content-Signal (draft spec: https://contentsignals.org/) — explicit machine-readable
 # preference alongside the crawler allow-list above: welcome AI search/retrieval, no
 # stance yet on training-only use beyond what's implied by the per-bot Allow rules.

@@ -353,6 +353,21 @@
   status = 404
   force = true
 
+# Propostas de cliente: /p/<slug de 22 chars>, servido pela funcao proposal-view.
+# Link permanente, publico para quem tem, fora de todo indice. Das tres camadas de
+# noindex (robots.txt, meta tag, header), o X-Robots-Tag e a unica que vale quando o
+# link e aberto por um crawler que nunca leu o robots.txt do site.
+[[redirects]]
+  from = "/p/*"
+  to = "/.netlify/functions/proposal-view?slug=:splat"
+  status = 200
+
+[[headers]]
+  for = "/p/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+    Referrer-Policy = "no-referrer"
+
 [[redirects]]
   from = "/blog/*"
   to = "/singleblog.html"
