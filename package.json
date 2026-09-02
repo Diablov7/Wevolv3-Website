@@ -15,7 +15,10 @@
   ],
   "author": "Wevolv3",
   "license": "UNLICENSED",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
 }
 
 
