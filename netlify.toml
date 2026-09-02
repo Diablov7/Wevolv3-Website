@@ -357,11 +357,10 @@
 # Link permanente, publico para quem tem, fora de todo indice. Das tres camadas de
 # noindex (robots.txt, meta tag, header), o X-Robots-Tag e a unica que vale quando o
 # link e aberto por um crawler que nunca leu o robots.txt do site.
-[[redirects]]
-  from = "/p/*"
-  to = "/.netlify/functions/proposal-view?slug=:splat"
-  status = 200
-
+#
+# NAO existe redirect para /p/* aqui de proposito: a rota e declarada pela propria
+# funcao, em `export const config = { path: '/p/:slug' }`. Com os dois, o rewrite
+# do toml vence, a funcao nunca recebe o parametro nomeado e todo link cai no 404.
 [[headers]]
   for = "/p/*"
   [headers.values]

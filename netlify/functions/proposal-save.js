@@ -1,5 +1,9 @@
 // Grava uma proposta e devolve o link permanente em wevolv3.com/p/<slug>.
 //
+// Funcao v2 (export default + Request/Response): no formato antigo de handler o
+// Netlify nao injeta o contexto do Blobs e getStore falha com "The environment
+// has not been configured to use Netlify Blobs".
+//
 // Autenticacao por token no header, nunca por origem: quem chama e uma extensao
 // do Chrome, e chrome-extension:// nao e uma origem que de para verificar do
 // lado do servidor. Sem PROPOSAL_TOKEN configurado a funcao se recusa a gravar,
@@ -15,11 +19,8 @@ const cors = {
   'X-Robots-Tag': 'noindex, nofollow'
 };
 
-const json = (statusCode, body) => ({
-  statusCode,
-  headers: { ...cors, 'Content-Type': 'application/json' },
-  body: JSON.stringify(body)
-});
+const json = (status, body) =>
+  new Response(JSON.stringify(body), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
 
 // 22 caracteres de base62 sao ~131 bits. O link nao expira, entao ele precisa
 // ser inadivinhavel, e nao apenas dificil de adivinhar.
@@ -32,7 +33,7 @@ function newSlug() {
   return s;
 }
 
-// Timing safe o suficiente para um token de 32+ chars: compara tudo sempre.
+// Compara o token inteiro sempre, sem sair no primeiro caractere diferente.
 function sameToken(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string' || a.length !== b.length) return false;
   let diff = 0;
@@ -40,9 +41,9 @@ function sameToken(a, b) {
   return diff === 0;
 }
 
-export const handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: cors };
-  if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
+export default async (req) => {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
+  if (req.method !== 'POST') return json(405, { error: 'Method Not Allowed' });
 
   const expected = process.env.PROPOSAL_TOKEN;
   if (!expected) {
@@ -53,36 +54,35 @@ export const handler = async (event) => {
     });
   }
 
-  const given = event.headers['x-proposal-token'] || event.headers['X-Proposal-Token'] || '';
-  if (!sameToken(given, expected)) {
+  if (!sameToken(req.headers.get('x-proposal-token') || '', expected)) {
     console.warn('[proposal-save] token invalido');
     return json(401, { error: 'Unauthorized' });
   }
 
   let payload;
   try {
-    payload = JSON.parse(event.body || '{}');
+    payload = await req.json();
   } catch (e) {
     return json(400, { error: 'Invalid JSON' });
   }
 
-  const data = payload.data;
+  const data = payload?.data;
   if (!data || typeof data !== 'object' || !data.titulo) {
     return json(400, { error: 'Missing proposal data' });
   }
 
   // Um blob de proposta nao passa de uns poucos KB. Um payload de megabytes so
   // pode ser engano ou abuso.
-  const raw = JSON.stringify(data);
-  if (raw.length > 200000) return json(413, { error: 'Proposal too large' });
+  if (JSON.stringify(data).length > 200000) return json(413, { error: 'Proposal too large' });
 
   // Reaproveita o slug quando a extensao manda um: republicar a mesma proposta
   // corrigida mantem o link que ja foi enviado ao cliente.
-  const slug = /^[A-Za-z0-9]{22}$/.test(payload.slug || '') ? payload.slug : newSlug();
+  const pedido = typeof payload.slug === 'string' ? payload.slug : '';
+  const slug = /^[A-Za-z0-9]{22}$/.test(pedido) ? pedido : newSlug();
 
   try {
     const store = getStore('proposals');
-    const existing = payload.slug ? await store.get(slug, { type: 'json' }).catch(() => null) : null;
+    const existing = pedido ? await store.get(slug, { type: 'json' }).catch(() => null) : null;
     await store.setJSON(slug, {
       data,
       created: existing?.created || new Date().toISOString(),
@@ -90,11 +90,10 @@ export const handler = async (event) => {
       cliente: data.cliente || '',
       contato: data.contato || ''
     });
-    const url = `https://wevolv3.com/p/${slug}`;
     console.log('[proposal-save] gravada', { slug, cliente: data.cliente || '(sem nome)', republicada: !!existing });
-    return json(200, { ok: true, slug, url });
+    return json(200, { ok: true, slug, url: `https://wevolv3.com/p/${slug}` });
   } catch (err) {
     console.error('[proposal-save] falha ao gravar', err);
-    return json(500, { error: 'Storage error', details: String(err && err.message ? err.message : err) });
+    return json(500, { error: 'Storage error', details: String(err?.message || err) });
   }
 };
