@@ -163,41 +163,16 @@ Promise.all([
 `;
   });
 
-  // Adicionar "Crypto News Today": hub + uma página por dia (data/crypto-news-today/*.json)
-  const newsDataDir = path.join(__dirname, 'data', 'crypto-news-today');
-  const newsDays = [];
-  try {
-    if (fs.existsSync(newsDataDir)) {
-      for (const f of fs.readdirSync(newsDataDir)) {
-        if (!f.endsWith('.json')) continue;
-        try {
-          const d = JSON.parse(fs.readFileSync(path.join(newsDataDir, f), 'utf8'));
-          if (d && d.date) newsDays.push(d.date);
-        } catch (e) { console.warn(`⚠️ sitemap: ignorando ${f}: ${e.message}`); }
-      }
-    }
-  } catch (e) { console.warn(`⚠️ sitemap: falha ao ler crypto-news-today: ${e.message}`); }
-  newsDays.sort((a, b) => (a < b ? 1 : -1));
-
-  // Só o hub entra no sitemap. As páginas diárias saíram em 29/08/2026.
+  // A seção "Crypto News Today" saiu do site em 09/09/2026, com a última diária
+  // publicada em 17/08. O hub era a única URL da seção no sitemap; hoje ele
+  // responde 301 para /blog (ver netlify.toml), então não entra mais aqui.
   //
-  // Motivo, medido no Search Console: as 18 diárias estavam em "Detectada, mas
-  // não indexada" com último rastreamento "N/D", ou seja, o Google nunca abriu
-  // nenhuma delas. Eram 19 das 82 URLs do sitemap (23%) consumindo fila de
-  // rastreamento de um domínio com só 5 backlinks, enquanto 7 posts de blog
-  // reais esperavam na mesma fila. Página de 345 palavras agregando notícia de
-  // terceiros não ranqueia, e pedir rastreamento dela tira vez de quem ranquearia.
-  //
-  // As diárias continuam no ar e continuam linkadas pelo hub, apenas param de
-  // pedir vez ao Google (elas também carregam noindex, ver generate-news.js).
-  xml += `  <url>
-    <loc>${BASE_URL}/crypto-news-today</loc>
-    <lastmod>${newsDays[0] || new Date().toISOString().split('T')[0]}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-`;
-  console.log(`✅ Crypto News Today: só o hub no sitemap (${newsDays.length} diária(s) omitida(s) de propósito)`);
+  // Fica registrado o que o Search Console mediu antes, porque a lição vale para
+  // a próxima seção que alguém quiser gerar em massa: as 18 páginas diárias
+  // ficaram em "Detectada, mas não indexada" com último rastreamento "N/D", ou
+  // seja, o Google nunca abriu nenhuma. Eram 19 das 82 URLs do sitemap (23%)
+  // consumindo fila de rastreamento de um domínio com 5 backlinks, enquanto 7
+  // posts de blog reais esperavam na mesma fila.
 
   xml += `</urlset>`;
 

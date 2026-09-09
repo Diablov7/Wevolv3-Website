@@ -11,7 +11,6 @@ Wevolv3 is a Web3-native growth partner operating worldwide, with strong LATAM p
 - [Works](https://wevolv3.com/works.html): Portfolio of crypto and Web3 marketing projects (several under NDA).
 - [Blog](https://wevolv3.com/blog.html): Articles on Web3 marketing, KOLs, communities, attribution, post-quantum crypto.
 - [Contact](https://wevolv3.com/contact.html): Email, Telegram, and contact form.
-- [Crypto News Today](https://wevolv3.com/crypto-news-today): Daily recap of the 5 crypto stories that mattered, updated every day.
 
 ## Services
 
@@ -34,10 +33,6 @@ Each service has its own dedicated page:
 
 - [Adoption Check](https://wevolv3.com/adoption-check): Free tool that scores the gap between a token's ATTENTION (real X/Twitter reach) and ADOPTION (real on-chain usage). Returns an attention/adoption score, a health grade, community sentiment from X, and a tailored 3-move action plan emailed to the user. Data from CoinGecko, DexScreener and X.
 - [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate the ROI of a KOL marketing campaign.
-
-## Daily News
-
-- [Crypto News Today](https://wevolv3.com/crypto-news-today): A daily recap of the 5 crypto stories that actually mattered, each with a summary and a link to the original source, updated every day. RSS feed: https://wevolv3.com/crypto-news-today/feed.xml
 
 ## Key Articles
 

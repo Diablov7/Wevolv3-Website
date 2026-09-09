@@ -27,10 +27,8 @@ const EXT = new Set([".md", ".sh", ".lock"]);
 // Exact names that carry no extension rule but are still internal.
 const NAMES = new Set([
   "COMMIT_MSG.txt",
-  "generate-news.js",
   "generate-sitemap.js",
   "generate-llms-full.js",
-  "sync-news.js",
   "inject-analytics.js",
   "license",
 ]);

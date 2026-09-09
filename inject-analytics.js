@@ -15,9 +15,7 @@
  * snippet has one definition and the build writes it everywhere, the same way
  * strip-internal.js edits the publish output without touching the repository.
  *
- * Runs AFTER generate-news.js so the generated /crypto-news-today/ pages are
- * covered too, and BEFORE strip-internal.js, which deletes this file from the
- * deploy.
+ * Runs BEFORE strip-internal.js, which deletes this file from the deploy.
  *
  * Idempotent: a file that already calls posthog.init is left alone, so the
  * inline copy in index.html (if it is ever restored) never double-fires.
@@ -29,7 +27,7 @@ const PROJECT_KEY = "phc_xBJMSbNpTkqS9HMCkCmedgNShMxEnPXXCCkdXM5cbGDx";
 const API_HOST = "https://us.i.posthog.com";
 
 // Directories to walk. Anything not listed here is never touched.
-const ROOTS = [".", "crypto-news-today", "for-funds"];
+const ROOTS = [".", "for-funds"];
 
 // Pages that must not receive the tag.
 //   google*.html      - Google Search Console verification file. Its body is

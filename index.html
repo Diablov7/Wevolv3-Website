@@ -457,7 +457,6 @@
                         <a href="about.html" class="menu-item w-nav-link">ABOUT</a>
                         <a href="works.html" class="menu-item w-nav-link">WORK</a>
                         <a href="blog.html" class="menu-item w-nav-link">BLOG</a>
-                        <a href="crypto-news-today" class="menu-item w-nav-link">NEWS</a>
                         <a href="adoption-check" class="menu-item w-nav-link">TOOLS</a>
                         <a href="contact.html" class="menu-item w-nav-link">CONTACT</a>
                     </nav>
@@ -468,71 +467,6 @@
             </div>
         </div>
 
-        <!-- Crypto News Today ticker (home) — start -->
-        <style>
-          /* Match the header box to the news strip (home only) */
-          .header{position:relative;z-index:3}
-          .header-inner{background:rgba(18,18,18,.72)!important;border-color:#3a3a3a!important}
-          .cnt-bar{display:block;text-decoration:none;margin-top:-6px;position:relative;z-index:2}
-          .cnt-bar-inner{display:flex;align-items:center;gap:14px;background:rgba(18,18,18,.72);border:1px solid #3a3a3a;border-radius:5px;padding:6px 16px;overflow:hidden}
-          .cnt-bar-tag{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;font-family:Clashdisplay,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--default)}
-          .cnt-bar-dot{width:7px;height:7px;border-radius:50%;background:var(--default);animation:cnt-pulse 2.4s ease-in-out infinite}
-          @keyframes cnt-pulse{0%,100%{opacity:1}50%{opacity:.3}}
-          .cnt-bar.cnt-off .cnt-bar-marquee,.cnt-bar.cnt-off .cnt-bar-dot{animation-play-state:paused}
-          .cnt-bar-track{flex:1 1 auto;min-width:0;overflow:hidden}
-          .cnt-bar-marquee{display:inline-flex;white-space:nowrap;will-change:transform;animation:cnt-marquee 32s linear infinite}
-          .cnt-bar:hover .cnt-bar-marquee{animation-play-state:paused}
-          @keyframes cnt-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-          .cnt-bar-seq{display:inline-flex;align-items:center}
-          .cnt-bar-seq .it{display:inline-flex;align-items:center;font-family:Clashdisplay,sans-serif;font-weight:300;font-size:13px;color:var(--white);margin-right:38px}
-          .cnt-bar-seq .it b{color:var(--default);font-weight:600;margin-right:8px}
-          .cnt-bar-more{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;font-family:Clashdisplay,sans-serif;font-weight:400;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--white);border-bottom:1px solid var(--white);padding-bottom:1px;transition:color .2s,border-color .2s}
-          .cnt-bar:hover .cnt-bar-more{color:var(--default);border-color:var(--default)}
-          .cnt-bar-more img{width:12px;height:auto}
-          @media (max-width:600px){.cnt-bar-more span{display:none}.cnt-bar-inner{gap:10px;padding:6px 12px}}
-          @media (prefers-reduced-motion:reduce){.cnt-bar-marquee{animation:none}.cnt-bar-dot{animation:none}}
-        </style>
-        <div class="w-layout-blockcontainer main-container w-container">
-          <a href="/crypto-news-today" class="cnt-bar" id="cnt-bar" aria-label="Crypto News Today, read today's top stories">
-            <div class="cnt-bar-inner">
-              <span class="cnt-bar-tag"><span class="cnt-bar-dot"></span>Today</span>
-              <div class="cnt-bar-track">
-                <div class="cnt-bar-marquee" id="cnt-bar-marquee">
-                  <span class="cnt-bar-seq"><span class="it">Crypto News Today, the 5 stories that actually mattered</span></span>
-                  <span class="cnt-bar-seq"><span class="it">Crypto News Today, the 5 stories that actually mattered</span></span>
-                </div>
-              </div>
-              <span class="cnt-bar-more"><span>See all</span> <img src="images/arrow-right.png" alt="" loading="lazy" /></span>
-            </div>
-          </a>
-        </div>
-        <script>
-        (function(){
-          var bar=document.getElementById('cnt-bar'),marquee=document.getElementById('cnt-bar-marquee');
-          if(!bar||!marquee)return;
-          // Pause the animations when the tab is backgrounded or the bar is off-screen.
-          var offView=false,hidden=false;
-          function apply(){bar.classList.toggle('cnt-off',offView||hidden);}
-          if('IntersectionObserver' in window){new IntersectionObserver(function(e){offView=!e[0].isIntersecting;apply();},{threshold:0}).observe(bar);}
-          document.addEventListener('visibilitychange',function(){hidden=document.hidden;apply();});
-          fetch('/crypto-news-today/latest.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null;}).then(function(d){
-            if(!d||!d.headlines||!d.headlines.length)return;
-            if(d.date)bar.setAttribute('href','/crypto-news-today/'+d.date);
-            function seq(){
-              var s=document.createElement('span');s.className='cnt-bar-seq';
-              d.headlines.forEach(function(h){
-                var it=document.createElement('span');it.className='it';
-                var b=document.createElement('b');b.textContent=(h.cat||'NEWS');
-                it.appendChild(b);it.appendChild(document.createTextNode(h.text||''));
-                s.appendChild(it);
-              });
-              return s;
-            }
-            marquee.innerHTML='';marquee.appendChild(seq());marquee.appendChild(seq());
-          }).catch(function(){});
-        })();
-        </script>
-        <!-- Crypto News Today ticker (home) — end -->
 
         <div class="hero-section">
             <!-- SEO: Hidden H1 for search engines (visually hidden but accessible) -->
@@ -728,6 +662,7 @@
                     </div>
                     </a>
                 </div>
+                <p style="color:#c8c8c8; font-size:16px; line-height:1.6; max-width:60ch; margin:36px 0 0;">New to how influence works in this market? Start with <a href="/what-is-a-kol-in-crypto" style="color:#10b981;">what a KOL is in crypto</a>, then see <a href="/kol-pricing-benchmark.html" style="color:#10b981;">what they actually charge</a>.</p>
             </div>
         </div>
 
@@ -1176,6 +1111,7 @@
                 <div class="footer-resources" style="margin:28px 0 8px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
                     <div style="font-family: 'Clashdisplay', sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#10b981;margin-bottom:16px;">Resources</div>
                     <div style="display:flex;flex-wrap:wrap;gap:12px 30px;">
+                        <a href="/what-is-a-kol-in-crypto" class="specialty-link" style="color:#cfcfcf;text-decoration:none;font-size:15px;">What Is a KOL in Crypto</a>
                         <a href="kol-roi-calculator.html" class="specialty-link" style="color:#cfcfcf;text-decoration:none;font-size:15px;">KOL ROI Calculator</a>
                         <a href="kol-pricing-benchmark.html" class="specialty-link" style="color:#cfcfcf;text-decoration:none;font-size:15px;">What Web3 KOLs Charge: 2026 Benchmark</a>
                         <a href="community-building" class="specialty-link" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Community Building</a>
