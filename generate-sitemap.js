@@ -120,12 +120,34 @@ Promise.all([
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 `;
 
+  // lastmod das páginas fixas = data do último commit do arquivo. Antes era a data
+  // de HOJE para todas, todo dia, o que ensina o Google a ignorar o lastmod do
+  // sitemap inteiro, inclusive o dos posts, que é real. O workflow faz checkout com
+  // fetch-depth: 0, então o histórico está disponível. Sem arquivo ou sem histórico,
+  // a página sai sem lastmod em vez de com uma data inventada.
+  const { execSync } = require('child_process');
+  const fileFor = (url) => {
+    const p = url.replace(/^\//, '');
+    const candidates = p === '' ? ['index.html'] : [p, `${p}.html`, `${p.replace(/\/$/, '')}/index.html`];
+    return candidates.find((c) => {
+      try { return fs.statSync(path.join(__dirname, c)).isFile(); } catch { return false; }
+    });
+  };
+  const lastCommitDate = (file) => {
+    try {
+      return execSync(`git log -1 --format=%cs -- "${file}"`, { cwd: __dirname, encoding: 'utf8' }).trim();
+    } catch { return ''; }
+  };
+  staticPages.forEach(page => {
+    const file = fileFor(page.url);
+    page.lastmod = file ? lastCommitDate(file) : '';
+  });
+
   // Adicionar páginas estáticas
   staticPages.forEach(page => {
     xml += `  <url>
     <loc>${BASE_URL}${page.url}</loc>
-    <lastmod>${page.lastmod}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
+${page.lastmod ? `    <lastmod>${page.lastmod}</lastmod>\n` : ''}    <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>
 `;

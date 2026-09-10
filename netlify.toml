@@ -438,3 +438,9 @@
 [[edge_functions]]
   function = "inject-blog-index"
   path = "/blog.html"
+
+# Edge Function: /sitemap.xml com os posts lidos do Sanity na hora (o arquivo
+# commitado pelo workflow diario fica como fallback)
+[[edge_functions]]
+  function = "inject-sitemap"
+  path = "/sitemap.xml"

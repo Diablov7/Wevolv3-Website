@@ -135,6 +135,8 @@ export default async (request, context) => {
     },
     publishedAt,
     _updatedAt,
+    seoTitle,
+    seoDescription,
     "authorName": author->name,
     "categoryNames": categories[]->title,
     slug
@@ -194,7 +196,26 @@ export default async (request, context) => {
 
     const imageUrl = sanityImageUrl(post.mainImage);
     const title = post.title;
-    const description = post.excerpt || 'Read this article about Web3 marketing and growth strategies.';
+    // Cut at the last word boundary instead of mid-word (12 posts had descriptions
+    // ending in half a word in the results).
+    function trimAtWord(text, max) {
+      const t = String(text || '').replace(/\s+/g, ' ').trim();
+      if (t.length <= max) return t;
+      const cut = t.slice(0, max - 1);
+      const i = cut.lastIndexOf(' ');
+      return (i > max * 0.6 ? cut.slice(0, i) : cut).replace(/[\s,;:.\-]+$/, '') + '…';
+    }
+    // Search snippet: the dedicated SEO field, then the excerpt, then the opening of
+    // the article itself. The old fallback was one generic sentence shared by every
+    // post without an excerpt, which search engines flag as a duplicate description.
+    const description = trimAtWord(
+      post.seoDescription || post.excerpt || portableTextToPlain(post.body) || 'Read this article about Web3 marketing and growth strategies.',
+      160
+    );
+    // <title>: the SEO field or the article title, with the brand suffix only when it
+    // still fits in ~60 characters (24 of 33 titles were being cut off in results).
+    const titleBase = String(post.seoTitle || title || '').trim();
+    const titleTag = `${titleBase} | Wevolv3 Blog`.length <= 60 ? `${titleBase} | Wevolv3 Blog` : titleBase;
     // Always use the clean canonical URL for OG/canonical/JSON-LD, regardless of how the page was reached
     const pageUrl = `https://wevolv3.com/blog/${encodeURIComponent(slug)}`;
     const datePublished = post.publishedAt || post._updatedAt || null;
@@ -421,7 +442,11 @@ export default async (request, context) => {
       "mainEntityOfPage": { "@type": "WebPage", "@id": "${jsonEscape(pageUrl)}" }${datePublished ? `,
       "datePublished": "${jsonEscape(datePublished)}"` : ''}${dateModified ? `,
       "dateModified": "${jsonEscape(dateModified)}"` : ''},
-      "author": { "@type": "Person", "@id": "https://wevolv3.com/about.html#team-${jsonEscape(authorSlug)}", "name": "${safeAuthor}" },
+      "author": ${/^wevolv3$/i.test(authorName.trim())
+        // The only author document today is the brand itself. It used to go out as a
+        // Person named "Wevolv3", which is wrong; a real person author keeps Person.
+        ? `{ "@type": "Organization", "name": "Wevolv3", "url": "https://wevolv3.com" }`
+        : `{ "@type": "Person", "@id": "https://wevolv3.com/about.html#team-${jsonEscape(authorSlug)}", "name": "${safeAuthor}" }`},
       "publisher": {
         "@type": "Organization",
         "name": "Wevolv3",
@@ -478,7 +503,7 @@ export default async (request, context) => {
       <meta name="twitter:description" content="${description.replace(/"/g, '&quot;').substring(0, 200)}">
       <meta name="twitter:image" content="${imageUrl}">
 
-      <title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')} | Wevolv3 Blog</title>
+      <title>${titleTag.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>
       <meta name="description" content="${description.replace(/"/g, '&quot;').substring(0, 160)}">
       <link rel="canonical" href="${pageUrl}">
 

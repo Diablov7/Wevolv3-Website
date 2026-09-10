@@ -1,3 +1,25 @@
+// Blocos HTML crus que o ContentStudio grava no corpo (tabelas e gráficos). O site
+// renderiza o HTML direto; sem estes tipos o Studio abria esses posts com "Invalid
+// Portable Text value" e não deixava editar o corpo. `children` e `markDefs` ficam
+// ocultos só para aceitar os arrays vazios que os posts já publicados carregam.
+const rawHtmlBlock = (name: string, title: string) => ({
+  name,
+  title,
+  type: 'object',
+  fields: [
+    {name: 'html', title: 'HTML', type: 'text', rows: 8},
+    {name: 'children', type: 'array', of: [{type: 'string'}], hidden: true},
+    {name: 'markDefs', type: 'array', of: [{type: 'string'}], hidden: true},
+  ],
+  preview: {
+    select: {html: 'html'},
+    prepare({html}: any) {
+      const text = String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+      return {title, subtitle: text.slice(0, 80)}
+    },
+  },
+})
+
 export default {
   name: 'post',
   title: 'Post',
@@ -37,6 +59,29 @@ export default {
       type: 'text',
       description: 'Breve descrição do artigo (aparece na listagem)',
       rows: 3,
+    },
+    {
+      name: 'seoTitle',
+      title: 'Título para o Google',
+      type: 'string',
+      description:
+        'Opcional. O que aparece no resultado de busca. Vazio = usa o título do artigo. Até 60 caracteres, senão o Google corta.',
+      validation: (Rule: any) => Rule.max(60).warning('Acima de 60 caracteres o Google corta o título.'),
+    },
+    {
+      name: 'seoDescription',
+      title: 'Descrição para o Google',
+      type: 'text',
+      rows: 3,
+      description:
+        'Opcional. O texto abaixo do título no resultado de busca. Vazio = usa o resumo. Até 160 caracteres.',
+      validation: (Rule: any) => Rule.max(160).warning('Acima de 160 caracteres o Google corta a descrição.'),
+    },
+    {
+      name: 'author',
+      title: 'Autor',
+      type: 'reference',
+      to: [{type: 'author'}],
     },
     {
       name: 'body',
@@ -97,6 +142,8 @@ export default {
             },
           ],
         },
+        rawHtmlBlock('htmlTable', 'Tabela (HTML)'),
+        rawHtmlBlock('htmlEmbed', 'Gráfico / embed (HTML)'),
       ],
       validation: (Rule: any) => Rule.required(),
     },
@@ -146,5 +193,3 @@ export default {
     },
   },
 }
-
-
