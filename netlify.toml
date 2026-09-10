@@ -341,22 +341,9 @@
   status = 404
   force = true
 
-# Crypto News Today saiu do ar em 09/09/2026. A ultima diaria foi 17/08 e a
-# secao nao voltou. As 18 paginas datadas eram "noindex, follow", entao apagar
-# nao custa nada em busca; o hub /crypto-news-today era "index, follow" e
-# estava no sitemap, e e o unico que precisa de destino. 301 para o blog, que
-# e o conteudo mais proximo, em vez de 404 seco.
-[[redirects]]
-  from = "/crypto-news-today/*"
-  to = "/blog"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/crypto-news-today"
-  to = "/blog"
-  status = 301
-  force = true
+# O 301 de /crypto-news-today NAO fica aqui, fica no arquivo _redirects.
+# O Netlify le _redirects antes deste arquivo, e o catch-all "/*" de la pega
+# todo path desconhecido, entao uma regra escrita aqui nunca e alcancada.
 
 # Propostas de cliente: /p/<slug de 22 chars>, servido pela funcao proposal-view.
 # Link permanente, publico para quem tem, fora de todo indice. Das tres camadas de

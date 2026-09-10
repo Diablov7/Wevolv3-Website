@@ -28,6 +28,19 @@
 /studio/*         /studio/index.html     200!
 /studio           /studio/index.html     200!
 
+# Crypto News Today saiu do ar em 09/09/2026 (ultima diaria: 17/08).
+#
+# Estas duas regras MORAM AQUI e nao no netlify.toml de proposito: o Netlify
+# processa este arquivo antes do toml, e o catch-all logo abaixo pega qualquer
+# path desconhecido. Colocadas no toml, elas nunca sao alcancadas e a URL
+# devolve 404 em vez de redirecionar, que foi exatamente o que aconteceu no
+# primeiro deploy desta remocao.
+#
+# Precisa ser so uma URL porque as 18 paginas datadas eram "noindex, follow" e
+# nunca entraram no indice; o hub era "index, follow" e estava no sitemap.
+/crypto-news-today/*   /blog.html   301
+/crypto-news-today     /blog.html   301
+
 # Catch-all: URLs desconhecidas -> 404 real (evita soft-404).
 # Blog/works limpos e /studio sao tratados nas regras acima, entao so caem aqui
 # paths que realmente nao existem.
@@ -73,11 +86,9 @@
 /convert-staff-photos.sh   /404.html   404!
 /deno.lock   /404.html   404!
 /generate-llms-full.js   /404.html   404!
-/generate-news.js   /404.html   404!
 /generate-sitemap.js   /404.html   404!
 /license   /404.html   404!
 /netlify.toml   /404.html   404!
 /package.json   /404.html   404!
 /para%20conectar%20ao%20github%EF%80%BA%EF%80%A2   /404.html   404!
 /readme.md   /404.html   404!
-/sync-news.js   /404.html   404!
