@@ -201,10 +201,16 @@
                 <!-- SEO: full article index, always present in the served HTML.
                      This used to live inside <noscript>, which meant Googlebot (which executes JS)
                      never saw it — every post was effectively orphaned. Kept rendered so each
-                     article has a real crawlable internal link. -->
+                     article has a real crawlable internal link.
+                     The list between the ARCHIVE-INDEX markers is rebuilt from Sanity on every
+                     request by the inject-blog-index edge function, so a new post shows up here
+                     without editing this file. What is written below is only the fallback served
+                     when Sanity is unreachable; its anchor text is also reused as the curated label
+                     for each slug it lists. -->
                 <nav class="blog-archive-index" aria-label="All articles" style="margin:56px 0 8px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);">
                     <div style="font-family: 'Clashdisplay', sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#10b981;margin-bottom:16px;">All articles</div>
                     <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:12px 30px;">
+                        <!-- ARCHIVE-INDEX:START -->
                         <li><a href="/blog/growth-partner-vs-agency" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Growth Partner vs the Vendor Model: Which Wins</a></li>
                         <li><a href="/blog/web3-marketing-agency-growth-partner" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Marketing Vendor vs Growth Partner</a></li>
                         <li><a href="/blog/web3-growth-partner-checklist" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Web3 Growth Partner Checklist</a></li>
@@ -238,6 +244,7 @@
                         <li><a href="/blog/post-quantum-crypto-projects-2026" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Post-Quantum Crypto Projects 2026</a></li>
                         <li><a href="/blog/retrofit-projects-quantum-threat" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Retrofitting Projects for the Quantum Threat</a></li>
                         <li><a href="/blog/why-cellframe-post-quantum" style="color:#cfcfcf;text-decoration:none;font-size:15px;">Why Cellframe Leads Post-Quantum</a></li>
+                        <!-- ARCHIVE-INDEX:END -->
                     </ul>
                 </nav>
 

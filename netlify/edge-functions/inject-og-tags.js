@@ -225,11 +225,13 @@ export default async (request, context) => {
       : articleBodyPlain;
     const wordCount = articleBodyPlain ? articleBodyPlain.split(/\s+/).filter(Boolean).length : 0;
 
-    // Convert Portable Text to a *minimal* HTML version (headings, paragraphs,
-    // basic lists). This is rendered ONLY inside <noscript> so users with JS
-    // never see it, but crawlers that don't execute JS (GPTBot, ClaudeBot,
-    // PerplexityBot, archive bots) get a clean HTML article. The client-side
-    // JS still owns the visible rendering, so there is zero divergence risk.
+    // Convert Portable Text to the same HTML the client renderer in singleblog.html
+    // produces: inline marks and links, tables (htmlTable), charts (htmlEmbed) and
+    // body images included. It used to keep plain text only, so every link, table
+    // and chart in an article was missing from the served HTML: Google only saw them
+    // after rendering JS, and crawlers that don't run JS (GPTBot, ClaudeBot,
+    // PerplexityBot) never did. That also left every post with zero crawlable
+    // in-body links. The client JS still re-renders the same container.
     function htmlEscape(s) {
       return String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
@@ -237,7 +239,48 @@ export default async (request, context) => {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
     }
-    function portableTextToBasicHtml(blocks) {
+    function safeHref(href) {
+      const h = String(href || '').trim();
+      return /^(https?:|mailto:|tel:|\/|#)/i.test(h) ? h : null;
+    }
+    // htmlTable/htmlEmbed are raw HTML from our own CMS. The Studio already strips
+    // scripts and inline handlers when it stores them; this repeats the same hardening
+    // because anything with Sanity write access can put HTML here.
+    function sanitizeRawHtml(html) {
+      return String(html || '')
+        .replace(/<script[\s\S]*?<\/script>/gi, '')
+        .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+        .replace(/(href|src)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"');
+    }
+    function renderSpans(block) {
+      const defs = Array.isArray(block.markDefs) ? block.markDefs : [];
+      return (block.children || []).map(child => {
+        let content = htmlEscape(child && typeof child.text === 'string' ? child.text : '');
+        const marks = child && Array.isArray(child.marks) ? child.marks : [];
+        // Same order as the client: decorators first, links wrap them.
+        for (const mark of marks) {
+          if (mark === 'strong') content = `<strong>${content}</strong>`;
+          else if (mark === 'em') content = `<em>${content}</em>`;
+          else if (mark === 'code') content = `<code>${content}</code>`;
+          else if (mark === 'underline') content = `<u>${content}</u>`;
+        }
+        for (const mark of marks) {
+          const def = defs.find(d => d && d._key === mark);
+          if (def && def._type === 'link') {
+            const href = safeHref(def.href);
+            if (href) content = `<a href="${htmlEscape(href)}" target="_blank" rel="noopener noreferrer">${content}</a>`;
+          }
+        }
+        return content;
+      }).join('');
+    }
+    function bodyImageUrl(block) {
+      const ref = block && block.asset && block.asset._ref;
+      const parts = ref ? ref.split('-') : [];
+      if (parts.length < 4) return null;
+      return `https://cdn.sanity.io/images/${projectId}/${dataset}/${parts[1]}-${parts[2]}.${parts.slice(3).join('-')}?w=1000&auto=format&q=75&fit=max`;
+    }
+    function portableTextToHtml(blocks) {
       if (!Array.isArray(blocks)) return '';
       let out = '';
       let inList = false;
@@ -250,11 +293,28 @@ export default async (request, context) => {
       };
       for (const block of blocks) {
         if (!block || typeof block !== 'object') continue;
+        if (block._type === 'image') {
+          closeList();
+          const src = bodyImageUrl(block);
+          if (src) {
+            const dims = sanityImageDims(block);
+            out += `<img src="${htmlEscape(src)}"${dims ? ` width="${dims.width}" height="${dims.height}"` : ''} alt="${htmlEscape(block.alt || title)}" loading="lazy" decoding="async" style="max-width: 100%; height: auto; border-radius: 10px; margin: 30px 0;" />`;
+          }
+          continue;
+        }
+        if (block._type === 'htmlTable' && block.html) {
+          closeList();
+          out += `<div class="post-table-wrap">${sanitizeRawHtml(block.html)}</div>`;
+          continue;
+        }
+        if (block._type === 'htmlEmbed' && block.html) {
+          closeList();
+          out += sanitizeRawHtml(block.html);
+          continue;
+        }
         if (block._type !== 'block') continue;
-        const text = htmlEscape(
-          (block.children || []).map(c => (c && typeof c.text === 'string') ? c.text : '').join('')
-        );
-        if (!text.trim()) continue;
+        const text = renderSpans(block);
+        if (!text.replace(/<[^>]*>/g, '').trim()) continue;
         if (block.listItem) {
           const t = block.listItem === 'number' ? 'number' : 'bullet';
           if (!inList || listType !== t) {
@@ -278,7 +338,20 @@ export default async (request, context) => {
       closeList();
       return out;
     }
-    const articleBodyHtml = portableTextToBasicHtml(post.body);
+    const articleBodyHtml = portableTextToHtml(post.body);
+
+    // The client injects these two stylesheets into <head> the first time it renders a
+    // table or chart, and skips it when the id already exists. Serving them in <head>
+    // styles the server-rendered table and stays compatible with that check (inside
+    // #post-body they would be wiped when the client re-renders the container).
+    const bodyBlocks = Array.isArray(post.body) ? post.body : [];
+    const bodyCss =
+      (bodyBlocks.some(b => b && b._type === 'htmlTable' && b.html)
+        ? '<style id="post-table-css">.post-table-wrap{overflow-x:auto;margin:28px 0}.post-table-wrap table{width:100%;border-collapse:collapse;font-size:15px}.post-table-wrap th,.post-table-wrap td{border:1px solid rgba(128,128,128,.35);padding:10px 14px;text-align:left;vertical-align:top}.post-table-wrap th{background:rgba(128,128,128,.14);font-weight:700}</style>'
+        : '') +
+      (bodyBlocks.some(b => b && b._type === 'htmlEmbed' && b.html)
+        ? '<style id="post-embed-css">.post-chart{margin:28px 0;text-align:center}.post-chart img{max-width:100%;height:auto}.post-chart figcaption{font-size:13px;opacity:.7;margin-top:8px}.post-chart figcaption a{color:inherit;text-decoration:underline}</style>'
+        : '');
 
     // Extract Q&A pairs from a "Frequently Asked Questions" section (articles already
     // write these in prose) so we can emit FAQPage schema for AI Overviews / rich results.
@@ -412,6 +485,7 @@ export default async (request, context) => {
       <script id="article-schema-edge" type="application/ld+json">${blogPostingSchema}</script>
       <script id="breadcrumb-schema-edge" type="application/ld+json">${breadcrumbSchema}</script>
       ${faqSchema ? `<script id="faq-schema-edge" type="application/ld+json">${faqSchema}</script>` : ''}
+      ${bodyCss}
     `;
 
     // <noscript> kept as a defensive extra fallback (zero cost, zero visible impact

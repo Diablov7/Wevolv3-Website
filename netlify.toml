@@ -428,3 +428,13 @@
 [[edge_functions]]
   function = "inject-og-tags"
   path = "/singleblog.html"
+
+# Edge Function: indice "All articles" do blog.html gerado do Sanity a cada request
+# (a lista estatica no arquivo fica como fallback se o Sanity falhar)
+[[edge_functions]]
+  function = "inject-blog-index"
+  path = "/blog"
+
+[[edge_functions]]
+  function = "inject-blog-index"
+  path = "/blog.html"
