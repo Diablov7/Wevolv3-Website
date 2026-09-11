@@ -54,11 +54,27 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
+      // A capa do site é a arte limpa (mainImage). A versão com texto por cima vai
+      // aqui e só aparece no preview de quem compartilha o link nas redes.
+      name: 'socialImage',
+      title: 'Imagem para as redes (com texto)',
+      type: 'image',
+      description: 'Opcional. Preview do link no X, LinkedIn, Telegram. Vazio = usa a imagem de header.',
+    },
+    {
       name: 'excerpt',
       title: 'Resumo',
       type: 'text',
       description: 'Breve descrição do artigo (aparece na listagem)',
       rows: 3,
+    },
+    {
+      name: 'keyTakeaways',
+      title: 'Pontos principais',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Até 3 frases curtas, tiradas do próprio artigo. Aparecem logo depois do primeiro parágrafo.',
+      validation: (Rule: any) => Rule.max(3).warning('Mais de 3 pontos deixa o bloco longo demais.'),
     },
     {
       name: 'seoTitle',

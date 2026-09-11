@@ -594,6 +594,27 @@
                 .wv-end p { font-size: 18px; }
                 .wv-share-label { display: none; }
             }
+
+            /* Fase 2: capa limpa (post com socialImage), pontos principais e autor */
+            .wv-cover #post-image.wv-cover-clean { aspect-ratio: 21 / 9; object-fit: cover; object-position: 50% 48%; }
+            @media (max-width: 700px) { .wv-cover #post-image.wv-cover-clean { aspect-ratio: 16 / 9; } }
+            #post-body .wv-takeaways { padding: 22px 24px 20px; background: var(--wv-raise); border: 1px solid var(--wv-line); border-radius: 6px; }
+            #post-body .wv-takeaways-label { margin: 0 0 10px; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--wv-accent); }
+            #post-body .wv-takeaways ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+            #post-body .wv-takeaways li { position: relative; margin: 0; padding-left: 22px; font-size: 17px; line-height: 1.55; color: var(--wv-ink); }
+            #post-body .wv-takeaways li::before { content: ""; position: absolute; left: 0; top: .55em; width: 8px; height: 8px; background: var(--wv-accent); border-radius: 1px; }
+            #post-body .wv-takeaways + .wv-toc-inline { margin-top: 16px; }
+            .wv-author-box { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--wv-line); display: flex; gap: 18px; align-items: flex-start; }
+            .wv-author-box .wv-avatar { width: 56px; height: 56px; font-size: 17px; }
+            .wv-who { display: grid; gap: 6px; }
+            .wv-kicker { font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--wv-ink-3); }
+            .wv-who strong { color: var(--wv-ink); font-size: 19px; font-weight: 500; line-height: 1.3; }
+            .wv-who p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--wv-ink-2); }
+            .wv-author-box + .wv-end { margin-top: 36px; }
+            @media (max-width: 600px) {
+                #post-body .wv-takeaways { padding: 18px; }
+                #post-body .wv-takeaways li { font-size: 16px; }
+            }
         </style>
 
     </head>
@@ -670,6 +691,9 @@
                         <div id="post-body" class="w-richtext">
                             <!-- Post content will be rendered here -->
                         </div>
+                        <!-- A edge function troca esta linha pelo bloco "Written by" quando o
+                             autor tem bio. Tambem casa por texto: nao mudar. -->
+                        <div id="author-box" hidden></div>
                         <aside class="wv-end" aria-label="Talk to Wevolv3">
                             <p>Building in Web3? Tell us where you are and we will show you what we would do.</p>
                             <a href="contact.html" class="wv-btn">Let's talk</a>
@@ -1294,10 +1318,33 @@
             // bloco recolhivel depois do primeiro paragrafo; FAQ e fontes viram blocos de
             // fechamento. Trabalha sobre o DOM ja renderizado e so mexe quando o padrao
             // existe: artigo sem FAQ ou sem "Sources" fica como esta.
-            function enhanceArticle() {
+            function enhanceArticle(post) {
                 var body = document.getElementById('post-body');
                 if (!body) return;
                 var rail = document.getElementById('toc-rail');
+
+                // Pontos principais (keyTakeaways do Sanity) depois do primeiro paragrafo.
+                // A edge function ja os coloca no HTML do servidor; quando o navegador
+                // redesenha o corpo, eles voltam por aqui.
+                var tkItems = post && Array.isArray(post.keyTakeaways) ? post.keyTakeaways.filter(Boolean).slice(0, 5) : [];
+                if (tkItems.length && !body.querySelector(':scope > .wv-takeaways')) {
+                    var tk = document.createElement('section');
+                    tk.className = 'wv-takeaways';
+                    tk.setAttribute('aria-label', 'Key takeaways');
+                    var tkLabel = document.createElement('p');
+                    tkLabel.className = 'wv-takeaways-label';
+                    tkLabel.textContent = 'Key takeaways';
+                    var tkList = document.createElement('ul');
+                    tkItems.forEach(function (t) {
+                        var li = document.createElement('li');
+                        li.textContent = String(t);
+                        tkList.appendChild(li);
+                    });
+                    tk.appendChild(tkLabel);
+                    tk.appendChild(tkList);
+                    var leadP = body.querySelector(':scope > p');
+                    body.insertBefore(tk, leadP ? leadP.nextSibling : body.firstChild);
+                }
                 // Sem a renderizacao do navegador (o fetch falhou), o sumario sai dos
                 // h2 que a edge function ja entregou.
                 var toc = window.__postToc;
@@ -1325,8 +1372,8 @@
                     var inline = document.createElement('details');
                     inline.className = 'wv-toc-inline';
                     inline.innerHTML = '<summary>On this page</summary><nav class="post-toc" aria-label="On this page"><ol class="wv-toc-list">' + items + '</ol></nav>';
-                    var firstP = body.querySelector(':scope > p');
-                    body.insertBefore(inline, firstP ? firstP.nextSibling : body.firstChild);
+                    var anchor = body.querySelector(':scope > .wv-takeaways') || body.querySelector(':scope > p');
+                    body.insertBefore(inline, anchor ? anchor.nextSibling : body.firstChild);
                 } else if (rail) {
                     rail.hidden = true;
                     rail.innerHTML = '';
@@ -1477,6 +1524,8 @@
                             slug,
                             excerpt,
                             mainImage,
+                            socialImage,
+                            keyTakeaways,
                             publishedAt,
                             body,
                             published,
@@ -1489,6 +1538,8 @@
                             slug,
                             excerpt,
                             mainImage,
+                            socialImage,
+                            keyTakeaways,
                             publishedAt,
                             body,
                             "categories": categories[]->{title, _id}
@@ -1507,6 +1558,8 @@
                             slug,
                             excerpt,
                             mainImage,
+                            socialImage,
+                            keyTakeaways,
                             publishedAt,
                             body,
                             published,
@@ -1567,6 +1620,8 @@
                     postImageEl.alt = post.title || '';
                     postImageEl.loading = 'eager';
                     postImageEl.fetchPriority = 'high';
+                    // Post com socialImage tem a arte limpa na capa: pode ser cortada mais baixa.
+                    postImageEl.classList.toggle('wv-cover-clean', !!(post.socialImage && post.socialImage.asset));
                     // width/height intrinsecos reservam o espaco da capa e matam o CLS.
                     const mainDims = sanityImageDims(post.mainImage);
                     if (mainDims) {
@@ -1590,7 +1645,7 @@
                     console.log('Tamanho do HTML:', htmlResult.length, 'caracteres');
                     
                     document.getElementById('post-body').innerHTML = htmlResult;
-                    enhanceArticle();
+                    enhanceArticle(post);
 
                     // TOC: intercepta o clique em fase de CAPTURA para driblar o handler
                     // do Webflow (que sequestra links com "#" e, por causa do <base href="/">,
@@ -1629,7 +1684,7 @@
                     
                     // Load related posts (skip in preview mode to avoid confusion)
                     if (!previewMode) {
-                        loadRelatedPosts(sanitizedSlug);
+                        loadRelatedPosts(sanitizedSlug, (post.categories || []).map(function (c) { return c && c._id; }).filter(Boolean));
                     }
                     
                 } catch (error) {
@@ -1657,20 +1712,24 @@
             }
             
             // Load related posts
-            async function loadRelatedPosts(currentSlug) {
+            async function loadRelatedPosts(currentSlug, categoryIds) {
                 try {
-                    // Only fetch published posts for related section
-                    const query = `*[_type == "post" && published == true && slug.current != "${currentSlug}"] | order(publishedAt desc) [0...3] {
+                    // Mesma categoria primeiro (09/2026), completando com os mais recentes.
+                    const query = `*[_type == "post" && published == true && slug.current != "${currentSlug}"] | order(publishedAt desc) [0...24] {
                         title,
                         slug,
                         excerpt,
                         mainImage,
-                        publishedAt
+                        publishedAt,
+                        "catIds": categories[]._ref
                     }`;
-                    
-                    const posts = await sanityClient.fetch(query);
-                    
-                    if (!posts || posts.length === 0) return;
+
+                    const recent = await sanityClient.fetch(query);
+
+                    if (!recent || recent.length === 0) return;
+                    const cats = categoryIds || [];
+                    const sameTopic = recent.filter(p => (p.catIds || []).some(id => cats.indexOf(id) >= 0));
+                    const posts = sameTopic.concat(recent.filter(p => sameTopic.indexOf(p) < 0)).slice(0, 3);
                     
                     const relatedSection = document.getElementById('related-section');
                     const relatedGrid = document.getElementById('related-grid');

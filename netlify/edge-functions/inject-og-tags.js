@@ -138,7 +138,14 @@ export default async (request, context) => {
     seoTitle,
     seoDescription,
     "authorName": author->name,
+    "authorBio": author->bio,
     "categoryNames": categories[]->title,
+    socialImage {
+      asset {
+        _ref
+      }
+    },
+    keyTakeaways,
     slug
   }`;
 
@@ -194,7 +201,11 @@ export default async (request, context) => {
       return `${baseUrl}?w=1200&h=630&fit=crop&auto=format`;
     }
 
-    const imageUrl = sanityImageUrl(post.mainImage);
+    // Duas capas (09/2026): mainImage é a arte limpa que aparece no site; socialImage,
+    // quando existe, é a versão com texto que vai no preview das redes (og/twitter).
+    const hasSocialImage = !!(post.socialImage && post.socialImage.asset && post.socialImage.asset._ref);
+    const imageUrl = sanityImageUrl(hasSocialImage ? post.socialImage : post.mainImage);
+    const coverUrl = sanityImageUrl(post.mainImage);
     const title = post.title;
     // Cut at the last word boundary instead of mid-word (12 posts had descriptions
     // ending in half a word in the results).
@@ -557,6 +568,22 @@ export default async (request, context) => {
       <div class="wv-share" aria-label="Share this article"><span class="wv-share-label">Share</span><a href="https://twitter.com/intent/tweet?url=${shareUrl}&amp;text=${shareText}" target="_blank" rel="noopener">X</a><a href="https://t.me/share/url?url=${shareUrl}&amp;text=${shareText}" target="_blank" rel="noopener">Telegram</a><a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" rel="noopener">LinkedIn</a><button type="button" data-copy="${htmlEscape(pageUrl)}" data-label="Copy link">Copy link</button></div>
     </div>`;
 
+    // Pontos principais (keyTakeaways) logo depois do primeiro parágrafo. Só no
+    // HTML da página: o JSON-LD e o <noscript> seguem com o corpo puro.
+    const takeaways = Array.isArray(post.keyTakeaways)
+      ? post.keyTakeaways.map(t => String(t || '').trim()).filter(Boolean).slice(0, 5)
+      : [];
+    const takeawaysHtml = takeaways.length
+      ? `<section class="wv-takeaways" aria-label="Key takeaways"><p class="wv-takeaways-label">Key takeaways</p><ul>${takeaways.map(t => `<li>${htmlEscape(t)}</li>`).join('')}</ul></section>`
+      : '';
+    const bodyForPage = takeawaysHtml ? articleBodyHtml.replace('</p>', `</p>${takeawaysHtml}`) : articleBodyHtml;
+
+    // "Written by" no fim do artigo: só para autor pessoa com bio (a marca não ganha bloco).
+    const authorBio = String(post.authorBio || '').trim();
+    const authorBoxHtml = authorBio && !/^wevolv3$/i.test(authorName.trim())
+      ? `<section id="author-box" class="wv-author-box" aria-label="About the author"><span class="wv-avatar" aria-hidden="true">${htmlEscape(authorInitials)}</span><div class="wv-who"><span class="wv-kicker">Written by</span><strong>${htmlEscape(authorName)}</strong><p>${htmlEscape(authorBio)}</p></div></section>`
+      : '';
+
     // Replace existing meta tags (including those with IDs) or inject before </head>
     // Use more aggressive regex to catch all variations
     let updatedHtml = html
@@ -605,15 +632,18 @@ export default async (request, context) => {
       // explicit width/height when known (CLS).
       .replace(
         /<img\s+id="post-image"\s+src="images\/post1\.jpg"\s+alt="Article image"\s+class="single-post-img"\s*\/>/,
-        `<img id="post-image" src="${htmlEscape(imageUrl)}" alt="${htmlEscape(title)}" class="single-post-img"${imageDims ? ` width="${imageDims.width}" height="${imageDims.height}"` : ''} loading="eager" />`
+        // Com socialImage, a capa do site é a arte limpa e pode ser cortada mais baixa
+        // (.wv-cover-clean); sem ela, a capa ainda tem texto e fica inteira.
+        `<img id="post-image" src="${htmlEscape(coverUrl)}" alt="${htmlEscape(title)}" class="single-post-img${hasSocialImage ? ' wv-cover-clean' : ''}"${imageDims ? ` width="${imageDims.width}" height="${imageDims.height}"` : ''} loading="eager" />`
       )
       // The actual article body, in the same container the client JS also writes to.
       // Whitespace-tolerant regex (not an exact string match) since the shell's
       // indentation isn't a contract we control.
       .replace(
         /<div id="post-body" class="w-richtext">\s*<!-- Post content will be rendered here -->\s*<\/div>/,
-        `<div id="post-body" class="w-richtext">${articleBodyHtml}</div>`
-      );
+        `<div id="post-body" class="w-richtext">${bodyForPage}</div>`
+      )
+      .replace('<div id="author-box" hidden></div>', authorBoxHtml || '<div id="author-box" hidden></div>');
 
     return new Response(updatedHtml, {
       status: 200,

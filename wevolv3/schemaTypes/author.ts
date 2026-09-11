@@ -19,6 +19,20 @@ export default {
       type: 'url',
       description: 'Opcional. Perfil do autor no site ou no LinkedIn.',
     },
+    {
+      // O bloco "Written by" no fim do artigo só aparece quando há bio.
+      name: 'bio',
+      title: 'Bio',
+      type: 'text',
+      rows: 3,
+      description: 'Uma ou duas frases, em inglês. Aparece no fim de cada artigo do autor.',
+    },
+    {
+      name: 'image',
+      title: 'Foto',
+      type: 'image',
+      description: 'Opcional. Sem foto, o site mostra as iniciais.',
+    },
   ],
   preview: {
     select: {title: 'name'},
