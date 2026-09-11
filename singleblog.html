@@ -309,6 +309,293 @@
             }
         </style>
 
+        <style id="wv-article-css">
+            /* ── Artigo em coluna unica (09/2026) ──────────────────────────────
+               Vem depois do style.css e das regras acima, e usa id nos seletores
+               que disputam com o Webflow (.single-blog-heading, .blog-category-2),
+               para ganhar por especificidade e nao por !important. */
+            :root {
+                --wv-col: 680px;
+                --wv-wide: 1040px;
+                --wv-ink: #f2f2f2;
+                --wv-ink-2: #c8c8c8;
+                --wv-ink-3: #8b948f;
+                --wv-line: #292929;
+                --wv-raise: #0c0c0c;
+                --wv-panel: #151515;
+                --wv-accent: #10b981;
+                --wv-accent-ink: #03140d;
+            }
+            html { scroll-behavior: smooth; }
+            @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+            .single-post-section { padding-top: 40px; padding-bottom: 0; }
+            .wv-article {
+                font-family: Clashdisplay, sans-serif;
+                font-size: 18px;
+                line-height: 1.7;
+                font-weight: 400;
+                color: var(--wv-ink-2);
+            }
+
+            /* Cabeca: caminho, titulo e a linha do autor (esta vem da edge function) */
+            .wv-head { max-width: calc(var(--wv-col) + 40px); margin: 0 auto; padding: 0 20px; }
+            .wv-crumbs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+                font-size: 13px;
+                line-height: 1.4;
+                letter-spacing: .12em;
+                text-transform: uppercase;
+                color: var(--wv-ink-3);
+            }
+            .wv-crumbs a { color: inherit; text-decoration: none; }
+            .wv-crumbs a:hover { color: var(--wv-ink); }
+            .wv-crumbs #post-category {
+                color: var(--wv-accent);
+                border: 0;
+                border-radius: 0;
+                padding: 0;
+                background: none;
+                font-size: inherit;
+                letter-spacing: inherit;
+            }
+            .wv-head #post-title {
+                margin: 16px 0 0;
+                color: var(--wv-ink);
+                font-weight: 600;
+                font-size: clamp(32px, 4.4vw, 46px);
+                line-height: 1.1;
+                letter-spacing: -.012em;
+                text-transform: none;
+                text-wrap: balance;
+            }
+            .wv-meta {
+                margin-top: 26px;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px 24px;
+            }
+            .wv-author { display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 1.35; color: var(--wv-ink-3); }
+            .wv-avatar {
+                flex: none;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                background: rgba(16, 185, 129, .12);
+                border: 1px solid rgba(16, 185, 129, .4);
+                color: var(--wv-accent);
+                font-size: 14px;
+                font-weight: 600;
+                letter-spacing: .04em;
+            }
+            .wv-author strong { display: block; color: var(--wv-ink); font-weight: 500; font-size: 15px; }
+            .wv-share { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; line-height: 1.2; }
+            .wv-share-label { color: var(--wv-ink-3); margin-right: 4px; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+            .wv-share a, .wv-share button {
+                font: inherit;
+                color: var(--wv-ink-2);
+                background: var(--wv-raise);
+                border: 1px solid var(--wv-line);
+                border-radius: 4px;
+                padding: 6px 11px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+            .wv-share a:hover, .wv-share button:hover { color: var(--wv-ink); border-color: var(--wv-ink-3); }
+            .wv-share button[data-copied] { color: var(--wv-accent); border-color: var(--wv-accent); }
+
+            /* Capa em proporcao natural: as capas atuais trazem texto embutido, e
+               cortar em 21:9 cortaria esse texto. Quando o Studio mandar a versao
+               sem texto, da para baixar a altura aqui. */
+            .wv-cover { max-width: calc(var(--wv-wide) + 40px); margin: 36px auto 0; padding: 0 20px; }
+            .wv-cover #post-image {
+                display: block;
+                width: 100%;
+                height: auto;
+                border-radius: 6px;
+                border: 1px solid var(--wv-line);
+                background: var(--wv-panel);
+            }
+
+            /* Corpo: coluna de texto centralizada, sumario na margem esquerda */
+            .wv-grid { display: grid; grid-template-columns: 1fr min(var(--wv-col), calc(100% - 40px)) 1fr; margin-top: 48px; }
+            .wv-main { grid-column: 2; min-width: 0; }
+            .wv-rail { display: none; }
+            @media (min-width: 1240px) {
+                .wv-rail:not([hidden]) { display: block; grid-column: 1; grid-row: 1; justify-self: end; width: 190px; margin-right: 44px; }
+                .wv-rail .post-toc { position: sticky; top: 32px; }
+                #post-body .wv-toc-inline { display: none; }
+            }
+
+            .wv-toc-label { font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--wv-ink-3); margin: 0 0 12px; }
+            #toc-rail .wv-toc-list, #post-body .wv-toc-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                gap: 2px;
+                border-left: 1px solid var(--wv-line);
+            }
+            #toc-rail .wv-toc-list li, #post-body .wv-toc-list li { margin: 0; }
+            #toc-rail .wv-toc-list a, #post-body .wv-toc-list a {
+                display: block;
+                padding: 6px 0 6px 14px;
+                margin-left: -1px;
+                border-left: 1px solid transparent;
+                font-size: 14px;
+                line-height: 1.4;
+                font-weight: 400;
+                color: var(--wv-ink-3);
+                text-decoration: none;
+            }
+            #toc-rail .wv-toc-list a:hover, #post-body .wv-toc-list a:hover { color: var(--wv-ink); }
+            #toc-rail .wv-toc-list a[aria-current="true"], #post-body .wv-toc-list a[aria-current="true"] { color: var(--wv-ink); border-left-color: var(--wv-accent); }
+            #post-body .wv-toc-inline { border: 1px solid var(--wv-line); border-radius: 6px; background: var(--wv-raise); }
+            #post-body .wv-toc-inline summary {
+                cursor: pointer;
+                padding: 14px 18px;
+                font-size: 13px;
+                font-weight: 600;
+                line-height: 1.4;
+                letter-spacing: .14em;
+                text-transform: uppercase;
+                color: var(--wv-ink);
+                display: flex;
+                justify-content: space-between;
+                gap: 12px;
+                list-style: none;
+            }
+            #post-body .wv-toc-inline summary::-webkit-details-marker { display: none; }
+            #post-body .wv-toc-inline summary::after { content: "+"; color: var(--wv-accent); }
+            #post-body .wv-toc-inline[open] summary::after { content: "\2212"; }
+            #post-body .wv-toc-inline .wv-toc-list { margin: 0 18px 16px; }
+
+            /* Texto */
+            #post-body { font-size: 18px; line-height: 1.7; color: var(--wv-ink-2); }
+            #post-body > * { margin-top: 0; margin-bottom: 0; }
+            #post-body > * + * { margin-top: 1.1em; }
+            #post-body p, #post-body li { font-size: 18px; line-height: 1.7; }
+            #post-body > p:first-of-type { font-size: 21px; line-height: 1.6; color: var(--wv-ink); }
+            #post-body h2 {
+                margin: 2.2em 0 0;
+                color: var(--wv-ink);
+                font-weight: 600;
+                font-size: 27px;
+                line-height: 1.25;
+                letter-spacing: -.005em;
+                text-transform: none;
+                text-wrap: balance;
+                scroll-margin-top: 24px;
+            }
+            #post-body h2 + * { margin-top: .7em; }
+            #post-body h3, #post-body h4 { margin: 1.8em 0 0; color: var(--wv-ink); font-size: 20px; font-weight: 500; line-height: 1.4; text-transform: none; }
+            #post-body h3 + *, #post-body h4 + * { margin-top: .5em; }
+            #post-body a {
+                color: var(--wv-ink);
+                font-weight: inherit;
+                border-bottom: 0;
+                text-decoration: underline;
+                text-decoration-color: var(--wv-accent);
+                text-underline-offset: 3px;
+            }
+            #post-body a:hover { color: var(--wv-accent); }
+            #post-body strong { color: var(--wv-ink); font-weight: 600; }
+            #post-body blockquote {
+                margin: 1.8em 0;
+                padding: 2px 0 2px 22px;
+                border-left: 2px solid var(--wv-accent);
+                color: var(--wv-ink);
+                font-size: 20px;
+                line-height: 1.55;
+                font-style: normal;
+            }
+            #post-body ul, #post-body ol { padding-left: 22px; }
+            #post-body li + li { margin-top: .4em; }
+            #post-body img { border-radius: 6px; }
+            #post-body .post-table-wrap { margin: 1.6em 0; overflow-x: auto !important; border: 1px solid var(--wv-line); border-radius: 6px; }
+            #post-body .post-table-wrap table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+            #post-body .post-table-wrap th, #post-body .post-table-wrap td { border: 0; border-bottom: 1px solid var(--wv-line); padding: 12px 16px; text-align: left; vertical-align: top; }
+            #post-body .post-table-wrap th { background: var(--wv-panel); color: var(--wv-ink); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+            #post-body .post-table-wrap tr:last-child td { border-bottom: 0; }
+
+            /* Fechamento: FAQ em lista, fontes discretas, contato */
+            #post-body .wv-faq { margin-top: 2.2em; }
+            #post-body .wv-faq > h2 { margin-top: 0; }
+            #post-body .wv-faq-list { margin-top: 14px; border-top: 1px solid var(--wv-line); }
+            #post-body .wv-faq-item { padding: 20px 0; border-bottom: 1px solid var(--wv-line); }
+            #post-body .wv-faq-item > h3, #post-body .wv-faq-item > h4 { margin: 0; font-size: 19px; }
+            #post-body .wv-faq-item > p { margin: 8px 0 0; }
+            #post-body .wv-sources { margin-top: 2em; }
+            #post-body .wv-sources-label { margin: 0 0 8px; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--wv-ink-3); }
+            #post-body .wv-sources-label strong { color: inherit; font-weight: inherit; }
+            #post-body .wv-sources ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 22px; }
+            #post-body .wv-sources li { margin: 0; font-size: 14px; line-height: 1.5; }
+            #post-body .wv-sources a { color: var(--wv-ink-2); text-decoration-color: var(--wv-line); }
+
+            .wv-end {
+                margin-top: 56px;
+                padding: 28px;
+                background: var(--wv-raise);
+                border: 1px solid var(--wv-line);
+                border-radius: 6px;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px 28px;
+            }
+            .wv-end p { margin: 0; max-width: 420px; color: var(--wv-ink); font-size: 20px; line-height: 1.45; }
+            .wv-btn {
+                background: var(--wv-accent);
+                color: var(--wv-accent-ink);
+                font-weight: 600;
+                font-size: 15px;
+                line-height: 1.2;
+                letter-spacing: .04em;
+                text-transform: uppercase;
+                text-decoration: none;
+                padding: 12px 24px;
+                border-radius: 4px;
+                white-space: nowrap;
+            }
+            .wv-btn:hover { filter: brightness(1.08); }
+
+            /* Relacionados: capa do post e titulo, sem cartao */
+            .related-posts-section { padding: 72px 0 0; background: transparent; }
+            .wv-related { max-width: calc(var(--wv-wide) + 40px); margin: 0 auto; padding: 0 20px; }
+            .wv-related .related-posts-title { margin: 0 0 16px; font-family: inherit; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; color: var(--wv-ink-3); }
+            .wv-related .related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+            .wv-related .related-card { display: grid; gap: 14px; align-content: start; background: none; border-radius: 0; overflow: visible; text-decoration: none; color: var(--wv-ink); transition: none; }
+            .wv-related .related-card:hover { transform: none; box-shadow: none; }
+            .wv-related .related-card img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; border: 1px solid var(--wv-line); background: var(--wv-panel); transition: border-color .15s ease; }
+            .wv-related .related-card:hover img { border-color: var(--wv-accent); }
+            .wv-related .related-card-content { padding: 0; }
+            .wv-related .related-card h4 { margin: 0; font-size: 18px; font-weight: 500; line-height: 1.35; color: var(--wv-ink); text-wrap: balance; }
+            .wv-related .related-card p { margin: 6px 0 0; font-size: 14px; line-height: 1.4; color: var(--wv-ink-3); }
+            @media (prefers-reduced-motion: reduce) { .wv-related .related-card img { transition: none; } }
+            @media (max-width: 760px) {
+                .wv-related .related-grid { grid-template-columns: 1fr; gap: 22px; }
+                .wv-related .related-card { grid-template-columns: 132px 1fr; align-items: start; }
+                .wv-related .related-card h4 { font-size: 16px; }
+            }
+            @media (max-width: 600px) {
+                .wv-article, #post-body, #post-body p, #post-body li { font-size: 17px; }
+                #post-body > p:first-of-type { font-size: 19px; }
+                #post-body h2 { font-size: 23px; }
+                #post-body blockquote { font-size: 18px; }
+                .wv-end { padding: 22px; }
+                .wv-end p { font-size: 18px; }
+                .wv-share-label { display: none; }
+            }
+        </style>
+
     </head>
 
     <body>
@@ -336,14 +623,8 @@
         </div>
 
 
-        <div class="sitemap">
-            <div class="w-layout-blockcontainer main-container w-container">
-                <div class="inner-sitemap">
-                    <h2 data-w-id="darkyn25" style="opacity: 0;" class="sitemap-heading">Blog</h2>
-                    <div data-w-id="darkyn26" style="opacity: 0;" class="stemap-text">Who We are and what we do</div>
-                </div>
-            </div>
-        </div>
+        <!-- A faixa "Blog / Who We are and what we do" saiu em 09/2026: e de pagina de
+             listagem e empurrava o artigo para baixo. O caminho curto fica em .wv-crumbs. -->
 
 
         <!-- Loading State -->
@@ -359,49 +640,49 @@
             <a href="blog.html" class="back-link">← Back to Blog</a>
         </div>
 
-        <!-- Post Content (hidden by default) - Using original Darkyn template style -->
+        <!-- Post Content (hidden by default). Layout de coluna unica (09/2026): caminho,
+             titulo, autor e capa abrem o artigo; o texto fica numa coluna centralizada e o
+             sumario vai para a margem (ou vira bloco recolhivel em tela menor).
+             A edge function inject-og-tags casa POR TEXTO os trechos de post-loading,
+             post-content, post-category, post-title, post-image e post-body: mudar
+             atributo, ordem ou classe deles quebra a renderizacao no servidor. -->
         <div id="post-content" class="single-post-section" style="display: none;">
-            <div class="w-layout-blockcontainer main-container w-container">
-                <div id="darkyn42" class="w-layout-layout single-stack wf-layout-layout">
-                    <div class="w-layout-cell signel-post-image-cell">
-                        <div class="single-img-wrapper">
-                            <div class="single-upper">
-                                <div class="blog-author-and-category">
-                                    <span id="post-category" class="blog-category-2 single-category w--current">Web3</span>
-                                </div>
-                                <h1 id="post-title" class="single-blog-heading">Loading...</h1>
-                            </div>
-                            <img
-                                id="post-image"
-                                src="images/post1.jpg"
-                                alt="Article image"
-                                class="single-post-img"
-                            />
-                        </div>
-                    </div>
-                    <div class="w-layout-cell single-post-text-cell">
+            <article class="wv-article">
+                <header class="wv-head">
+                    <nav class="wv-crumbs" aria-label="Breadcrumb">
+                        <a href="blog.html">Blog</a>
+                        <span aria-hidden="true">/</span>
+                        <span id="post-category" class="blog-category-2 single-category w--current">Web3</span>
+                    </nav>
+                    <h1 id="post-title" class="single-blog-heading">Loading...</h1>
+                </header>
+                <figure class="wv-cover">
+                    <img
+                        id="post-image"
+                        src="images/post1.jpg"
+                        alt="Article image"
+                        class="single-post-img"
+                    />
+                </figure>
+                <div class="wv-grid">
+                    <aside id="toc-rail" class="wv-rail" hidden></aside>
+                    <div class="wv-main">
                         <div id="post-body" class="w-richtext">
                             <!-- Post content will be rendered here -->
                         </div>
-                        <!-- Links internos estratégicos adicionados dinamicamente -->
-                        <div id="internal-links" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #333; display: none;">
-                            <p style="color: #999; font-size: 14px; margin-bottom: 15px;">Explore more content:</p>
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-bottom: 10px;"><a href="blog.html" style="color: #4A9EFF; text-decoration: underline;">← Back to Blog</a></li>
-                                <li style="margin-bottom: 10px;"><a href="works.html" style="color: #4A9EFF; text-decoration: underline;">View our portfolio</a></li>
-                                <li style="margin-bottom: 10px;"><a href="about.html" style="color: #4A9EFF; text-decoration: underline;">About Wevolv3</a></li>
-                                <li><a href="contact.html" style="color: #4A9EFF; text-decoration: underline;">Get in touch</a></li>
-                            </ul>
-                        </div>
+                        <aside class="wv-end" aria-label="Talk to Wevolv3">
+                            <p>Building in Web3? Tell us where you are and we will show you what we would do.</p>
+                            <a href="contact.html" class="wv-btn">Let's talk</a>
+                        </aside>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
 
         <!-- Related Posts Section -->
         <div id="related-section" class="related-posts-section" style="display: none;">
-            <div class="w-layout-blockcontainer main-container w-container">
-                <h3 class="related-posts-title" style="font-family: inherit; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Related Articles</h3>
+            <div class="wv-related">
+                <h2 class="related-posts-title">Keep reading</h2>
                 <div id="related-grid" class="related-grid">
                     <!-- Related posts will be rendered here -->
                 </div>
@@ -882,19 +1163,9 @@
                     __toc.push({ id: id, text: textOnly });
                     return existing ? m : '<h2 id="' + id + '"' + attrs + '>' + inner + '</h2>';
                 });
-                if (__toc.length >= 3) {
-                    if (!document.getElementById('post-toc-css')) {
-                        var tcss = document.createElement('style'); tcss.id = 'post-toc-css';
-                        tcss.textContent = 'html{scroll-behavior:smooth}.post-toc{border:1px solid rgba(128,128,128,.3);border-radius:12px;padding:16px 20px;margin:0 0 32px}.post-toc-title{font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.7;margin:0 0 10px}.post-toc ul{margin:0;padding:0 0 0 2px;list-style:none}.post-toc li{margin:6px 0}.post-toc a{text-decoration:none;opacity:.9}.post-toc a:hover{text-decoration:underline;opacity:1}#post-body h2,#post-body h3{scroll-margin-top:90px}';
-                        document.head.appendChild(tcss);
-                    }
-                    // IMPORTANTE: a pagina tem <base href="/">, entao "#id" resolveria
-                    // pra home. Prefixa o caminho atual pra ancora cair no proprio artigo.
-                    var __path = location.pathname + location.search;
-                    var tocHtml = '<nav class="post-toc" aria-label="Table of contents"><p class="post-toc-title">On this page</p><ul>' +
-                        __toc.map(function(h){ return '<li><a href="' + __path + '#' + h.id + '">' + h.text + '</a></li>'; }).join('') + '</ul></nav>';
-                    html = tocHtml + html;
-                }
+                // O sumario deixou de ser colado no topo do texto (empurrava o artigo
+                // para baixo). enhanceArticle() monta a versao da margem e a recolhivel.
+                window.__postToc = __toc;
 
                 return html;
             }
@@ -1019,6 +1290,143 @@
                 return urlParams.has('preview') || urlParams.has('secret') || urlParams.has('draft');
             }
             
+            // Layout de coluna unica: o sumario vai para a margem (tela larga) e para um
+            // bloco recolhivel depois do primeiro paragrafo; FAQ e fontes viram blocos de
+            // fechamento. Trabalha sobre o DOM ja renderizado e so mexe quando o padrao
+            // existe: artigo sem FAQ ou sem "Sources" fica como esta.
+            function enhanceArticle() {
+                var body = document.getElementById('post-body');
+                if (!body) return;
+                var rail = document.getElementById('toc-rail');
+                // Sem a renderizacao do navegador (o fetch falhou), o sumario sai dos
+                // h2 que a edge function ja entregou.
+                var toc = window.__postToc;
+                if (!toc) {
+                    toc = [];
+                    var esc = function (s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+                    Array.prototype.forEach.call(body.querySelectorAll(':scope > h2'), function (h) {
+                        var text = h.textContent.trim();
+                        if (!text) return;
+                        if (!h.id) h.id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60);
+                        toc.push({ id: h.id, text: esc(text) });
+                    });
+                }
+
+                if (toc.length >= 3) {
+                    // A pagina tem <base href="/">: "#id" sozinho iria para a home.
+                    var path = location.pathname + location.search;
+                    var items = toc.map(function (h) {
+                        return '<li><a href="' + path + '#' + h.id + '">' + h.text + '</a></li>';
+                    }).join('');
+                    if (rail) {
+                        rail.innerHTML = '<nav class="post-toc" aria-label="On this page"><p class="wv-toc-label">On this page</p><ol class="wv-toc-list">' + items + '</ol></nav>';
+                        rail.hidden = false;
+                    }
+                    var inline = document.createElement('details');
+                    inline.className = 'wv-toc-inline';
+                    inline.innerHTML = '<summary>On this page</summary><nav class="post-toc" aria-label="On this page"><ol class="wv-toc-list">' + items + '</ol></nav>';
+                    var firstP = body.querySelector(':scope > p');
+                    body.insertBefore(inline, firstP ? firstP.nextSibling : body.firstChild);
+                } else if (rail) {
+                    rail.hidden = true;
+                    rail.innerHTML = '';
+                }
+
+                var isSourcesLabel = function (el) {
+                    return !!el && el.tagName === 'P' && /^sources:?$/i.test(el.textContent.trim());
+                };
+
+                // FAQ: o h2 "Frequently Asked Questions" e o que vem depois dele, ate o
+                // proximo h2 ou o rotulo "Sources", viram uma lista de perguntas.
+                var faqH = Array.prototype.filter.call(body.children, function (el) {
+                    return el.tagName === 'H2' && /frequently asked questions|^faqs?$/i.test(el.textContent.trim());
+                })[0];
+                if (faqH) {
+                    var node = faqH.nextElementSibling;
+                    var faq = document.createElement('section');
+                    faq.className = 'wv-faq';
+                    var list = document.createElement('div');
+                    list.className = 'wv-faq-list';
+                    body.insertBefore(faq, faqH);
+                    faq.appendChild(faqH);
+                    faq.appendChild(list);
+                    var item = null;
+                    while (node && node.tagName !== 'H2' && !isSourcesLabel(node)) {
+                        var nextNode = node.nextElementSibling;
+                        if (node.tagName === 'H3' || node.tagName === 'H4') {
+                            item = document.createElement('div');
+                            item.className = 'wv-faq-item';
+                            list.appendChild(item);
+                        }
+                        (item || list).appendChild(node);
+                        node = nextNode;
+                    }
+                }
+
+                // Fontes: o paragrafo "Sources" e os paragrafos de um link so que o
+                // seguem viram uma linha discreta de links.
+                var label = Array.prototype.filter.call(body.children, isSourcesLabel)[0];
+                if (label) {
+                    var n = label.nextElementSibling;
+                    var sources = document.createElement('section');
+                    sources.className = 'wv-sources';
+                    sources.setAttribute('aria-label', 'Sources');
+                    var ul = document.createElement('ul');
+                    body.insertBefore(sources, label);
+                    label.className = 'wv-sources-label';
+                    sources.appendChild(label);
+                    sources.appendChild(ul);
+                    while (n && n.tagName === 'P') {
+                        var a = n.querySelector('a');
+                        if (!a || n.textContent.trim() !== a.textContent.trim()) break;
+                        var after = n.nextElementSibling;
+                        var li = document.createElement('li');
+                        while (n.firstChild) li.appendChild(n.firstChild);
+                        ul.appendChild(li);
+                        n.remove();
+                        n = after;
+                    }
+                    if (!ul.children.length && n && (n.tagName === 'UL' || n.tagName === 'OL')) {
+                        sources.replaceChild(n, ul);
+                    }
+                }
+
+                // Marca no sumario a secao que esta na tela.
+                if (toc.length >= 3 && 'IntersectionObserver' in window) {
+                    var links = Array.prototype.slice.call(document.querySelectorAll('.wv-toc-list a'));
+                    var io = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (e) {
+                            if (!e.isIntersecting) return;
+                            links.forEach(function (link) {
+                                link.setAttribute('aria-current', link.getAttribute('href').split('#')[1] === e.target.id ? 'true' : 'false');
+                            });
+                        });
+                    }, { rootMargin: '0px 0px -70% 0px' });
+                    toc.forEach(function (h) {
+                        var el = document.getElementById(h.id);
+                        if (el) io.observe(el);
+                    });
+                }
+            }
+
+            // "Copy link" da linha do autor (a marcacao vem da edge function).
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest && e.target.closest('[data-copy]');
+                if (!btn) return;
+                var url = btn.getAttribute('data-copy');
+                var label = btn.getAttribute('data-label') || 'Copy link';
+                function done() {
+                    btn.textContent = 'Link copied';
+                    btn.setAttribute('data-copied', '');
+                    setTimeout(function () { btn.textContent = label; btn.removeAttribute('data-copied'); }, 2200);
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).then(done, function () { window.prompt(label, url); });
+                } else {
+                    window.prompt(label, url);
+                }
+            });
+
             // Main: Load single post
             async function loadPost() {
                 console.log('🚀 loadPost() chamada - início da função');
@@ -1182,6 +1590,7 @@
                     console.log('Tamanho do HTML:', htmlResult.length, 'caracteres');
                     
                     document.getElementById('post-body').innerHTML = htmlResult;
+                    enhanceArticle();
 
                     // TOC: intercepta o clique em fase de CAPTURA para driblar o handler
                     // do Webflow (que sequestra links com "#" e, por causa do <base href="/">,
@@ -1225,6 +1634,16 @@
                     
                 } catch (error) {
                     console.error('Error loading post:', error);
+                    // Se a edge function ja entregou o artigo, a falha do fetch aqui
+                    // (Sanity fora do ar, CORS num dominio de preview) nao pode cobrir o
+                    // texto com "Article not found": fica o que veio do servidor.
+                    const serverBody = document.getElementById('post-body');
+                    if (serverBody && serverBody.children.length && contentEl.style.display !== 'none') {
+                        loadingEl.style.display = 'none';
+                        errorEl.style.display = 'none';
+                        enhanceArticle();
+                        return;
+                    }
                     loadingEl.style.display = 'none';
                     errorEl.style.display = 'block';
                     const errorMsg = error.message || 'Could not load article.';
