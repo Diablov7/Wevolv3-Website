@@ -543,7 +543,19 @@ export default async (request, context) => {
     }
     const imageDims = sanityImageDims(post.mainImage);
 
-    const bylineHtml = `<p class="post-byline" style="margin:8px 0 16px;font-size:14px;color:#999;">By ${htmlEscape(authorName)}${datePublished ? ` · <time datetime="${htmlEscape(datePublished)}">${htmlEscape(new Date(datePublished).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))}</time>` : ''}${dateModified && dateModified !== datePublished ? ` (updated <time datetime="${htmlEscape(dateModified)}">${htmlEscape(new Date(dateModified).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))}</time>)` : ''}</p>`;
+    // Linha do autor do layout de coluna unica (09/2026): quem escreveu, data e tempo
+    // de leitura a esquerda; compartilhar a direita. O estilo (.wv-meta) mora no
+    // singleblog.html, e o "Copy link" e tratado pelo script de la.
+    const fmtDate = (d) => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const sameDay = (a, b) => String(a).slice(0, 10) === String(b).slice(0, 10);
+    const readMinutes = wordCount ? Math.max(1, Math.round(wordCount / 230)) : 0;
+    const authorInitials = authorName.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'W';
+    const shareUrl = encodeURIComponent(pageUrl);
+    const shareText = encodeURIComponent(title);
+    const bylineHtml = `<div class="wv-meta post-byline">
+      <div class="wv-author"><span class="wv-avatar" aria-hidden="true">${htmlEscape(authorInitials)}</span><span><strong>${htmlEscape(authorName)}</strong>${datePublished ? `<time datetime="${htmlEscape(datePublished)}">${htmlEscape(fmtDate(datePublished))}</time>` : ''}${readMinutes ? ` · ${readMinutes} min read` : ''}${dateModified && datePublished && !sameDay(dateModified, datePublished) ? ` · Updated <time datetime="${htmlEscape(dateModified)}">${htmlEscape(fmtDate(dateModified))}</time>` : ''}</span></div>
+      <div class="wv-share" aria-label="Share this article"><span class="wv-share-label">Share</span><a href="https://twitter.com/intent/tweet?url=${shareUrl}&amp;text=${shareText}" target="_blank" rel="noopener">X</a><a href="https://t.me/share/url?url=${shareUrl}&amp;text=${shareText}" target="_blank" rel="noopener">Telegram</a><a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" rel="noopener">LinkedIn</a><button type="button" data-copy="${htmlEscape(pageUrl)}" data-label="Copy link">Copy link</button></div>
+    </div>`;
 
     // Replace existing meta tags (including those with IDs) or inject before </head>
     // Use more aggressive regex to catch all variations
