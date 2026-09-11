@@ -1297,8 +1297,20 @@
             function enhanceArticle() {
                 var body = document.getElementById('post-body');
                 if (!body) return;
-                var toc = window.__postToc || [];
                 var rail = document.getElementById('toc-rail');
+                // Sem a renderizacao do navegador (o fetch falhou), o sumario sai dos
+                // h2 que a edge function ja entregou.
+                var toc = window.__postToc;
+                if (!toc) {
+                    toc = [];
+                    var esc = function (s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+                    Array.prototype.forEach.call(body.querySelectorAll(':scope > h2'), function (h) {
+                        var text = h.textContent.trim();
+                        if (!text) return;
+                        if (!h.id) h.id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60);
+                        toc.push({ id: h.id, text: esc(text) });
+                    });
+                }
 
                 if (toc.length >= 3) {
                     // A pagina tem <base href="/">: "#id" sozinho iria para a home.
@@ -1622,6 +1634,16 @@
                     
                 } catch (error) {
                     console.error('Error loading post:', error);
+                    // Se a edge function ja entregou o artigo, a falha do fetch aqui
+                    // (Sanity fora do ar, CORS num dominio de preview) nao pode cobrir o
+                    // texto com "Article not found": fica o que veio do servidor.
+                    const serverBody = document.getElementById('post-body');
+                    if (serverBody && serverBody.children.length && contentEl.style.display !== 'none') {
+                        loadingEl.style.display = 'none';
+                        errorEl.style.display = 'none';
+                        enhanceArticle();
+                        return;
+                    }
                     loadingEl.style.display = 'none';
                     errorEl.style.display = 'block';
                     const errorMsg = error.message || 'Could not load article.';
