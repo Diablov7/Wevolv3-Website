@@ -42,7 +42,11 @@
         ft_campaign: q.get('utm_campaign') || undefined,
         ft_content: q.get('utm_content') || undefined,
         ft_landing: location.pathname || undefined,
-        ft_referrer: (document.referrer || '').slice(0, 200) || undefined
+        // Referrer do proprio dominio nao e origem, e navegacao interna: sem este corte,
+        // quem entra direto e vai ate o contato chega na notificacao como "Source: wevolv3.com".
+        ft_referrer: (document.referrer && document.referrer.indexOf(location.host) === -1)
+          ? document.referrer.slice(0, 200)
+          : undefined
       };
       // only persist if there is a real signal (a utm or an external referrer)
       if (v.ft_source || (v.ft_referrer && v.ft_referrer.indexOf(location.host) === -1)) {
