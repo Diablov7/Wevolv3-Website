@@ -71,8 +71,10 @@ export default async (request, context) => {
     return Response.redirect(new URL('/works/' + encodeURIComponent(slug), url.origin).toString(), 301);
   }
 
+  // Bare /singlework (no slug) is an empty shell with a generic title that Bing
+  // counted as a duplicate. Send it to the portfolio index instead.
   if (!slug) {
-    return context.next();
+    return Response.redirect(new URL('/works.html', url.origin).toString(), 301);
   }
 
   // Clean /works/<slug> URLs have no static file at that path, so fetch the shell
@@ -183,9 +185,26 @@ export default async (request, context) => {
     const imageUrl = sanityImageUrl(work.mainImage);
     const imageDims = sanityImageDims(work.mainImage);
     const title = work.title;
-    const description = work.shortDescription || 'A Wevolv3 Web3 growth case study.';
     const pageUrl = `https://wevolv3.com/works/${encodeURIComponent(slug)}`;
     const descriptionPlain = portableTextToPlain(work.description);
+    // shortDescription is a card label ("Hackathon Campaign", 18 chars), too short
+    // for a search snippet and too generic to be unique. Extend it with the opening
+    // of the case study itself, cut at a word boundary, same rule as the blog.
+    function trimAtWord(text, max) {
+      const t = String(text || '').replace(/\s+/g, ' ').trim();
+      if (t.length <= max) return t;
+      const cut = t.slice(0, max - 1);
+      const i = cut.lastIndexOf(' ');
+      return (i > max * 0.6 ? cut.slice(0, i) : cut).replace(/[\s,;:.\-]+$/, '') + '…';
+    }
+    const shortDesc = String(work.shortDescription || '').trim();
+    const lead = shortDesc && !/[.!?]$/.test(shortDesc) ? shortDesc + '.' : shortDesc;
+    const description = trimAtWord(
+      shortDesc.length >= 120
+        ? shortDesc
+        : [lead, descriptionPlain].filter(Boolean).join(' ') || `${title}: a Wevolv3 Web3 growth case study.`,
+      158
+    );
     const descriptionHtml = portableTextToBasicHtml(work.description);
     const results = Array.isArray(work.results) ? work.results.filter(r => r && (r.metric || r.value)) : [];
 

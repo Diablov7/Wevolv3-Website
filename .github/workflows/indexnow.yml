@@ -1,0 +1,32 @@
+name: IndexNow
+
+# Avisa o Bing (e quem usa o indice dele, como Copilot e a busca do ChatGPT) quando
+# paginas do site mudam. Posts novos do Sanity ja sao avisados pelo Studio.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.html'
+      - 'netlify/edge-functions/**'
+      - '.github/scripts/indexnow-submit.mjs'
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # O deploy do Netlify leva ~1 a 2 minutos. Avisar antes faria o Bing
+      # rastrear a versao antiga.
+      - name: Esperar o deploy
+        run: sleep 180
+
+      - name: Enviar URLs do sitemap
+        run: node .github/scripts/indexnow-submit.mjs
