@@ -71,7 +71,7 @@
   </url>
   <url>
     <loc>https://wevolv3.com/crypto-kol-marketing</loc>
-    <lastmod>2026-09-09</lastmod>
+    <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -158,6 +158,12 @@
     <lastmod>2026-09-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://wevolv3.com/blog/crypto-kol-marketing-evolution</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://wevolv3.com/blog/defi-marketing-agency-checklist</loc>
@@ -257,12 +263,6 @@
   </url>
   <url>
     <loc>https://wevolv3.com/blog/crypto-flow-etf-outflows</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://wevolv3.com/blog/crypto-kol-marketing-evolution</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
