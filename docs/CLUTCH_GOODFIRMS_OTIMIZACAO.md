@@ -5,7 +5,7 @@ Auditoria feita em 2026-08-02, lendo os dois perfis públicos. Complementa
 
 **Perfis:**
 
-- Clutch: https://clutch.co/profile/wevolv3-web3-marketing-modular-advertising
+- Clutch: https://clutch.co/profile/wevolv3-web3-growth-partner
 - GoodFirms: https://www.goodfirms.co/company/wevolv3
 
 **Atualização 2026-08-02 (mesma sessão, mais tarde): as mudanças foram aplicadas.** Havia sessão
@@ -315,7 +315,7 @@ pareça golpe e derrube a review no meio.
 > One heads up so it does not catch you by surprise: Clutch verifies reviews, so someone from
 > their team may call or email you to confirm it is really you.
 >
-> Here is the link: https://clutch.co/profile/wevolv3-web3-marketing-modular-advertising#review
+> Here is the link: https://clutch.co/profile/wevolv3-web3-growth-partner#review
 >
 > If now is a bad moment, tell me and I will ask again in a month, no problem.
 >
