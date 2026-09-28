@@ -19,10 +19,10 @@ const BASE_URL = 'https://wevolv3.com';
 // Páginas estáticas
 const staticPages = [
   { url: '/', priority: '1.0', changefreq: 'weekly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/about.html', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/works.html', priority: '0.9', changefreq: 'weekly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/blog.html', priority: '0.9', changefreq: 'daily', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/contact.html', priority: '0.7', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/about', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/works', priority: '0.9', changefreq: 'weekly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/blog', priority: '0.9', changefreq: 'daily', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/contact', priority: '0.7', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
     { url: '/linktree/', priority: '0.6', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/for-funds/', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/crypto-exchange-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
@@ -38,12 +38,12 @@ const staticPages = [
   { url: '/listings', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/growth-hacking', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/adoption-check', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/kol-roi-calculator.html', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/kol-pricing-benchmark.html', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/kol-roi-calculator', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/kol-pricing-benchmark', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/what-is-a-kol-in-crypto', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/privacy.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/terms.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
-  { url: '/disclaimer.html', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/terms', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
+  { url: '/disclaimer', priority: '0.3', changefreq: 'yearly', lastmod: new Date().toISOString().split('T')[0] },
 ];
 
 // Query GROQ para buscar posts publicados

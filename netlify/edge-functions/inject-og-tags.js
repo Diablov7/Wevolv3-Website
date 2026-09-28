@@ -99,7 +99,7 @@ export default async (request, context) => {
       return new Response(html, { status: 404, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
     } catch (e) {
       console.error('Failed to fetch article shell for bare /singleblog:', e);
-      return new Response('<!doctype html><meta charset="utf-8"><title>Not found | Wevolv3</title><p>Article not found. <a href="/blog.html">Back to all articles</a>.</p>', {
+      return new Response('<!doctype html><meta charset="utf-8"><title>Not found | Wevolv3</title><p>Article not found. <a href="/blog">Back to all articles</a>.</p>', {
         status: 404,
         headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS },
       });
@@ -457,14 +457,14 @@ export default async (request, context) => {
         // The only author document today is the brand itself. It used to go out as a
         // Person named "Wevolv3", which is wrong; a real person author keeps Person.
         ? `{ "@type": "Organization", "name": "Wevolv3", "url": "https://wevolv3.com" }`
-        : `{ "@type": "Person", "@id": "https://wevolv3.com/about.html#team-${jsonEscape(authorSlug)}", "name": "${safeAuthor}" }`},
+        : `{ "@type": "Person", "@id": "https://wevolv3.com/about#team-${jsonEscape(authorSlug)}", "name": "${safeAuthor}" }`},
       "publisher": {
         "@type": "Organization",
         "name": "Wevolv3",
         "url": "https://wevolv3.com",
         "logo": { "@type": "ImageObject", "url": "https://wevolv3.com/images/LOGO.PNG" }
       },
-      "isPartOf": { "@type": "Blog", "name": "Wevolv3 Blog", "url": "https://wevolv3.com/blog.html" }${categories.length ? `,
+      "isPartOf": { "@type": "Blog", "name": "Wevolv3 Blog", "url": "https://wevolv3.com/blog" }${categories.length ? `,
       "articleSection": ${JSON.stringify(categories[0])},
       "keywords": ${JSON.stringify(categories.join(', '))}` : ''}${wordCount ? `,
       "wordCount": ${wordCount}` : ''}${articleBodyForSchema ? `,
@@ -477,7 +477,7 @@ export default async (request, context) => {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wevolv3.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://wevolv3.com/blog.html" },
+        { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://wevolv3.com/blog" },
         { "@type": "ListItem", "position": 3, "name": "${safeTitle}", "item": "${jsonEscape(pageUrl)}" }
       ]
     }`.replace(/</g, '\\u003c');
@@ -539,7 +539,7 @@ export default async (request, context) => {
     <p><strong>Author:</strong> ${htmlEscape(authorName)}</p>
     <p><img src="${htmlEscape(imageUrl)}" alt="${htmlEscape(title)}" /></p>
     ${articleBodyHtml}
-    <p><a href="https://wevolv3.com/blog.html">Back to all articles</a></p>
+    <p><a href="https://wevolv3.com/blog">Back to all articles</a></p>
   </article>
 </noscript>
 ` : '';

@@ -19,8 +19,8 @@
 /singlework   /singlework.html    200
 
 # Legacy redirects (if any old URLs exist)
-/blog-post    /blog.html    301
-/blog-post.html    /blog.html    301
+/blog-post    /blog    301
+/blog-post.html    /blog    301
 
 # Sanity Studio - Servir localmente
 # Arquivos estáticos do Studio têm prioridade (! = force)
@@ -38,8 +38,8 @@
 #
 # Precisa ser so uma URL porque as 18 paginas datadas eram "noindex, follow" e
 # nunca entraram no indice; o hub era "index, follow" e estava no sitemap.
-/crypto-news-today/*   /blog.html   301
-/crypto-news-today     /blog.html   301
+/crypto-news-today/*   /blog   301
+/crypto-news-today     /blog   301
 
 # Catch-all: URLs desconhecidas -> 404 real (evita soft-404).
 # Blog/works limpos e /studio sao tratados nas regras acima, entao so caem aqui

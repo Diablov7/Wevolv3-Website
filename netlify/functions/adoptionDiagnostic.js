@@ -725,7 +725,7 @@ ${rule}
     <p style="color:#c8c8c8;font-size:14.5px;line-height:1.6;margin:0 0 20px">This is what we'd do for ${esc(token.name)}, and it's what we run every day. Give us 30 minutes and we'll turn this into a plan with numbers attached.</p>
     <table role="presentation" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0 auto">
       <tr><td align="center" bgcolor="#10b981" style="background-color:#10b981;border-radius:10px">
-        <a href="https://wevolv3.com/contact.html" style="display:inline-block;background-color:#10b981;color:#04120c;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;text-decoration:none;border-radius:10px;border:2px solid #10b981">Book a free growth session &rarr;</a>
+        <a href="https://wevolv3.com/contact" style="display:inline-block;background-color:#10b981;color:#04120c;padding:16px 34px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;text-decoration:none;border-radius:10px;border:2px solid #10b981">Book a free growth session &rarr;</a>
       </td></tr>
     </table>
     <p style="color:#666666;font-size:11px;margin-top:22px">Directional heuristic on public data (CoinGecko, DexScreener, X). Not financial advice.</p>

@@ -7,10 +7,10 @@ Wevolv3 is a Web3-native growth partner operating worldwide, with strong LATAM p
 ## Core Pages
 
 - [Homepage](https://wevolv3.com/): Overview of services, value proposition, testimonials, and FAQ.
-- [About](https://wevolv3.com/about.html): Mission, team, values, and the Wevolv3 method (Discover → Plan → Ship & Track → Iterate & Scale).
-- [Works](https://wevolv3.com/works.html): Portfolio of crypto and Web3 marketing projects (several under NDA).
-- [Blog](https://wevolv3.com/blog.html): Articles on Web3 marketing, KOLs, communities, attribution, post-quantum crypto.
-- [Contact](https://wevolv3.com/contact.html): Email, Telegram, and contact form.
+- [About](https://wevolv3.com/about): Mission, team, values, and the Wevolv3 method (Discover → Plan → Ship & Track → Iterate & Scale).
+- [Works](https://wevolv3.com/works): Portfolio of crypto and Web3 marketing projects (several under NDA).
+- [Blog](https://wevolv3.com/blog): Articles on Web3 marketing, KOLs, communities, attribution, post-quantum crypto.
+- [Contact](https://wevolv3.com/contact): Email, Telegram, and contact form.
 
 ## Services
 
@@ -32,7 +32,7 @@ Each service has its own dedicated page:
 ## Free Tools
 
 - [Adoption Check](https://wevolv3.com/adoption-check): Free tool that scores the gap between a token's ATTENTION (real X/Twitter reach) and ADOPTION (real on-chain usage). Returns an attention/adoption score, a health grade, community sentiment from X, and a tailored 3-move action plan emailed to the user. Data from CoinGecko, DexScreener and X.
-- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate the ROI of a KOL marketing campaign.
+- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator): Free tool to estimate the ROI of a KOL marketing campaign.
 
 ## Key Articles
 
@@ -63,7 +63,7 @@ Each service has its own dedicated page:
 
 - [Full article text](https://wevolv3.com/llms-full.txt): Plain-text export of every published blog post, for systems that only ingest text files.
 - [Sitemap](https://wevolv3.com/sitemap.xml): Full URL index.
-- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator.html): Free tool to estimate ROI, reach, wallets and CAC from KOL marketing spend.
-- [Privacy Policy](https://wevolv3.com/privacy.html)
-- [Terms](https://wevolv3.com/terms.html)
-- [Disclaimer](https://wevolv3.com/disclaimer.html)
+- [KOL ROI Calculator](https://wevolv3.com/kol-roi-calculator): Free tool to estimate ROI, reach, wallets and CAC from KOL marketing spend.
+- [Privacy Policy](https://wevolv3.com/privacy)
+- [Terms](https://wevolv3.com/terms)
+- [Disclaimer](https://wevolv3.com/disclaimer)

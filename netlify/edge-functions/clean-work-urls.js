@@ -74,7 +74,7 @@ export default async (request, context) => {
   // Bare /singlework (no slug) is an empty shell with a generic title that Bing
   // counted as a duplicate. Send it to the portfolio index instead.
   if (!slug) {
-    return Response.redirect(new URL('/works.html', url.origin).toString(), 301);
+    return Response.redirect(new URL('/works', url.origin).toString(), 301);
   }
 
   // Clean /works/<slug> URLs have no static file at that path, so fetch the shell
@@ -229,7 +229,7 @@ export default async (request, context) => {
         "url": "https://wevolv3.com",
         "logo": { "@type": "ImageObject", "url": "https://wevolv3.com/images/LOGO.PNG" }
       },
-      "isPartOf": { "@type": "CollectionPage", "name": "Wevolv3 Works", "url": "https://wevolv3.com/works.html" }${work.category ? `,
+      "isPartOf": { "@type": "CollectionPage", "name": "Wevolv3 Works", "url": "https://wevolv3.com/works" }${work.category ? `,
       "articleSection": ${JSON.stringify(work.category)}` : ''}${bodyForSchema ? `,
       "articleBody": "${jsonEscape(bodyForSchema)}"` : ''},
       "inLanguage": "en"
@@ -240,7 +240,7 @@ export default async (request, context) => {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://wevolv3.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Works", "item": "https://wevolv3.com/works.html" },
+        { "@type": "ListItem", "position": 2, "name": "Works", "item": "https://wevolv3.com/works" },
         { "@type": "ListItem", "position": 3, "name": "${safeTitle}", "item": "${jsonEscape(pageUrl)}" }
       ]
     }`.replace(/</g, '\\u003c');
