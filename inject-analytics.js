@@ -19,6 +19,12 @@
  *
  * Idempotent: a file that already calls posthog.init is left alone, so the
  * inline copy in index.html (if it is ever restored) never double-fires.
+ *
+ * custom_blocked_useragents: on 2026-09-28, 60 of the 86 "direct" visitors of
+ * the previous 30 days were bots with no referrer (Lightpanda, 360Spider,
+ * headless Chrome), inflating Direct. Blocking them here keeps them out of the
+ * dataset; data-center traffic that looks like a normal browser is filtered in
+ * the project's test-account filters instead, since the browser cannot see it.
  */
 const fs = require("fs");
 const path = require("path");
@@ -49,7 +55,8 @@ const SNIPPET = `${MARKER}
 posthog.init('${PROJECT_KEY}', {
 api_host: '${API_HOST}',
 defaults: '2026-05-30',
-person_profiles: 'identified_only'
+person_profiles: 'identified_only',
+custom_blocked_useragents: ['Lightpanda', '360Spider', 'Headless']
 })
 </script>
 `;
