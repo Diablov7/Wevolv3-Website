@@ -16,10 +16,10 @@ a coleta foi manual pelo navegador.
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Cliques orgânicos totais | **5** | **7** | | |
-| Impressões totais | **36** | **1.240** | | |
-| CTR médio | **13,9%** | **0,6%** | | |
-| Posição média | **25,4** | **36,3** | | |
+| Cliques orgânicos totais | **5** | **7** | **8** | |
+| Impressões totais | **36** | **1.240** | **4.650** | |
+| CTR médio | **13,9%** | **0,6%** | **0,2%** | |
+| Posição média | **25,4** | **36,3** | **19,0** | |
 
 Leitura: 5 cliques em 28 dias. O CTR de 13,9% parece bom mas é artefato de amostra
 minúscula. Posição média 25,4 significa página 3 do Google.
@@ -32,6 +32,17 @@ sobe (25,4 → 36,3) porque centenas de consultas novas de cauda longa entraram 
 posicionadas no fim da fila. O gargalo mudou de lugar no período: em julho era indexação,
 hoje é autoridade externa (5 domínios referenciadores, parados desde 20/08).
 
+**Leitura do T+60 (2026-09-25, janela 27/08 a 23/09):** impressões quase quadruplicaram de
+novo (1.240 → 4.650, 164 consultas) e a posição média melhorou pela primeira vez de forma
+consistente (36,3 → 19,0, melhor valor da série). O clique continua travado (7 → 8), com
+CTR de 0,2%: quase todo o volume novo é o cluster informativo "o que é KOL em cripto"
+(cerca de 1.400 impressões, zero clique), consulta que o Google responde na própria página.
+Indexação resolvida (63 indexadas, 18 fora; "detectada, mas não indexada" caiu de 49 para 6).
+Links externos: 14 de 8 domínios no GSC, 3 no Bing. GA4 (28/08 a 24/09): 222 sessões,
+Direct 72,5%, Organic Social 16,2%, Organic Search 7,7% (17 sessões, zero conversão),
+AI Assistant 2 sessões (0 conversão na janela), Unassigned 2,3%. O gargalo segue sendo
+autoridade externa e intenção comercial, não indexação.
+
 ---
 
 ## 2. Indexação
@@ -40,8 +51,8 @@ hoje é autoridade externa (5 domínios referenciadores, parados desde 20/08).
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Páginas indexadas | **18** | **56** | | |
-| Páginas não indexadas | **62** | **40** | | |
+| Páginas indexadas | **18** | **56** | **63** | |
+| Páginas não indexadas | **62** | **40** | **18** | |
 
 Motivos da não indexação:
 
