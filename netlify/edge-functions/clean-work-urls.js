@@ -290,8 +290,8 @@ export default async (request, context) => {
         '<div id="work-content" class="sigle-work-section">'
       )
       .replace(
-        /<h4 id="work-title" class="single-main-title-heading">Loading\.\.\.<\/h4>/,
-        `<h4 id="work-title" class="single-main-title-heading">${htmlEscape(title)}</h4>`
+        /<h1 id="work-title" class="single-main-title-heading">Loading\.\.\.<\/h1>/,
+        `<h1 id="work-title" class="single-main-title-heading">${htmlEscape(title)}</h1>`
       )
       .replace(
         /<div id="work-year" class="single-details-text">-<\/div>/,
@@ -322,7 +322,7 @@ export default async (request, context) => {
       updatedHtml = updatedHtml.replace(
         /<img\s+id="work-image"\s+src="data:image\/svg\+xml[^"]*"/,
         `<img id="work-image" src="${htmlEscape(imageUrl)}"${imageDims ? ` width="${imageDims.width}" height="${imageDims.height}"` : ''} loading="eager"`
-      );
+      ).replace(/(<img id="work-image"[^>]*?)\balt=""/, `$1alt="${htmlEscape(title)}"`);
     }
 
     return new Response(updatedHtml, { status: 200, headers: { 'Content-Type': 'text/html; charset=UTF-8', ...SECURITY_HEADERS } });
