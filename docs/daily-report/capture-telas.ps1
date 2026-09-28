@@ -1,4 +1,7 @@
-param([string]$OutDir, [int]$Wait = 12, [int]$CropTop = 122)
+# -Extra "nome=url","nome2=url2" captura telas alem das 5 do relatorio (plano B da rotina
+# quando a extensao do Chrome cai: Bing Search Performance, Platform Properties etc.).
+# -SoExtra pula as 5 padrao e captura so as extras.
+param([string]$OutDir, [int]$Wait = 12, [int]$CropTop = 122, [string[]]$Extra = @(), [switch]$SoExtra)
 # Abre cada URL numa janela nova do Chrome (mesmo perfil logado), captura a janela por PrintWindow,
 # corta a barra do navegador e fecha a janela. Descobre a janela nova por diferenca de handles.
 Add-Type -AssemblyName System.Drawing
@@ -34,6 +37,11 @@ $jobs = @(
   @{ n = "tela4-ga4-aquisicao";  u = "https://analytics.google.com/analytics/web/?authuser=2#/p515955885/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2" },
   @{ n = "tela5-bing-backlinks"; u = "https://www.bing.com/webmasters/backlinks?siteUrl=https://wevolv3.com/" }
 )
+if ($SoExtra) { $jobs = @() }
+foreach ($e in $Extra) {
+  $nome, $url = $e -split '=', 2
+  $jobs += @{ n = $nome; u = $url }
+}
 foreach ($j in $jobs) {
   $before = [CU]::Wins()
   Start-Process $chromeExe -ArgumentList "--new-window", "`"$($j.u)`""
