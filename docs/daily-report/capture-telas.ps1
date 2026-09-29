@@ -47,7 +47,7 @@ $jobs = @(
   @{ n = "tela1-gsc-desempenho"; u = "https://search.google.com/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fwevolv3.com%2F&num_of_days=28&authuser=$au" },
   @{ n = "tela2-gsc-visaogeral"; u = "https://search.google.com/search-console/index?resource_id=https%3A%2F%2Fwevolv3.com%2F&authuser=$au" },
   @{ n = "tela3-gsc-links";      u = "https://search.google.com/search-console/links?resource_id=https%3A%2F%2Fwevolv3.com%2F&authuser=$au" },
-  @{ n = "tela4-ga4-aquisicao";  u = "https://analytics.google.com/analytics/web/?authuser=$au#/p515955885/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2" },
+  @{ n = "tela4-ga4-aquisicao";  u = "https://analytics.google.com/analytics/web/?authuser=$au#/p515955885/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2"; w = 25 },
   @{ n = "tela5-bing-backlinks"; u = "https://www.bing.com/webmasters/backlinks?siteUrl=https://wevolv3.com/"; p = $BingProfile }
 )
 if ($SoExtra) { $jobs = @() }
@@ -55,7 +55,22 @@ foreach ($e in $Extra) {
   $nome, $url = $e -split '=', 2
   $jobs += @{ n = $nome; u = $url }
 }
+# Tela em branco = pagina ainda carregando (o GA4 leva ate ~20s). Amostra uma grade de pixels
+# da area util: se quase tudo tem a mesma cor, a captura e refeita com espera maior.
+function Test-Branca($bmp) {
+  $cores = @{}; $n = 0
+  for ($x = [int]($bmp.Width * 0.3); $x -lt $bmp.Width - 10; $x += 40) {
+    for ($y = [int]($bmp.Height * 0.15); $y -lt $bmp.Height - 10; $y += 40) {
+      $c = $bmp.GetPixel($x, $y).ToArgb(); $cores[$c] = 1 + [int]$cores[$c]; $n++
+    }
+  }
+  $max = ($cores.Values | Measure-Object -Maximum).Maximum
+  return ($n -gt 0 -and ($max / $n) -gt 0.97)
+}
+$saida = @()
 foreach ($j in $jobs) {
+ for ($tent = 1; $tent -le 2; $tent++) {
+  $espera = $(if ($j.w) { $j.w } else { $Wait }) + (($tent - 1) * 15)
   $before = [CU]::Wins()
   $perfil = if ($j.p) { $j.p } else { $ChromeProfile }
   Start-Process $chromeExe -ArgumentList "--profile-directory=`"$perfil`"", "--new-window", "`"$($j.u)`""
@@ -65,16 +80,22 @@ foreach ($j in $jobs) {
     $new = [CU]::Wins() | Where-Object { $before -notcontains $_ }
     if ($new) { $h = @($new)[0] }
   }
-  if ($h -eq [IntPtr]::Zero) { "FALHOU (sem janela nova): $($j.n)"; continue }
+  if ($h -eq [IntPtr]::Zero) { "FALHOU (sem janela nova): $($j.n)"; break }
   [void][CU]::MoveWindow($h, 0, 0, 1440, 1000, $true)
-  Start-Sleep -Seconds $Wait
+  Start-Sleep -Seconds $espera
+  # Esc fecha balao de "Novidade"/tour do GSC que cobre os cartoes (aconteceu em 28 e 29/09).
+  [void][CU]::PostMessage($h, 0x0100, [IntPtr]0x1B, [IntPtr]::Zero); [void][CU]::PostMessage($h, 0x0101, [IntPtr]0x1B, [IntPtr]::Zero)
+  Start-Sleep -Milliseconds 1500
   $r = New-Object CU+RECT; [void][CU]::GetWindowRect($h, [ref]$r)
   $w = $r.R - $r.L; $hh = $r.B - $r.T
   $bmp = New-Object System.Drawing.Bitmap $w, $hh
   $g = [System.Drawing.Graphics]::FromImage($bmp); $dc = $g.GetHdc(); [void][CU]::PrintWindow($h, $dc, 2); $g.ReleaseHdc($dc); $g.Dispose()
   $crop = $bmp.Clone((New-Object System.Drawing.Rectangle 8, $CropTop, ($w - 16), ($hh - $CropTop - 8)), $bmp.PixelFormat); $bmp.Dispose()
+  $branca = Test-Branca $crop; $titulo = [CU]::Title($h)
   $out = Join-Path $OutDir "$($j.n).png"; $crop.Save($out, [System.Drawing.Imaging.ImageFormat]::Png); $crop.Dispose()
-  "ok $($j.n) | $([CU]::Title($h)) | $((Get-Item $out).Length) bytes"
   [void][CU]::PostMessage($h, 0x0010, [IntPtr]::Zero, [IntPtr]::Zero)
   Start-Sleep -Milliseconds 800
+  if (-not $branca) { "ok $($j.n) | $titulo | $((Get-Item $out).Length) bytes | espera ${espera}s"; break }
+  if ($tent -eq 2) { "BRANCA (conferir e nao publicar): $($j.n) | espera ${espera}s" } else { "branca, refazendo com mais espera: $($j.n)" }
+ }
 }
