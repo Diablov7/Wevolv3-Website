@@ -1297,7 +1297,9 @@
     ["26/09", 4570,  7, 18.6, 63, 18, 215, 6.98, 16.74],
     ["27/09", 4570,  7, 18.6, 63, 18, 210, 7.14, 17.14],
     ["28/09", 4520,  6, 18.2, 63, 18, 208, 7.21, 16.83],
-    ["29/09", 4420,  6, 17.7, 63, 18, 238, 6.30, 14.71]
+    // Desde 29/09 as colunas do GA4 saem SEM o dia 28/09 (robô de ~28 sessões Direct na noite de
+    // 28/09), até esse dia sair da janela de 28 dias em 26/10. Com o robô, 29/09 daria 238 sessões.
+    ["29/09", 4420,  6, 17.7, 63, 18, 205, 6.83, 16.59]
   ];
 
   var COL = { impr:1, cliq:2, pos:3, idx:4, nidx:5, sess:6, search:7, social:8 };

@@ -1,9 +1,21 @@
 # -Extra "nome=url","nome2=url2" captura telas alem das 5 do relatorio (plano B da rotina
 # quando a extensao do Chrome cai: Bing Search Performance, Platform Properties etc.).
 # -SoExtra pula as 5 padrao e captura so as extras.
-param([string]$OutDir, [int]$Wait = 12, [int]$CropTop = 122, [string[]]$Extra = @(), [switch]$SoExtra)
-# Abre cada URL numa janela nova do Chrome (mesmo perfil logado), captura a janela por PrintWindow,
+param([string]$OutDir, [int]$Wait = 12, [int]$CropTop = 122, [string[]]$Extra = @(), [switch]$SoExtra,
+      [string]$ChromeProfile = "Profile 2", [string]$Conta = "diablov2021@gmail.com",
+      [string]$BingProfile = "Default")
+# O Bing Webmaster NAO esta logado no Profile 2 (abre a tela de "Get started"); o login dele vive
+# no perfil Default. Por isso a tela 5 usa $BingProfile.
+# Abre cada URL numa janela nova do Chrome, captura a janela por PrintWindow,
 # corta a barra do navegador e fecha a janela. Descobre a janela nova por diferenca de handles.
+#
+# Perfil e conta FIXOS desde 29/09/2026. Antes o script abria no ultimo perfil usado ("Default",
+# conta romulololico) e as URLs usavam /u/2, o indice da conta dentro do perfil. O Chrome tem 9
+# perfis e o indice muda quando uma conta entra ou sai (em 28/09 o /u/2 virou vadevox.digital),
+# entao a tela saia da conta errada ou nem era recapturada. Agora: --profile-directory aponta o
+# perfil "Sun and moon" (Profile 2, logado em diablov2021) e authuser=<email> faz o Google achar a
+# conta pelo e-mail, seja qual for o indice. Conferir o perfil em
+# "%LOCALAPPDATA%\Google\Chrome\User Data\Local State" (profile.info_cache) se algum dia mudar.
 Add-Type -AssemblyName System.Drawing
 Add-Type @"
 using System; using System.Runtime.InteropServices; using System.Text; using System.Collections.Generic;
@@ -30,12 +42,13 @@ public class CU {
 "@
 $chromeExe = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue).'(default)'
 if (-not $chromeExe) { $chromeExe = "C:\Program Files\Google\Chrome\Application\chrome.exe" }
+$au = [uri]::EscapeDataString($Conta)
 $jobs = @(
-  @{ n = "tela1-gsc-desempenho"; u = "https://search.google.com/u/2/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fwevolv3.com%2F&num_of_days=28" },
-  @{ n = "tela2-gsc-visaogeral"; u = "https://search.google.com/u/2/search-console/index?resource_id=https%3A%2F%2Fwevolv3.com%2F" },
-  @{ n = "tela3-gsc-links";      u = "https://search.google.com/u/2/search-console/links?resource_id=https%3A%2F%2Fwevolv3.com%2F" },
-  @{ n = "tela4-ga4-aquisicao";  u = "https://analytics.google.com/analytics/web/?authuser=2#/p515955885/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2" },
-  @{ n = "tela5-bing-backlinks"; u = "https://www.bing.com/webmasters/backlinks?siteUrl=https://wevolv3.com/" }
+  @{ n = "tela1-gsc-desempenho"; u = "https://search.google.com/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fwevolv3.com%2F&num_of_days=28&authuser=$au" },
+  @{ n = "tela2-gsc-visaogeral"; u = "https://search.google.com/search-console/index?resource_id=https%3A%2F%2Fwevolv3.com%2F&authuser=$au" },
+  @{ n = "tela3-gsc-links";      u = "https://search.google.com/search-console/links?resource_id=https%3A%2F%2Fwevolv3.com%2F&authuser=$au" },
+  @{ n = "tela4-ga4-aquisicao";  u = "https://analytics.google.com/analytics/web/?authuser=$au#/p515955885/reports/explorer?params=_u..nav%3Dmaui&r=lifecycle-traffic-acquisition-v2" },
+  @{ n = "tela5-bing-backlinks"; u = "https://www.bing.com/webmasters/backlinks?siteUrl=https://wevolv3.com/"; p = $BingProfile }
 )
 if ($SoExtra) { $jobs = @() }
 foreach ($e in $Extra) {
@@ -44,7 +57,8 @@ foreach ($e in $Extra) {
 }
 foreach ($j in $jobs) {
   $before = [CU]::Wins()
-  Start-Process $chromeExe -ArgumentList "--new-window", "`"$($j.u)`""
+  $perfil = if ($j.p) { $j.p } else { $ChromeProfile }
+  Start-Process $chromeExe -ArgumentList "--profile-directory=`"$perfil`"", "--new-window", "`"$($j.u)`""
   $h = [IntPtr]::Zero
   for ($i = 0; $i -lt 20 -and $h -eq [IntPtr]::Zero; $i++) {
     Start-Sleep -Milliseconds 500
