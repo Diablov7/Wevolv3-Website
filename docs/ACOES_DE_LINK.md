@@ -26,7 +26,7 @@ que medir. Quem executar uma ação nova acrescenta uma linha aqui no mesmo dia.
 | 28/09 | Sortlist | Perfil publicado (descrição, logo, capa, 3 serviços) | feita | sortlist.com |
 | 28/09 | TechBehemoths | Cadastro enviado | aguardando aprovação deles | techbehemoths.com (1ª visita em 29/09, Chisinau) |
 | 28/09 | Influencer Marketing Hub | Formulário de inclusão enviado | aguardando revisão (aviso chega no info@) | influencermarketinghub.com |
-| 28/09 | web3connect | 7 ofertas aprovadas pelo fundador em 28/09; posicionamento novo | feita | web3connect.com |
+| 28/09 | web3connect | 7 ofertas aprovadas pelo fundador em 28/09; posicionamento novo | feita | web3connect.com (1ª visita em 29/09, Indore, utm_source=web3connect_com) |
 | 28/09 | MarketerHire | Pitch por e-mail para a editora | aguardando resposta (follow-up agendado 03/10) | marketerhire.com |
 | 28/09 | Coinmonks | Pitch por e-mail; entrada de autor é por DM no Telegram (@gaurav_zen) | aguardando; DM pendente com o Rômulo | medium.com/coinmonks |
 | 28/09 | novaastrax / bitcoinethereumnews | Pedido de link na cópia do artigo do CryptoDaily | aguardando resposta | novaastrax.com, bitcoinethereumnews.com |
