@@ -160,6 +160,12 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://wevolv3.com/blog/growth-partner-vs-agency</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://wevolv3.com/blog/web-three-quest-platforms-roi</loc>
     <lastmod>2026-09-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -197,12 +203,6 @@
   </url>
   <url>
     <loc>https://wevolv3.com/blog/web3-marketing-agency-growth-partner</loc>
-    <lastmod>2026-09-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://wevolv3.com/blog/growth-partner-vs-agency</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
