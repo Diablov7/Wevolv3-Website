@@ -80,4 +80,4 @@ permite ver conversão por motor, que o canal padrão não dá.
 
 | Data | Share of Answer | Recomendada | ChatGPT | Perplexity | AI Overviews | Observação |
 | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | primeira medição pendente |
+| 2026-10-01 | n/d | n/d | n/d | bloqueado (deslogado) | n/d | Primeira medição bloqueada: Perplexity pede login, ChatGPT e AI Overviews não rodados. Único retorno: "what is Wevolv3" descreve certo (Web3 growth marketing partner). Refazer logado. |
