@@ -358,6 +358,15 @@
         <link href="css/normalize.css" rel="stylesheet" type="text/css" />
         <link href="css/layout.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css?v=force_update_2" rel="stylesheet" type="text/css" />
+        <style>
+            /* cards de números com a mesma largura, independente do texto */
+            .numbers-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+            .numbers-item{min-width:0}
+            .number-text-big{overflow-wrap:break-word}
+            @media (max-width:991px){.numbers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+            @media (max-width:479px){.numbers-grid{grid-template-columns:minmax(0,1fr)}}
+        </style>
+
 
 
         <link href="images/favicon.png" rel="shortcut icon" type="image/png" />
@@ -526,8 +535,8 @@
                     <div data-w-id="darkyn15" style="opacity: 0;" class="numbers-item numbers-item-grey">
                         <div class="number-circle circle-dark"></div>
                         <div class="number-text-box">
-                            <div class="number-text-big">3 continents</div>
-                            <div class="number-text-small">partners in the Americas, Europe &amp; Asia</div>
+                            <div class="number-text-big">3</div>
+                            <div class="number-text-small">continents: the Americas, Europe &amp; Asia</div>
                         </div>
                     </div>
                     <div data-w-id="darkyn16" style="opacity: 0;" class="numbers-item numbers-item-dark">
