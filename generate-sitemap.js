@@ -23,7 +23,7 @@ const staticPages = [
   { url: '/works', priority: '0.9', changefreq: 'weekly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/blog', priority: '0.9', changefreq: 'daily', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/contact', priority: '0.7', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
-    { url: '/linktree/', priority: '0.6', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
+  // /linktree/ fora do sitemap desde 06/10: hub de links da bio, com noindex (sem valor de busca).
   { url: '/for-funds/', priority: '0.8', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/crypto-exchange-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
   { url: '/token-launch-marketing', priority: '0.9', changefreq: 'monthly', lastmod: new Date().toISOString().split('T')[0] },
