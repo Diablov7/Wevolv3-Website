@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex">
+<meta charset="UTF-8">
+<title>Wevolv3 Brand Book · Edition 02</title>
+<style>
+  /* As mesmas fontes do site (Wevolv3-Website-main/fonts) */
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Extralight.otf") format("opentype"); font-weight:200; }
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Light.otf") format("opentype"); font-weight:300; }
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Regular.otf") format("opentype"); font-weight:400; }
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Medium.otf") format("opentype"); font-weight:500; }
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Semibold.otf") format("opentype"); font-weight:600; }
+  @font-face { font-family:"Clashdisplay"; src:url("/fonts/ClashDisplay-Bold.otf") format("opentype"); font-weight:700; }
+
+  @page { size: 297mm 210mm; margin: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  html, body { font-family:"Clashdisplay", sans-serif; background:#000; }
+
+  :root{
+    --bg:#000; --card:#191919; --card2:#1e1e1e; --line:#292929;
+    --em:#10b981; --blue:#3b82f6; --g1:#4a4a4a; --g2:#939393;
+    --white:#fff; --soft:#cfcfcf; --muted:#9a9a9a;
+  }
+
+  .page{ position:relative; width:297mm; height:210mm; overflow:hidden; background:var(--bg); color:var(--white);
+         padding:18mm 20mm 15mm; page-break-after:always; display:flex; flex-direction:column; }
+  .page:last-child{ page-break-after:auto; }
+
+  .rh{ position:absolute; top:8mm; left:20mm; right:20mm; display:flex; justify-content:space-between;
+       font-size:7pt; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .fol{ position:absolute; bottom:7mm; left:20mm; right:20mm; display:flex; justify-content:space-between;
+        font-size:7pt; font-weight:300; letter-spacing:.1em; color:#5d5d5d; }
+
+  /* Título de seção como no site: Bold, caixa alta, linha fina saindo dele */
+  h2{ display:flex; align-items:flex-end; gap:5mm; font-weight:700; font-size:34pt; line-height:.92; text-transform:uppercase; letter-spacing:-.005em; margin-bottom:6mm; }
+  h2::after{ content:""; flex:1; height:1px; background:linear-gradient(90deg,var(--em),rgba(16,185,129,.15)); margin-bottom:1.6mm; }
+  /* Subtítulo como no site: Extralight, caixa alta */
+  .h3{ font-weight:200; font-size:17pt; line-height:1.05; text-transform:uppercase; }
+  .h3s{ font-weight:200; font-size:13pt; line-height:1.05; text-transform:uppercase; }
+  .lede{ font-weight:300; font-size:11pt; line-height:1.5; color:var(--soft); max-width:170mm; }
+  p{ font-weight:300; font-size:9.3pt; line-height:1.5; color:var(--soft); }
+  b,strong{ font-weight:600; color:var(--white); }
+  .em{ color:var(--em); } .bl{ color:var(--blue); }
+  .rule{ height:1px; background:var(--line); margin:5mm 0; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12mm; }
+  .grid3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:8mm; }
+  .grid5{ display:grid; grid-template-columns:repeat(5,1fr); gap:4mm; }
+  .eyebrow{ font-size:7pt; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:3mm; }
+
+  /* Peças do site */
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:5px; padding:6mm; }
+  .num{ display:inline-block; background:var(--line); color:var(--white); font-weight:500; font-size:7pt; padding:.8mm 1.8mm; border-radius:3px; }
+  .chip{ display:inline-block; background:#0f0f0f; border:1px solid var(--line); border-radius:3px; padding:1.2mm 2.6mm;
+         font-weight:600; font-size:6.5pt; letter-spacing:.18em; text-transform:uppercase; color:var(--em); }
+  .btn{ display:inline-block; background:var(--em); color:#fff; font-weight:700; font-size:8pt; letter-spacing:.06em; text-transform:uppercase;
+        padding:2.6mm 5.5mm; border-radius:5px; }
+  .btn2{ display:inline-block; background:#0f0f0f; border:1px solid var(--line); color:#fff; font-weight:700; font-size:8pt; letter-spacing:.02em;
+        padding:2.6mm 5.5mm; border-radius:5px; }
+  .ncard{ border-radius:5px; padding:5mm; height:44mm; display:flex; flex-direction:column; justify-content:space-between; }
+  .ncard .dot{ width:4mm; height:4mm; border-radius:50%; background:#000; opacity:.85; }
+  .ncard .big{ font-weight:500; font-size:30pt; line-height:.9; }
+  .ncard .cap{ font-weight:300; font-size:8pt; margin-top:1.5mm; }
+  .path{ border-radius:5px; padding:4mm; min-height:44mm; }
+  .path .bar{ background:rgba(0,0,0,.45); border-radius:3px; font-size:7pt; font-weight:600; padding:1mm 2mm; margin-bottom:5mm; }
+  .path .t{ font-weight:200; font-size:15pt; text-transform:uppercase; }
+  .path p{ font-size:7.8pt; margin-top:2mm; }
+  .plus{ color:var(--blue); font-weight:200; font-size:26pt; line-height:.8; }
+  .vbar{ border-left:2px solid var(--em); padding-left:5mm; }
+
+  ul{ list-style:none; }
+  li{ font-size:8.8pt; font-weight:300; line-height:1.5; color:var(--soft); padding-left:5.5mm; position:relative; margin-bottom:2mm; }
+  li::before{ content:""; position:absolute; left:0; top:1.6mm; width:2.2mm; height:2.2mm; border-radius:1px; background:var(--em); }
+  li.x::before{ background:#ef4444; }
+  table{ border-collapse:collapse; width:100%; }
+  td,th{ text-align:left; padding:2.2mm 2.6mm; font-size:8.3pt; border-bottom:1px solid var(--line); vertical-align:top; }
+  th{ font-weight:600; font-size:6.8pt; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); }
+  td{ font-weight:300; color:var(--soft); }
+  td.k{ font-weight:500; color:var(--white); }
+  .mono{ font-variant-numeric:tabular-nums; letter-spacing:.03em; }
+  .sw{ border-radius:5px; padding:4.5mm; height:36mm; display:flex; flex-direction:column; justify-content:flex-end; }
+  .sw .nm{ font-weight:600; font-size:9.5pt; }
+  .sw .hx{ font-weight:400; font-size:8pt; opacity:.8; margin-top:.8mm; letter-spacing:.04em; }
+  .sw .role{ font-weight:300; font-size:7.6pt; opacity:.85; margin-top:1.5mm; line-height:1.35; }
+  .spec{ display:flex; align-items:baseline; gap:6mm; padding:3.6mm 0; border-bottom:1px solid var(--line); }
+  .spec .w{ font-size:6.8pt; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); width:30mm; flex:0 0 30mm; }
+  .partners{ display:flex; align-items:center; gap:9mm; flex-wrap:wrap; }
+  .partners img{ height:6.5mm; opacity:.8; }
+  .new{ font-weight:600; font-size:6pt; letter-spacing:.18em; color:var(--em); border:1px solid var(--em); border-radius:3px; padding:.6mm 1.6mm; align-self:center; }
+  .glow{ position:absolute; border-radius:50%; filter:blur(36px); pointer-events:none; }
+</style>
+</head>
+<body>
+
+<!-- 01 COVER -->
+<div class="page" style="padding:20mm 22mm">
+  <div class="glow" style="width:170mm;height:170mm;right:-50mm;top:-70mm;background:radial-gradient(circle,rgba(16,185,129,.22) 0%,rgba(16,185,129,0) 65%)"></div>
+  <img src="/brand/assets/logo-ed02.png" style="width:52mm" alt="Wevolv3">
+  <div style="margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12mm">
+    <div style="font-weight:700;font-size:96pt;line-height:.82;text-transform:uppercase;letter-spacing:-.02em">Brand<br>Book</div>
+    <div class="vbar" style="margin-bottom:3mm">
+      <div class="h3" style="font-size:19pt">Web3 growth<br>partner. From<br>code to<br>listing.</div>
+    </div>
+  </div>
+  <div class="rule" style="margin:9mm 0 5mm"></div>
+  <div style="display:flex;justify-content:space-between;font-size:7.5pt;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">
+    <span>The system behind wevolv3.com, the carousels and the Strike and Lucy videos</span>
+    <span>Edition 02 &middot; October 2026</span>
+  </div>
+</div>
+
+<!-- 02 THE BRAND -->
+<div class="page">
+  <div class="rh"><span>The brand</span><span>Wevolv3</span></div>
+  <h2>From code to listing</h2>
+  <div class="lede">Your token deserves more than a post. Launching is a sequence: build it, list it, launch it, get it covered, keep the community. Most projects hire a different vendor for every step. We run the whole thing as one plan.</div>
+  <div class="grid5" style="margin-top:6mm">
+    <div class="path" style="background:#333"><div class="bar">01</div><div class="t">Build</div><p>Contracts, dApp, token mechanics, built in-house.</p></div>
+    <div class="path" style="background:var(--blue)"><div class="bar">02</div><div class="t">List</div><p style="color:#fff">CoinGecko, CoinMarketCap and exchanges, prepared weeks before.</p></div>
+    <div class="path" style="background:#191919;border:1px solid var(--line)"><div class="bar">03</div><div class="t">Launch</div><p>Creators and campaigns, with audiences checked first.</p></div>
+    <div class="path" style="background:#191919;border:1px solid var(--line)"><div class="bar">04</div><div class="t">Get covered</div><p>Press where founders and investors read.</p></div>
+    <div class="path" style="background:#191919;border:1px solid var(--line)"><div class="bar">05</div><div class="t">Keep</div><p>Ambassadors, moderation, a reason to come back.</p></div>
+  </div>
+  <div class="grid3" style="margin-top:6mm">
+    <div><div class="h3s">What we are</div><p style="margin-top:2mm">A Web3 growth partner. More than 200 projects since 2020, across the Americas, Europe and Asia. In-house, end to end.</p></div>
+    <div><div class="h3s">How we engage</div><p style="margin-top:2mm">A growth partnership from US$5k a month, or a focused sprint on one objective. Start at whichever stage you are in.</p></div>
+    <div><div class="h3s">What we never promise</div><p style="margin-top:2mm">Results the data cannot carry. Past work is shown by category, never by client name.</p></div>
+  </div>
+  <div style="margin-top:auto">
+    <div class="rule" style="margin:0 0 4mm"></div>
+    <div class="partners">
+      <img src="/brand/assets/forbes-media-partner.png" alt="Forbes">
+      <img src="/brand/assets/bitcoin-com-media-partner.png" alt="Bitcoin.com">
+      <img src="/brand/assets/cointelegraph-media-partner.png" alt="Cointelegraph">
+      <img src="/brand/assets/coindesk-media-partner.png" alt="CoinDesk">
+      <img src="/brand/assets/binance-media-partner.png" alt="Binance">
+      <img src="/brand/assets/coinmarketcap-media-partner.png" alt="CoinMarketCap">
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">02</span></div>
+</div>
+
+<!-- 03 LOGO -->
+<div class="page">
+  <div class="rh"><span>Logo</span><span>Wevolv3</span></div>
+  <h2>The lockup <span class="new">NEW</span></h2>
+  <div class="grid2" style="gap:10mm">
+    <div>
+      <div class="card" style="background:#000;padding:14mm 10mm;text-align:center">
+        <img src="/brand/assets/logo-ed02.png" style="width:100%;max-width:105mm" alt="Wevolv3">
+      </div>
+      <p style="margin-top:4mm">Bull and wordmark share one faceted texture. <b>Wevolv</b> carries the bull's low-poly teal, the <b>3</b> stays white, and the bull sits centred on the word.</p>
+      <div style="display:flex;gap:5mm;margin-top:4mm">
+        <div class="card" style="flex:1;text-align:center;padding:5mm"><img src="/brand/assets/mark-ed02.png" style="width:17mm" alt=""><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">The mark alone, below 120&nbsp;px</div></div>
+        <div class="card" style="flex:1;text-align:center;padding:5mm;display:flex;flex-direction:column;justify-content:center"><img src="/brand/assets/favicon.png" style="width:9mm;margin:0 auto" alt=""><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">Favicon and avatar</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">Rules</div>
+      <ul>
+        <li>Clear space on every side equals the height of the bull's horns.</li>
+        <li>Minimum width: 30&nbsp;mm in print, 120&nbsp;px on screen. Below that, the mark alone.</li>
+        <li>Always on black or on a dark scene. On a busy image, under a dark veil.</li>
+        <li>Top left in the site navigation; top right on every carousel slide.</li>
+        <li class="x">Never retype the wordmark, never split the <b>3</b> from <b>Wevolv</b>.</li>
+        <li class="x">Never redraw, flatten, recolour, rotate, outline or stretch it.</li>
+      </ul>
+      <div class="rule"></div>
+      <p><b>Retired October 2026.</b> The descriptor "Web3 &amp; Crypto Marketing" under the wordmark. The positioning now lives in the copy, as on the site hero: <span class="em">Web3 growth partner. From code to listing.</span></p>
+      <p style="margin-top:2.5mm"><b>Files.</b> <span class="mono">logo-wevolv3-poligonal.png</span> (lockup), <span class="mono">images/LOGO.png</span> (site), <span class="mono">logo.png</span> (mark).</p>
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">03</span></div>
+</div>
+
+<!-- 04 COLOUR -->
+<div class="page">
+  <div class="rh"><span>Colour</span><span>Wevolv3</span></div>
+  <h2>Black, emerald, blue</h2>
+  <div class="lede">Black carries everything. Emerald is the brand voice: the button, the labels, the links, the line under a title. Blue is the second accent, used for the one card that should catch the eye and for small markers.</div>
+  <div class="grid3" style="margin-top:6mm;grid-template-columns:repeat(4,1fr)">
+    <div class="sw" style="background:#000;border:1px solid var(--line)"><div class="nm">Black</div><div class="hx mono">#000000</div><div class="role">Every page, every slide.</div></div>
+    <div class="sw" style="background:#191919;border:1px solid var(--line)"><div class="nm">Graphite</div><div class="hx mono">#191919 &middot; border #292929</div><div class="role">Navigation, cards, panels.</div></div>
+    <div class="sw" style="background:var(--em)"><div class="nm">Emerald</div><div class="hx mono">#10B981</div><div class="role">Buttons, labels, links, rules.</div></div>
+    <div class="sw" style="background:var(--blue)"><div class="nm">Blue</div><div class="hx mono">#3B82F6</div><div class="role">The highlighted card, plus signs, square markers.</div></div>
+  </div>
+  <div class="grid3" style="margin-top:5mm;grid-template-columns:repeat(4,1fr)">
+    <div class="sw" style="background:#333;height:26mm"><div class="nm">Grey 1</div><div class="hx mono">#333333 &middot; #4A4A4A</div></div>
+    <div class="sw" style="background:#939393;height:26mm;color:#000"><div class="nm">Grey 2</div><div class="hx mono">#939393</div></div>
+    <div class="sw" style="background:#000;border:1px solid var(--line);height:26mm"><div class="nm">Text</div><div class="hx mono">#FFFFFF &middot; #CFCFCF &middot; #9A9A9A</div></div>
+    <div class="sw" style="background:#0f0f0f;border:1px solid var(--line);height:26mm"><div class="nm" style="color:var(--em)">Teal glow</div><div class="hx mono" style="color:var(--em)">only inside the logo</div></div>
+  </div>
+  <div class="rule" style="margin-top:auto"></div>
+  <div class="grid2" style="gap:10mm;align-items:center">
+    <p><b>The button.</b> Emerald block, white type in Bold uppercase, 5&nbsp;px corners. One per view. The secondary action is a graphite block with a hairline border. <b>Lime is retired.</b> There is no light theme on the site; print and documents keep the black pages.</p>
+    <div style="display:flex;gap:4mm"><span class="btn">Let's talk</span><span class="btn" style="text-transform:none;font-size:9pt">Start a partnership</span><span class="btn2">Scope a sprint</span></div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">04</span></div>
+</div>
+
+<!-- 05 TYPOGRAPHY -->
+<div class="page">
+  <div class="rh"><span>Typography</span><span>Wevolv3</span></div>
+  <h2>Clash Display</h2>
+  <div class="lede">The same family and files as the site. The contrast is the system: huge Bold for the section title, Extralight for everything that names a thing, Light for reading.</div>
+  <div class="grid2" style="margin-top:5mm;gap:12mm">
+    <div>
+      <div class="spec"><div class="w">700 Bold</div><div style="font-weight:700;font-size:30pt;line-height:.9;text-transform:uppercase">Solutions</div></div>
+      <div class="spec"><div class="w">200 Extralight</div><div style="font-weight:200;font-size:22pt;text-transform:uppercase">Web3 development</div></div>
+      <div class="spec"><div class="w">300 Light</div><div style="font-weight:300;font-size:13pt">Your token deserves more than a post.</div></div>
+      <div class="spec"><div class="w">500 Medium</div><div style="font-weight:500;font-size:30pt;line-height:.9">200+</div></div>
+      <div class="spec" style="border-bottom:0"><div class="w">600 Semibold</div><div style="font-weight:600;font-size:9pt;letter-spacing:.18em;text-transform:uppercase;color:var(--em)">Growth partnership</div></div>
+    </div>
+    <div>
+      <table>
+        <tr><th>Role</th><th>Weight</th><th>Treatment</th></tr>
+        <tr><td class="k">Hero word, section title</td><td>700</td><td>Uppercase, very large, tight leading, a thin emerald line runs out from it</td></tr>
+        <tr><td class="k">Service names, card titles, subheads</td><td>200</td><td>Uppercase</td></tr>
+        <tr><td class="k">Carousel headline</td><td>300</td><td>Uppercase, the biggest thing on the slide</td></tr>
+        <tr><td class="k">Body</td><td>300</td><td>Sentence case, white or #CFCFCF</td></tr>
+        <tr><td class="k">Big numbers</td><td>500</td><td>On the number cards</td></tr>
+        <tr><td class="k">Labels, chips</td><td>600</td><td>Uppercase, wide tracking, emerald</td></tr>
+        <tr><td class="k">Buttons, nav action</td><td>700</td><td>Uppercase, small, white on emerald</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">05</span></div>
+</div>
+
+<!-- 06 COMPONENTS -->
+<div class="page">
+  <div class="rh"><span>Components</span><span>Wevolv3</span></div>
+  <h2>The working parts</h2>
+  <div class="grid3" style="gap:7mm">
+    <div>
+      <div class="eyebrow">Number cards</div>
+      <div style="display:flex;gap:3mm">
+        <div class="ncard" style="background:var(--blue);flex:1"><div class="dot"></div><div><div class="big">200+</div><div class="cap">Web3 projects since 2020</div></div></div>
+        <div class="ncard" style="background:#333;flex:1"><div class="dot"></div><div><div class="big">3</div><div class="cap" style="color:var(--soft)">Continents</div></div></div>
+      </div>
+      <p style="margin-top:3mm">Same width, a black dot top left, the figure in Medium, the caption in Light. The first card is blue, the rest step through greys.</p>
+    </div>
+    <div>
+      <div class="eyebrow">Offer card</div>
+      <div class="card">
+        <span class="chip">Growth partnership</span>
+        <div class="h3s" style="margin-top:3mm">Your embedded growth team</div>
+        <p style="margin-top:2mm;font-size:8pt">From US$5k/month</p>
+        <div style="margin-top:3mm"><span class="btn" style="text-transform:none;font-size:8.5pt">Start a partnership</span></div>
+      </div>
+      <p style="margin-top:3mm">Graphite, hairline border, 5&nbsp;px corners. Emerald chip, Extralight title, one button.</p>
+    </div>
+    <div>
+      <div class="eyebrow">List rows and markers</div>
+      <div style="border-top:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:3mm;padding:3mm 0;border-bottom:1px solid var(--line)"><span class="num">01</span><span class="h3s">Web3 development</span></div>
+        <div style="display:flex;align-items:center;gap:3mm;padding:3mm 0;border-bottom:1px solid var(--line)"><span class="num">02</span><span class="h3s">Design &amp; motion</span></div>
+        <div style="display:flex;align-items:center;gap:3mm;padding:3mm 0;border-bottom:1px solid var(--line)"><span class="num">08</span><span class="h3s">Influence marketing (KOL)</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:4mm;margin-top:4mm"><span class="plus">+</span><span class="h3s">Our mission</span><span style="width:3.5mm;height:3.5mm;background:var(--blue);border-radius:1px;margin-left:auto"></span></div>
+      <p style="margin-top:3mm">Numbered rows in a small graphite box. The blue plus and the blue square are the only decorative marks.</p>
+    </div>
+  </div>
+  <div class="rule" style="margin-top:auto"></div>
+  <div style="display:flex;gap:6mm;align-items:center">
+    <img src="/brand/assets/carrossel-slide1.png" style="height:44mm;border-radius:5px;border:1px solid var(--line)" alt="">
+    <img src="/brand/assets/carrossel-slide3.png" style="height:44mm;border-radius:5px;border:1px solid var(--line)" alt="">
+    <img src="/brand/assets/carrossel-slide4.png" style="height:44mm;border-radius:5px;border:1px solid var(--line)" alt="">
+    <p style="flex:1"><b>The carousel.</b> Four slides, 1080&times;1350, black. Logo top right, emerald chip top left, headline in Light uppercase, a cinematic scene in the lower half, the counter <span class="mono">n/4</span>. Slide 3 carries the proof on a graphite card, slide 4 the single emerald button.</p>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">06</span></div>
+</div>
+
+<!-- 07 IMAGERY -->
+<div class="page">
+  <div class="rh"><span>Imagery</span><span>Wevolv3</span></div>
+  <h2>Scenes, not stock <span class="new">NEW</span></h2>
+  <div class="lede">The same illustrated world as the service rows on the site: cinematic, painted, dark, with warm practical light. Every image is a scene from the life of a launch, generated in the Studio.</div>
+  <div class="grid2" style="margin-top:5mm;gap:12mm">
+    <ul>
+      <li>Illustrated and cinematic, never photographic stock. Warm amber light against deep teal and blue.</li>
+      <li>Anonymous people: founders, devs, moderators, holders. Faces in shadow or from behind.</li>
+      <li>One idea per image, the same idea as the headline above it.</li>
+      <li>Generated through the Studio (Antigravity, Flow), so the brand rules travel with the image.</li>
+    </ul>
+    <ul>
+      <li class="x">Text, numbers or logos inside the image. Type is set on top.</li>
+      <li class="x">Real projects, real tokens, client names or a client's interface.</li>
+      <li class="x">Charts that predict price, a candle pointing to the moon, coins raining from the sky.</li>
+      <li class="x">Images made outside the Studio.</li>
+    </ul>
+  </div>
+  <div style="margin-top:auto;display:flex;gap:4mm;height:50mm">
+    <img src="/brand/assets/cena-1.png" style="height:100%;width:25%;border-radius:5px;object-fit:cover" alt="">
+    <img src="/brand/assets/cena-2.png" style="height:100%;width:25%;border-radius:5px;object-fit:cover" alt="">
+    <img src="/brand/assets/cena-3.png" style="height:100%;width:25%;border-radius:5px;object-fit:cover" alt="">
+    <img src="/brand/assets/cena-4.png" style="height:100%;width:25%;border-radius:5px;object-fit:cover" alt="">
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">07</span></div>
+</div>
+
+<!-- 08 STRIKE -->
+<div class="page">
+  <div class="rh"><span>The character</span><span>Wevolv3</span></div>
+  <h2>Meet Strike <span class="new">NEW</span></h2>
+  <div class="grid2" style="gap:10mm">
+    <div>
+      <div class="lede" style="font-size:10.5pt">The Wevolv3 bull in person. A larger-than-life showman who has seen every kind of launch, talks like he is always at a podium and gives every mistake a nickname. The voice of the brand in short video, in Portuguese.</div>
+      <table style="margin-top:5mm">
+        <tr><td class="k">Look</td><td>Low-poly bull in warm copper, pale horns. The outfit is all brand palette: <b>black</b> three-piece suit with a <b>graphite</b> vest, <b>white</b> shirt, and <span class="em">emerald tie, pocket square, lapel pin and lapel piping</span>. No navy, no gold.</td></tr>
+        <tr><td class="k">Where the brand shows</td><td>On him, in the emerald details. The copper bull against the emerald is what makes him pop on the feed. Scenes stay dark, with teal and emerald light.</td></tr>
+        <tr><td class="k">Voice</td><td>Deep, slow, certain. Repeats a word for weight. Always the same generated voice.</td></tr>
+        <tr><td class="k">Lines</td><td>"Ninguém entende de lançamento mais do que eu. Ninguém." &middot; "Isso é fake. Muito fake." &middot; Sign-off: "Do código à listagem. Tremendo."</td></tr>
+        <tr><td class="k">Never</td><td>A real person's face, voice or catchphrase. Politics. Price calls or token tips. Real projects or clients. Promised results.</td></tr>
+      </table>
+    </div>
+    <div style="display:flex;gap:4mm;align-items:flex-start">
+      <div style="flex:1;text-align:center"><img src="/brand/assets/strike-original.png" style="width:100%;border-radius:5px" alt="Strike"><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">The reference</div></div>
+      <div style="flex:1;text-align:center"><img src="/brand/assets/strike-podio.png" style="width:100%;border-radius:5px" alt="Strike at the podium"><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">Today: black, graphite, white and emerald</div></div>
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">08</span></div>
+</div>
+
+<!-- 09 LUCY -->
+<div class="page">
+  <div class="rh"><span>The character</span><span>WeKOLnect</span></div>
+  <h2>Meet Lucy <span class="new">NEW</span></h2>
+  <div class="grid2" style="gap:10mm">
+    <div>
+      <div class="lede" style="font-size:10.5pt">Lucy is the Siamese cat of WeKOLnect, our creator database. Where Strike exaggerates, Lucy checks. Calm, dry, few words. She opens the data, finds the 12 likes behind the 40,000 followers and ends the argument with one line.</div>
+      <table style="margin-top:5mm">
+        <tr><td class="k">Look</td><td>Low-poly Siamese cat in the faceted style of the WeKOLnect mark: ivory fur, seal-brown mask and ears, <span class="em">glowing emerald eyes</span>. Fitted black blazer with emerald piping, a tablet that glows emerald.</td></tr>
+        <tr><td class="k">Role</td><td>The voice of WeKOLnect and of everything about creators: audience checks, pricing, fake reach. With Strike, the straight half of the duo.</td></tr>
+        <tr><td class="k">Voice</td><td>Soft, precise, a little ironic. Never raises her tone. Always the same generated voice.</td></tr>
+        <tr><td class="k">Lines</td><td>"Deixa eu conferir." &middot; "Doze curtidas, Strike." &middot; "O número não mente."</td></tr>
+        <tr><td class="k">Never</td><td>The same rules as Strike: no real people, no politics, no price calls, no clients, no promised results, no creator's individual price.</td></tr>
+      </table>
+    </div>
+    <div style="display:flex;gap:4mm;align-items:flex-start">
+      <div style="flex:1;text-align:center"><div class="card" style="background:#000;padding:8mm"><img src="/brand/assets/wekolnect-mark.png" style="width:100%" alt="WeKOLnect"></div><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">The WeKOLnect mark, her reference</div></div>
+      <div style="flex:1;text-align:center"><img src="/brand/assets/lucy-retrato.png" style="width:100%;border-radius:5px" alt="Lucy"><div style="font-size:7.5pt;color:var(--muted);margin-top:2mm;font-weight:300">Lucy</div></div>
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">09</span></div>
+</div>
+
+<!-- 10 MOTION -->
+<div class="page">
+  <div class="rh"><span>Motion</span><span>Wevolv3</span></div>
+  <h2>Motion carries meaning</h2>
+  <div class="lede">Two kinds of video. Brand boards explain a relationship and move only when movement says something. Strike episodes are comedy and move on the joke.</div>
+  <div class="grid2" style="margin-top:5mm;gap:12mm">
+    <div>
+      <div class="h3s" style="margin-bottom:3mm">Brand boards</div>
+      <table>
+        <tr><td class="k">Entrances only</td><td>The transition is the exit.</td></tr>
+        <tr><td class="k">Ease out, never bounce</td><td>power3.out, power4.out, expo.out.</td></tr>
+        <tr><td class="k">Lines draw</td><td>The emerald line under a title grows from the word, like on the site.</td></tr>
+        <tr><td class="k">Deterministic</td><td>The same frame renders identically every time.</td></tr>
+        <tr><td class="k">Close</td><td>One emerald flash, then the lockup on black.</td></tr>
+      </table>
+      <p style="margin-top:3mm">1920&times;1080 and 1080&times;1920, 30&nbsp;fps, 10 to 20 seconds, authored in HTML with the site's own fonts.</p>
+    </div>
+    <div>
+      <div class="h3s" style="margin-bottom:3mm">Strike episodes</div>
+      <table>
+        <tr><td class="k">Format</td><td>1080&times;1920, 20 to 40 seconds, Portuguese, captions in Clash Display.</td></tr>
+        <tr><td class="k">The hook</td><td>The mistake on screen in the first two seconds.</td></tr>
+        <tr><td class="k">The turn</td><td>Strike names it: KOL Fantasma, Founder Sonolento, Press Release Invisível. When the subject is creators, Lucy checks the number.</td></tr>
+        <tr><td class="k">The lesson</td><td>One line that actually teaches something.</td></tr>
+        <tr><td class="k">The close</td><td>"Do código à listagem. Tremendo." and the lockup.</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">10</span></div>
+</div>
+
+<!-- 11 VOICE -->
+<div class="page">
+  <div class="rh"><span>Voice</span><span>Wevolv3</span></div>
+  <h2>How we write</h2>
+  <div class="grid2" style="gap:12mm">
+    <div>
+      <div class="h3s em" style="margin-bottom:3mm">Do</div>
+      <ul>
+        <li>Name the problem before the service. "A listing is one day on the calendar. Being ready takes weeks."</li>
+        <li>Bring the number, with its source. 200 projects, 861 creators, +200% holders for a Layer 1 partner.</li>
+        <li>Describe clients by category: "a Layer 1 chain", "a DeFi protocol". Most work runs under NDA.</li>
+        <li>Call ourselves a Web3 growth partner. For contrast, describe the behaviour: "the people you hire and never hear from again".</li>
+        <li>One idea per sentence. Plain words a founder reads once.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="h3s" style="margin-bottom:3mm;color:#ef4444">Do not</div>
+      <ul>
+        <li class="x">Em dashes. Use a period, a colon or parentheses.</li>
+        <li class="x">Promise measurement or results the data cannot carry.</li>
+        <li class="x">Name a client, or state what one individual creator charges.</li>
+        <li class="x">Hype verbs: revolutionise, unlock, supercharge, leverage. Emoji in headings or buttons.</li>
+        <li class="x">Any label for us other than growth partner, not even to contrast with it.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="rule"></div>
+  <div class="grid2" style="gap:12mm">
+    <div><div class="eyebrow" style="color:#ef4444">Before</div><p style="font-size:10pt">"Full-service, results-driven Web3 marketing solutions that unlock exponential growth. We turn attention into adoption, and we measure it."</p></div>
+    <div class="vbar"><div class="eyebrow" style="color:var(--em)">After</div><p style="font-size:10pt">"Your token deserves more than a post. Launching is a sequence: build it, list it, launch it, get it covered, keep the community."</p></div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">11</span></div>
+</div>
+
+<!-- 12 CHANNELS -->
+<div class="page">
+  <div class="rh"><span>Channels and languages</span><span>Wevolv3</span></div>
+  <h2>Where we talk <span class="new">NEW</span></h2>
+  <table>
+    <tr><th>Channel</th><th>Who is there</th><th>Language</th><th>The job</th></tr>
+    <tr><td class="k">X &middot; Farcaster</td><td>Founders, crypto natives</td><td>English</td><td>Launch, listing, KOL and PR in posts and threads of 280 characters</td></tr>
+    <tr><td class="k">LinkedIn &middot; blog &middot; Dev.to</td><td>Founders, teams, search</td><td>English</td><td>The weekly article and the pages that rank on Google</td></tr>
+    <tr><td class="k">Instagram &middot; Facebook</td><td>Founders and retail, Brazil</td><td>Portuguese</td><td>Carousels and Strike episodes: inside the launch, tokenization, Drex, airdrops</td></tr>
+    <tr><td class="k">TikTok &middot; YouTube Shorts</td><td>Retail</td><td>Portuguese</td><td>The same Strike episodes, recorded once</td></tr>
+    <tr><td class="k">Telegram</td><td>Community, ambassadors</td><td>Portuguese and English</td><td>Where the audience lands and where referrals happen</td></tr>
+  </table>
+  <div class="rule" style="margin-top:auto"></div>
+  <div class="grid3">
+    <div><div class="h3s">The site</div><p style="margin-top:2mm">Black, Clash Display, huge Bold titles with the emerald line, one emerald button per view.</p></div>
+    <div><div class="h3s">Social</div><p style="margin-top:2mm">The carousel on page 06, at 4:5 in feed and 9:16 in stories.</p></div>
+    <div><div class="h3s">Video</div><p style="margin-top:2mm">Strike and Lucy for comedy, brand boards for explanation. Both close on the lockup.</p></div>
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">12</span></div>
+</div>
+
+<!-- 13 THE SHORT VERSION -->
+<div class="page">
+  <div class="glow" style="width:150mm;height:150mm;right:-55mm;bottom:-60mm;background:radial-gradient(circle,rgba(16,185,129,.16) 0%,rgba(16,185,129,0) 65%)"></div>
+  <div class="rh"><span>The short version</span><span>Wevolv3</span></div>
+  <h2>Five things</h2>
+  <div style="max-width:220mm">
+    <div style="display:flex;gap:6mm;align-items:baseline;padding:3.6mm 0;border-bottom:1px solid var(--line)"><span class="num">01</span><div><div class="h3s">From code to listing</div><p style="margin-top:1mm">Build, list, launch, get covered, keep. One plan instead of five vendors.</p></div></div>
+    <div style="display:flex;gap:6mm;align-items:baseline;padding:3.6mm 0;border-bottom:1px solid var(--line)"><span class="num">02</span><div><div class="h3s">Black, emerald, blue</div><p style="margin-top:1mm">Emerald is the voice and the button. Blue is the second accent. Lime is retired.</p></div></div>
+    <div style="display:flex;gap:6mm;align-items:baseline;padding:3.6mm 0;border-bottom:1px solid var(--line)"><span class="num">03</span><div><div class="h3s">Bold titles, Extralight names, Light text</div><p style="margin-top:1mm">Clash Display, the same files as the site.</p></div></div>
+    <div style="display:flex;gap:6mm;align-items:baseline;padding:3.6mm 0;border-bottom:1px solid var(--line)"><span class="num">04</span><div><div class="h3s">Strike and Lucy are the brand in video</div><p style="margin-top:1mm">He exaggerates, she checks. Both dressed in black and emerald. Never a real person, never a price call.</p></div></div>
+    <div style="display:flex;gap:6mm;align-items:baseline;padding:3.6mm 0"><span class="num">05</span><div><div class="h3s">Problem first, number attached</div><p style="margin-top:1mm">No em dashes, no promises, clients by category. We are a Web3 growth partner.</p></div></div>
+  </div>
+  <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+    <div><div class="h3s">Questions this book does not cover?</div><p style="margin-top:1.5mm">contact@wevolv3.com &middot; t.me/wevolv3 &middot; @wevolv3_media</p></div>
+    <img src="/brand/assets/logo-ed02.png" style="width:44mm" alt="">
+  </div>
+  <div class="fol"><span>wevolv3.com</span><span class="mono">13</span></div>
+</div>
+
+</body>
+</html>
