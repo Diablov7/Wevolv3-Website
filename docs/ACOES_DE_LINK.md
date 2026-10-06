@@ -21,7 +21,7 @@ que medir. Quem executar uma ação nova acrescenta uma linha aqui no mesmo dia.
 
 | Data | Canal | O que foi feito | Estado | Medir (referrer / domínio) |
 |---|---|---|---|---|
-| 28/09 | Clutch | Perfil refeito: nome "Wevolv3 - Web3 Growth Partner", fundação 2020, e-mail info@ | feita; **faltam reviews de cliente** (pendente com o Rômulo) | clutch.co |
+| 28/09 | Clutch | Perfil refeito: nome "Wevolv3 - Web3 Growth Partner", fundação 2020, e-mail info@ | feita; **faltam reviews de cliente** (pendente com o Rômulo) | clutch.co (1ª visita em 01/10, Wuhan, sem engajamento) |
 | 28/09 | GoodFirms | Perfil completado (fundação, 861 criadores, foco Blockchain Marketing 50%) | feita; faltam reviews e portfólio | goodfirms.co |
 | 28/09 | Sortlist | Perfil publicado (descrição, logo, capa, 3 serviços) | feita | sortlist.com |
 | 28/09 | TechBehemoths | Cadastro enviado | aguardando aprovação deles | techbehemoths.com (1ª visita em 29/09, Chisinau) |

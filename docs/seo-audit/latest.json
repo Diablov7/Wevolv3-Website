@@ -1,23 +1,23 @@
 {
- "data": "2026-09-28",
- "total_paginas": 66,
+ "data": "2026-10-06",
+ "total_paginas": 67,
  "achados": {
   "status_nao_200": {},
   "noindex_no_sitemap": [],
   "canonical_ausente": [],
   "canonical_aponta_outra_url": {},
   "title_curto_ou_longo": {
+   "https://wevolv3.com/": 63,
    "https://wevolv3.com/linktree/": 13,
    "https://wevolv3.com/crypto-exchange-marketing": 61,
-   "https://wevolv3.com/adoption-check": 75,
-   "https://wevolv3.com/kol-pricing-benchmark.html": 62,
+   "https://wevolv3.com/kol-pricing-benchmark": 62,
    "https://wevolv3.com/what-is-a-kol-in-crypto": 63,
-   "https://wevolv3.com/privacy.html": 24,
-   "https://wevolv3.com/disclaimer.html": 26,
+   "https://wevolv3.com/privacy": 24,
+   "https://wevolv3.com/disclaimer": 26,
    "https://wevolv3.com/works/subbd": 21,
+   "https://wevolv3.com/blog/best-web3-marketing-firms-2026": 80,
    "https://wevolv3.com/blog/web3-attribution-wallet-tracking": 61,
    "https://wevolv3.com/blog/crypto-kol-marketing-evolution": 61,
-   "https://wevolv3.com/blog/growth-partner-vs-agency": 61,
    "https://wevolv3.com/blog/galxe-vs-zealy-roi-platforms": 62,
    "https://wevolv3.com/blog/when-ai-becomes-the-marketer-the-verified-rise-of-ai16z-and-elizaos": 69,
    "https://wevolv3.com/blog/ai-blockchain-decentralized-computing": 61,
@@ -26,6 +26,8 @@
   "title_duplicado": [],
   "description_ausente": [],
   "description_longa_ou_curta": {
+   "https://wevolv3.com/": 175,
+   "https://wevolv3.com/about": 177,
    "https://wevolv3.com/for-funds/": 179,
    "https://wevolv3.com/token-launch-marketing": 166,
    "https://wevolv3.com/web3-development": 180,
@@ -36,27 +38,21 @@
    "https://wevolv3.com/listings": 174,
    "https://wevolv3.com/growth-hacking": 162,
    "https://wevolv3.com/adoption-check": 169,
-   "https://wevolv3.com/kol-roi-calculator.html": 167,
-   "https://wevolv3.com/kol-pricing-benchmark.html": 163
+   "https://wevolv3.com/kol-roi-calculator": 167,
+   "https://wevolv3.com/kol-pricing-benchmark": 163
   },
   "description_duplicada": [],
-  "h1_ausente_ou_multiplo": {
-   "https://wevolv3.com/works/blockhain-l0-under-nda": 0,
-   "https://wevolv3.com/works/ai-infrastructure-nda": 0,
-   "https://wevolv3.com/works/l1-blockchain-under-nda": 0,
-   "https://wevolv3.com/works/meme-token-nda": 0,
-   "https://wevolv3.com/works/subbd": 0
-  },
+  "h1_ausente_ou_multiplo": {},
   "imagem_sem_alt": {
    "https://wevolv3.com/": "3/50",
    "https://wevolv3.com/linktree/": "8/15",
    "https://wevolv3.com/for-funds/": "1/1",
    "https://wevolv3.com/adoption-check": "1/6",
-   "https://wevolv3.com/works/blockhain-l0-under-nda": "2/9",
-   "https://wevolv3.com/works/ai-infrastructure-nda": "2/9",
-   "https://wevolv3.com/works/l1-blockchain-under-nda": "2/9",
-   "https://wevolv3.com/works/meme-token-nda": "2/9",
-   "https://wevolv3.com/works/subbd": "2/9"
+   "https://wevolv3.com/works/blockhain-l0-under-nda": "1/9",
+   "https://wevolv3.com/works/ai-infrastructure-nda": "1/9",
+   "https://wevolv3.com/works/l1-blockchain-under-nda": "1/9",
+   "https://wevolv3.com/works/meme-token-nda": "1/9",
+   "https://wevolv3.com/works/subbd": "1/9"
   },
   "sem_schema": [],
   "sem_breadcrumb": [
@@ -64,32 +60,16 @@
    "https://wevolv3.com/linktree/",
    "https://wevolv3.com/for-funds/"
   ],
-  "links_internos_quebrados": {
-   "https://wevolv3.com/blog/dev-growth-hacks": [
-    "https://wevolv3.com/blog/web-three-quest-platforms-roi",
-    "https://wevolv3.com/blog/web3-community-playbook-for-builders",
-    "https://wevolv3.com/blog/web-three-marketing-mistakes"
-   ]
-  },
-  "links_internos_fora_da_canonica": {
-   "https://wevolv3.com/about": "https://wevolv3.com/about.html",
-   "https://wevolv3.com/blog": "https://wevolv3.com/blog.html",
-   "https://wevolv3.com/contact": "https://wevolv3.com/contact.html",
-   "https://wevolv3.com/disclaimer": "https://wevolv3.com/disclaimer.html",
-   "https://wevolv3.com/kol-pricing-benchmark": "https://wevolv3.com/kol-pricing-benchmark.html",
-   "https://wevolv3.com/kol-roi-calculator": "https://wevolv3.com/kol-roi-calculator.html",
-   "https://wevolv3.com/privacy": "https://wevolv3.com/privacy.html",
-   "https://wevolv3.com/terms": "https://wevolv3.com/terms.html",
-   "https://wevolv3.com/works": "https://wevolv3.com/works.html"
-  },
+  "links_internos_quebrados": {},
+  "links_internos_fora_da_canonica": {},
   "orfas_sem_link_interno": [
    "https://wevolv3.com/linktree/",
    "https://wevolv3.com/for-funds/",
    "https://wevolv3.com/works/meme-token-nda"
   ],
   "paginas_finas_menos_300_palavras": {
-   "https://wevolv3.com/works.html": 54,
-   "https://wevolv3.com/contact.html": 120,
+   "https://wevolv3.com/works": 54,
+   "https://wevolv3.com/contact": 120,
    "https://wevolv3.com/linktree/": 59,
    "https://wevolv3.com/works/blockhain-l0-under-nda": 114,
    "https://wevolv3.com/works/l1-blockchain-under-nda": 247,
