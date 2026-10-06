@@ -14,7 +14,7 @@ const SANITY_TIMEOUT_MS = 2500;
 
 async function fetchPosts() {
   // Same filter as generate-sitemap.js and the blog index, so the three never disagree.
-  const query = `*[_type == "post" && defined(slug.current) && (!defined(published) || published == true)] | order(_updatedAt desc) { "slug": slug.current, "updatedAt": _updatedAt, publishedAt }`;
+  const query = `*[_type == "post" && defined(slug.current) && (!defined(published) || published == true) && (!defined(publishedAt) || publishedAt <= now())] | order(_updatedAt desc) { "slug": slug.current, "updatedAt": _updatedAt, publishedAt }`;
   const url = `https://${PROJECT_ID}.apicdn.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${encodeURIComponent(query)}`;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), SANITY_TIMEOUT_MS);

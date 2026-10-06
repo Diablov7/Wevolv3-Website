@@ -1533,7 +1533,8 @@
                         }`;
                     } else {
                         // Normal mode: only published posts
-                        query = `*[_type == "post" && slug.current == "${sanitizedSlug}" && published == true][0] {
+                        // Agendamento: post com published = true e data no futuro só aparece quando a data chega.
+                        query = `*[_type == "post" && slug.current == "${sanitizedSlug}" && published == true && (!defined(publishedAt) || publishedAt <= now())][0] {
                             title,
                             slug,
                             excerpt,
@@ -1550,10 +1551,11 @@
                     let post = await sanityClient.fetch(query);
                     console.log('Post fetched:', post ? 'Found' : 'Not found');
                     
-                    // Fallback: try without published filter if not in preview mode
+                    // Fallback para posts antigos sem o campo published. Rascunho (published = false)
+                    // e post agendado para o futuro continuam fora: antes este fallback os mostrava.
                     if (!post && !previewMode) {
-                        console.log('Trying fallback query without published filter...');
-                        const fallbackQuery = `*[_type == "post" && slug.current == "${sanitizedSlug}"][0] {
+                        console.log('Trying fallback query for posts without the published field...');
+                        const fallbackQuery = `*[_type == "post" && slug.current == "${sanitizedSlug}" && !defined(published) && (!defined(publishedAt) || publishedAt <= now())][0] {
                             title,
                             slug,
                             excerpt,
@@ -1715,7 +1717,7 @@
             async function loadRelatedPosts(currentSlug, categoryIds) {
                 try {
                     // Mesma categoria primeiro (09/2026), completando com os mais recentes.
-                    const query = `*[_type == "post" && published == true && slug.current != "${currentSlug}"] | order(publishedAt desc) [0...24] {
+                    const query = `*[_type == "post" && published == true && (!defined(publishedAt) || publishedAt <= now()) && slug.current != "${currentSlug}"] | order(publishedAt desc) [0...24] {
                         title,
                         slug,
                         excerpt,

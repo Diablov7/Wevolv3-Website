@@ -1176,7 +1176,7 @@
                 // Função para buscar posts do Sanity
                 async function fetchSanityPosts(limit = 3) {
                     try {
-                        const query = `*[_type == "post" && published == true] | order(publishedAt desc) [0...${limit}] {
+                        const query = `*[_type == "post" && published == true && (!defined(publishedAt) || publishedAt <= now())] | order(publishedAt desc) [0...${limit}] {
                             _id,
                             title,
                             slug,

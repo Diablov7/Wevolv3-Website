@@ -467,7 +467,7 @@
                         document.body.insertBefore(previewBanner, document.body.firstChild);
                     } else {
                         // Normal mode: only published posts
-                        query = `*[_type == "post" && published == true] | order(publishedAt desc) {
+                        query = `*[_type == "post" && published == true && (!defined(publishedAt) || publishedAt <= now())] | order(publishedAt desc) {
                             title,
                             slug,
                             excerpt,

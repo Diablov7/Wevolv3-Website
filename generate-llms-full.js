@@ -15,7 +15,7 @@ const API_VERSION = '2024-01-01';
 const BASE_URL = 'https://wevolv3.com';
 
 const query = encodeURIComponent(`
-  *[_type == "post" && defined(slug.current) && (!defined(published) || published == true)] | order(publishedAt desc) {
+  *[_type == "post" && defined(slug.current) && (!defined(published) || published == true) && (!defined(publishedAt) || publishedAt <= now())] | order(publishedAt desc) {
     title,
     "slug": slug.current,
     excerpt,

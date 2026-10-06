@@ -124,7 +124,9 @@ export default async (request, context) => {
   const dataset = 'production';
   const apiVersion = '2024-01-01';
   
-  const query = `*[_type == "post" && slug.current == "${slug}"][0] {
+  // Mesmo critério de visibilidade do resto do site: rascunho e post agendado para o futuro
+  // não são servidos (antes o HTML do servidor mostrava qualquer post pela URL).
+  const query = `*[_type == "post" && slug.current == "${slug}" && (!defined(published) || published == true) && (!defined(publishedAt) || publishedAt <= now())][0] {
     title,
     excerpt,
     body,

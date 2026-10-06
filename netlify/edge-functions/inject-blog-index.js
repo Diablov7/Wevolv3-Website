@@ -45,7 +45,7 @@ function visibleLabel(title) {
 }
 
 async function fetchPosts() {
-  const query = `*[_type == "post" && defined(slug.current) && (!defined(published) || published == true)] | order(publishedAt desc) { title, "slug": slug.current }`;
+  const query = `*[_type == "post" && defined(slug.current) && (!defined(published) || published == true) && (!defined(publishedAt) || publishedAt <= now())] | order(publishedAt desc) { title, "slug": slug.current }`;
   const url = `https://${PROJECT_ID}.apicdn.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${encodeURIComponent(query)}`;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), SANITY_TIMEOUT_MS);
