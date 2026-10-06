@@ -426,6 +426,8 @@
 [[edge_functions]]
   function = "inject-og-tags"
   path = "/blog/*"
+  # Post despublicado: fora da função para o 301 do _redirects valer (a função roda antes).
+  excludedPath = ["/blog/why-cellframe-post-quantum"]
 
 [[edge_functions]]
   function = "inject-og-tags"
