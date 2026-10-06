@@ -48,7 +48,7 @@ const staticPages = [
 
 // Query GROQ para buscar posts publicados
 const postsQuery = encodeURIComponent(`
-  *[_type == "post" && defined(slug.current) && (!defined(published) || published == true)] | order(_updatedAt desc) {
+  *[_type == "post" && defined(slug.current) && (!defined(published) || published == true) && (!defined(publishedAt) || publishedAt <= now())] | order(_updatedAt desc) {
     "slug": slug.current,
     "updatedAt": _updatedAt,
     "publishedAt": publishedAt
