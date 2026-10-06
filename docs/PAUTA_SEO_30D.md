@@ -66,7 +66,16 @@ conserto de links de 28/09.
 
 ## Semana a semana
 
-**Semana 1 (06 a 12/10): limpar e conectar**
+**Semana 1: FEITA em 06/10**
+- `/linktree/` com `noindex` e fora do sitemap.
+- Título do post de crypto PR trocado para "Crypto PR for Web3 Founders: Building Credibility Faster".
+- 5 links contextuais: crypto-pr-builds → `/crypto-pr`, best-web3-marketing-firms → `/crypto-pr`, why-exchanges → `/listings`, gtm-framework → `/listings` e `/token-launch-marketing`. O post de TGE já linkava `/token-launch-marketing`.
+- O post do Discord estava órfão ("nenhuma página de referência" no GSC). Ganhou link a partir de `sovereign-communities-web-three`.
+- Indexação pedida para os 2 posts.
+- `/for-funds/` fica escondido de propósito (decisão do Rômulo, 06/10).
+- Extra: o post "Why Cellframe Is the Best Post Quantum Blockchain" foi despublicado (cliente citado, erro reconhecido pelo Rômulo). O rascunho segue no Sanity e a URL faz 301 para `/blog/post-quantum-crypto-projects-2026`; a edge function exclui o caminho, no `netlify.toml`.
+
+Plano original da semana 1 (06 a 12/10), limpar e conectar:
 - `noindex` no `/linktree/`.
 - Título novo para `crypto-pr-builds-leadership-faster`, sem o molde "Why Everyone Is Wrong About".
 - Os 5 links contextuais da tabela acima.
