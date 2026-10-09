@@ -38,3 +38,4 @@ que medir. Quem executar uma ação nova acrescenta uma linha aqui no mesmo dia.
 | — | DesignRush | Precisa de conta | pendente com o Rômulo; refazer depois das reviews do Clutch | designrush.com |
 | — | Artigo 03 (DeFi) no Medium | Pronto em `_central/artigos-comparativos/03-vocal-...-HUMANIZADO.md` | pendente (sair em 01-02/10) | medium.com |
 | — | Listas pagas (TechBullion, CoinGape, BeInCrypto, DAN) | — | decisão de verba do Rômulo | — |
+| 09/10 | Gatilho "defi marketing agency" | 13 leituras em queda (134 -> 38 impr. desde 30/09, pos. 13,2). Busca aberta: resumo de IA no topo e listas "top DeFi agencies" nos 8 primeiros links, Wevolv3 nao citada | **decisao pendente com o Romulo**: agir (resposta direta 40-60 palavras + tabela de modelos e precos em `/blog/defi-marketing-agency-checklist`, link de `/defi-marketing`) ou arquivar; fora do parecer diario ate decidir | GSC: impressoes e posicao da consulta; citacao no resumo de IA |
