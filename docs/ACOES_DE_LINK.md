@@ -24,8 +24,8 @@ que medir. Quem executar uma ação nova acrescenta uma linha aqui no mesmo dia.
 | 28/09 | Clutch | Perfil refeito: nome "Wevolv3 - Web3 Growth Partner", fundação 2020, e-mail info@ | feita; **faltam reviews de cliente** (pendente com o Rômulo) | clutch.co (1ª visita em 01/10, Wuhan, sem engajamento) |
 | 28/09 | GoodFirms | Perfil completado (fundação, 861 criadores, foco Blockchain Marketing 50%) | feita; faltam reviews e portfólio | goodfirms.co |
 | 28/09 | Sortlist | Perfil publicado (descrição, logo, capa, 3 serviços) | feita | sortlist.com |
-| 28/09 | TechBehemoths | Cadastro enviado | aguardando aprovação deles | techbehemoths.com (1ª visita em 29/09, Chisinau) |
-| 28/09 | Influencer Marketing Hub | Formulário de inclusão enviado | aguardando revisão (aviso chega no info@) | influencermarketinghub.com |
+| 28/09 | TechBehemoths | Cadastro enviado | **aprovado em 29/09** (e-mail "You're officially on TechBehemoths", lido em 10/10); score "GOOD", meio da lista: falta detalhar o perfil (pendente com o Rômulo) | techbehemoths.com (1ª visita em 29/09, Chisinau) |
+| 28/09 | Influencer Marketing Hub | Formulário de inclusão enviado | **perfil no ar desde 07/10** (`influencermarketinghub.com/crypto-agencies/wevolv3/`, lido em 10/10); sem botão de site, o account manager oferece upgrade pago (decisão de verba do Rômulo) | influencermarketinghub.com |
 | 28/09 | web3connect | 7 ofertas aprovadas pelo fundador em 28/09; posicionamento novo | feita | web3connect.com (1ª visita em 29/09, Indore, utm_source=web3connect_com) |
 | 28/09 | MarketerHire | Pitch por e-mail para a editora | aguardando resposta (follow-up agendado 03/10) | marketerhire.com |
 | 28/09 | Coinmonks | Pitch por e-mail; entrada de autor é por DM no Telegram (@gaurav_zen) | aguardando; DM pendente com o Rômulo | medium.com/coinmonks |
