@@ -207,7 +207,14 @@ export default async (request, context) => {
     // quando existe, é a versão com texto que vai no preview das redes (og/twitter).
     const hasSocialImage = !!(post.socialImage && post.socialImage.asset && post.socialImage.asset._ref);
     const imageUrl = sanityImageUrl(hasSocialImage ? post.socialImage : post.mainImage);
-    const coverUrl = sanityImageUrl(post.mainImage);
+    // Capa em três larguras: o celular baixa a de 480 ou 800 px, não a de 1200. O src usa os
+    // mesmos parâmetros do script da página, que não troca mais a imagem já entregue aqui.
+    const coverRaw = sanityImageUrl(post.mainImage);
+    const coverBase = coverRaw.includes('cdn.sanity.io') ? coverRaw.split('?')[0] : null;
+    const coverSized = (w) => `${coverBase}?w=${w}&auto=format&q=75&fit=max`;
+    const coverUrl = coverBase ? coverSized(1200) : coverRaw;
+    const coverSrcset = coverBase ? [480, 800, 1200].map((w) => `${coverSized(w)} ${w}w`).join(', ') : '';
+    const coverSizes = '(max-width: 1240px) 100vw, 1200px';
     const title = post.title;
     // Cut at the last word boundary instead of mid-word (12 posts had descriptions
     // ending in half a word in the results).
@@ -499,6 +506,7 @@ export default async (request, context) => {
     // Inject meta tags + JSON-LD schemas
     const metaTags = `
       <!-- Injected by Edge Function for Social Sharing + AI Crawlers -->
+      ${coverSrcset ? `<link rel="preload" as="image" imagesrcset="${coverSrcset.replace(/&/g, '&amp;')}" imagesizes="${coverSizes}" fetchpriority="high">` : ''}
       <meta property="og:type" content="article">
       <meta property="og:title" content="${title.replace(/"/g, '&quot;')}">
       <meta property="og:description" content="${description.replace(/"/g, '&quot;').substring(0, 200)}">
@@ -636,7 +644,7 @@ export default async (request, context) => {
         /<img\s+id="post-image"\s+src="images\/post1\.jpg"\s+alt="Article image"\s+class="single-post-img"\s*\/>/,
         // Com socialImage, a capa do site é a arte limpa e pode ser cortada mais baixa
         // (.wv-cover-clean); sem ela, a capa ainda tem texto e fica inteira.
-        `<img id="post-image" src="${htmlEscape(coverUrl)}" alt="${htmlEscape(title)}" class="single-post-img${hasSocialImage ? ' wv-cover-clean' : ''}"${imageDims ? ` width="${imageDims.width}" height="${imageDims.height}"` : ''} loading="eager" />`
+        `<img id="post-image" src="${htmlEscape(coverUrl)}" alt="${htmlEscape(title)}" class="single-post-img${hasSocialImage ? ' wv-cover-clean' : ''}"${coverSrcset ? ` srcset="${htmlEscape(coverSrcset)}" sizes="${coverSizes}"` : ''}${imageDims ? ` width="${imageDims.width}" height="${imageDims.height}"` : ''} loading="eager" fetchpriority="high" />`
       )
       // The actual article body, in the same container the client JS also writes to.
       // Whitespace-tolerant regex (not an exact string match) since the shell's

@@ -1618,7 +1618,9 @@
                     // Optimize main image loading
                     const mainImageUrl = sanityImageUrl(post.mainImage, { social: false });
                     const postImageEl = document.getElementById('post-image');
-                    postImageEl.src = mainImageUrl;
+                    // Com srcset a edge function já entregou a capa certa: trocar o src baixaria tudo de novo.
+                    const coverReady = postImageEl.hasAttribute('srcset');
+                    if (!coverReady) postImageEl.src = mainImageUrl;
                     postImageEl.alt = post.title || '';
                     postImageEl.loading = 'eager';
                     postImageEl.fetchPriority = 'high';
@@ -1632,11 +1634,13 @@
                     }
 
                     // Preload main image for better performance
-                    const link = document.createElement('link');
-                    link.rel = 'preload';
-                    link.as = 'image';
-                    link.href = mainImageUrl;
-                    document.head.appendChild(link);
+                    if (!coverReady) {
+                        const link = document.createElement('link');
+                        link.rel = 'preload';
+                        link.as = 'image';
+                        link.href = mainImageUrl;
+                        document.head.appendChild(link);
+                    }
                     
                     // DEBUG: Antes de converter
                     console.log('🔄 Convertendo body para HTML...');
