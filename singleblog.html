@@ -53,13 +53,18 @@
             })();
         </script>
         
-        <!-- Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9"></script>
+        <!-- Google Analytics: a fila dataLayer nasce aqui, a biblioteca entra depois do load para nao disputar com a capa (LCP) -->
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-E7E4GJ0QP9');
+          window.addEventListener('load', function(){
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9';
+            document.head.appendChild(s);
+          });
         </script>
         <link href="css/normalize.css" rel="stylesheet" type="text/css" />
         <link href="css/layout.css" rel="stylesheet" type="text/css" />
@@ -625,7 +630,7 @@
             <div class="w-layout-blockcontainer main-container w-container">
                 <div id="home" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="header-inner w-nav">
                     <a href="index.html" class="logo w-inline-block">
-                        <img src="images/LOGO.PNG?v=5" alt="Wevolv3" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <img src="images/logo-nav.webp" alt="Wevolv3" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
                         <span class="logo-text-fallback" style="display:none; color: white; font-family: 'Clashdisplay', sans-serif; font-weight: 900; font-size: 28px; text-transform: uppercase; letter-spacing: 0.1em;">WEVOLV3</span>
                     </a>
                     <a href="/contact" class="lets-talk-btn">LET'S TALK</a>
@@ -760,8 +765,22 @@
         </div>
 
   
-        <script src="js/jquery.min.js" type="text/javascript"></script>
-        <script src="js/plugins.js" type="text/javascript"></script>
+        <script>
+            // Runtime do Webflow (menu mobile e animacoes): 1 MB de JS que nao desenha a capa.
+            // Entra depois do load, na ordem certa (async=false), para nao segurar o LCP.
+            (function(){
+                function boot(){
+                    ['js/jquery.min.js', 'js/plugins.js'].forEach(function(src){
+                        var s = document.createElement('script');
+                        s.src = src;
+                        s.async = false;
+                        document.body.appendChild(s);
+                    });
+                }
+                if (document.readyState === 'complete') boot();
+                else window.addEventListener('load', boot);
+            })();
+        </script>
 
         <script>
             // ========================================
