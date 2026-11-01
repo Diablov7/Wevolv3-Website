@@ -53,17 +53,19 @@
             })();
         </script>
         
-        <!-- Google Analytics: a fila dataLayer nasce aqui, a biblioteca entra depois do load para nao disputar com a capa (LCP) -->
+        <!-- Google Analytics: a fila dataLayer nasce aqui, a biblioteca entra 1,2 s depois do load para nao disputar com a capa (LCP) -->
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'G-E7E4GJ0QP9');
           window.addEventListener('load', function(){
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9';
-            document.head.appendChild(s);
+            setTimeout(function(){
+              var s = document.createElement('script');
+              s.async = true;
+              s.src = 'https://www.googletagmanager.com/gtag/js?id=G-E7E4GJ0QP9';
+              document.head.appendChild(s);
+            }, 1200);
           });
         </script>
         <link href="css/normalize.css" rel="stylesheet" type="text/css" />
@@ -767,7 +769,8 @@
   
         <script>
             // Runtime do Webflow (menu mobile e animacoes): 1 MB de JS que nao desenha a capa.
-            // Entra depois do load, na ordem certa (async=false), para nao segurar o LCP.
+            // Entra 1,2 s depois do load, na ordem certa (async=false). O load sozinho nao basta:
+            // em pagina leve ele dispara antes da primeira pintura e o JS travaria esse quadro.
             (function(){
                 function boot(){
                     ['js/jquery.min.js', 'js/plugins.js'].forEach(function(src){
@@ -777,8 +780,9 @@
                         document.body.appendChild(s);
                     });
                 }
-                if (document.readyState === 'complete') boot();
-                else window.addEventListener('load', boot);
+                function later(){ setTimeout(boot, 1200); }
+                if (document.readyState === 'complete') later();
+                else window.addEventListener('load', later);
             })();
         </script>
 
