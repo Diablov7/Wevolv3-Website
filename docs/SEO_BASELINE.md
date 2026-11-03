@@ -16,10 +16,10 @@ a coleta foi manual pelo navegador.
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Cliques orgânicos totais | **5** | **7** | **8** | |
-| Impressões totais | **36** | **1.240** | **4.650** | |
-| CTR médio | **13,9%** | **0,6%** | **0,2%** | |
-| Posição média | **25,4** | **36,3** | **19,0** | |
+| Cliques orgânicos totais | **5** | **7** | **8** | **9** |
+| Impressões totais | **36** | **1.240** | **4.650** | **4.030** |
+| CTR médio | **13,9%** | **0,6%** | **0,2%** | **0,2%** |
+| Posição média | **25,4** | **36,3** | **19,0** | **33,6** |
 
 Leitura: 5 cliques em 28 dias. O CTR de 13,9% parece bom mas é artefato de amostra
 minúscula. Posição média 25,4 significa página 3 do Google.
@@ -43,6 +43,16 @@ Direct 72,5%, Organic Social 16,2%, Organic Search 7,7% (17 sessões, zero conve
 AI Assistant 2 sessões (0 conversão na janela), Unassigned 2,3%. O gargalo segue sendo
 autoridade externa e intenção comercial, não indexação.
 
+**Leitura do T+90 (lida com atraso em 2026-11-03, janela 05/10 a 01/11; a rotina ficou parada
+de 23/10 a 02/11):** cliques 8 → 9 e impressões 4.650 → 4.030, com 269 consultas. A posição
+média piorou (19,0 → 33,6) por diluição: `/blog/web-three-marketing-tools` sozinho tem 987
+impressões na posição 52,8. O que andou de verdade foi o fundo de funil: o post de custo de
+listagem foi de 90 impressões na posição 10,1 para 275 na 6,3, com o primeiro clique de uma
+consulta de decisão ("crypto exchange listing fee"). Indexação 70 dentro e 14 fora. Links:
+63 de 13 domínios (eram 14 de 8 no T+60). GA4 (06/10 a 02/11, sem robôs): 239 sessões,
+Direct 85,4% (inflado por robôs ainda não filtrados), Organic Social 6,7%, Organic Search 4,2%
+(10 sessões, zero lead), AI Assistant 1 sessão com 1 lead (ChatGPT, 02/11).
+
 ---
 
 ## 2. Indexação
@@ -51,8 +61,8 @@ autoridade externa e intenção comercial, não indexação.
 
 | Métrica | 2026-07-27 | T+30 | T+60 | T+90 |
 |---|---|---|---|---|
-| Páginas indexadas | **18** | **56** | **63** | |
-| Páginas não indexadas | **62** | **40** | **18** | |
+| Páginas indexadas | **18** | **56** | **63** | **70** |
+| Páginas não indexadas | **62** | **40** | **18** | **14** |
 
 Motivos da não indexação:
 
